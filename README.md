@@ -14,4 +14,3 @@ enter the project info for generate!
 join it~
 
 more detail see: https://github.com/pister/wint/wiki/Quick-Start-Wint 
-
