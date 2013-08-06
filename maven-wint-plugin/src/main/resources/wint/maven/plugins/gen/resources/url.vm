@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<url-config>
+
+	<url name="baseModule" >
+		<server-url>${${config.artifactId}.base.url}</server-url>
+	</url>
+
+	<url name="adminModule" extends="baseModule">
+		<path>admin</path>
+	</url>
+
+	<url name="staticServer">
+		<server-url>${${config.artifactId}.static.url}</server-url>
+	</url>
+	
+	<url name="jsServer" extends="staticServer">
+		<path>js</path>
+	</url>
+	
+	<url name="cssServer" extends="staticServer">
+		<path>css</path>
+	</url>
+	
+	<url name="imageServer" extends="staticServer">
+		<path>image</path>
+	</url>
+	
+</url-config>

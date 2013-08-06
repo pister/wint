@@ -1,0 +1,15 @@
+package wint.session.config;
+
+public class SessionDataConfig {
+	
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+}

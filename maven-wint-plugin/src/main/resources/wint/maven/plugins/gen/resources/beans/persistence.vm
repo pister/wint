@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE beans PUBLIC
+    "-//SPRING//DTD BEAN//EN"
+     "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+ 	
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation">
+            <value>classpath:sql-map.xml</value>
+        </property>
+    </bean>
+
+    <bean id="readWriteSqlMapClientSource" class="wint.dal.ibatis.ReadWriteSqlMapClientSource" >
+        <property name="masterDataSource" ref="dataSource1" />
+	    <!--
+        <property name="slaveDataSources">
+            <list>
+                <ref bean="dataSource2"></ref>
+                <ref bean="dataSource3"></ref>
+            </list>
+        </property>
+        -->
+    </bean>
+	
+</beans>

@@ -1,0 +1,2 @@
+result without securityUtil $s
+result with securityUtil $securityUtil.rawContent($s)

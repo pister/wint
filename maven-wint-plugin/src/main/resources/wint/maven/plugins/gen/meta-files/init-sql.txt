@@ -1,0 +1,21 @@
+DROP DATABASE IF EXISTS `${config.dbName}`;
+CREATE DATABASE `${config.dbName}`;
+use `${config.dbName}`;
+
+#set($dbUser=${config.dbUser})
+#set($dbPwd=${config.dbPwd})
+
+delete from mysql.user where User = '${dbUser}';
+grant select,update,delete,insert on `${config.dbName}`.* to '${dbUser}'@'%' identified by '${dbPwd}';
+flush privileges;
+
+
+DROP TABLE IF EXISTS ${config.dbName}_test_table;
+create table ${config.dbName}_test_table (
+	id int primary key auto_increment,
+	name varchar(50) not null,
+	deleted tinyint default 0 not null,
+	gmt_create datetime not null,
+	gmt_modified datetime not null
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+create index test_index_name on ${config.dbName}_test_table(name);

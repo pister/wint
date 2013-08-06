@@ -1,0 +1,8 @@
+How to run?
+mvn war:inplace jetty:run
+
+How to import to eclipse?
+mvn eclipse:clean eclipse:eclipse
+
+How to package?
+mvn clean package -Pproduct

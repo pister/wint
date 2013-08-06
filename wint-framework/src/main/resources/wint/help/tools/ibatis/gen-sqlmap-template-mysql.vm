@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="${encoding}"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="${namespace}">
+
+	<typeAlias type="${domainName}" alias="${aliasDomainName}" />
+
+	<resultMap id="${mappingName}" class="${aliasDomainName}">
+		#foreach($mappingColumn in $mappingColumns)
+		<result property="${mappingColumn.property}" column="${mappingColumn.column}"/>
+		#end
+	</resultMap>
+	
+	<sql id="${aliasDomainName}-full-columns">
+		${fullSQLColumns}
+	</sql>
+	
+	<insert id="create" parameterClass="${aliasDomainName}">
+		<![CDATA[
+			${insertSqlNoId}
+		]]>
+		<selectKey resultClass="${idType}" keyProperty="id">
+			SELECT	LAST_INSERT_ID();
+	   	</selectKey>
+	</insert>
+	
+	<select id="queryById" resultMap="${mappingName}" parameterClass="${idType}">
+		select
+			<include refid="${aliasDomainName}-full-columns" />
+		from
+			${tableName} t
+		where
+			t.${idNameColumn} = #value# #if($logicDeleted) and t.deleted = 0 #end
+	</select>
+	
+	<update id="delete" parameterClass="${idType}">
+	#if($logicDeleted)
+		update ${tableName} t set t.deleted = 1 #if("$!{gmtModifiedName}" != "") , t.${gmtModifiedName} = now() #end where t.${idNameColumn} = #value#
+	#else
+		delete from ${tableName} t where t.${idNameColumn} = #value#
+	#end
+	</update>
+	
+	<update id="update" parameterClass="${aliasDomainName}">
+		<![CDATA[
+			${genUpdateNoId}
+		]]>
+	</update>
+	
+</sqlMap>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>wint-base</artifactId>
+		<groupId>wint</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-wint-plugin</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>maven-plugin</packaging>
+	<name>maven-wint-plugin Maven Mojo</name>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.6.3</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<configuration>
+					<goalPrefix>wint</goalPrefix>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

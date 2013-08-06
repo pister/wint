@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<forms>
+	<form name="person">
+		<field name="name" label="客户名">
+			<validator type="required" message="${field.label}不能为空"></validator>
+			<validator type="string" message="${field.label}的长度必须在${min}~${max}之间">
+				<param name="min" value="1" />
+				<param name="max" value="20"></param>
+			</validator>
+		</field>
+	</form>
+	<form name="person.reg" extends="person"></form>
+	<form name="person.login" extends="person"></form>
+</forms>

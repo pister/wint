@@ -1,0 +1,6 @@
+aaaaa
+#set($form = $formFactory.getForm('user.reg'))
+$!form.name.name
+$!form.name.message
+$!form.name.value
+bbb

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<forms>
+	<form name="user">
+		<field name="name" label="用户名" >
+			<validator type="required" message="${field.label}不能为空"></validator>
+			<validator type="string" message="${field.label}的长度必须在${min}~${max}之间">
+				<param name="min" value="1" />
+				<param name="max" value="20"></param>
+			</validator>
+		</field>
+	</form>
+	
+	<form name="user.reg" extends="user">
+		<field name="password" label="密码">
+			<validator type="required" message="${field.label}不能为空"></validator>
+			<validator type="string" message="${field.label}的长度必须在${min}~${max}之间">
+				<param name="min" value="3" />
+				<param name="max" value="30"></param>
+			</validator>
+		</field>
+		<field name="name" label="用户名">
+			<validator type="required" message="${field.label}不能为空"></validator>
+		</field>
+	</form>
+	
+	<form name="user.login" extends="user"></form>
+	
+	<form name="user.reg2" extends="user.reg">
+		<field name="checkcode" label="验证码">
+			<validator type="required" message="${field.label}不能为空"></validator>
+		</field>
+	</form>
+	
+	<resource file="person.xml" />
+	
+	<form name="token.support">
+		<field name="csrfToken" >
+			<validator type="csrf" message="请不要重复提交"></validator>
+		</field>
+	</form>
+</forms>

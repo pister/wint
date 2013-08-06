@@ -1,0 +1,10 @@
+${config.artifactId}.env.mode=dev
+${config.artifactId}.jndi.name=jdbc/ds1
+${config.artifactId}.jdbc.url=jdbc:mysql://${config.dbUrl}:3306/${config.dbName}?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true
+${config.artifactId}.jdbc.username=${config.dbUser}
+${config.artifactId}.jdbc.password=${config.dbPwd}
+${config.artifactId}.datasource.config.file=jndi-datasource.xml
+${config.artifactId}.base.url=http://127.0.0.1:8080
+${config.artifactId}.static.url=http://127.0.0.1:8080/statics
+${config.artifactId}.log.root.level=info
+${config.artifactId}.log.dir=d:/logs

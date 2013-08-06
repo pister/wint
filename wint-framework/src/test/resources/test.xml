@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<object name="service">
+
+	<value name="xxxx">yyyy</value>
+	<object name="xxx2" class="java.util.Date" />
+
+	<object class="wint.core.serivce.supports.demo.FirstServiceImpl">
+		<value name="strValue">hello</value>
+		<value name="intValue">333</value>
+		<list name="persons">
+			<object class="wint.core.serivce.supports.demo.Person" />
+			<object class="wint.core.serivce.supports.demo.Person" />
+			<object class="wint.core.serivce.supports.demo.Person" />
+		</list>
+		<object name="prop">
+			<value name="p1">22</value>
+			<value name="p2">aaaa</value>
+			<value name="p3">bbb</value>
+		</object>
+	</object>
+	
+</object>

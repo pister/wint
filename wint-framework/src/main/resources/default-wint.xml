@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<object>
+
+	<object class="wint.mvc.pipeline.DefaultPipelineService">
+		<object name="pipelines">
+			<object name="default" class="wint.mvc.pipeline.Pipeline">
+				<list name="valves">
+					<object class="wint.mvc.pipeline.valves.SetLoggingValve"></object>
+					<object class="wint.mvc.pipeline.valves.FileResourceValve"></object>
+					<object class="wint.mvc.pipeline.valves.AnalyzeUrlValve"></object>
+					<object class="wint.mvc.pipeline.valves.SetIndexValve">
+						<value name="indexTarget">index</value>
+					</object>
+					<object class="wint.mvc.pipeline.valves.CreateContextValve"></object>
+					<object class="wint.mvc.pipeline.valves.LoadModuleValve">
+						<value name="label">loadModule</value>
+					</object>
+					<object class="wint.mvc.pipeline.valves.PerformActionValve"></object>
+				</list>
+			</object>
+		</object>
+	</object>
+	
+	<object class="wint.mvc.flow.ServletFlowDataService">
+	</object>
+	
+	<object class="wint.mvc.form.fileupload.DefaultUploadFileService">
+	</object>
+	
+	<object class="wint.core.service.thread.DefaultThreadPoolService">
+	</object>
+	
+	<object class="wint.mvc.module.DefaultLoadModuleService">
+	</object>
+	
+	<object class="wint.mvc.template.DefaultContextService">
+	</object>
+	
+	<object class="wint.mvc.template.DefaultLoadTemplateService">
+	</object>
+	
+	<object class="wint.mvc.template.DefaultInternerVariableService">
+	</object>
+	
+	<object class="wint.mvc.template.widget.DefaultWidgetContainerService">
+	</object>
+	
+	<object class="wint.help.autoreload.form.AutoReloadFormServiceSupport">
+	</object>
+	
+	<object class="wint.mvc.i18n.DefaultResourceBundleService">
+	</object>
+	
+	<object class="wint.mvc.tools.service.DefaultPullToolsService">
+		<object name="tools">
+			<object name="securityUtil" class="wint.lang.utils.SecurityUtil"/>
+			<object name="systemUtil" class="wint.lang.utils.SystemUtil"/>
+			<object name="dateUtil" class="wint.lang.utils.DateUtil"/>
+		</object>
+	</object>
+	
+	<object class="wint.help.autoreload.url.AutoReloadUrlBrokerServiceSupport">
+	</object>
+	
+	<object class="wint.mvc.view.DefaultViewRenderService">
+		<list name="viewRenders">
+			<object class="wint.mvc.view.types.TemplateViewRender"></object>
+			<object class="wint.mvc.view.types.JsonViewRender"></object>
+			<object class="wint.mvc.view.types.NopViewRender"></object>
+		</list>
+	</object>
+	
+	<object class="wint.core.service.bean.spring.SpringSupportBeanFactoryService">
+	</object>
+	
+</object>

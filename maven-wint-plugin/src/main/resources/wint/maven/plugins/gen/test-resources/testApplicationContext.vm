@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE beans PUBLIC
+    "-//SPRING//DTD BEAN//EN"
+     "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+
+	<import resource="beans/biz-ao.xml" />
+	<import resource="beans/biz-bo.xml" />
+	<import resource="beans/biz-dao.xml" />
+	<import resource="beans/persistence.xml" />
+	<import resource="beans/jdbc-datasource.xml" />
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"></bean>
+</beans>

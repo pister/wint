@@ -1,0 +1,3 @@
+this is reg file
+
+$widget.setTemplate('test')

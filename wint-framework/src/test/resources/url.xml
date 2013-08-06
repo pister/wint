@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<url-config>
+
+	<url name="baseModule" >
+		<server-url>http://127.0.0.1:8080</server-url>
+	</url>
+
+	<url name="itemModule44" extends="itemModule2">
+		<path>item44</path>
+	</url>
+	
+	<url name="itemModule2" extends="itemModule">
+		<path>item33</path>
+	</url>
+	
+	<url name="itemModule" extends="baseModule">
+		<path>item</path>
+	</url>
+	
+	<url name="manageModule" extends="itemModule44">
+		<server-url>${taoyingshi.admin.url}</server-url>
+	</url>
+	
+	<url name="staticServer">
+		<server-url>${taoyingshi.static.url}</server-url>
+	</url>
+	
+</url-config>

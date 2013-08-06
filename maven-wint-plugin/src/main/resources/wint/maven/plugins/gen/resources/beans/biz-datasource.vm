@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE beans PUBLIC
+        "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+
+	<!-- druid DataSource -->
+    <bean id="dataSource1" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${${config.artifactId}.jdbc.url}" />
+        <property name="username" value="${${config.artifactId}.jdbc.username}" />
+        <property name="password" value="${${config.artifactId}.jdbc.password}" />
+        <property name="filters" value="stat" />
+        <property name="maxActive" value="30" />
+        <property name="initialSize" value="1" />
+        <property name="maxWait" value="60000" />
+        <property name="minIdle" value="1" />
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+
+        <property name="validationQuery" value="SELECT 'x'" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="50" />
+    </bean>
+
+
+	<!-- c3p0 DataSource -->
+	<!--
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="${${config.artifactId}.jdbc.url}"></property>
+        <property name="user" value="${${config.artifactId}.jdbc.username}"></property>
+        <property name="password" value="${${config.artifactId}.jdbc.password}"></property>
+        <property name="maxPoolSize" value="20"></property>
+        <property name="minPoolSize" value="1"></property>
+        <property name="initialPoolSize" value="1"></property>
+        <property name="maxIdleTime" value="1800"></property>
+        <property name="acquireIncrement" value="1"></property>
+        <property name="maxStatements" value="1000"></property>
+        <property name="acquireRetryAttempts" value="10"></property>
+        <property name="idleConnectionTestPeriod" value="60"></property>
+        <property name="breakAfterAcquireFailure" value="true"></property>
+        <property name="testConnectionOnCheckout" value="false"></property>
+    </bean>
+	 -->
+
+</beans>

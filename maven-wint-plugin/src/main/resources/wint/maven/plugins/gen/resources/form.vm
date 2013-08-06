@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<forms>
+
+<!--  
+	<form name="token.support">
+		<field name="csrfToken" >
+			<validator type="csrf" message="请不要重复提交"></validator>
+		</field>
+	</form>
+
+	<resource file="forms/one.xml" />
+	<resource file="forms/two.xml" />
+-->
+
+</forms>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="gbk"?>    
+<!DOCTYPE configuration>
+
+<configuration>
+	<jmxConfigurator />
+	
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">  
+             <pattern>%d [%X{requestURIWithQueryString}] %-5p %c{2} - %m%n</pattern>  
+        </layout>
+    </appender>
+    
+    <appender name="PROJECT" class="wint.lang.logback.WintRollingFileAppender">
+		<File>d:/logs/${config.artifactId}.log</File>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${config.artifactId}.log.%i.bak</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>12</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</Pattern>
+		</layout> 
+    </appender>
+    
+    <appender name="PROJECT-DEBUG" class="wint.lang.logback.WintRollingFileAppender">
+        <File>d:/logs/${config.artifactId}-debug.log</File>
+        <append>false</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${config.artifactId}-debug.log.%i.bak</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>12</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</Pattern>
+		</layout>
+    </appender>
+    
+    <appender name="BIZ" class="wint.lang.logback.WintRollingFileAppender">
+		<File>d:/logs/${config.artifactId}-biz.log</File>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${config.artifactId}-biz.log.%i.bak</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>12</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</Pattern>
+		</layout> 
+    </appender>
+    
+    <appender name="FILTER" class="wint.lang.logback.WintRollingFileAppender">
+        <File>d:/logs/${config.artifactId}-filter.log</File>
+        <append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${config.artifactId}-filter.log.%i.bak</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>12</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</Pattern>
+		</layout>
+    </appender>
+    
+    <appender name="APACHE" class="wint.lang.logback.WintFileAppender">
+        <File>d:/logs/${config.artifactId}-apache.log</File>
+        <append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${config.artifactId}-apache.log.%i.bak</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>12</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</Pattern>
+		</layout>
+    </appender>
+    
+    <appender name="VELOCITY" class="wint.lang.logback.WintRollingFileAppender">
+        <File>d:/logs/${config.artifactId}-velocity.log</File>
+        <append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${config.artifactId}-velocity.log.%i.bak</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>12</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</Pattern>
+		</layout>
+    </appender>
+    
+    <logger name="${config.wintPackage}">
+        <level value="info"/>
+        <appender-ref ref="BIZ"/>
+    </logger>
+    <logger name="wint.lang.misc.Profiler">
+        <level value="info"/>
+        <appender-ref ref="FILTER"/>
+    </logger> 
+    <logger name="wint.mvc.template.engine">
+        <level value="info"/>
+        <appender-ref ref="TEMPLATE"/>
+    </logger>
+    <logger name="org.apache">
+        <level value="info"/>
+        <appender-ref ref="APACHE"/>
+    </logger>
+    <logger name="org.apache.commons.beanutils">
+        <level value="error"/>
+    </logger>
+    <logger name="org.apache.commons.digester">
+        <level value="error"/>
+    </logger>
+    
+    <root>
+        <level value="info"/>
+        <appender-ref ref="PROJECT"/>
+        <appender-ref ref="PROJECT-DEBUG"/>
+    </root>
+</configuration>

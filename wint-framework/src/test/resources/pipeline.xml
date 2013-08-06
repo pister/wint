@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<object>
+
+	<object class="wint.mvc.pipeline.DefaultPipelineService">
+		<object name="pipelines">
+			<object name="default" class="wint.mvc.pipeline.Pipeline">
+				<list name="valves">
+					<object class="wint.mvc.pipeline.samplevalves.HelloValve"></object>
+					<object class="wint.mvc.pipeline.samplevalves.HelloValve"></object>
+				</list>
+			</object>
+		</object>
+	</object>
+	
+</object>

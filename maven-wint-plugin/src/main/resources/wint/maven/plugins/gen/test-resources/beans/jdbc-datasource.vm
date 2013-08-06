@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE beans PUBLIC
+    "-//SPRING//DTD BEAN//EN"
+     "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="${${config.artifactId}.jdbc.url}" />
+		<property name="username" value="${${config.artifactId}.jdbc.username}" />
+		<property name="password" value="${${config.artifactId}.jdbc.password}" />
+	</bean>
+	
+</beans>
