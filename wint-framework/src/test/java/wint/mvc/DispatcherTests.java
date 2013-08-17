@@ -91,5 +91,12 @@ public class DispatcherTests extends TestCase {
 		HttpServletResponse response = new HttpServletResponseMock();
 		dispatcherServlet.service(request, response);
 	}
+
+    public void testHttl() throws ServletException, IOException {
+        MagicMap parameters = MagicMap.newMagicMap();
+        HttpServletRequest request = new HttpServletRequestMock("hello/hello2", parameters, servletConfigMock.getServletContext());
+        HttpServletResponse response = new HttpServletResponseMock();
+        dispatcherServlet.service(request, response);
+    }
 	
 }
