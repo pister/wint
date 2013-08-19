@@ -5,6 +5,7 @@
 <beans default-autowire="byName">
 
 	<!-- druid DataSource -->
+    <!--
     <bean id="dataSource1" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="url" value="${${config.artifactId}.jdbc.url}" />
         <property name="username" value="${${config.artifactId}.jdbc.username}" />
@@ -25,11 +26,9 @@
         <property name="poolPreparedStatements" value="true" />
         <property name="maxPoolPreparedStatementPerConnectionSize" value="50" />
     </bean>
-
-
+      -->
 	<!-- c3p0 DataSource -->
-	<!--
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+    <bean id="dataSource1" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
         <property name="jdbcUrl" value="${${config.artifactId}.jdbc.url}"></property>
         <property name="user" value="${${config.artifactId}.jdbc.username}"></property>
@@ -45,6 +44,5 @@
         <property name="breakAfterAcquireFailure" value="true"></property>
         <property name="testConnectionOnCheckout" value="false"></property>
     </bean>
-	 -->
 
 </beans>
