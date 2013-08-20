@@ -3,7 +3,7 @@
 	<head></head>
 	<body>
 		Web container is running, But Wint Framework has not run, <br/>
-		Did you forget run <em style="background: #cdcdcd"> mvn war:inplace <em> ?
+		Did you forget run <em style="background: #cdcdcd"> mvn wint:war-inplace <em> ?
 	</body>
 </html>
 

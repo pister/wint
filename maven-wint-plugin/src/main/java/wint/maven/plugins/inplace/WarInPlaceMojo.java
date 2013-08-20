@@ -14,7 +14,7 @@ import java.util.List;
  * Date: 13-8-20
  * Time: 下午2:20
  *
- * @goal inplace
+ * @goal war-inplace
  * @requiresDependencyResolution runtime
  */
 public class WarInPlaceMojo extends AbstractWarMojo {

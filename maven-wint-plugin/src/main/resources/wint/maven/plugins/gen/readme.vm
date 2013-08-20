@@ -1,5 +1,5 @@
 How to run?
-mvn war:inplace jetty:run
+mvn wint:war-inplace wint:jetty-run
 
 How to import to eclipse?
 mvn eclipse:clean eclipse:eclipse
