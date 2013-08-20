@@ -1,4 +1,6 @@
 How to run?
+mvn wint:run
+or
 mvn wint:war-inplace wint:jetty-run
 
 How to import to eclipse?

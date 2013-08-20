@@ -36,11 +36,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * User: longyi
- * Date: 13-8-20
- * Time: 下午2:18
- */
 public abstract class AbstractWarMojo extends AbstractMojo {
     public static final String DEFAULT_FILE_NAME_MAPPING = "@{artifactId}@-@{version}@.@{extension}@";
 

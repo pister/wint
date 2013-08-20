@@ -23,11 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-/**
- * User: longyi
- * Date: 13-8-20
- * Time: 下午2:07
- */
 public abstract class AbstractJettyRunMojo extends AbstractMojo {
 
     /**
@@ -85,7 +80,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
      * @required
      * @readonly
      */
-    protected MavenProject project;
+    protected MavenProject executedProject;
 
 
 
@@ -240,9 +235,9 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     public abstract void finishConfigurationBeforeStart() throws Exception;
 
 
-    public MavenProject getProject()
+    public MavenProject getExecutedProject()
     {
-        return this.project;
+        return this.executedProject;
     }
 
     public File getTmpDirectory()
@@ -380,7 +375,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        getLog().info("Configuring Jetty for project: " + getProject().getName());
+        getLog().info("Configuring Jetty for project: " + getExecutedProject().getName());
         if (skip)
         {
             getLog().info("Skipping Jetty start: jetty.skip==true");

@@ -10,33 +10,14 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * User: longyi
- * Date: 13-8-20
- * Time: 下午2:20
- *
  * @goal war-inplace
  * @requiresDependencyResolution runtime
  */
 public class WarInPlaceMojo extends AbstractWarMojo {
+
     public void execute()
             throws MojoExecutionException, MojoFailureException
     {
-        /*
-
-        <configuration>
-					<webResources>
-						<resource>
-							<directory>${basedir}/src/main/resources/web</directory>
-							<targetPath>WEB-INF</targetPath>
-							<filtering>true</filtering>
-							<includes>
-								<include>**  /*.xml</include>
-        </includes>
-        </resource>
-        </webResources>
-        </configuration>
-         */
-
         Resource[] resources = new Resource[1];
 
         resources[0] = new Resource();
@@ -66,7 +47,6 @@ public class WarInPlaceMojo extends AbstractWarMojo {
         clearLibFiles();
         getLog().info("clear lib files finish.");
 
-        getLog().info("context:     " +this.getPluginContext());
     }
 
     protected void clearAll() {

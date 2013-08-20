@@ -3,11 +3,6 @@ package wint.maven.plugins.jetty;
 
 import java.io.IOException;
 
-/**
- * User: longyi
- * Date: 13-8-20
- * Time: 下午2:10
- */
 public class ConsoleScanner extends Thread {
     private final AbstractJettyRunMojo mojo;
 
