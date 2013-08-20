@@ -11,6 +11,12 @@ mvn wint:gen
 
 enter the project info for generate!
 
+and then type:
+
+mvn wint:run  to start the web server.
+
+open the browse and type http://127.0.0.1:8080
+
 join it~
 
 more detail see: https://github.com/pister/wint/wiki/Quick-Start-Wint 
