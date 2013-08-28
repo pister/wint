@@ -1,0 +1,2 @@
+hi i18n: $i18n.global.name1
+hello: $i18n.get('wint.demo.app.biz.results.HelloResultCodes').FIRST_NAME

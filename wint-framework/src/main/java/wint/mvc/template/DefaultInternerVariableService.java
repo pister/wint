@@ -8,6 +8,8 @@ import wint.lang.magic.MagicList;
 import wint.lang.utils.MapUtil;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.form.runtime.InputFormFactory;
+import wint.mvc.i18n.ResourceBundleService;
+import wint.mvc.i18n.ResourceBundleServiceWrapper;
 import wint.mvc.parameters.TemplateArguments;
 import wint.mvc.parameters.TemplateParameters;
 import wint.mvc.template.widget.WidgetContainer;
@@ -23,12 +25,16 @@ public class DefaultInternerVariableService extends AbstractService implements I
 	private UrlBrokerService urlBrokerService;
 	
 	private PullToolsService pullService;
+
+    private ResourceBundleService resourceBundleService;
 	
 	private String containerName;
 	
 	private String paramsName;
 	
 	private String argsName;
+
+    private String i18n;
 	
 	@Override
 	public void init() {
@@ -36,10 +42,14 @@ public class DefaultInternerVariableService extends AbstractService implements I
 		widgetContainerService = serviceContext.getService(WidgetContainerService.class);
 		urlBrokerService = serviceContext.getService(UrlBrokerService.class);
 		pullService = serviceContext.getService(PullToolsService.class);
-		containerName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WIDGET_CONTAINER_NAME, Constants.Defaults.WIDGET_CONTAINER_NAME);
+		resourceBundleService = serviceContext.getService(ResourceBundleService.class);
+
+        containerName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WIDGET_CONTAINER_NAME, Constants.Defaults.WIDGET_CONTAINER_NAME);
 		paramsName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.PARAMS_NAME, Constants.Defaults.PARAMS_NAME);
 		argsName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.ARGS_NAME, Constants.Defaults.ARGS_NAME);
-	}
+        i18n = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_I18N_VAR_NAME, Constants.Defaults.WINT_I18N_VAR_NAME);
+
+    }
 
 	public Map<String, Object> createInternerVariables(InnerFlowData flowData, Context innerContext, MagicList<Object> indexedParamters) {
 		Map<String, Object> ret = MapUtil.newHashMap();
@@ -58,7 +68,11 @@ public class DefaultInternerVariableService extends AbstractService implements I
 		
 		Map<String, UrlModule> urlModules = urlBrokerService.getUrlModules();
 		ret.putAll(urlModules);
-		
+
+        ResourceBundleServiceWrapper resourceBundleServiceWrapper = new ResourceBundleServiceWrapper(flowData, resourceBundleService);
+
+        ret.put(i18n, resourceBundleServiceWrapper);
+
 		Map<String, Object> pullTools = pullService.getPullTools();
 		
 		ret.putAll(pullTools);

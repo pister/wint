@@ -241,7 +241,23 @@ public class HttpServletRequestMock implements HttpServletRequest {
 	}
 
 	public Locale getLocale() {
-		return null;
+        // TODO， 正确的方法是解析类似的 文本 zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4
+		String lang = this.headers.getString("Accept-Language");
+        if (lang == null) {
+            return null;
+        }
+        if (lang.contains("zh")) {
+            return Locale.SIMPLIFIED_CHINESE;
+        }
+        if (lang.contains("en")) {
+            if (lang.contains("US")) {
+                return Locale.US;
+            }   else {
+                return Locale.ENGLISH;
+            }
+        }
+        // othe not support
+        return null;
 	}
 
 	public Enumeration<?> getLocales() {

@@ -98,5 +98,15 @@ public class DispatcherTests extends TestCase {
         HttpServletResponse response = new HttpServletResponseMock();
         dispatcherServlet.service(request, response);
     }
-	
+
+
+    public void testI18n() throws ServletException, IOException {
+        MagicMap parameters = MagicMap.newMagicMap();
+        HttpServletRequestMock request = new HttpServletRequestMock("hello/i18n", parameters, servletConfigMock.getServletContext());
+       // request.getHeaders().put("Accept-Language", "en-US");
+        HttpServletResponse response = new HttpServletResponseMock();
+        dispatcherServlet.service(request, response);
+    }
+
+
 }

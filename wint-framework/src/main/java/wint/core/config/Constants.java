@@ -69,6 +69,8 @@ public interface Constants {
 		String SQLMAP_AUTO_LOAD = "wint.app.sqlmap.dev.autoload";
 		
 		String WINT_SESSION_USE = "wint.session.use";
+
+        String WINT_I18N_VAR_NAME = "wint.i18n.var.name";
 		
 	}
 	
@@ -151,6 +153,8 @@ public interface Constants {
 		boolean SQLMAP_AUTO_LOAD = true;
 		
 		boolean WINT_SESSION_USE = false;
+
+        String WINT_I18N_VAR_NAME = "i18n";
 		
 	}
 	
