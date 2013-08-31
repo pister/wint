@@ -11,7 +11,7 @@
     </bean>
 
     <bean id="readWriteSqlMapClientSource" class="wint.dal.ibatis.ReadWriteSqlMapClientSource" >
-        <property name="masterDataSource" ref="dataSource1" />
+        <property name="masterDataSource" ref="dataSource" />
 	    <!--
         <property name="slaveDataSources">
             <list>
