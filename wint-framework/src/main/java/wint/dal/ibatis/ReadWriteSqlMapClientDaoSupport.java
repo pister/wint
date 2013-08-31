@@ -22,7 +22,7 @@ public class ReadWriteSqlMapClientDaoSupport implements InitializingBean {
         return  sqlMapExecutor;
     }
 
-    public SqlExecutor getgetSqlMapClientTemplate() {
+    public SqlExecutor getSqlMapClientTemplate() {
         return getSqlExecutor();
     }
 
