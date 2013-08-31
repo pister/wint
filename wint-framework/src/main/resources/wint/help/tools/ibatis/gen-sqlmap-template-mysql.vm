@@ -19,17 +19,14 @@
 			${insertSqlNoId}
 		]]>
 		<selectKey resultClass="${idType}" keyProperty="id">
-			SELECT	LAST_INSERT_ID();
+			SELECT LAST_INSERT_ID();
 	   	</selectKey>
 	</insert>
 	
 	<select id="queryById" resultMap="${mappingName}" parameterClass="${idType}">
 		select
 			<include refid="${aliasDomainName}-full-columns" />
-		from
-			${tableName} t
-		where
-			t.${idNameColumn} = #value# #if($logicDeleted) and t.deleted = 0 #end
+		from ${tableName} t where t.${idNameColumn} = #value# #if($logicDeleted) and t.deleted = 0 #end
 	</select>
 	
 	<update id="delete" parameterClass="${idType}">
