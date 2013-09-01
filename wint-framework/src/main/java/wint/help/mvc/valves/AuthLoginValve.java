@@ -80,7 +80,7 @@ public class AuthLoginValve extends AbstractValve {
 		}
 	}
 	
-	private boolean isUserLogin(FlowData flowData) {
+	protected boolean isUserLogin(FlowData flowData) {
 		Object userIdValue = flowData.getSession().getAttribute(userIdKey);
 		if (userIdValue == null) {
 			return false;
