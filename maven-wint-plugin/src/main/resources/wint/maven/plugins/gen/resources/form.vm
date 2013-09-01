@@ -5,7 +5,7 @@
 <!--  
 	<form name="token.support">
 		<field name="csrfToken" >
-			<validator type="csrf" message="请不要重复提交"></validator>
+			<validator type="csrf" message="会话已失效，请重新刷新后再试。"></validator>
 		</field>
 	</form>
 
