@@ -167,6 +167,8 @@ public interface Constants {
 		String VAR_NAME_FIELD = "field";
 		
 		String TEMPLATE_FORM_FACTORY_NAME = "formFactory";
+
+        String LAST_FORM_NAME = "last_form_name";
 		
 	}
 	

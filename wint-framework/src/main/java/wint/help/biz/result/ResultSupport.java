@@ -1,5 +1,15 @@
 package wint.help.biz.result;
 
+import wint.core.config.Constants;
+import wint.lang.WintException;
+import wint.mvc.flow.FlowData;
+import wint.mvc.form.Field;
+import wint.mvc.form.Form;
+import wint.mvc.form.runtime.FormFactory;
+import wint.mvc.form.runtime.InputFormFactory;
+import wint.mvc.form.runtime.RunTimeForm;
+import wint.mvc.holder.WintContext;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,10 +22,10 @@ public class ResultSupport implements Result {
 	
 	private ResultCode resultCode;
 	
-	private ResultType resultType = ResultType.COMMON_TARGET;
-	
 	private Map<String, Object> models = new HashMap<String, Object>();
-	
+
+    private boolean hasFieldResultCodes = false;
+
 	public ResultSupport() {
 		this(false);
 	}
@@ -41,21 +51,28 @@ public class ResultSupport implements Result {
 		this.resultCode = resultCode;
 	}
 
-	public void setResultCode(ResultCode resultCode, ResultType resultType) {
-		this.resultCode = resultCode;
-		this.resultType = resultType;
-	}
+    public void setFieldResultCode(String fieldName, ResultCode resultCode) {
+        FlowData flowData = WintContext.getFlowData();
+        String lastFormName = (String)flowData.getAttribute(Constants.Form.LAST_FORM_NAME);
+        if (lastFormName == null) {
+           throw new WintException("you must call FormService.getForm() method before Result.setFieldResultCode on this thread.");
+        }
+        FormFactory formFactory = (FormFactory)flowData.getInnerContext().get(Constants.Form.TEMPLATE_FORM_FACTORY_NAME);
 
-	public Map<String, Object> getModels() {
+        RunTimeForm runTimeForm = formFactory.getForm(lastFormName);
+        Field field = runTimeForm.get(fieldName);
+        if (field == null) {
+            throw new WintException("field not exist for name: " + fieldName);
+        }
+        field.setMessage(resultCode.getMessage());
+        hasFieldResultCodes = true;
+    }
+
+    public Map<String, Object> getModels() {
 		return models;
 	}
 
-	public ResultType getResultType() {
-		return resultType;
-	}
-
-	public void setResultType(ResultType resultType) {
-		this.resultType = resultType;
-	}
-
+    public boolean isHasFieldResultCodes() {
+        return hasFieldResultCodes;
+    }
 }

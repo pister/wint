@@ -41,6 +41,9 @@ public class DefaultForm implements Form {
 		this.flowData = flowData;
 		this.fields = MapUtil.newHashMap();
 		initFields();
+
+        // 记录最后一次表单名称
+        flowData.setAttribute(Constants.Form.LAST_FORM_NAME, getName());
 	}
 
 	private void initFields() {
