@@ -34,6 +34,8 @@ public class DefaultInternerVariableService extends AbstractService implements I
 	
 	private String argsName;
 
+    private String targetName;
+
     private String i18n;
 	
 	@Override
@@ -47,6 +49,7 @@ public class DefaultInternerVariableService extends AbstractService implements I
         containerName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WIDGET_CONTAINER_NAME, Constants.Defaults.WIDGET_CONTAINER_NAME);
 		paramsName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.PARAMS_NAME, Constants.Defaults.PARAMS_NAME);
 		argsName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.ARGS_NAME, Constants.Defaults.ARGS_NAME);
+		targetName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.TARGET_NAME, Constants.Defaults.TARGET_NAME);
         i18n = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_I18N_VAR_NAME, Constants.Defaults.WINT_I18N_VAR_NAME);
 
     }
@@ -72,6 +75,7 @@ public class DefaultInternerVariableService extends AbstractService implements I
         ResourceBundleServiceWrapper resourceBundleServiceWrapper = new ResourceBundleServiceWrapper(flowData, resourceBundleService);
 
         ret.put(i18n, resourceBundleServiceWrapper);
+        ret.put(targetName, flowData.getTarget());
 
 		Map<String, Object> pullTools = pullService.getPullTools();
 		

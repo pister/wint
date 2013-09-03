@@ -63,6 +63,8 @@ public interface Constants {
 		String PARAMS_NAME = "wint.app.params.name";
 		
 		String ARGS_NAME = "wint.app.args.name";
+
+        String TARGET_NAME = "wint.app.target.name";
 		
 		String UPLOAD_FILE_MAX_SIZE = "wint.app.upload.max.size";
 		
@@ -145,6 +147,8 @@ public interface Constants {
 		String PARAMS_NAME = "params";
 		
 		String ARGS_NAME = "args";
+
+        String TARGET_NAME = "target";
 		
 		String CSRF_TOKEN_NAME = "x_token";
 		
