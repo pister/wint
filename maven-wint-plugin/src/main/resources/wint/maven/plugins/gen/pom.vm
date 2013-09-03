@@ -93,7 +93,7 @@
 			<version>${config.logbackVersion}</version>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<finalName>${config.artifactId}-web</finalName>
 		<plugins>
@@ -149,7 +149,14 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>7.3.0.v20110203</version>
 			</plugin>
-			<plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-wint-plugin</artifactId>
+                <version>${config.wintPluginVersion}</version>
+            </plugin>
+
+            <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
@@ -229,7 +236,7 @@
 				</resources>
 			</build>
 		</profile>
-		
+
 		<profile>
 			<id>product</id>
 			<build>

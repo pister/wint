@@ -56,6 +56,8 @@ public class ProjectConfig {
 
     private String fastjsonVersion ="1.1.36";
 
+    private String wintPluginVersion = "1.1";
+
     public String getFastjsonVersion() {
         return fastjsonVersion;
     }
@@ -271,5 +273,12 @@ public class ProjectConfig {
 	public void setDbUrl(String dbUrl) {
 		this.dbUrl = dbUrl;
 	}
-	
+
+    public String getWintPluginVersion() {
+        return wintPluginVersion;
+    }
+
+    public void setWintPluginVersion(String wintPluginVersion) {
+        this.wintPluginVersion = wintPluginVersion;
+    }
 }
