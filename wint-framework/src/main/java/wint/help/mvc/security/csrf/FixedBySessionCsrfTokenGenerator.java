@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import wint.help.codec.MD5;
 import wint.mvc.flow.FlowData;
+import wint.mvc.flow.Session;
 
 /**
  * 在用户会话期间内是不变的，好处是用户可以再任意页面同时使用
@@ -37,7 +38,7 @@ public class FixedBySessionCsrfTokenGenerator extends AbstractCsrfTokenGenerator
 
 	private String getTokensFromSession(FlowData flowData, String groupName, String tokenName) {
 		String targetTokenName = getTokenName(groupName, tokenName);
-		HttpSession session = flowData.getSession();
+		Session session = flowData.getSession();
 		String token = (String)session.getAttribute(targetTokenName);
 		if (token == null) {
 			token = genTokenInner();

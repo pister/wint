@@ -5,12 +5,13 @@ import java.util.Date;
 import javax.servlet.http.HttpSession;
 
 import wint.mvc.flow.FlowData;
+import wint.mvc.flow.Session;
 import wint.mvc.template.Context;
 
 public class SessionFoo {
 
 	public void first(FlowData flowData, Context context) {
-		HttpSession session = flowData.getSession();
+		Session session = flowData.getSession();
 		System.out.println(session);
 		Integer count = (Integer)session.getAttribute("coun|t");
 		if (count == null) {

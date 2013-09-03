@@ -301,8 +301,8 @@ public class ServletFlowData implements InnerFlowData {
 		return serviceContext;
 	}
 	
-	public HttpSession getSession() {
-		return httpServletRequest.getSession();
+	public Session getSession() {
+		return new ServletHttpSession(httpServletRequest.getSession());
 	}
 	
 	public HttpServletRequest getRequest() {

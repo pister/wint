@@ -9,6 +9,7 @@ import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.SecureRandomStringUtil;
 import wint.lang.utils.StringUtil;
 import wint.mvc.flow.FlowData;
+import wint.mvc.flow.Session;
 
 /**
  * 随机生成的token，好处就是可以防止重复提交
@@ -30,7 +31,7 @@ public class RandomCsrfTokenGenerator extends AbstractCsrfTokenGenerator impleme
 	
 	public String nextToken(FlowData flowData, String groupName, String tokenName) {
 		List<String> tokens = getTokensFromSession(flowData, groupName, tokenName);
-		HttpSession session = flowData.getSession();
+		Session session = flowData.getSession();
 		tokenName = TokenNameUtil.makeTokenName(groupName, tokenName);
 		if (tokens.size() == 1) {
 			tokens = createTokens();
@@ -49,7 +50,7 @@ public class RandomCsrfTokenGenerator extends AbstractCsrfTokenGenerator impleme
 	
 	private List<String> getTokensFromSession(FlowData flowData, String groupName, String tokenName) {
 		String targetTokenName = getTokenName(groupName, tokenName);
-		HttpSession session = flowData.getSession();
+		Session session = flowData.getSession();
 		String tokensString = (String)session.getAttribute(targetTokenName);
 		List<String> tokens = toTokens(tokensString);
 		if (CollectionUtil.isEmpty(tokens)) {

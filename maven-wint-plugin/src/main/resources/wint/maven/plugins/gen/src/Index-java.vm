@@ -2,8 +2,7 @@ package ${config.wintPackage}.web.action;
 
 import java.util.Date;
 
-import javax.servlet.http.HttpSession;
-
+import wint.mvc.flow.Session;
 import wint.mvc.flow.FlowData;
 import wint.mvc.template.Context;
 
@@ -12,7 +11,7 @@ public class Index {
 	public void execute(FlowData flowData, Context context) {
 		context.put("theDate", new Date());
 		
-		HttpSession session = flowData.getSession();
+		Session session = flowData.getSession();
 		Integer count = (Integer)session.getAttribute("count");
 		if (count != null) {
 			count = count + 1;

@@ -84,7 +84,7 @@ public class WidgetInnerFlowData implements InnerFlowData {
 		return innerFlowData.getServiceContext();
 	}
 
-	public HttpSession getSession() {
+	public Session getSession() {
 		return innerFlowData.getSession();
 	}
 
