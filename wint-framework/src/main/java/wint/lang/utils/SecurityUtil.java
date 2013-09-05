@@ -41,6 +41,10 @@ public class SecurityUtil {
 	public static String csrfToken() {
 		return getCsrfToken();
 	}
+
+    public static String xToken() {
+        return getCsrfToken();
+    }
 	
 	public static String getCsrfToken() {
 		return CsrfTokenUtil.token();
