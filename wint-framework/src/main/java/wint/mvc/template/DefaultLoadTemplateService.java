@@ -42,7 +42,7 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
 	private String templateLayoutName;
 	
 	private String templatePageName;
-	
+
 	private File templateBaseFile;
 	
 	private Environment environment;
@@ -274,7 +274,7 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
 		}
 		return FileUtil.getFileExtension(acceptableFiles[0].getName());
 	}
-	
+
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}

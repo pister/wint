@@ -60,11 +60,14 @@ public class AutoReloadUrlBrokerService {
 		private Set<LastModifiedFile> files = CollectionUtil.newHashSet();
 		
 		private String tokenName;
-		
-		public AutoReloadUrl() {
+
+        private String pathAsTargetName;
+
+        public AutoReloadUrl() {
 			String urlConfigFile = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.URL_CONFIG_FILE, Constants.Defaults.URL_CONFIG_FILE);
 			tokenName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.CSRF_TOKEN_NAME, Constants.Defaults.CSRF_TOKEN_NAME);
-			files.add(new LastModifiedFile(serviceContext.getResourceLoader().getResource(urlConfigFile)));
+            pathAsTargetName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.URL_PATH_AS_TARGET_NAME, Constants.Defaults.URL_PATH_AS_TARGET_NAME);
+            files.add(new LastModifiedFile(serviceContext.getResourceLoader().getResource(urlConfigFile)));
 		}
 		
 		@Override
@@ -77,7 +80,7 @@ public class AutoReloadUrlBrokerService {
 			Map<String, AbstractUrlConfig> urlConfigs = urlConfigLoader.loadUrlModules();
 			Map<String, UrlModule> newUrlModules = MapUtil.newHashMap();
 			for (Map.Entry<String, AbstractUrlConfig> entry : urlConfigs.entrySet()) {
-				newUrlModules.put(entry.getKey(), new DefaultUrlModule(urlBrokerService, entry.getValue().getPath(), tokenName));
+				newUrlModules.put(entry.getKey(), new DefaultUrlModule(urlBrokerService, entry.getValue().getPath(), tokenName, pathAsTargetName));
 			}
 			
 			urlModules = newUrlModules;

@@ -11,7 +11,7 @@ public class ModuleInfo {
 	private MagicMethod targetMethod;
 
 	private String defaultTarget;
-	
+
 	public ModuleInfo(MagicClass targetClass, MagicMethod targetMethod) {
 		super();
 		this.targetClass = targetClass;
@@ -66,6 +66,4 @@ public class ModuleInfo {
 	public String getDefaultTarget() {
 		return defaultTarget;
 	}
-
-	
 }

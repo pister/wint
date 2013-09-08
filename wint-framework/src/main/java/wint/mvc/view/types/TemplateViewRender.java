@@ -11,6 +11,7 @@ import wint.lang.utils.StringUtil;
 import wint.lang.utils.TargetUtil;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.flow.StatusCodes;
+import wint.mvc.module.ModuleInfo;
 import wint.mvc.template.Context;
 import wint.mvc.template.DefaultContext;
 import wint.mvc.template.LoadTemplateService;
@@ -26,7 +27,7 @@ public class TemplateViewRender extends AbstractViewRender {
 	private String layoutName;
 	
 	private String pageContentName;
-	
+
 	public String getViewType() {
 		return ViewTypes.TEMPLATE_VIEW_TYPE;
 	}

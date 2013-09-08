@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import wint.core.config.Configuration;
 import wint.core.config.Constants;
@@ -30,19 +32,12 @@ import wint.mvc.module.annotations.Action;
 public class DefaultLoadModuleService extends AbstractService implements LoadModuleService, ConfigurationAwire {
 
 	private Configuration configuration;
-	
 	private String moduleMethod;
-	
 	private MagicPackage basePackage;
-	
 	private Environment environment;
-	
 	private BeanFactoryService beanFactoryService;
-	
-	private Map<String, ExecutionModule> cachedModules = MapUtil.newHashMap();
-	
-	private Object cacheLock = new Object();
-	
+	private ConcurrentMap<String, ExecutionModule> cachedModules = MapUtil.newConcurrentHashMap();
+
 	@Override
 	public void init() {
 		super.init();
@@ -56,7 +51,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 	protected String makeModuleCacheKey(String target, String moduleType) {
 		return target + "." + moduleType;
 	}
-	
+
 	public ExecutionModule loadModule(final String target, final String moduleType) {
 		if (environment == Environment.DEV) {
 			ExecutionModule module = loadModuleImpl(target, moduleType);
@@ -71,22 +66,17 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 			if (module != null) {
 				return module;
 			}
-			synchronized (cacheLock) {
-				module = cachedModules.get(key);
-				if (module != null) {
-					return module;
-				}
-				module = loadModuleImpl(target, moduleType);
-				if (module == null) {
-					return new NopModule(target, moduleType);
-				} else {
-					cachedModules.put(key, module);
-					return module;
-				}
-			}
-		}
+
+            module = loadModuleImpl(target, moduleType);
+            if (module == null) {
+                return new NopModule(target, moduleType);
+            } else {
+                cachedModules.put(key, module);
+                return module;
+            }
+        }
 	}
-	
+
 	private ExecutionModule loadModuleImpl(String target, String moduleType) {
 		List<ModuleInfo> moduleInfos = getModuleInfos(normalizeTarget(target), moduleType);
 		for (ModuleInfo moduleInfo : moduleInfos) {
@@ -95,22 +85,22 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 		}
 		return null;
 	}
-	
+
 	protected String normalizeTarget(String target) {
 		return TargetUtil.normalizeTarget(target);
 	}
-	
+
 	protected MagicObject createTargetObject(MagicClass magicClass) {
 		MagicObject magicObject = magicClass.newInstance();
 		BeanFactory beanFactory = beanFactoryService.getBeanFactory();
 		beanFactory.injectProperties(magicObject.getObject());
 		return magicObject;
 	}
-	
+
 	protected String getMethodName(String name) {
 		return name;
 	}
-	
+
  	protected List<ModuleInfo> getModuleInfos(String target, String moduleType) {
 		List<ModuleInfo> moduleInfos = CollectionUtil.newArrayList(2);
 
@@ -126,7 +116,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 				moduleInfos.add(new ModuleInfo(magicClass, magicMethod));
 			}
 		}
-		
+
 		// 2
 		MagicPackage parentPackage = targetPackage.getParent();
 		if (parentPackage != null) {
@@ -141,10 +131,10 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 				}
 			}
 		}
-		
+
 		return moduleInfos;
 	}
-	
+
  	protected boolean isModuleMethod(MagicMethod magicMethod) {
  		Method targetMethod = magicMethod.getTargetMethod();
  		Action actionAnnotation = targetMethod.getAnnotation(Action.class);
@@ -165,10 +155,10 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
  		}
  		return false;
  	}
- 	
+
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
-	
+
 
 }

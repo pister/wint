@@ -73,7 +73,9 @@ public interface Constants {
 		String WINT_SESSION_USE = "wint.session.use";
 
         String WINT_I18N_VAR_NAME = "wint.i18n.var.name";
-		
+
+        String URL_PATH_AS_TARGET_NAME = "wint.url.path.as.default.name";
+
 	}
 	
 	interface FlowDataAttributeKeys {
@@ -159,7 +161,9 @@ public interface Constants {
 		boolean WINT_SESSION_USE = false;
 
         String WINT_I18N_VAR_NAME = "i18n";
-		
+
+        String URL_PATH_AS_TARGET_NAME = ".";
+
 	}
 	
 	interface Form {

@@ -29,6 +29,8 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
 	private Map<String, UrlModule> urlModules;
 	
 	private String tokenName;
+
+    private String pathAsTargetName;
 	
 	@Override
 	public void init() {
@@ -37,6 +39,7 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
 		urlSuffix = properties.getString(Constants.PropertyKeys.URL_SUFFIX, Constants.Defaults.URL_SUFFIX);
 		argumentSeparater = properties.getString(Constants.PropertyKeys.URL_ARGUMENT_SEPARATER, Constants.Defaults.URL_ARGUMENT_SEPARATER);
 		tokenName = properties.getString(Constants.PropertyKeys.CSRF_TOKEN_NAME, Constants.Defaults.CSRF_TOKEN_NAME);
+        pathAsTargetName = properties.getString(Constants.PropertyKeys.URL_PATH_AS_TARGET_NAME, Constants.Defaults.URL_PATH_AS_TARGET_NAME);
 		final String charset = properties.getString(Constants.PropertyKeys.CHARSET_ENCODING, Constants.Defaults.CHARSET_ENCODING);
 		transformer = new Transformer<Object, String>() {
 			public String transform(Object object) {
@@ -58,7 +61,7 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
 		Map<String, AbstractUrlConfig> urlConfigs = urlConfigLoader.loadUrlModules();
 		urlModules = MapUtil.newHashMap();
 		for (Map.Entry<String, AbstractUrlConfig> entry : urlConfigs.entrySet()) {
-			urlModules.put(entry.getKey(), new DefaultUrlModule(this, entry.getValue().getPath(), tokenName));
+			urlModules.put(entry.getKey(), new DefaultUrlModule(this, entry.getValue().getPath(), tokenName, pathAsTargetName));
 		}
 		
 	}
