@@ -12,10 +12,13 @@ public class ModuleInfo {
 
 	private String defaultTarget;
 
-	public ModuleInfo(MagicClass targetClass, MagicMethod targetMethod) {
+    private boolean useDefaultMethod;
+
+	public ModuleInfo(MagicClass targetClass, MagicMethod targetMethod, boolean useDefaultMethod) {
 		super();
 		this.targetClass = targetClass;
 		this.targetMethod = targetMethod;
+        this.useDefaultMethod = useDefaultMethod;
 		initDefaultTarget();
 	}
 	
@@ -66,4 +69,12 @@ public class ModuleInfo {
 	public String getDefaultTarget() {
 		return defaultTarget;
 	}
+
+    public boolean isUseDefaultMethod() {
+        return useDefaultMethod;
+    }
+
+    public void setUseDefaultMethod(boolean useDefaultMethod) {
+        this.useDefaultMethod = useDefaultMethod;
+    }
 }

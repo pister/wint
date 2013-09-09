@@ -76,6 +76,8 @@ public interface Constants {
 
         String URL_PATH_AS_TARGET_NAME = "wint.url.path.as.default.name";
 
+        String FILE_FOR_DIR_TARGET = "wint.file.for.dir.target";
+
 	}
 	
 	interface FlowDataAttributeKeys {
@@ -164,7 +166,9 @@ public interface Constants {
 
         String URL_PATH_AS_TARGET_NAME = ".";
 
-	}
+        String FILE_FOR_DIR_TARGET = "default";
+
+    }
 	
 	interface Form {
 		

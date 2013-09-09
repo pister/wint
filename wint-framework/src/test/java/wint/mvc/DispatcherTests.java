@@ -108,5 +108,12 @@ public class DispatcherTests extends TestCase {
         dispatcherServlet.service(request, response);
     }
 
+    public void testFileAsDefault() throws ServletException, IOException {
+        MagicMap parameters = MagicMap.newMagicMap();
+        HttpServletRequestMock request = new HttpServletRequestMock("user", parameters, servletConfigMock.getServletContext());
+        HttpServletResponse response = new HttpServletResponseMock();
+        dispatcherServlet.service(request, response);
+    }
+
 
 }

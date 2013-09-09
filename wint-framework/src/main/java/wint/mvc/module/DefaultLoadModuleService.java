@@ -113,7 +113,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 			MagicClass magicClass = MagicClass.forName(className);
 			MagicMethod magicMethod = magicClass.getMethod(moduleMethod);
 			if (magicMethod != null && isModuleMethod(magicMethod)) {
-				moduleInfos.add(new ModuleInfo(magicClass, magicMethod));
+				moduleInfos.add(new ModuleInfo(magicClass, magicMethod, true));
 			}
 		}
 
@@ -127,7 +127,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 				MagicClass magicClass = MagicClass.forName(classClass);
 				MagicMethod magicMethod = magicClass.getMethod(targetMethodName);
 				if (magicMethod != null && isModuleMethod(magicMethod)) {
-					moduleInfos.add(new ModuleInfo(magicClass, magicMethod));
+					moduleInfos.add(new ModuleInfo(magicClass, magicMethod, false));
 				}
 			}
 		}
