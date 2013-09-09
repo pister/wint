@@ -29,7 +29,8 @@ public class DispatcherTests extends TestCase {
 		initParameters.put(Constants.PropertyKeys.APP_PACKAGE, "wint.demo.app");
 		initParameters.put(Constants.PropertyKeys.TEMPLATE_PATH, "test_template");
 		initParameters.put(Constants.PropertyKeys.WINT_SESSION_USE, "true");
-		servletConfigMock = new ServletConfigMock(initParameters, initParameters);	
+		initParameters.put(Constants.PropertyKeys.APP_ENV, "product");
+		servletConfigMock = new ServletConfigMock(initParameters, initParameters);
 		dispatcherServlet.init(servletConfigMock);
 	}
 	
@@ -109,10 +110,12 @@ public class DispatcherTests extends TestCase {
     }
 
     public void testFileAsDefault() throws ServletException, IOException {
+        for (int i =0 ;i < 3; ++i) {
         MagicMap parameters = MagicMap.newMagicMap();
         HttpServletRequestMock request = new HttpServletRequestMock("user", parameters, servletConfigMock.getServletContext());
         HttpServletResponse response = new HttpServletResponseMock();
         dispatcherServlet.service(request, response);
+        }
     }
 
 

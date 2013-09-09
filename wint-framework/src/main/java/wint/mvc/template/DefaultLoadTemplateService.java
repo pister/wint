@@ -66,7 +66,8 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
         environment = configuration.getEnvironment();
 
         ThreadPoolService threadPoolService = serviceContext.getService(ThreadPoolService.class);
-        executorService = threadPoolService.getThreadPool();
+        executorService =  threadPoolService.getThreadPool();
+
 
         if (log.isInfoEnabled()) {
             log.info("template path: " + templatePath);
@@ -111,7 +112,6 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
             return loadTemplateEntryImpl(templateName, type);
         } else {
             String key = makeCacheKey(templateName, type);
-            ;
             FutureTask<TemplateEntry> newFutureTask = new FutureTask<TemplateEntry>(new Callable<TemplateEntry>() {
                 public TemplateEntry call() throws Exception {
                     return loadTemplateEntryImpl(templateName, type);
@@ -234,9 +234,7 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
     }
 
     private NameAndExtension getTemplateNameAndExtension(String templateName, String type) {
-        File typedFile = new File(templateBaseFile, type);
-
-        File templateNameFile = new File(typedFile, templateName);
+        File templateNameFile = new File(new File(templateBaseFile, type), templateName);
         File templateDir = templateNameFile.getParentFile();
         if (!templateDir.exists()) {
             return null;

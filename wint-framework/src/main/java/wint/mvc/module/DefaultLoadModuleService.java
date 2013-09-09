@@ -4,8 +4,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
 
 import wint.core.config.Configuration;
 import wint.core.config.Constants;
@@ -14,6 +18,8 @@ import wint.core.service.bean.BeanFactory;
 import wint.core.service.bean.BeanFactoryService;
 import wint.core.service.env.Environment;
 import wint.core.service.initial.ConfigurationAwire;
+import wint.core.service.thread.ThreadPoolService;
+import wint.lang.exceptions.FlowDataException;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicList;
 import wint.lang.magic.MagicMethod;
@@ -25,6 +31,7 @@ import wint.lang.utils.MapUtil;
 import wint.lang.utils.TargetUtil;
 import wint.mvc.flow.FlowData;
 import wint.mvc.module.annotations.Action;
+import wint.mvc.template.TemplateEntry;
 
 /**
  * @author pister 2012-1-2 03:16:57
@@ -36,7 +43,8 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 	private MagicPackage basePackage;
 	private Environment environment;
 	private BeanFactoryService beanFactoryService;
-	private ConcurrentMap<String, ExecutionModule> cachedModules = MapUtil.newConcurrentHashMap();
+    private ExecutorService executorService;
+    private ConcurrentMap<String, FutureTask<ExecutionModule>> cachedModules = MapUtil.newConcurrentHashMap();
 
 	@Override
 	public void init() {
@@ -46,6 +54,9 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 		moduleMethod = configuration.getProperties().getString(Constants.PropertyKeys.APP_MODULE_METHOD, Constants.Defaults.MODULE_METHOD);
 		environment = configuration.getEnvironment();
 		beanFactoryService = this.serviceContext.getService(BeanFactoryService.class);
+
+        ThreadPoolService threadPoolService = serviceContext.getService(ThreadPoolService.class);
+        executorService =  threadPoolService.getThreadPool();
 	}
 
 	protected String makeModuleCacheKey(String target, String moduleType) {
@@ -54,25 +65,35 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 
 	public ExecutionModule loadModule(final String target, final String moduleType) {
 		if (environment == Environment.DEV) {
-			ExecutionModule module = loadModuleImpl(target, moduleType);
-			if (module != null) {
-				return module;
-			} else {
-				return new NopModule(target, moduleType);
-			}
+			return loadModuleImpl(target, moduleType);
 		} else {
-			String key = makeModuleCacheKey(target, moduleType);;
-			ExecutionModule module = cachedModules.get(key);
-			if (module != null) {
-				return module;
-			}
+			String key = makeModuleCacheKey(target, moduleType);
 
-            module = loadModuleImpl(target, moduleType);
-            if (module == null) {
-                return new NopModule(target, moduleType);
+            FutureTask<ExecutionModule> newFutureTask = new FutureTask<ExecutionModule>(new Callable<ExecutionModule>() {
+                public ExecutionModule call() throws Exception {
+                    return loadModuleImpl(target, moduleType);
+                }
+            });
+            FutureTask<ExecutionModule> existFutureTask = cachedModules.putIfAbsent(key, newFutureTask);
+            if (existFutureTask != null) {
+                try {
+                    return existFutureTask.get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new FlowDataException(e);
+                } catch (ExecutionException e) {
+                    throw new FlowDataException(e);
+                }
             } else {
-                cachedModules.put(key, module);
-                return module;
+                executorService.submit(newFutureTask);
+                try {
+                    return newFutureTask.get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new FlowDataException(e);
+                } catch (ExecutionException e) {
+                    throw new FlowDataException(e);
+                }
             }
         }
 	}
@@ -83,7 +104,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 			MagicObject magicObject = createTargetObject(moduleInfo.getTargetClass());
 			return new DefaultModule(magicObject, moduleInfo, moduleType);
 		}
-		return null;
+        return new NopModule(target, moduleType);
 	}
 
 	protected String normalizeTarget(String target) {
