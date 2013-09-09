@@ -18,6 +18,7 @@ import wint.core.service.bean.BeanFactory;
 import wint.core.service.bean.BeanFactoryService;
 import wint.core.service.env.Environment;
 import wint.core.service.initial.ConfigurationAwire;
+import wint.core.service.thread.LocalThreadService;
 import wint.core.service.thread.ThreadPoolService;
 import wint.lang.exceptions.FlowDataException;
 import wint.lang.magic.MagicClass;
@@ -55,8 +56,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 		environment = configuration.getEnvironment();
 		beanFactoryService = this.serviceContext.getService(BeanFactoryService.class);
 
-        ThreadPoolService threadPoolService = serviceContext.getService(ThreadPoolService.class);
-        executorService =  threadPoolService.getThreadPool();
+        executorService =  new LocalThreadService();
 	}
 
 	protected String makeModuleCacheKey(String target, String moduleType) {

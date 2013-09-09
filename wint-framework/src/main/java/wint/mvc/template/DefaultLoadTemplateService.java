@@ -7,6 +7,7 @@ import wint.core.io.resource.loader.ResourceLoader;
 import wint.core.service.AbstractService;
 import wint.core.service.env.Environment;
 import wint.core.service.initial.ConfigurationAwire;
+import wint.core.service.thread.LocalThreadService;
 import wint.core.service.thread.ThreadPoolService;
 import wint.lang.exceptions.FlowDataException;
 import wint.lang.exceptions.ResourceException;
@@ -65,9 +66,7 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
         defaultLayoutFile = properties.getString(Constants.PropertyKeys.DEFAULT_LAYOUT_FILE, Constants.Defaults.DEFAULT_LAYOUT_FILE);
         environment = configuration.getEnvironment();
 
-        ThreadPoolService threadPoolService = serviceContext.getService(ThreadPoolService.class);
-        executorService =  threadPoolService.getThreadPool();
-
+        executorService =  new LocalThreadService();
 
         if (log.isInfoEnabled()) {
             log.info("template path: " + templatePath);
