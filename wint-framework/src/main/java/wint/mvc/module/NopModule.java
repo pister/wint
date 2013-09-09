@@ -12,7 +12,7 @@ public class NopModule implements ExecutionModule {
 	private String target;
 
 	private String moduleType;
-	
+
 	public NopModule(String target, String moduleType) {
 		super();
 		this.target = target;

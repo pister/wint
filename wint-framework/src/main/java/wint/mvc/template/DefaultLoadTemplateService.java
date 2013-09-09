@@ -291,6 +291,10 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
     }
 
     private String handleForDir(ModuleInfo moduleInfo, File pathname) {
+        if (moduleInfo == null) {
+            // for nop module etc.
+            return null;
+        }
         if (!moduleInfo.isUseDefaultMethod()) {
             return null;
         }
