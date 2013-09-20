@@ -1,0 +1,25 @@
+package ${thisPackage};
+
+import ${doFullClassName};
+import ${baseTestFullName};
+import ${assertFullname};
+
+/**
+* this file is auto generate.
+*/
+public interface ${thisClassName} extends ${baseTestClassName} {
+
+	private ${daoClassName} ${daoPropertyname};
+
+    public void testCreate() {
+        ${doName}  ${doObject_1} = new ${doName}();
+		${propertySetter}
+		${idType} id = ${daoPropertyname}.create(${doObject_1});
+		Assert.assertTrue(id > 0);
+	)
+
+	public void set${daoClassName}(${daoClassName}  ${daoPropertyname}) {
+		this.${daoPropertyname} = ${daoPropertyname};
+	}
+
+}

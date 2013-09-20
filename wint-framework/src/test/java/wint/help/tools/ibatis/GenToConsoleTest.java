@@ -21,4 +21,8 @@ public class GenToConsoleTest extends TestCase {
 		IbatisGenUtil.genDaoToConsole("bbb_", UserDO.class, "userId");
 	}
 
+    public void testGenTestToConsole() {
+		IbatisGenUtil.genTestsToConsole("bbb_", UserDO.class, "userId");
+	}
+
 }

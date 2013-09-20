@@ -1,23 +1,6 @@
 package wint.help.tools.ibatis;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import wint.help.tools.ibatis.gen.DefaultMappingPolicy;
-import wint.help.tools.ibatis.gen.DefaultResultRender;
-import wint.help.tools.ibatis.gen.IbatisResult;
-import wint.help.tools.ibatis.gen.MappingPolicy;
-import wint.help.tools.ibatis.gen.OptionEnum;
-import wint.help.tools.ibatis.gen.ResultRender;
-import wint.help.tools.ibatis.gen.SqlTypes;
+import wint.help.tools.ibatis.gen.*;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.Property;
 import wint.lang.template.SimpleVelocityEngine;
@@ -26,8 +9,33 @@ import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.SystemUtil;
 
+import java.io.*;
+import java.sql.Timestamp;
+import java.util.*;
+
 public class IbatisGenerator {
-	
+
+    private static final Map<Class<?>, String> typeDefaults = new HashMap<Class<?>, String>();
+
+    static {
+        typeDefaults.put(Boolean.TYPE, "false");
+        typeDefaults.put(Boolean.class,"false");
+        typeDefaults.put(Short.TYPE,"(short)1");
+        typeDefaults.put(Short.class, "(short)1");
+        typeDefaults.put(Integer.TYPE, "2");
+        typeDefaults.put(Integer.class, "2");
+        typeDefaults.put(Long.TYPE, "3L");
+        typeDefaults.put(Long.class, "3L");
+        typeDefaults.put(Float.TYPE, "1.1L");
+        typeDefaults.put(Float.class, "1.1L");
+        typeDefaults.put(Double.TYPE, "1.2L");
+        typeDefaults.put(Double.class, "1.2L");
+        typeDefaults.put(String.class, "\"a\"");
+        typeDefaults.put(Date.class, "\"2010-10-10\"");
+        typeDefaults.put(java.sql.Date.class, "2010-10-10");
+        typeDefaults.put(Timestamp.class, "2010-10-10");
+    }
+
 	private MappingPolicy mappingPolicy = new DefaultMappingPolicy();
 	
 	private ResultRender resultRender = new DefaultResultRender();
@@ -49,6 +57,8 @@ public class IbatisGenerator {
 	private String genIbatisDaoTemplateName = "gen-ibatis-dao.vm";
 
 	private String genDaoTemplateName = "gen-dao.vm";
+
+	private String genTestsTemplateName = "gen-tests.vm";
 
 	public String setTablePrefix(String prefix) {
 		String ret = mappingPolicy.getTablePrefix();
@@ -151,7 +161,104 @@ public class IbatisGenerator {
 
         return thisPackage + "." +  className;
     }
-	
+
+
+    private String getBaseTestPackage( String doPackage) {
+        return StringUtil.getLastBefore(doPackage, ".biz.");
+    }
+
+    private String propertySetter(Class<?> clazz, String doObject_1) {
+        Set<String> filters = new HashSet<String>();
+        filters.add("class");
+        filters.add(idName);
+        List<IbatisResult> columnsResult = getResult(clazz, filters, OptionEnum.READ_AND_WRITE);
+        StringBuilder sb = new StringBuilder();
+        for (IbatisResult ibatisResult : columnsResult) {
+            String name = ibatisResult.getProperty();
+            String value = getTestValueForType(ibatisResult.getType());
+            if (value == null) {
+                continue;
+            }
+            String setterName = "set" + StringUtil.uppercaseFirstLetter(name);
+            sb.append(setterName);
+            sb.append("(");
+            sb.append(value);
+            sb.append(")");
+        }
+        return sb.toString();
+    }
+
+    private String getTestValueForType(Class<?> type) {
+        String value = IbatisGenerator.typeDefaults.get(type);
+        return value;
+    }
+
+    public String genDaoTests(Class<?> clazz, Writer out) {
+        Map<String, Object> context = MapUtil.newHashMap();
+        String alias = getAlias(clazz);
+        String namespace = StringUtil.uppercaseFirstLetter(alias) + "DAO";
+
+        MagicClass magicClass = MagicClass.wrap(clazz);
+        Property idProperty = magicClass.getProperty(idName);
+        if (idProperty == null) {
+            throw new RuntimeException("the id " + idName + " from " + clazz + " not exist!");
+        }
+        String idType = ClassUtil.getShortClassName(idProperty.getPropertyClass().getTargetClass());
+
+        String doPackage = clazz.getPackage().getName();
+        String doFullClassName = clazz.getName();
+        String doClassName = clazz.getSimpleName();
+        String baseDalPackage = StringUtil.getLastBefore(doPackage, ".domain");
+
+        String thisPackage = baseDalPackage + ".dao";
+        String daoClassName = namespace;
+
+        String thisClassName = daoClassName + "Tests";
+
+        String baseTestClassPackage = getBaseTestPackage(doPackage);
+        String baseTestClassName = "BaseTest";
+        String baseTestFullName = baseTestClassPackage + "." + baseTestClassName;
+        String daoPropertyname = StringUtil.lowercaseFirstLetter(daoClassName);
+
+        String assertFullname = "junit.framework.Assert";
+        String baseDoName =  StringUtil.lowercaseFirstLetter(doClassName);
+        String doObject_1 = baseDoName;
+        String doObject_2 = baseDoName + "_2";
+        String doObject_3 = baseDoName + "_3";
+
+        String propertySetter = propertySetter(clazz, doObject_1);
+
+        context.put("propertySetter", propertySetter);
+        context.put("doObject_1", doObject_1);
+        context.put("doObject_2", doObject_2);
+        context.put("doObject_3", doObject_3);
+        context.put("assertFullname", assertFullname);
+        context.put("daoPropertyname", daoPropertyname);
+        context.put("baseTestClassName", baseTestClassName);
+        context.put("baseTestFullName", baseTestFullName);
+        context.put("thisPackage", thisPackage);
+        context.put("thisClassName", thisClassName);
+        context.put("doFullClassName", doFullClassName);
+
+        context.put("daoClassName", daoClassName);
+
+        context.put("idType", idType);
+        context.put("idTypeWrapper", ClassUtil.getShortClassName(ClassUtil.getWrapperClass(idProperty.getPropertyClass().getTargetClass())));
+        context.put("doName",  ClassUtil.getShortClassName(clazz.getName()));
+        context.put("paramName",  alias);
+
+        genFromTemplate(context, out, genTestsTemplateName);
+        try {
+            out.write(SystemUtil.LINE_SEPARATOR);
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //genIbatisDaoTemplateName
+
+        return thisPackage + "." +  thisClassName;
+    }
+
 	public String genIbatisDao(Class<?> clazz, Writer out, String implSuffix) {
         if (implSuffix == null) {
             implSuffix = "Ibatis";
@@ -166,8 +273,6 @@ public class IbatisGenerator {
             throw new RuntimeException("the id " + idName + " from " + clazz + " not exist!");
         }
 		String idType = ClassUtil.getShortClassName(idProperty.getPropertyClass().getTargetClass());
-
-        // import com.zuirenmai.danta.biz.dal.domain.CareerDO;
 
         String doPackage = clazz.getPackage().getName();
         String doFullClassName = clazz.getName();

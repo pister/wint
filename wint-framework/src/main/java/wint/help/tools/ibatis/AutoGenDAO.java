@@ -6,6 +6,7 @@ import wint.lang.utils.SystemUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.regex.Matcher;
@@ -104,6 +105,17 @@ public class AutoGenDAO {
         // TODO gen tests java files.
     }
 
+    private void printSqlScripts(IbatisGenerator ibatisGenerator,  Class<?> clazz) {
+        System.out.println("==============create table sql script================");
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        ibatisGenerator.genCreateTableSql(clazz,  new OutputStreamWriter(System.out), true);
+        System.out.flush();
+        System.out.flush();
+        System.out.println("=====================================================");
+    }
+
     private boolean checkExist(File file, String input) throws IOException {
         String content = FileUtil.readAsString(file);
         if (content.contains(input)) {
@@ -198,6 +210,7 @@ public class AutoGenDAO {
             genSqlmap(ibatisGenerator, clazz, baseFile, fileWriter);
             genDAO(ibatisGenerator, clazz, baseFile, fileWriter, javaMainSrcPath);
             genIbatisDAO(ibatisGenerator, clazz, baseFile, fileWriter, javaMainSrcPath);
+            printSqlScripts(ibatisGenerator, clazz);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
