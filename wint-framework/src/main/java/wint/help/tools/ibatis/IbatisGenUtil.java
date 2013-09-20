@@ -1,5 +1,7 @@
 package wint.help.tools.ibatis;
 
+import java.io.OutputStreamWriter;
+
 public class IbatisGenUtil {
 	
 /*	public static void genToConsole(String prefix, Class<?> clazz) {
@@ -30,21 +32,30 @@ public class IbatisGenUtil {
 		IbatisGenerator ibatisGenerator = new IbatisGenerator();
 		ibatisGenerator.setIdName(idName);
 		ibatisGenerator.setTablePrefix(prefix);
-		ibatisGenerator.genSqlMap(clazz);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+		ibatisGenerator.genSqlMap(clazz,  new OutputStreamWriter(System.out));
 	}
 	
 	public static void genCreateTableSqlToConsole(String prefix, Class<?> clazz, boolean notNull, String idName) {
 		IbatisGenerator ibatisGenerator = new IbatisGenerator();
 		ibatisGenerator.setIdName(idName);
 		ibatisGenerator.setTablePrefix(prefix);
-		ibatisGenerator.genCreateTableSql(clazz, notNull);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+		ibatisGenerator.genCreateTableSql(clazz,  new OutputStreamWriter(System.out), notNull);
 	}
 	
 	public static void genIbatisDaoToConsole(String prefix, Class<?> clazz, String idName) {
 		IbatisGenerator ibatisGenerator = new IbatisGenerator();
 		ibatisGenerator.setIdName(idName);
 		ibatisGenerator.setTablePrefix(prefix);
-		ibatisGenerator.genIbatisDao(clazz);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+		ibatisGenerator.genIbatisDao(clazz,  new OutputStreamWriter(System.out));
 	}
 
 }

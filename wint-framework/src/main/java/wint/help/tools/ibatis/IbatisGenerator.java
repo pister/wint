@@ -3,7 +3,6 @@ package wint.help.tools.ibatis;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import wint.lang.template.SimpleVelocityEngine;
 import wint.lang.utils.ClassUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
+import wint.lang.utils.SystemUtil;
 
 public class IbatisGenerator {
 	
@@ -64,7 +64,7 @@ public class IbatisGenerator {
 		}
 	}
 	
-	public void genSqlMap(Class<?> clazz) {
+	public void genSqlMap(Class<?> clazz, Writer out) {
 		Map<String, Object> context = MapUtil.newHashMap();
 		String alias = getAlias(clazz);
 		String namespace = StringUtil.uppercaseFirstLetter(alias) + "DAO";
@@ -99,42 +99,71 @@ public class IbatisGenerator {
 		context.put("gmtModifiedName", StringUtil.camelToUnderLineString(gmtModifiedName));
 		context.put("gmtCreateName", gmtCreateName);
 		
-		genFromTemplate(context, new OutputStreamWriter(System.out), sqlMapTemplateName);
-		System.out.println();
+		genFromTemplate(context, out, sqlMapTemplateName);
+        try {
+            out.write(SystemUtil.LINE_SEPARATOR);
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 	}
 	
-	public void genIbatisDao(Class<?> clazz) {
+	public String genIbatisDao(Class<?> clazz, Writer out) {
 		Map<String, Object> context = MapUtil.newHashMap();
 		String alias = getAlias(clazz);
 		String namespace = StringUtil.uppercaseFirstLetter(alias) + "DAO";
 		
 		MagicClass magicClass = MagicClass.wrap(clazz);
 		Property idProperty = magicClass.getProperty(idName);
+        if (idProperty == null) {
+            throw new RuntimeException("the id " + idName + " from " + clazz + " not exist!");
+        }
 		String idType = ClassUtil.getShortClassName(idProperty.getPropertyClass().getTargetClass());
-		
-		
+
+        // import com.zuirenmai.danta.biz.dal.domain.CareerDO;
+
+        String doPackage = clazz.getPackage().getName();
+        String doFullClassName = clazz.getName();
+        String baseDalPackage = StringUtil.getLastBefore(doPackage, ".domain");
+
+        String daoPackage = baseDalPackage + ".dao";
+        String daoClassName = namespace;
+        String daoFullClassName = daoPackage + "." + daoClassName;
+
+        String thisPackage = daoPackage + ".ibatis";
+
+        String className = daoClassName + "Ibatis";
+
+        context.put("thisPackage", thisPackage);
+        context.put("doFullClassName", doFullClassName);
+        context.put("daoFullClassName", daoFullClassName);
+        context.put("daoClassName", daoClassName);
+
+        context.put("className", className);
+
 		context.put("namespace", namespace);
 		context.put("idType", idType);
 		context.put("idTypeWrapper", ClassUtil.getShortClassName(ClassUtil.getWrapperClass(idProperty.getPropertyClass().getTargetClass())));
 		context.put("domainName",  ClassUtil.getShortClassName(clazz.getName()));
 		context.put("paramName",  alias);
 		
-		genFromTemplate(context, new OutputStreamWriter(System.out), genIbatisDaoTemplateName);
-		System.out.println();
-		//genIbatisDaoTemplateName
-		
+		genFromTemplate(context, out, genIbatisDaoTemplateName);
+        try {
+            out.write(SystemUtil.LINE_SEPARATOR);
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //genIbatisDaoTemplateName
+
+        return thisPackage + "." +  className;
 	}
 	
 	protected void genFromTemplate(Map<String, Object> context, Writer out, String templateName) {
 		SimpleVelocityEngine simpleTemplateEngine = new SimpleVelocityEngine();
 		simpleTemplateEngine.init(encoding);
 		Reader reader = getTemplateReader(templateName);
-		
 
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		
 		simpleTemplateEngine.merge(reader, out, context);
 		try {
 			reader.close();
@@ -160,7 +189,7 @@ public class IbatisGenerator {
 		return null;
 	}
 	
-	public void genCreateTableSql(Class<?> clazz, boolean notNull) {
+	public void genCreateTableSql(Class<?> clazz, Writer out, boolean notNull) {
 		Map<String, Object> context = MapUtil.newHashMap();
 		String alias = getAlias(clazz);
 		String tableName = mappingPolicy.getTablePrefix() + StringUtil.camelToUnderLineString(alias);
@@ -209,27 +238,20 @@ public class IbatisGenerator {
 		}
 		context.put("columns", sb.toString());
 		
-		genFromTemplate(context, new OutputStreamWriter(System.out), createTableTemplateName);
-		System.out.println();
+		genFromTemplate(context, out, createTableTemplateName);
+        try {
+            out.write(SystemUtil.LINE_SEPARATOR);
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 	}
 	
 	protected String getSqlType(Class<?> type) {
 		return SqlTypes.getByClass(type);
 	}
 	
-	
-	
-	public void genToConsole(Class<?> clazz) {
-		System.out.println(genMapping(clazz));
-		System.out.println();
-		System.out.println(genFullSQLColumns(clazz));
-		System.out.println();
-		System.out.println(genInsertNoId(clazz));
-		System.out.println();
-		System.out.println(genUpdateNoId(clazz));
-		
-	}
-	
+
 	public String genMapping(Class<?> clazz) {
 		Set<String> filters = new HashSet<String>();
 		filters.add("class");

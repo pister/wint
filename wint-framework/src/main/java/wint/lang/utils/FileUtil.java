@@ -1,5 +1,5 @@
-package wint.lang.utils;
 
+package wint.lang.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

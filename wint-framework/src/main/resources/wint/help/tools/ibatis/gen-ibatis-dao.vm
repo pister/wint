@@ -1,16 +1,28 @@
+package ${thisPackage}
 
-public ${idType} create(${domainName} ${paramName}) {
-	return (${idTypeWrapper})this.getSqlMapClientTemplate().insert("${namespace}.create", ${paramName});
-}
+import ${daoFullClassName}
+import ${doFullClassName}
+import wint.dal.ibatis.ReadWriteSqlMapClientDaoSupport;
 
-public void delete(${idType} id) {
-	this.getSqlMapClientTemplate().update("${namespace}.delete", id);
-}
+/**
+* this file is auto generate.
+*/
+public class ${className} extends ReadWriteSqlMapClientDaoSupport implements ${daoClassName} {
 
-public void update(${domainName} ${paramName}) {
-	this.getSqlMapClientTemplate().update("${namespace}.update", ${paramName});
-}
+	public ${idType} create(${domainName} ${paramName}) {
+		return (${idTypeWrapper})this.getSqlMapClientTemplate().insert("${namespace}.create", ${paramName});
+	}
 
-public ${domainName} queryById(${idType} id) {
-	return (${domainName})this.getSqlMapClientTemplate().queryForObject("${namespace}.queryById", id);
+	public void delete(${idType} id) {
+		this.getSqlMapClientTemplate().update("${namespace}.delete", id);
+	}
+
+	public void update(${domainName} ${paramName}) {
+		this.getSqlMapClientTemplate().update("${namespace}.update", ${paramName});
+	}
+
+	public ${domainName} queryById(${idType} id) {
+		return (${domainName})this.getSqlMapClientTemplate().queryForObject("${namespace}.queryById", id);
+	}
+
 }
