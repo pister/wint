@@ -31,9 +31,9 @@ public class IbatisGenerator {
         typeDefaults.put(Double.TYPE, "1.2L");
         typeDefaults.put(Double.class, "1.2L");
         typeDefaults.put(String.class, "\"a\"");
-        typeDefaults.put(Date.class, "\"2010-10-10\"");
-        typeDefaults.put(java.sql.Date.class, "2010-10-10");
-        typeDefaults.put(Timestamp.class, "2010-10-10");
+        typeDefaults.put(Date.class, "new java.util.Date()");
+        typeDefaults.put(java.sql.Date.class, "new java.sql.Date(new java.util.Date().getTime())");
+        typeDefaults.put(Timestamp.class, "new java.sql.Timestamp(new Date().getTime())");
     }
 
 	private MappingPolicy mappingPolicy = new DefaultMappingPolicy();
@@ -411,12 +411,6 @@ public class IbatisGenerator {
 	}
 	
 
-	public String genMapping(Class<?> clazz) {
-		Set<String> filters = new HashSet<String>();
-		filters.add("class");
-		return genMapping(clazz, filters, OptionEnum.READ_AND_WRITE);
-	}
-	
 	public String genFullSQLColumns(Class<?> clazz) {
 		Set<String> filters = new HashSet<String>();
 		filters.add("class");

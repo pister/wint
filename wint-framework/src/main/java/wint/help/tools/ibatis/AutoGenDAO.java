@@ -31,9 +31,13 @@ public class AutoGenDAO {
 
     private String javaTestSrc = "src/test/java";
 
-    private String daoSuffix = "Ibaits";
+    private String daoSuffix = "Ibatis";
 
     private String prefix;
+
+    public AutoGenDAO(String prefix) {
+        this.prefix = prefix;
+    }
 
     private File getProjectBasePath(Class<?> clazz) {
         URL url = clazz.getResource("/");
@@ -101,17 +105,23 @@ public class AutoGenDAO {
     }
 
 
-    private void genTests() throws IOException {
-        // TODO gen tests java files.
+    private void genTests(IbatisGenerator ibatisGenerator, Class<?> clazz, File baseFile, FileWriter fileWriter) throws IOException {
+        log("generating dao tests");
+        StringWriter stringWriter = new StringWriter();
+        String name = ibatisGenerator.genDaoTests(clazz, stringWriter);
+        String content = stringWriter.toString();
+        File javaTestSrcPath = new File(baseFile, javaTestSrc);
+        genJavaSrc(name, content, javaTestSrcPath, fileWriter);
+        log("generate dao tests finish");
     }
 
-    private void printSqlScripts(IbatisGenerator ibatisGenerator,  Class<?> clazz) {
+    private void printSqlScripts(IbatisGenerator ibatisGenerator, Class<?> clazz) {
         System.out.println("==============create table sql script================");
         System.out.println();
         System.out.println();
+        ibatisGenerator.genCreateTableSql(clazz, new OutputStreamWriter(System.out), true);
         System.out.println();
-        ibatisGenerator.genCreateTableSql(clazz,  new OutputStreamWriter(System.out), true);
-        System.out.flush();
+        System.out.println();
         System.out.flush();
         System.out.println("=====================================================");
     }
@@ -210,10 +220,19 @@ public class AutoGenDAO {
             genSqlmap(ibatisGenerator, clazz, baseFile, fileWriter);
             genDAO(ibatisGenerator, clazz, baseFile, fileWriter, javaMainSrcPath);
             genIbatisDAO(ibatisGenerator, clazz, baseFile, fileWriter, javaMainSrcPath);
+            genTests(ibatisGenerator, clazz, baseFile, fileWriter);
             printSqlScripts(ibatisGenerator, clazz);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void gen(Class<?> clazz) {
+        gen(clazz, "id");
+    }
+
+    public void forceGen(Class<?> clazz) {
+        forceGen(clazz, "id");
     }
 
     public void gen(Class<?> clazz, String idName) {
@@ -248,5 +267,19 @@ public class AutoGenDAO {
         void writeToFile(String content, File filename);
     }
 
+    public void setDaoPath(String daoPath) {
+        this.daoPath = daoPath;
+    }
 
+    public void setDaoSuffix(String daoSuffix) {
+        this.daoSuffix = daoSuffix;
+    }
+
+    public void setSqlmapPath(String sqlmapPath) {
+        this.sqlmapPath = sqlmapPath;
+    }
+
+    public void setSqlmapRootPath(String sqlmapRootPath) {
+        this.sqlmapRootPath = sqlmapRootPath;
+    }
 }
