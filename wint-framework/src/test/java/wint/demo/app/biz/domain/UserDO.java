@@ -16,6 +16,8 @@ public class UserDO implements Serializable {
 	
 	private List<String> favs;
 
+    private int age;
+
 	private Date gmtModified;
 	
 	public String getName() {
@@ -63,4 +65,11 @@ public class UserDO implements Serializable {
 		this.favs = favs;
 	}
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 }

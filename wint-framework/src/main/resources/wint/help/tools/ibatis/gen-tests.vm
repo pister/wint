@@ -13,7 +13,7 @@ public interface ${thisClassName} extends ${baseTestClassName} {
 
     public void testCreate() {
         ${doName}  ${doObject_1} = new ${doName}();
-		${propertySetter}
+${propertySetter}
 		${idType} id = ${daoPropertyname}.create(${doObject_1});
 		Assert.assertTrue(id > 0);
 	)

@@ -167,7 +167,7 @@ public class IbatisGenerator {
         return StringUtil.getLastBefore(doPackage, ".biz.");
     }
 
-    private String propertySetter(Class<?> clazz, String doObject_1) {
+    private String propertySetter(Class<?> clazz, String doObjectName) {
         Set<String> filters = new HashSet<String>();
         filters.add("class");
         filters.add(idName);
@@ -179,13 +179,20 @@ public class IbatisGenerator {
             if (value == null) {
                 continue;
             }
-            String setterName = "set" + StringUtil.uppercaseFirstLetter(name);
+            sb.append("\t\t");
+            sb.append(doObjectName);
+            String setterName = ".set" + StringUtil.uppercaseFirstLetter(name);
             sb.append(setterName);
             sb.append("(");
             sb.append(value);
-            sb.append(")");
+            sb.append(");");
+            sb.append(SystemUtil.LINE_SEPARATOR);
         }
-        return sb.toString();
+        String ret = sb.toString();
+        if (ret.endsWith(SystemUtil.LINE_SEPARATOR)) {
+            ret = ret.substring(0, ret.length() - SystemUtil.LINE_SEPARATOR.length());
+        }
+        return ret;
     }
 
     private String getTestValueForType(Class<?> type) {
