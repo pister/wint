@@ -1,0 +1,18 @@
+package ${thisPackage};
+
+import ${doFullClassName};
+
+/**
+* this file is auto generate.
+*/
+public interface ${className} {
+
+	${idType} create(${domainName} ${paramName});
+
+	void delete(${idType} id);
+
+	void update(${domainName} ${paramName});
+
+	${domainName} queryById(${idType} id);
+
+}

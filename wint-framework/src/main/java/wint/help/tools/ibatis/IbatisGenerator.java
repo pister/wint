@@ -47,14 +47,16 @@ public class IbatisGenerator {
 	private String createTableTemplateName = "create-table-template-mysql.vm";
 	
 	private String genIbatisDaoTemplateName = "gen-ibatis-dao.vm";
-	
+
+	private String genDaoTemplateName = "gen-dao.vm";
+
 	public String setTablePrefix(String prefix) {
 		String ret = mappingPolicy.getTablePrefix();
 		mappingPolicy.setTablePrefix(prefix);
 		return ret;
 	}
 	
-	protected String getAlias(Class<?> clazz) {
+	public static String getAlias(Class<?> clazz) {
 		String name = ClassUtil.getShortClassName(clazz);
 		name = StringUtil.lowercaseFirstLetter(name);
 		if (name.endsWith("DO") || name.endsWith("Do")) {
@@ -107,8 +109,53 @@ public class IbatisGenerator {
             throw new RuntimeException(e);
         }
 	}
+
+    public String genDAO(Class<?> clazz, Writer out) {
+        Map<String, Object> context = MapUtil.newHashMap();
+        String alias = getAlias(clazz);
+        String namespace = StringUtil.uppercaseFirstLetter(alias) + "DAO";
+
+        MagicClass magicClass = MagicClass.wrap(clazz);
+        Property idProperty = magicClass.getProperty(idName);
+        if (idProperty == null) {
+            throw new RuntimeException("the id " + idName + " from " + clazz + " not exist!");
+        }
+        String idType = ClassUtil.getShortClassName(idProperty.getPropertyClass().getTargetClass());
+
+        String doPackage = clazz.getPackage().getName();
+        String doFullClassName = clazz.getName();
+        String baseDalPackage = StringUtil.getLastBefore(doPackage, ".domain");
+
+        String thisPackage = baseDalPackage + ".dao";
+        String className = namespace;
+
+        context.put("thisPackage", thisPackage);
+        context.put("doFullClassName", doFullClassName);
+
+        context.put("className", className);
+
+        context.put("namespace", namespace);
+        context.put("idType", idType);
+        context.put("idTypeWrapper", ClassUtil.getShortClassName(ClassUtil.getWrapperClass(idProperty.getPropertyClass().getTargetClass())));
+        context.put("domainName",  ClassUtil.getShortClassName(clazz.getName()));
+        context.put("paramName",  alias);
+
+        genFromTemplate(context, out, genDaoTemplateName);
+        try {
+            out.write(SystemUtil.LINE_SEPARATOR);
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //genIbatisDaoTemplateName
+
+        return thisPackage + "." +  className;
+    }
 	
-	public String genIbatisDao(Class<?> clazz, Writer out) {
+	public String genIbatisDao(Class<?> clazz, Writer out, String implSuffix) {
+        if (implSuffix == null) {
+            implSuffix = "Ibatis";
+        }
 		Map<String, Object> context = MapUtil.newHashMap();
 		String alias = getAlias(clazz);
 		String namespace = StringUtil.uppercaseFirstLetter(alias) + "DAO";
@@ -132,7 +179,7 @@ public class IbatisGenerator {
 
         String thisPackage = daoPackage + ".ibatis";
 
-        String className = daoClassName + "Ibatis";
+        String className = daoClassName + implSuffix;
 
         context.put("thisPackage", thisPackage);
         context.put("doFullClassName", doFullClassName);

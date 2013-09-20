@@ -55,7 +55,17 @@ public class IbatisGenUtil {
         System.out.println();
         System.out.println();
         System.out.println();
-		ibatisGenerator.genIbatisDao(clazz,  new OutputStreamWriter(System.out));
+		ibatisGenerator.genIbatisDao(clazz,  new OutputStreamWriter(System.out), null);
 	}
+
+    public static void genDaoToConsole(String prefix, Class<?> clazz, String idName) {
+        IbatisGenerator ibatisGenerator = new IbatisGenerator();
+        ibatisGenerator.setIdName(idName);
+        ibatisGenerator.setTablePrefix(prefix);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        ibatisGenerator.genDAO(clazz,  new OutputStreamWriter(System.out));
+    }
 
 }
