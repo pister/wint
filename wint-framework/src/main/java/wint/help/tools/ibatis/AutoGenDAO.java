@@ -77,10 +77,11 @@ public class AutoGenDAO {
     }
 
     private void addSpringBean(File beanConfigPath, String beanClassName, String beanId) throws IOException {
-        String nodeStr = "\t<bean id=\"" + beanId + "\" class=\"" + beanClassName + "\" />" + SystemUtil.LINE_SEPARATOR;
+        String nodeStr = "<bean id=\"" + beanId + "\" class=\"" + beanClassName + "\" />";
         if (checkExist(beanConfigPath, nodeStr)) {
             return;
         }
+        nodeStr = "\t" + nodeStr + SystemUtil.LINE_SEPARATOR;
         addNodeToPath(beanConfigPath, "(</beans>)", nodeStr);
     }
 
@@ -142,10 +143,11 @@ public class AutoGenDAO {
         if (!rootFile.exists()) {
             return;
         }
-        String nodeStr = "\t<sqlMap resource=\"sqlmaps/" + sqlmapFileName + "\" />" + SystemUtil.LINE_SEPARATOR;
+        String nodeStr = "<sqlMap resource=\"sqlmaps/" + sqlmapFileName + "\" />";
         if (checkExist(rootFile, nodeStr)) {
             return;
         }
+        nodeStr = "\t" + nodeStr + SystemUtil.LINE_SEPARATOR;
         addNodeToPath(rootFile, "(</sqlMapConfig>)", nodeStr);
     }
 
@@ -154,9 +156,9 @@ public class AutoGenDAO {
         // for sqlmap
         log("generating sqlmap");
         File sqlmapDir = new File(baseFile, sqlmapPath);
-        String sqlmapFileName = getSqlmapName(clazz) + "-sqlmap.xml";
         StringWriter sqlmapStringWriter = new StringWriter();
-        daoGenerator.genSqlMap(clazz, sqlmapStringWriter);
+        DaoMetaInfo daoMetaInfo = daoGenerator.genSqlMap(clazz, sqlmapStringWriter);
+        String sqlmapFileName = daoMetaInfo.getDoAlias() + "-sqlmap.xml";
         if (!sqlmapDir.exists()) {
             sqlmapDir.mkdirs();
         }

@@ -68,7 +68,7 @@ public class DaoGenerator {
 	
 
 	
-	public void genSqlMap(Class<?> clazz, Writer out) {
+	public DaoMetaInfo genSqlMap(Class<?> clazz, Writer out) {
         DaoMetaInfo daoMetaInfo = new DaoMetaInfo(clazz, idName);
 
         Map<String, Object> context = MapUtil.newHashMap();
@@ -104,6 +104,7 @@ public class DaoGenerator {
 		
 		genFromTemplate(context, out, sqlMapTemplateName);
         DaoGenUtil.writeLine(out);
+        return daoMetaInfo;
 	}
 
     public DaoMetaInfo genDAO(Class<?> clazz, Writer out) {
