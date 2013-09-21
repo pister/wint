@@ -6,8 +6,9 @@
 
 	<resultMap id="${mappingName}" class="${aliasDomainName}">
 		#foreach($mappingColumn in $mappingColumns)
-		<result property="${mappingColumn.property}" column="${mappingColumn.column}"/>
+<result property="${mappingColumn.property}" column="${mappingColumn.column}"/>
 		#end
+
 	</resultMap>
 	
 	<sql id="${aliasDomainName}-full-columns">
@@ -27,6 +28,7 @@
 		select
 			<include refid="${aliasDomainName}-full-columns" />
 		from ${tableName} t where t.${idNameColumn} = #value# #if($logicDeleted) and t.deleted = 0 #end
+
 	</select>
 	
 	<update id="delete" parameterClass="${idType}">
@@ -34,7 +36,8 @@
 		update ${tableName} t set t.deleted = 1 #if("$!{gmtModifiedName}" != "") , t.${gmtModifiedName} = now() #end where t.${idNameColumn} = #value#
 	#else
 		delete from ${tableName} t where t.${idNameColumn} = #value#
-	#end
+    #end
+
 	</update>
 	
 	<update id="update" parameterClass="${aliasDomainName}">

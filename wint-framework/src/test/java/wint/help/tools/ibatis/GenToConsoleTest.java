@@ -5,7 +5,7 @@ import wint.demo.app.biz.domain.UserDO;
 
 public class GenToConsoleTest extends TestCase {
 	
-	public void testGen() {
+	public void testGenSqlmap() {
 		IbatisGenUtil.genSqlMapToConsole("aaa_", UserDO.class, "userId");
 	}
 	

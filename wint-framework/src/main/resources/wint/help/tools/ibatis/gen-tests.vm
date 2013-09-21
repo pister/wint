@@ -2,7 +2,7 @@ package ${thisPackage};
 
 import ${doFullClassName};
 import ${baseTestFullName};
-import ${assertFullname};
+import junit.framework.Assert;
 
 /**
 * this file is auto generate.
@@ -48,6 +48,7 @@ ${propertySetter}
         // TODO finish update
 
 
+        ${daoPropertyname}.update(${doObject_2});
         ${doObject_2} = ${daoPropertyname}.queryById(id);
         // TODO finish your asserts
 
