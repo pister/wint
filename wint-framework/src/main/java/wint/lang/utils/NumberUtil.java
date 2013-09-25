@@ -26,5 +26,27 @@ public class NumberUtil {
 		}
 		return true;
 	}
+
+    public static boolean isNumeric(String s) {
+        if (StringUtil.isEmpty(s)) {
+            return false;
+        }
+        for (int i = 0, len = s.length(); i < len; ++i) {
+            char c = s.charAt(i);
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isNumeric("abcd"));
+        System.out.println(isNumeric("abcd123"));
+        System.out.println(isNumeric("1234"));
+        System.out.println(isNumeric("123avc"));
+        System.out.println(isNumeric("-123"));
+        System.out.println(isNumeric("123.456"));
+    }
 	
 }

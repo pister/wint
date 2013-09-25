@@ -39,7 +39,7 @@ public class WidgetContainer implements Render {
 
 	public WidgetRender setTemplate(String templateName) {
 		templateName = StringUtil.getFirstBefore(templateName, ".");
-		ExecutionModule widgetModule = loadModuleService.loadModule(templateName, widgetName);
+		ExecutionModule widgetModule = loadModuleService.loadModule(templateName, widgetName, flowData);
 		WidgetRender ret = new WidgetRender(widgetModule, flowData, context, indexedParameters, templateName, widgetTemplateName, loadTemplateService);
 		return ret;
 	}

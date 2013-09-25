@@ -7,6 +7,7 @@ import wint.lang.magic.MagicMap;
 import wint.lang.utils.AutoFillArray;
 import wint.lang.utils.NumberUtil;
 import wint.lang.utils.StringUtil;
+import wint.lang.utils.Tuple;
 import wint.mvc.view.Render;
 
 /**
@@ -21,15 +22,16 @@ public class UrlBroker implements Render {
     private AutoFillArray<Object> arguments = new AutoFillArray<Object>();
     private String anchor;
     private String tokenName;
+    private String pathAsTargetName;
 
-    public UrlBroker(UrlBrokerService urlBrokerService, String path, String target, String tokenName) {
+    public UrlBroker(UrlBrokerService urlBrokerService, String path, String target, String tokenName, String pathAsTargetName) {
         super();
         this.urlBrokerService = urlBrokerService;
         this.path = UrlBrokerUtil.normalizePath(path);
         target = StringUtil.getLastBefore(target, ".");
         this.target = StringUtil.camelToFixedString(target, "-");
-        ;
         this.tokenName = tokenName;
+        this.pathAsTargetName = pathAsTargetName;
     }
 
     public UrlBroker param(String name, Object value) {
@@ -60,6 +62,11 @@ public class UrlBroker implements Render {
             }
         }
         arguments.set(index, ArgumentEncoder.transformStringArgument(value));
+        return this;
+    }
+
+    public UrlBroker appendPath(Object inputPath) {
+        this.path = UrlBrokerUtil.appendPath(this.path, inputPath);
         return this;
     }
 
@@ -95,16 +102,20 @@ public class UrlBroker implements Render {
         return path;
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
     public String getTarget() {
         return target;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
+    public UrlBroker setTarget(String target) {
+        String basePath = path;
+        while (basePath.endsWith("/")) {
+            basePath = basePath.substring(0, basePath.length() - 1);
+        }
+        Tuple<String, String> pathAndTarget = UrlBrokerUtil.parseTarget(basePath, target, pathAsTargetName);
+
+        this.path = UrlBrokerUtil.normalizePath(pathAndTarget.getT1());
+        this.target = pathAndTarget.getT2();
+        return this;
     }
 
     public String getAnchor() {

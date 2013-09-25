@@ -29,9 +29,12 @@ import wint.lang.magic.MagicPackage;
 import wint.lang.utils.ClassUtil;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
+import wint.lang.utils.NumberUtil;
 import wint.lang.utils.TargetUtil;
 import wint.mvc.flow.FlowData;
+import wint.mvc.flow.InnerFlowData;
 import wint.mvc.module.annotations.Action;
+import wint.mvc.parameters.Arguments;
 import wint.mvc.template.TemplateEntry;
 
 /**
@@ -63,15 +66,15 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 		return target + "." + moduleType;
 	}
 
-	public ExecutionModule loadModule(final String target, final String moduleType) {
+	public ExecutionModule loadModule(final String target, final String moduleType, final InnerFlowData innerFlowData) {
 		if (environment == Environment.DEV) {
-			return loadModuleImpl(target, moduleType);
+			return loadModuleImpl(target, moduleType, innerFlowData);
 		} else {
 			String key = makeModuleCacheKey(target, moduleType);
 
             FutureTask<ExecutionModule> newFutureTask = new FutureTask<ExecutionModule>(new Callable<ExecutionModule>() {
                 public ExecutionModule call() throws Exception {
-                    return loadModuleImpl(target, moduleType);
+                    return loadModuleImpl(target, moduleType, innerFlowData);
                 }
             });
             FutureTask<ExecutionModule> existFutureTask = cachedModules.putIfAbsent(key, newFutureTask);
@@ -98,8 +101,8 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
         }
 	}
 
-	private ExecutionModule loadModuleImpl(String target, String moduleType) {
-		List<ModuleInfo> moduleInfos = getModuleInfos(normalizeTarget(target), moduleType);
+	private ExecutionModule loadModuleImpl(String target, String moduleType, InnerFlowData innerFlowData) {
+		List<ModuleInfo> moduleInfos = getModuleInfos(normalizeTarget(target), moduleType, innerFlowData);
 		for (ModuleInfo moduleInfo : moduleInfos) {
 			MagicObject magicObject = createTargetObject(moduleInfo.getTargetClass());
 			return new DefaultModule(magicObject, moduleInfo, moduleType);
@@ -122,10 +125,10 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 		return name;
 	}
 
- 	protected List<ModuleInfo> getModuleInfos(String target, String moduleType) {
+ 	protected List<ModuleInfo> getModuleInfos(String target, String moduleType, InnerFlowData innerFlowData) {
 		List<ModuleInfo> moduleInfos = CollectionUtil.newArrayList(2);
 
-		// 1
+		// 1   for default: execute
 		String classTarget = target.replace('/', '.');
 		MagicPackage moduleTypePackage = new MagicPackage(basePackage, moduleType);
 		MagicPackage targetPackage = new MagicPackage(moduleTypePackage, classTarget);
@@ -138,7 +141,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 			}
 		}
 
-		// 2
+		// 2  for mapping method
 		MagicPackage parentPackage = targetPackage.getParent();
 		if (parentPackage != null) {
 			String classClass = parentPackage.toClassName();
@@ -152,6 +155,11 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 				}
 			}
 		}
+
+        // 3  for path context method
+        // TODO etc: user/1234/friends => User.$_friends
+        // TODO etc: person/4567/classmates/12/names => Person.$_classmates_$_names
+
 
 		return moduleInfos;
 	}

@@ -2,26 +2,35 @@ package wint.mvc.url;
 
 
 import wint.lang.utils.StringUtil;
+import wint.lang.utils.Tuple;
 
 public class DefaultUrlModule implements UrlModule {
 
-	private UrlBrokerService urlBrokerService;
-	
-	private String path;
-	
-	private String tokenName;
-
+    private UrlBrokerService urlBrokerService;
+    private String path;
+    private String tokenName;
     private String pathAsTargetName;
-	
-	public DefaultUrlModule(UrlBrokerService urlBrokerService, String path, String tokenName, String pathAsTargetName) {
-		super();
-		this.urlBrokerService = urlBrokerService;
-		this.path = UrlBrokerUtil.trimLastSlash(path);
-		this.tokenName = tokenName;
+
+    public DefaultUrlModule(UrlBrokerService urlBrokerService, String path, String tokenName, String pathAsTargetName) {
+        super();
+        this.urlBrokerService = urlBrokerService;
+        this.path = UrlBrokerUtil.trimLastSlash(path);
+        this.tokenName = tokenName;
         this.pathAsTargetName = pathAsTargetName;
-	}
-	
-	public UrlBroker setTarget(String target) {
+    }
+
+    public UrlBroker appendPath(Object inputPath) {
+        UrlBroker urlBroker = new UrlBroker(urlBrokerService, UrlBrokerUtil.appendPath(this.path, inputPath), pathAsTargetName, tokenName, pathAsTargetName);
+        return urlBroker;
+    }
+
+    public UrlBroker setTarget(String target) {
+        Tuple<String, String> pathAndTarget = UrlBrokerUtil.parseTarget(path, target, pathAsTargetName);
+
+        UrlBroker urlBroker = new UrlBroker(urlBrokerService, pathAndTarget.getT1(), pathAndTarget.getT2(), tokenName, pathAsTargetName);
+        return urlBroker;
+
+        /*
         if (pathAsTargetName.equals(target)) {
             int lastSlashPos = path.lastIndexOf("/");
             if (lastSlashPos < 0) {
@@ -37,20 +46,21 @@ public class DefaultUrlModule implements UrlModule {
                 return urlBroker;
             }
             String targetPath = path.substring(0, lastSlashPos);
-            String newTarget = path.substring(lastSlashPos + 1) ;
+            String newTarget = path.substring(lastSlashPos + 1);
             // http://hostname/abc/efg
             // => http://hostname/abc and efg
             UrlBroker urlBroker = new UrlBroker(urlBrokerService, targetPath, newTarget, tokenName);
             return urlBroker;
 
         } else {
-		    UrlBroker urlBroker = new UrlBroker(urlBrokerService, path, target, tokenName);
-		    return urlBroker;
+            UrlBroker urlBroker = new UrlBroker(urlBrokerService, path, target, tokenName);
+            return urlBroker;
         }
-	}
-	
-	public String render() {
-		return path;
-	}
+        */
+    }
+
+    public String render() {
+        return path;
+    }
 
 }

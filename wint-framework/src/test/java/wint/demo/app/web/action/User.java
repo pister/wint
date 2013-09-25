@@ -14,4 +14,9 @@ public class User {
         context.put("name", "Jack");
     }
 
+    public void $_friends(FlowData flowData, Context context) {
+
+    }
+
+
 }

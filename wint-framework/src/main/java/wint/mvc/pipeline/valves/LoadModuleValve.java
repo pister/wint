@@ -23,7 +23,7 @@ public class LoadModuleValve extends AbstractValve {
 	}
 
 	public void invoke(PipelineContext pipelineContext, InnerFlowData innerFlowData) {
-		Module module = loadModuleService.loadModule(innerFlowData.getTarget(), moduleActionName);
+		Module module = loadModuleService.loadModule(innerFlowData.getTarget(), moduleActionName, innerFlowData);
 		innerFlowData.setModule(module);
 		pipelineContext.invokeNext(innerFlowData);
 	}

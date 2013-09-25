@@ -21,15 +21,14 @@ import wint.mvc.pipeline.PipelineContext;
  *  /xxx/yyy/444-zzz-555	=>  /xxx/yyy 		[444,zzz,555]
  *  /xxx/yyy/444--555-666	=>  /xxx/yyy 		[444,'',555,666]
  *  /xxx/yyy/444/zzz		=>	/xxx/yyy 		[444,zzz]
- *  /xxx/yyy/444/zzz-555		=>	/xxx/yyy 	[444,zzz,555]
- *  
+ *
  * @author pister
  * 2011-12-30 03:09:41
  */
 public class AnalyzeUrlValve extends AbstractValve {
 
 	private char[] tokens = {'/', '-', '_'};
-	
+
 	public void invoke(PipelineContext pipelineContext, InnerFlowData flowData) {
 		String target = flowData.getTarget();
 		target = TargetUtil.normalizePath(target);
@@ -94,7 +93,7 @@ public class AnalyzeUrlValve extends AbstractValve {
 		}
 		return false;
 	}
-	
+
 	static class StringToken {
 		String string;
 		String token;

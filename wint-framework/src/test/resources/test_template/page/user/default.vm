@@ -1,5 +1,9 @@
 这个是User.execute对应的页面====
 访问的url形如/user.htm
 
+$baseModule.appendPath('user').appendPath(1234).appendPath('friends').setTarget(".").args('2')
+$baseModule.appendPath('user').appendPath(1234).appendPath('friends')
+$itemModule.setTarget(".")
+
 $name
 ======

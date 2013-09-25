@@ -346,5 +346,13 @@ public class ServletFlowData implements InnerFlowData {
 		this.module = module;
 	}
 
+    public Arguments getPathContextArguments() {
+        // TODO
+        return null;
+    }
 
+    public Parameters getPathContextPetermeters() {
+        // TODO
+        return null;
+    }
 }
