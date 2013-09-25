@@ -33,13 +33,13 @@ public class SpringSupportBeanFactoryService extends AbstractService implements 
 		resourceLoader = serviceContext.getResourceLoader();
 		if (needUseSpring()) {
 			if (log.isInfoEnabled()) {
-				log.info("Spring library used, initialzing it...");
+				log.info("Spring library used, initializing it...");
 			}
 			MagicClass wintResourceXmlApplicationContextClass = MagicClass.forName("wint.core.service.bean.spring.WintResourceXmlApplicationContext");
 			MagicObject applicationContext = wintResourceXmlApplicationContextClass.newInstance(new Class<?>[] { String.class, ServiceContext.class }, new Object[] { springContextFile, serviceContext });
 			beanFactory = new SpringBeanFactory(applicationContext);
 			if (log.isInfoEnabled()) {
-				log.info("Spring library has been initialzed.");
+				log.info("Spring library has been initialized.");
 			}
 		} else {
 			beanFactory = new WintBeanFactory();
