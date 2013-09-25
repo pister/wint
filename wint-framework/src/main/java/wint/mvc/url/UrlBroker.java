@@ -2,6 +2,7 @@ package wint.mvc.url;
 
 import wint.core.config.Constants;
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
+import wint.lang.convert.ConvertUtil;
 import wint.lang.exceptions.UrlException;
 import wint.lang.magic.MagicMap;
 import wint.lang.utils.AutoFillArray;
@@ -23,8 +24,9 @@ public class UrlBroker implements Render {
     private String anchor;
     private String tokenName;
     private String pathAsTargetName;
+    private boolean pathHasNumber;
 
-    public UrlBroker(UrlBrokerService urlBrokerService, String path, String target, String tokenName, String pathAsTargetName) {
+    public UrlBroker(UrlBrokerService urlBrokerService, String path, String target, String tokenName, String pathAsTargetName, boolean pathHasNumber) {
         super();
         this.urlBrokerService = urlBrokerService;
         this.path = UrlBrokerUtil.normalizePath(path);
@@ -32,6 +34,7 @@ public class UrlBroker implements Render {
         this.target = StringUtil.camelToFixedString(target, "-");
         this.tokenName = tokenName;
         this.pathAsTargetName = pathAsTargetName;
+        this.pathHasNumber = pathHasNumber;
     }
 
     public UrlBroker param(String name, Object value) {
@@ -53,11 +56,14 @@ public class UrlBroker implements Render {
     }
 
     public UrlBroker argument(int index, Object value) {
+        if (StringUtil.isEmpty(target)) {
+            this.setTarget(pathAsTargetName);
+        }
         if (index > Constants.Url.MAX_ARGUMENT_COUNT) {
             throw new UrlException("url argument index is too large: " + index);
         }
         if (index == 0) {
-            if (!NumberUtil.isPositiveInteger(value)) {
+            if (!pathHasNumber && !NumberUtil.isPositiveInteger(value)) {
                 throw new UrlException("the first argument for url[" + target + "] must be a Positive Integer.");
             }
         }
@@ -66,6 +72,9 @@ public class UrlBroker implements Render {
     }
 
     public UrlBroker appendPath(Object inputPath) {
+        if (NumberUtil.isNumeric(ConvertUtil.toString(inputPath))) {
+            pathHasNumber = true;
+        }
         this.path = UrlBrokerUtil.appendPath(this.path, inputPath);
         return this;
     }
@@ -87,6 +96,9 @@ public class UrlBroker implements Render {
     }
 
     public String render() {
+        if (StringUtil.isEmpty(target)) {
+            this.setTarget(pathAsTargetName);
+        }
         return urlBrokerService.render(this);
     }
 
