@@ -96,14 +96,6 @@ public class CookieStoreSessionDataService implements SessionDataService {
 		}
 	}
 
-	public CookieSessionStoreConfig getCookieStoreSessionConfig() {
-		return cookieSessionStoreConfig;
-	}
-
-	public void setCookieStoreSessionConfig(CookieSessionStoreConfig cookieStoreSessionConfig) {
-		this.cookieSessionStoreConfig = cookieStoreSessionConfig;
-	}
-	
 	private String encodeName(String name) {
 		return UrlUtil.encode(name, URL_ENCODE_CHARSET);
 	}

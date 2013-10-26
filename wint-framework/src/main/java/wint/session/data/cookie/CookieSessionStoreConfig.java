@@ -18,7 +18,7 @@ public class CookieSessionStoreConfig implements SessionStoreConfig {
 	private int cookieDataMaxSize = WintSessionContants.WINT_COOKIE_DATA_MAX_SIZE;
 	
 	private boolean encrypt = true;
-	
+
 	public void init(SessionConfig sessionConfig) {
 		this.encryptKey = sessionConfig.getParameters().getString(SessionConfigKeys.COOKIE_ENCRYPTKEY, "testkey");
 		this.encrypt = sessionConfig.getParameters().getBoolean(SessionConfigKeys.COOKIE_ENCRYPT_USE, true);

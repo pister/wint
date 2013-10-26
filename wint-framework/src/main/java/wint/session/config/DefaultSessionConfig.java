@@ -54,7 +54,9 @@ public class DefaultSessionConfig implements SessionConfig {
 		initParametersFromServlet(initParamters);
 		
 		String sessionCookieKeyPath = parameters.getString(SessionConfigKeys.COOKIE_ENCRYPTKEY_PATH, COOKIE_SESSION_ENCRYPT_KEY_FILENAME);
-		
+
+        expire = parameters.getInt(SessionConfigKeys.COOKIE_EXPIRE, WintSessionContants.WINT_COOKIE_SESSION_EXPIRE);
+
 		appendDefaultParameters(sessionCookieKeyPath);
 		
 		cookieSessionStoreConfig.init(this);
