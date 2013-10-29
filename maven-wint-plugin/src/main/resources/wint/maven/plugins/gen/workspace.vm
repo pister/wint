@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspace>
+    <deploy>
+
+        <mapping src="${config.projectPath}/src/main/java"
+                 dest="${config.projectPath}/target/classes" />
+
+    </deploy>
+    <plugins>
+        <plugin name="spring_plugin"></plugin>
+        <plugin name="ibatis_plugin"></plugin>
+    </plugins>
+
+</workspace>

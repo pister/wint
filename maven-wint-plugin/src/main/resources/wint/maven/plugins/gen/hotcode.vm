@@ -1,0 +1,3 @@
+export MAVEN_OPTS="-noverify -javaagent:$HOTCODE_HOME/hotcode.jar -Dhotcode.confFile=workspace.xml -Xms256m -Xmx256m -XX:NewSize=96m -XX:MaxNewSize=96m -XX:PermSize=96M -XX:MaxPermSize=96m"
+
+mvn wint:run

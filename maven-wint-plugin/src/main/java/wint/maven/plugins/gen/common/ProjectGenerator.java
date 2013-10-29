@@ -37,6 +37,7 @@ public class ProjectGenerator {
 		if (!projectPath.exists()) {
 			projectPath.mkdirs();
 		}
+        projectConfig.setProjectPath(projectPath.getAbsolutePath());
 		genRoot(projectPath, projectConfig);
 		genSourcePackages(projectPath, projectConfig);
 		genScripts(projectPath, projectConfig);
@@ -239,7 +240,10 @@ public class ProjectGenerator {
 	private void genRoot(File projectPath, ProjectConfig projectConfig) throws IOException {
 		renderFile(basePath +  "/pom.vm", new File(projectPath, "pom.xml"), projectConfig);
 		renderFile(basePath +  "/readme.vm", new File(projectPath, "readme.txt"), projectConfig);
-	}
+        renderFile(basePath +  "/workspace.vm", new File(projectPath, "workspace.xml"), projectConfig);
+        copyFile(basePath +  "/hotcode.vm", new File(projectPath, "hotcode.sh"));
+        copyFile(basePath +  "/debug-hotcode.vm", new File(projectPath, "debug-hotcode.sh"));
+    }
 	
 	protected InputStream getResouceAsStream(String name) {
 		return ClassUtil.getResourceAsStream(ProjectGenerator.class, name);

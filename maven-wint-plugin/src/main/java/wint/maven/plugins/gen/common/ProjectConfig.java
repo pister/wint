@@ -1,6 +1,8 @@
 package wint.maven.plugins.gen.common;
 
 public class ProjectConfig {
+
+    private String projectPath;
 	
 	private String groupId;
 	
@@ -280,5 +282,13 @@ public class ProjectConfig {
 
     public void setWintPluginVersion(String wintPluginVersion) {
         this.wintPluginVersion = wintPluginVersion;
+    }
+
+    public String getProjectPath() {
+        return projectPath;
+    }
+
+    public void setProjectPath(String projectPath) {
+        this.projectPath = projectPath;
     }
 }
