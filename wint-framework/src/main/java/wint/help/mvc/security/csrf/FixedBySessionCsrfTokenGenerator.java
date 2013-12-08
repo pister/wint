@@ -48,12 +48,7 @@ public class FixedBySessionCsrfTokenGenerator extends AbstractCsrfTokenGenerator
 	}
 	
 	private String genTokenInner() {
-		String value = MD5.encrypt(UUID.randomUUID().toString());
-		if (value.length() > 15) {
-			value = value.substring(0, 15);
-		}
-		long longValue = Long.parseLong(value, 16);
-		return MD5.encrypt(Long.toString(seq.incrementAndGet(), 36) + "_" + Long.toString(longValue, 36));
+		return MD5.encrypt(Long.toString(seq.incrementAndGet(), 36) + "_" + UUID.randomUUID().toString());
 	}
 	
 	
