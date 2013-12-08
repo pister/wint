@@ -29,6 +29,11 @@ public class CsrfTokenUtil {
         return getCurrentToken(WintContext.getFlowData(), DEFAULT_GROUP_NAME, DEFAULT_NAME);
     }
 
+    public static String tokenHtml() {
+        String tokenName = WintContext.getFlowData().getServiceContext().getConfiguration().getProperties().getString(Constants.PropertyKeys.CSRF_TOKEN_NAME, Constants.Defaults.CSRF_TOKEN_NAME);
+        return "<input type=\"hidden\" name=\""+ tokenName +"\" value=\""+  token() +"\" />";
+    }
+
     public static String nextToken() {
         return getNextToken(WintContext.getFlowData(), DEFAULT_GROUP_NAME, DEFAULT_NAME);
     }

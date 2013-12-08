@@ -53,7 +53,7 @@ public class FixedBySessionCsrfTokenGenerator extends AbstractCsrfTokenGenerator
 			value = value.substring(0, 15);
 		}
 		long longValue = Long.parseLong(value, 16);
-		return Long.toString(seq.incrementAndGet(), 36) + "_" + Long.toString(longValue, 36);
+		return MD5.encrypt(Long.toString(seq.incrementAndGet(), 36) + "_" + Long.toString(longValue, 36));
 	}
 	
 	
