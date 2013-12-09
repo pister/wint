@@ -12,11 +12,22 @@ import wint.lang.utils.Tuple;
  */
 public class UrlBrokerUtil {
 
+
+    private static final String HTTPS = "https://";
+
+    private static final String HTTP = "http://";
+
     public static Tuple<String /*path*/, String /*target*/> parseTarget(String path, String target, String pathAsTargetName) {
         if (pathAsTargetName.equals(target)) {
             int lastSlashPos = path.lastIndexOf("/");
             if (lastSlashPos < 0) {
                 // 没有/的情况
+                return new Tuple<String, String>(path, StringUtil.EMPTY);
+            }
+            if (path.startsWith(HTTP) && lastSlashPos < HTTP.length()) {
+                return new Tuple<String, String>(path, StringUtil.EMPTY);
+            }
+            if (path.startsWith(HTTPS) && lastSlashPos < HTTPS.length()) {
                 return new Tuple<String, String>(path, StringUtil.EMPTY);
             }
             int firstSlash = target.indexOf("/");
