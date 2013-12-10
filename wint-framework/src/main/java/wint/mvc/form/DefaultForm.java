@@ -59,8 +59,13 @@ public class DefaultForm implements Form {
 		if (isHeld) {
 			return;
 		}
-		ResultRunTimeForm resultFormFactory = new ResultRunTimeForm(this, object);
-		FormFactory formFactory = (FormFactory)flowData.getInnerContext().get(Constants.Form.TEMPLATE_FORM_FACTORY_NAME);
+        FormFactory formFactory = (FormFactory)flowData.getInnerContext().get(Constants.Form.TEMPLATE_FORM_FACTORY_NAME);
+        if (formFactory.getForm(getName()) != null) {
+            // 已经有form设置了，不再进行覆盖
+            isHeld = true;
+            return;
+        }
+        ResultRunTimeForm resultFormFactory = new ResultRunTimeForm(this, object);
 		formFactory.addResultForm(getName(), resultFormFactory);
 		isHeld = true;
 	}
