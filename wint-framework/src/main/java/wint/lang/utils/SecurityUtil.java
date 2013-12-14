@@ -17,7 +17,11 @@ public class SecurityUtil {
 	public static Render rawText(Object o) {
 		return rawContent(o);
 	}
-	
+
+	public static Render raw(Object o) {
+		return rawContent(o);
+	}
+
 	public static Render escapeHtml(Object o) {
 		return new HtmlFilterRender(o);
 	}
@@ -49,5 +53,9 @@ public class SecurityUtil {
 	public static String getCsrfToken() {
 		return CsrfTokenUtil.token();
 	}
+
+    public static Render tokenHtml() {
+        return rawContent(CsrfTokenUtil.tokenHtml());
+    }
 
 }
