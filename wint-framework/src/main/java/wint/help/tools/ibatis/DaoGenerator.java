@@ -16,6 +16,7 @@ import java.util.*;
 public class DaoGenerator {
 
     private static final Map<Class<?>, String> typeDefaults = new HashMap<Class<?>, String>();
+    private static final Map<Class<?>, String> type2sql = new HashMap<Class<?>, String>();
 
     static {
         typeDefaults.put(Boolean.TYPE, "false");
@@ -34,6 +35,13 @@ public class DaoGenerator {
         typeDefaults.put(Date.class, "new java.util.Date()");
         typeDefaults.put(java.sql.Date.class, "new java.sql.Date(new java.util.Date().getTime())");
         typeDefaults.put(Timestamp.class, "new java.sql.Timestamp(new Date().getTime())");
+
+
+        type2sql.put(Integer.TYPE, "int");
+        type2sql.put(Integer.class, "int");
+        type2sql.put(Long.TYPE, "bigint");
+        type2sql.put(Long.class, "bigint");
+        type2sql.put(String.class, "varchar(?)");
     }
 
 	private MappingPolicy mappingPolicy = new DefaultMappingPolicy();
@@ -267,7 +275,7 @@ public class DaoGenerator {
 		}
 		return null;
 	}
-	
+
 	public void genCreateTableSql(Class<?> clazz, Writer out, boolean notNull) {
 		Map<String, Object> context = MapUtil.newHashMap();
 		String alias = DaoGenUtil.getDoAlias(clazz);
@@ -281,6 +289,12 @@ public class DaoGenerator {
 		context.put("tableName", tableName);
 		context.put("idNameColumn", StringUtil.camelToUnderLineString(idName));
 		context.put("encoding", encoding);
+
+        MagicClass mc = MagicClass.wrap(clazz);
+        Property idProperty = mc.getProperty(idName);
+
+
+        context.put("idType", type2sql.get(idProperty.getPropertyClass().getTargetClass()));
 		context.put("mysqlEncoding", StringUtil.replace(encoding, "-", ""));
 		
 		IbatisResult deletedIbatisResult = new IbatisResult();

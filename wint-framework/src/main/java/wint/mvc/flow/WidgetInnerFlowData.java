@@ -179,12 +179,4 @@ public class WidgetInnerFlowData implements InnerFlowData {
 	public void setModule(Module module) {
 		this.widgetModule = module;
 	}
-
-    public Arguments getPathContextArguments() {
-        return innerFlowData.getPathContextArguments();
-    }
-
-    public Parameters getPathContextPetermeters() {
-        return innerFlowData.getPathContextPetermeters();
-    }
 }

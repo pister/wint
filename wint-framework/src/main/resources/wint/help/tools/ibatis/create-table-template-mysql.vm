@@ -2,6 +2,6 @@
 DROP TABLE IF EXISTS `${tableName}`;
 
 CREATE TABLE `${tableName}` (
-`${idNameColumn}` bigint(20) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+`${idNameColumn}` ${idType} NOT NULL PRIMARY KEY AUTO_INCREMENT,
 ${columns}
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=${mysqlEncoding};

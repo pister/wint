@@ -150,8 +150,4 @@ public interface FlowData {
 
     void setLayout(String layout);
 
-    Arguments getPathContextArguments();
-
-    Parameters getPathContextPetermeters();
-
 }
