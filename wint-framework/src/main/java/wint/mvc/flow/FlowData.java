@@ -150,4 +150,6 @@ public interface FlowData {
 
     void setLayout(String layout);
 
+    String getRemoteAddr();
+
 }
