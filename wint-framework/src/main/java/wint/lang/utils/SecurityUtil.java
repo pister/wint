@@ -58,4 +58,8 @@ public class SecurityUtil {
         return rawContent(CsrfTokenUtil.tokenHtml());
     }
 
+    public static Render getTokenHtml() {
+        return tokenHtml();
+    }
+
 }

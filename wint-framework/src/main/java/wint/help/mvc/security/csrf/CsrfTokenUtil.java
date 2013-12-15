@@ -15,7 +15,9 @@ public class CsrfTokenUtil {
 
     public static final String DEFAULT_GROUP_NAME = "wint_group";
 
-    public static final String DEFAULT_NAME = "wint_csrf";
+    private static String getDefaultTokenName() {
+        return WintContext.getServiceContext().getConfiguration().getProperties().getString(Constants.PropertyKeys.CSRF_TOKEN_NAME, Constants.Defaults.CSRF_TOKEN_NAME);
+    }
 
     public static String getCurrentToken(FlowData flowData, String groupName, String tokenName) {
         return csrfTokenGenerator.currentToken(flowData, groupName, tokenName);
@@ -26,25 +28,23 @@ public class CsrfTokenUtil {
     }
 
     public static String token() {
-        return getCurrentToken(WintContext.getFlowData(), DEFAULT_GROUP_NAME, DEFAULT_NAME);
+        return getCurrentToken(WintContext.getFlowData(), DEFAULT_GROUP_NAME, getDefaultTokenName());
     }
 
     public static String tokenHtml() {
-        String tokenName = WintContext.getFlowData().getServiceContext().getConfiguration().getProperties().getString(Constants.PropertyKeys.CSRF_TOKEN_NAME, Constants.Defaults.CSRF_TOKEN_NAME);
-        return "<input type=\"hidden\" name=\""+ tokenName +"\" value=\""+  token() +"\" />";
+        return "<input type=\"hidden\" name=\"" + getDefaultTokenName() + "\" value=\"" + token() + "\" />";
     }
 
     public static String nextToken() {
-        return getNextToken(WintContext.getFlowData(), DEFAULT_GROUP_NAME, DEFAULT_NAME);
+        return getNextToken(WintContext.getFlowData(), DEFAULT_GROUP_NAME, getDefaultTokenName());
     }
 
     public static void clearToken() {
-        clearToken(WintContext.getFlowData(), DEFAULT_GROUP_NAME, DEFAULT_NAME);
+        clearToken(WintContext.getFlowData(), DEFAULT_GROUP_NAME, getDefaultTokenName());
     }
 
     public static boolean check(FlowData flowData) {
-        String tokenName = flowData.getServiceContext().getConfiguration().getProperties().getString(Constants.PropertyKeys.CSRF_TOKEN_NAME, Constants.Defaults.CSRF_TOKEN_NAME);
-        return checkCsrfByParameter(flowData, tokenName);
+        return checkCsrfByParameter(flowData, getDefaultTokenName());
     }
 
     public static boolean checkCsrfByParameter(FlowData flowData, String paramName) {
@@ -52,7 +52,7 @@ public class CsrfTokenUtil {
         if (StringUtil.isEmpty(value)) {
             return false;
         }
-        return checkCsrfToken(flowData, DEFAULT_GROUP_NAME, DEFAULT_NAME, value);
+        return checkCsrfToken(flowData, DEFAULT_GROUP_NAME, getDefaultTokenName(), value);
     }
 
     public static boolean checkCsrfToken(FlowData flowData, String groupName, String tokenName, String inputValue) {

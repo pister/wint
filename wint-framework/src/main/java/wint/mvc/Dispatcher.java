@@ -17,12 +17,14 @@ import wint.core.io.resource.Resource;
 import wint.core.service.ServiceContext;
 import wint.core.service.env.Environment;
 import wint.core.service.supports.ServiceContextSupport;
+import wint.help.mvc.security.csrf.CsrfTokenUtil;
 import wint.lang.WintException;
 import wint.lang.magic.MagicMap;
 import wint.lang.magic.config.MagicConfig;
 import wint.lang.magic.config.MagicType;
 import wint.lang.misc.profiler.Profiler;
 import wint.lang.utils.IoUtil;
+import wint.lang.utils.SecurityUtil;
 import wint.mvc.flow.FlowDataService;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.flow.StatusCodes;
@@ -62,8 +64,8 @@ public class Dispatcher {
 		String objectMagicType = configuration.getProperties().getString(Constants.PropertyKeys.OBJECT_MAGIC_TYPE, Constants.Defaults.OBJECT_MAGIC_TYPE);
 		
 		charset = configuration.getProperties().getString(PropertyKeys.CHARSET_ENCODING, Constants.Defaults.CHARSET_ENCODING);
-		
-		MagicType magicType = MagicType.fromName(objectMagicType);
+
+        MagicType magicType = MagicType.fromName(objectMagicType);
 		MagicConfig.getMagicConfig().setMagicType(magicType);
 		String magicName = MagicConfig.getMagicConfig().getMagicFactory().getName();
 		
