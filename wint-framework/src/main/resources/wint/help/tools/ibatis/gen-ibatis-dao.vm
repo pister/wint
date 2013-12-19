@@ -13,12 +13,12 @@ public class ${className} extends ReadWriteSqlMapClientDaoSupport implements ${d
 		return (${idTypeWrapper})this.getSqlMapClientTemplate().insert("${namespace}.create", ${paramName});
 	}
 
-	public void delete(${idType} id) {
-		this.getSqlMapClientTemplate().update("${namespace}.delete", id);
+	public int delete(${idType} id) {
+		return this.getSqlMapClientTemplate().update("${namespace}.delete", id);
 	}
 
-	public void update(${domainName} ${paramName}) {
-		this.getSqlMapClientTemplate().update("${namespace}.update", ${paramName});
+	public int update(${domainName} ${paramName}) {
+		return this.getSqlMapClientTemplate().update("${namespace}.update", ${paramName});
 	}
 
 	public ${domainName} queryById(${idType} id) {

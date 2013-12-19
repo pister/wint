@@ -9,9 +9,9 @@ public interface ${className} {
 
 	${idType} create(${domainName} ${paramName});
 
-	void delete(${idType} id);
+	int delete(${idType} id);
 
-	void update(${domainName} ${paramName});
+    int update(${domainName} ${paramName});
 
 	${domainName} queryById(${idType} id);
 
