@@ -186,7 +186,7 @@ public class ServletFlowData implements InnerFlowData {
         UrlBrokerService urlBrokerService = serviceContext.getService(UrlBrokerService.class);
         UrlModule urModule = urlBrokerService.getUrlModules().get(urlModuleName);
         if (urModule == null) {
-            return null;
+            throw new FlowDataException("can not find url module:" + urlModuleName);
         }
         UrlBroker urlBroker = urModule.setTarget(target);
         this.sendToLocation = urlBroker;
@@ -196,8 +196,11 @@ public class ServletFlowData implements InnerFlowData {
 
     public UrlBroker forkUrl(String urlModuleName, String target) {
         UrlBrokerService urlBrokerService = serviceContext.getService(UrlBrokerService.class);
-        UrlModule urModule = urlBrokerService.getUrlModules().get(urlModuleName);
-        UrlBroker urlBroker = urModule.setTarget(target);
+        UrlModule urlModule = urlBrokerService.getUrlModules().get(urlModuleName);
+        if (urlModule == null) {
+            throw new FlowDataException("can not find url module:" + urlModuleName);
+        }
+        UrlBroker urlBroker = urlModule.setTarget(target);
         return urlBroker;
     }
 
