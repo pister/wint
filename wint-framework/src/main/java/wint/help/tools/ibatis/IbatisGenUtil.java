@@ -5,7 +5,7 @@ import java.io.OutputStreamWriter;
 public class IbatisGenUtil {
 	
 /*	public static void genToConsole(String prefix, Class<?> clazz) {
-		DaoGenerator ibatisGenerator = new DaoGenerator();
+		SourceGenerator ibatisGenerator = new SourceGenerator();
 		ibatisGenerator.setTablePrefix(prefix);
 		ibatisGenerator.genToConsole(clazz);
 	}*/
@@ -29,53 +29,53 @@ public class IbatisGenUtil {
 	}
 	
 	public static void genSqlMapToConsole(String prefix, Class<?> clazz, String idName) {
-		DaoGenerator daoGenerator = new DaoGenerator();
-		daoGenerator.setIdName(idName);
-		daoGenerator.setTablePrefix(prefix);
+		SourceGenerator sourceGenerator = new SourceGenerator();
+		sourceGenerator.setIdName(idName);
+		sourceGenerator.setTablePrefix(prefix);
         System.out.println();
         System.out.println();
         System.out.println();
-		daoGenerator.genSqlMap(clazz,  new OutputStreamWriter(System.out));
+		sourceGenerator.genSqlMap(clazz,  new OutputStreamWriter(System.out));
 	}
 	
 	public static void genCreateTableSqlToConsole(String prefix, Class<?> clazz, boolean notNull, String idName) {
-		DaoGenerator daoGenerator = new DaoGenerator();
-		daoGenerator.setIdName(idName);
-		daoGenerator.setTablePrefix(prefix);
+		SourceGenerator sourceGenerator = new SourceGenerator();
+		sourceGenerator.setIdName(idName);
+		sourceGenerator.setTablePrefix(prefix);
         System.out.println();
         System.out.println();
         System.out.println();
-		daoGenerator.genCreateTableSql(clazz,  new OutputStreamWriter(System.out), notNull);
+		sourceGenerator.genCreateTableSql(clazz,  new OutputStreamWriter(System.out), notNull);
 	}
 	
 	public static void genIbatisDaoToConsole(String prefix, Class<?> clazz, String idName) {
-		DaoGenerator daoGenerator = new DaoGenerator();
-		daoGenerator.setIdName(idName);
-		daoGenerator.setTablePrefix(prefix);
+		SourceGenerator sourceGenerator = new SourceGenerator();
+		sourceGenerator.setIdName(idName);
+		sourceGenerator.setTablePrefix(prefix);
         System.out.println();
         System.out.println();
         System.out.println();
-		daoGenerator.genIbatisDao(clazz,  new OutputStreamWriter(System.out), null);
+		sourceGenerator.genIbatisDao(clazz,  new OutputStreamWriter(System.out), null);
 	}
 
     public static void genDaoToConsole(String prefix, Class<?> clazz, String idName) {
-        DaoGenerator daoGenerator = new DaoGenerator();
-        daoGenerator.setIdName(idName);
-        daoGenerator.setTablePrefix(prefix);
+        SourceGenerator sourceGenerator = new SourceGenerator();
+        sourceGenerator.setIdName(idName);
+        sourceGenerator.setTablePrefix(prefix);
         System.out.println();
         System.out.println();
         System.out.println();
-        daoGenerator.genDAO(clazz,  new OutputStreamWriter(System.out));
+        sourceGenerator.genDAO(clazz,  new OutputStreamWriter(System.out));
     }
 
     public static void genTestsToConsole(String prefix, Class<?> clazz, String idName) {
-        DaoGenerator daoGenerator = new DaoGenerator();
-        daoGenerator.setIdName(idName);
-        daoGenerator.setTablePrefix(prefix);
+        SourceGenerator sourceGenerator = new SourceGenerator();
+        sourceGenerator.setIdName(idName);
+        sourceGenerator.setTablePrefix(prefix);
         System.out.println();
         System.out.println();
         System.out.println();
-        daoGenerator.genDaoTests(clazz,  new OutputStreamWriter(System.out));
+        sourceGenerator.genDaoTests(clazz,  new OutputStreamWriter(System.out));
     }
 
 }

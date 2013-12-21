@@ -4,7 +4,6 @@ import wint.help.tools.ibatis.gen.*;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.Property;
 import wint.lang.template.SimpleVelocityEngine;
-import wint.lang.utils.ClassUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.SystemUtil;
@@ -13,7 +12,7 @@ import java.io.*;
 import java.sql.Timestamp;
 import java.util.*;
 
-public class DaoGenerator {
+public class SourceGenerator {
 
     private static final Map<Class<?>, String> typeDefaults = new HashMap<Class<?>, String>();
     private static final Map<Class<?>, String> type2sql = new HashMap<Class<?>, String>();
@@ -67,6 +66,8 @@ public class DaoGenerator {
 	private String genDaoTemplateName = "gen-dao.vm";
 
 	private String genTestsTemplateName = "gen-tests.vm";
+
+	private String genFormTemplateName = "gen-form-template.vm";
 
 	public String setTablePrefix(String prefix) {
 		String ret = mappingPolicy.getTablePrefix();
@@ -171,9 +172,40 @@ public class DaoGenerator {
     }
 
     private String getTestValueForType(Class<?> type) {
-        String value = DaoGenerator.typeDefaults.get(type);
+        String value = SourceGenerator.typeDefaults.get(type);
         return value;
     }
+
+    public void genForm(Class<?> clazz, Writer out) {
+        DaoMetaInfo daoMetaInfo = new DaoMetaInfo(clazz, idName);
+        Map<String, Object> context = MapUtil.newHashMap();
+
+
+        MagicClass magicClass = MagicClass.wrap(clazz);
+        Map<String, Property> propertyMap = magicClass.getProperties();
+
+        List<FormField> fields = new ArrayList<FormField>();
+        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
+            Property property = entry.getValue();
+            String name = entry.getKey();
+            if (!property.isWritable() || !property.isReadable()) {
+                continue;
+            }
+            if (name.equals(idName) || name.equals(gmtModifiedName) || name.equals(gmtCreateName)) {
+                continue;
+            }
+
+            fields.add(new FormField(name, property.getPropertyClass().getTargetClass()));
+        }
+
+        context.put("name", daoMetaInfo.getDoAlias());
+        context.put("fields", fields);
+
+        genFromTemplate(context, out, genFormTemplateName);
+
+    }
+
+
 
     public DaoMetaInfo genDaoTests(Class<?> clazz, Writer out) {
         DaoMetaInfo daoMetaInfo = new DaoMetaInfo(clazz, idName);
@@ -219,6 +251,7 @@ public class DaoGenerator {
         return daoMetaInfo;
     }
 
+
 	public DaoMetaInfo genIbatisDao(Class<?> clazz, Writer out, String implSuffix) {
         DaoMetaInfo daoMetaInfo = new DaoMetaInfo(clazz, idName);
         if (implSuffix == null) {
@@ -261,7 +294,7 @@ public class DaoGenerator {
 	}
 	
 	private Reader getTemplateReader(String templateName) {
-		InputStream is = DaoGenerator.class.getResourceAsStream(templateName);
+		InputStream is = SourceGenerator.class.getResourceAsStream(templateName);
 		if (is != null) {
 			return new InputStreamReader(is);
 		}
@@ -269,7 +302,7 @@ public class DaoGenerator {
 		if (is != null) {
 			return new InputStreamReader(is);
 		}
-		is = DaoGenerator.class.getClassLoader().getResourceAsStream(templateName);
+		is = SourceGenerator.class.getClassLoader().getResourceAsStream(templateName);
 		if (is != null) {
 			return new InputStreamReader(is);
 		}

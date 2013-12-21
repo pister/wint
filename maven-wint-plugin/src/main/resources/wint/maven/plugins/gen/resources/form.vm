@@ -3,12 +3,6 @@
 <forms>
 
 <!--  
-	<form name="token.support">
-		<field name="xToken" >
-			<validator type="csrf" message="会话已失效，请重新刷新后再试。"></validator>
-		</field>
-	</form>
-
 	<resource file="forms/one.xml" />
 	<resource file="forms/two.xml" />
 -->
