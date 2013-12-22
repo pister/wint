@@ -90,15 +90,31 @@ public class ProjectGenerator {
 		
 		File bizPackage = new File(javaPackage, "biz");
 		bizPackage.mkdirs();
+
+        File aoPackage = new File(bizPackage, "ao");
+        aoPackage.mkdirs();
+
+        File dalPackage = new File(bizPackage, "dal");
+        dalPackage.mkdirs();
+
+        File domainPackage = new File(dalPackage, "domain");
+        domainPackage.mkdirs();
 		
 		File webPackage = new File(javaPackage, "web");
 		webPackage.mkdirs();
 		
 		File actionPackage = new File(webPackage, "action");
 		actionPackage.mkdirs();
+
+        File commonPackage = new File(webPackage, "common");
+        commonPackage.mkdirs();
+
+        File basePackage = new File(commonPackage, "base");
+        basePackage.mkdirs();
 		
 		renderFile(basePath +  "/src/Index-java.vm", new File(actionPackage, "Index.java"), projectConfig);
-		
+		renderFile(basePath +  "/src/BaseAction-java.vm", new File(basePackage, "BaseAction.java"), projectConfig);
+
 	}
 	
 	private void genScripts(File projectPath, ProjectConfig projectConfig) throws IOException {

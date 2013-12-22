@@ -20,6 +20,16 @@
 
     </form>
 
+    <form name="$!{name}.create" extends="$!{name}.base">
+
+    </form>
+
+    <form name="$!{name}.edit" extends="$!{name}.base">
+        <field name="${idName}">
+            <validator type="required" message="${idName} can not be empty!"></validator>
+        </validator>
+    </form>
+
     <!--
         embed validators are:
 

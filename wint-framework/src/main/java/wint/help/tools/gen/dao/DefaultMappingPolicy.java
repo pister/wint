@@ -1,4 +1,4 @@
-package wint.help.tools.ibatis.gen;
+package wint.help.tools.gen.dao;
 
 import wint.lang.magic.Property;
 import wint.lang.utils.StringUtil;

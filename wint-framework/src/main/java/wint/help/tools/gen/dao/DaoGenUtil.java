@@ -1,11 +1,27 @@
-package wint.help.tools.ibatis.gen;
+package wint.help.tools.gen.dao;
 
+import wint.lang.magic.MagicClass;
+import wint.lang.magic.Property;
+import wint.lang.template.SimpleVelocityEngine;
 import wint.lang.utils.ClassUtil;
+import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.SystemUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Writer;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * User: longyi

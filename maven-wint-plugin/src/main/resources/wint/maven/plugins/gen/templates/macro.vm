@@ -1,7 +1,7 @@
-#macro(errorMessage, $str)
-	#if( "$!str" != "")
+\#macro(errorMessageDiv, $str)
+	\#if( "$!str" != "")
 		<div class="error-tip">
             ${str}
         </div>
-	#end
-#end
+	\#end
+\#end

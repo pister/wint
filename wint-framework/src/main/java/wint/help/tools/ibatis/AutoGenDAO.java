@@ -1,7 +1,10 @@
 package wint.help.tools.ibatis;
 
-import wint.help.tools.ibatis.gen.DaoGenUtil;
-import wint.help.tools.ibatis.gen.DaoMetaInfo;
+import wint.help.tools.gen.common.BaseAutoGen;
+import wint.help.tools.gen.common.FileWriter;
+import wint.help.tools.gen.dao.DaoGenUtil;
+import wint.help.tools.gen.common.GenMetaInfo;
+import wint.help.tools.gen.common.SourceGenerator;
 import wint.lang.utils.FileUtil;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.SystemUtil;
@@ -10,9 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
-import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,19 +21,13 @@ import java.util.regex.Pattern;
  * Time: 上午7:36
  * To change this template use File | Settings | File Templates.
  */
-public class AutoGenDAO {
+public class AutoGenDAO extends BaseAutoGen {
 
     private String sqlmapRootPath = "src/main/resources/sql-map.xml";
 
     private String sqlmapPath = "src/main/resources/sqlmaps";
 
     private String daoPath = "src/main/resources/beans/biz-dao.xml";
-
-    private String formPath = "src/main/resources/forms";
-
-    private String javaMainSrc = "src/main/java";
-
-    private String javaTestSrc = "src/test/java";
 
     private String daoSuffix = "Ibatis";
 
@@ -43,65 +37,6 @@ public class AutoGenDAO {
         this.prefix = prefix;
     }
 
-    private File getProjectBasePath(Class<?> clazz) {
-        URL url = clazz.getResource("/");
-        String fileForTarget = url.getFile();
-        String basePath = StringUtil.getLastBefore(fileForTarget, "/target/");
-        File baseFile = new File(basePath);
-        if (!baseFile.exists() || !baseFile.isDirectory()) {
-            throw new RuntimeException("can not file dir: " + basePath);
-        }
-        return baseFile;
-    }
-
-    private String getSqlmapName(Class<?> clazz) {
-        String name = clazz.getSimpleName();
-        if (name.endsWith("DO") || name.endsWith("Do")) {
-            return name.substring(0, name.length() - 2);
-        }
-        return name;
-    }
-
-    private void log(String msg) {
-        System.out.println("======= " + msg);
-    }
-
-    private void genForm(SourceGenerator sourceGenerator, Class<?> clazz, File baseFile, FileWriter fileWriter) {
-        log("generating form...");
-        File formDir = new File(baseFile, formPath);
-        StringWriter formContentWriter = new StringWriter();
-        sourceGenerator.genForm(clazz, formContentWriter);
-        String alias = DaoGenUtil.getDoAlias(clazz);
-        String formFileName = alias + "_autogen.xml";
-
-        if (!formDir.exists()) {
-            formDir.mkdirs();
-        }
-        File formFile = new File(formDir, formFileName);
-        fileWriter.writeToFile(formContentWriter.toString(), formFile);
-        log("generate form finish");
-    }
-
-    private void addNodeToPath(File xml, String parentEndPattern, String nodeStr) {
-        try {
-            String content = FileUtil.readAsString(xml);
-            Pattern pattern = Pattern.compile(parentEndPattern, Pattern.CASE_INSENSITIVE);
-            Matcher m = pattern.matcher(content);
-            String newContent = m.replaceAll(nodeStr + "$1");
-            FileUtil.writeContent(xml, newContent);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void addSpringBean(File beanConfigPath, String beanClassName, String beanId) throws IOException {
-        String nodeStr = "<bean id=\"" + beanId + "\" class=\"" + beanClassName + "\" />";
-        if (checkExist(beanConfigPath, nodeStr)) {
-            return;
-        }
-        nodeStr = "\t" + nodeStr + SystemUtil.LINE_SEPARATOR;
-        addNodeToPath(beanConfigPath, "(</beans>)", nodeStr);
-    }
 
     private String getBeanId(String beanClassName) {
         String className = StringUtil.getLastAfter(beanClassName, ".");
@@ -129,10 +64,10 @@ public class AutoGenDAO {
     private void genTests(SourceGenerator sourceGenerator, Class<?> clazz, File baseFile, FileWriter fileWriter) throws IOException {
         log("generating dao tests");
         StringWriter stringWriter = new StringWriter();
-        DaoMetaInfo daoMetaInfo = sourceGenerator.genDaoTests(clazz, stringWriter);
-        String name = daoMetaInfo.getTestDaoFullClassName();
+        GenMetaInfo genMetaInfo = sourceGenerator.genDaoTests(clazz, stringWriter);
+        String name = genMetaInfo.getTestDaoFullClassName();
         String content = stringWriter.toString();
-        File javaTestSrcPath = new File(baseFile, javaTestSrc);
+        File javaTestSrcPath = new File(baseFile, JAVA_TEST_SRC);
         genJavaSrc(name, content, javaTestSrcPath, fileWriter);
         log("generate dao tests finish");
     }
@@ -175,8 +110,8 @@ public class AutoGenDAO {
         log("generating sqlmap");
         File sqlmapDir = new File(baseFile, sqlmapPath);
         StringWriter sqlmapStringWriter = new StringWriter();
-        DaoMetaInfo daoMetaInfo = sourceGenerator.genSqlMap(clazz, sqlmapStringWriter);
-        String sqlmapFileName = daoMetaInfo.getDoAlias() + "-sqlmap.xml";
+        GenMetaInfo genMetaInfo = sourceGenerator.genSqlMap(clazz, sqlmapStringWriter);
+        String sqlmapFileName = genMetaInfo.getDoAlias() + "-sqlmap.xml";
         if (!sqlmapDir.exists()) {
             sqlmapDir.mkdirs();
         }
@@ -187,23 +122,11 @@ public class AutoGenDAO {
         addSqlmapToRootFile(baseFile, sqlmapFileName);
     }
 
-    private void genJavaSrc(String name, String content, File javaMainSrcPath, FileWriter fileWriter) {
-        String className = StringUtil.getLastAfter(name, ".");
-        String packageName = StringUtil.getLastBefore(name, ".");
-        String relativeDir = packageName.replace('.', File.separatorChar);
-        File javaPackage = new File(javaMainSrcPath, relativeDir);
-        if (!javaPackage.exists()) {
-            javaPackage.mkdirs();
-        }
-        File javaFile = new File(javaPackage, className + ".java");
-        fileWriter.writeToFile(content, javaFile);
-    }
-
     private void genDAO(SourceGenerator sourceGenerator, Class<?> clazz, File baseFile, FileWriter fileWriter, File javaMainSrcPath) {
         log("generating dao interface");
         StringWriter stringWriter = new StringWriter();
-        DaoMetaInfo daoMetaInfo = sourceGenerator.genDAO(clazz, stringWriter);
-        String name = daoMetaInfo.getDaoFullClassName();
+        GenMetaInfo genMetaInfo = sourceGenerator.genDAO(clazz, stringWriter);
+        String name = genMetaInfo.getDaoFullClassName();
         String content = stringWriter.toString();
         genJavaSrc(name, content, javaMainSrcPath, fileWriter);
         log("generate dao interface finish");
@@ -212,8 +135,8 @@ public class AutoGenDAO {
     private void genIbatisDAO(SourceGenerator sourceGenerator, Class<?> clazz, File baseFile, FileWriter fileWriter, File javaMainSrcPath) throws IOException {
         log("generating ibatis dao");
         StringWriter stringWriter = new StringWriter();
-        DaoMetaInfo daoMetaInfo = sourceGenerator.genIbatisDao(clazz, stringWriter, daoSuffix);
-        String name = daoMetaInfo.getIbatisFullClassName();
+        GenMetaInfo genMetaInfo = sourceGenerator.genIbatisDao(clazz, stringWriter, daoSuffix);
+        String name = genMetaInfo.getIbatisFullClassName();
         String content = stringWriter.toString();
 
         genJavaSrc(name, content, javaMainSrcPath, fileWriter);
@@ -239,14 +162,13 @@ public class AutoGenDAO {
         sourceGenerator.setIdName(idName);
         sourceGenerator.setTablePrefix(prefix);
 
-        File javaMainSrcPath = new File(baseFile, javaMainSrc);
+        File javaMainSrcPath = new File(baseFile, JAVA_MAIN_SRC);
 
         try {
             genSqlmap(sourceGenerator, clazz, baseFile, fileWriter);
             genDAO(sourceGenerator, clazz, baseFile, fileWriter, javaMainSrcPath);
             genIbatisDAO(sourceGenerator, clazz, baseFile, fileWriter, javaMainSrcPath);
             genTests(sourceGenerator, clazz, baseFile, fileWriter);
-            genForm(sourceGenerator, clazz, baseFile, fileWriter);
             printSqlScripts(sourceGenerator, clazz);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -262,35 +184,11 @@ public class AutoGenDAO {
     }
 
     public void gen(Class<?> clazz, String idName) {
-        genImpl(clazz, idName, new FileWriter() {
-            public void writeToFile(String content, File filename) {
-                if (filename.exists()) {
-                    return;
-                }
-                forceWriteToFile(content, filename);
-            }
-        });
+        genImpl(clazz, idName, genWriter());
     }
 
     public void forceGen(Class<?> clazz, String idName) {
-        genImpl(clazz, idName, new FileWriter() {
-            public void writeToFile(String content, File filename) {
-                forceWriteToFile(content, filename);
-            }
-        });
-    }
-
-    private void forceWriteToFile(String content, File filename) {
-        try {
-            FileUtil.writeContent(filename, content);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    static interface FileWriter {
-        void writeToFile(String content, File filename);
+        genImpl(clazz, idName, forceGenWriter());
     }
 
     public void setDaoPath(String daoPath) {

@@ -1,4 +1,4 @@
-package wint.help.tools.ibatis.gen;
+package wint.help.tools.gen.dao;
 
 import wint.lang.utils.MapUtil;
 
@@ -50,6 +50,10 @@ public class FormField {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMessage() {
+        return "#errorMessageDiv($!form."+ name +".message)";
     }
 
     public String getType() {

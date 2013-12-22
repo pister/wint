@@ -1,6 +1,8 @@
 package ${thisPackage};
 
+import java.util.List;
 import ${doFullClassName};
+import wint.help.biz.query.BaseQuery;
 
 /**
 * this file is auto generate.
@@ -15,4 +17,5 @@ public interface ${className} {
 
 	${domainName} queryById(${idType} id);
 
+    List<${domainName}> queryForPage(BaseQuery baseQuery);
 }

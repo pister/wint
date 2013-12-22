@@ -1,0 +1,65 @@
+package ${thisPackage};
+
+import wint.mvc.flow.FlowData;
+import wint.mvc.form.Form;
+import wint.mvc.module.annotations.Action;
+import wint.mvc.template.Context;
+import wint.help.biz.query.BaseQuery;
+import wint.help.biz.result.Result;
+import ${baseActionPackage}.BaseAction;
+import ${aoFullName};
+import ${domainFullName};
+
+/**
+* this file is auto generate.
+*/
+public class ${thisClassName} extends BaseAction {
+
+    private ${aoClassName} ${aoBeanName};
+
+    @Action (defaultTarget = "${baseActionTarget}/create")
+    public void doCreate(FlowData flowData, Context context) {
+        Form form = flowData.getForm("${formName}.create");
+        ${domainName} ${domainParam} = new ${domainName}();
+        if (!form.apply(${domainParam})) {
+            return;
+        }
+        Result result = ${aoBeanName}.create${domainUpper}(${domainParam});
+        if (result.isSuccess()) {
+            flowData.redirectTo("baseModule", "${baseActionTarget}/list");
+        } else {
+            this.handleErrorToCommon(result, flowData, context);
+        }
+    }
+
+    public void list(FlowData flowData, Context context) {
+        int page = flowData.getParameters().get${idTypeUpper}("page");
+        BaseQuery query = new BaseQuery();
+        query.setPageNo(page);
+        query.setPageSize(20);
+        Result result = ${aoBeanName}.viewList(query);
+        this.proccessResult(result, flowData, context);
+    }
+
+    public void detail(FlowData flowData, Context context) {
+        ${idType} id = flowData.getParameters().get${idTypeUpper}("id");
+        Result result = ${aoBeanName}.view${domainUpper}(id);
+        this.proccessResult(result, flowData, context);
+    }
+
+    public void doDelete(FlowData flowData, Context context) {
+        ${idType} id = flowData.getParameters().get${idTypeUpper}("id");
+        Result result = ${aoBeanName}.delete${domainUpper}(id);
+        if (result.isSuccess()) {
+            flowData.redirectTo("baseModule", "${baseActionTarget}/list");
+        } else {
+            this.handleErrorToCommon(result, flowData, context);
+        }
+    }
+
+
+    public void set${aoClassName}(${aoClassName} ${aoParamName}) {
+        this.${aoBeanName} = ${aoParamName};
+    }
+
+}

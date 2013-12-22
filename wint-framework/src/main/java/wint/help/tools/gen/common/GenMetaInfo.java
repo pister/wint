@@ -1,5 +1,6 @@
-package wint.help.tools.ibatis.gen;
+package wint.help.tools.gen.common;
 
+import wint.help.tools.gen.dao.DaoGenUtil;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.Property;
 import wint.lang.utils.ClassUtil;
@@ -10,7 +11,7 @@ import wint.lang.utils.StringUtil;
  * Date: 13-9-21
  * Time: 上午7:33
  */
-public class DaoMetaInfo {
+public class GenMetaInfo {
 
     private Class<?> targetDoClass;
 
@@ -52,13 +53,17 @@ public class DaoMetaInfo {
 
     private Class<?> idClass;
 
-    public DaoMetaInfo(Class<?> targetDoClass, String idName) {
+    public GenMetaInfo(Class<?> targetDoClass, String idName) {
         this.targetDoClass = targetDoClass;
         this.idName = idName;
         if (StringUtil.isEmpty(idName)) {
             this.idName = "id";
         }
         init(targetDoClass);
+    }
+
+    public String getBaseBizPackage() {
+        return StringUtil.getLastBefore(baseDalPackage, ".dal");
     }
 
     private void init(Class<?> targetDoClass) {

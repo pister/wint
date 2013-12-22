@@ -1,0 +1,20 @@
+package ${thisPackage};
+
+import wint.help.biz.query.BaseQuery;
+import wint.help.biz.result.Result;
+import ${domainFullName};
+
+/**
+* this file is auto generate.
+*/
+public interface ${thisClassName} {
+
+    Result create${domainUpper}(${domainName} ${domainParam});
+
+    Result view${domainUpper}(${idType} id);
+
+    Result viewList(BaseQuery query);
+
+    Result delete${domainUpper}(${idType} id);
+
+}

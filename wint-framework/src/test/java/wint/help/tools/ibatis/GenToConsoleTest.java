@@ -2,6 +2,7 @@ package wint.help.tools.ibatis;
 
 import junit.framework.TestCase;
 import wint.demo.app.biz.domain.UserDO;
+import wint.help.tools.gen.dao.IbatisGenUtil;
 
 public class GenToConsoleTest extends TestCase {
 	

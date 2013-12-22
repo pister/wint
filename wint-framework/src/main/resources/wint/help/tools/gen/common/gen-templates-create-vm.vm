@@ -1,0 +1,17 @@
+${formCreateDefine}
+<h1>create ${alias}</h1>
+
+<form action="$doCreateAction" method="post">
+    $securityUtil.tokenHtml
+    #foreach($field in $fields)
+    <div>
+        <input type="text" name="$form.${field.name}.name" value="$!form.${field.name}.value"/>
+        $field.message
+    </div>
+    #end
+
+    <div>
+        <input type="submit" value="create!" />
+    </div>
+
+</form>

@@ -1,28 +1,46 @@
 package ${thisPackage};
 
+import java.util.List;
+import java.util.ArrayList;
 import ${daoFullClassName};
 import ${doFullClassName};
 import wint.dal.ibatis.ReadWriteSqlMapClientDaoSupport;
+import wint.help.biz.query.BaseQuery;
 
 /**
 * this file is auto generate.
 */
 public class ${className} extends ReadWriteSqlMapClientDaoSupport implements ${daoClassName} {
 
+
+    @Override
 	public ${idType} create(${domainName} ${paramName}) {
 		return (${idTypeWrapper})this.getSqlMapClientTemplate().insert("${namespace}.create", ${paramName});
 	}
 
+    @Override
 	public int delete(${idType} id) {
 		return this.getSqlMapClientTemplate().update("${namespace}.delete", id);
 	}
 
+    @Override
 	public int update(${domainName} ${paramName}) {
 		return this.getSqlMapClientTemplate().update("${namespace}.update", ${paramName});
 	}
 
+    @Override
 	public ${domainName} queryById(${idType} id) {
 		return (${domainName})this.getSqlMapClientTemplate().queryForObject("${namespace}.queryById", id);
 	}
+
+    @Override
+    public List<${domainName}> queryForPage(BaseQuery baseQuery) {
+        int count = (Integer)this.getSqlMapClientTemplate().queryForObject("${namespace}.queryForPageCount", baseQuery);
+        if (count == 0) {
+            return new ArrayList<${domainName}>(0);
+        }
+        baseQuery.setTotalResultCount(count);
+        return (List<${domainName}>)this.getSqlMapClientTemplate().queryForList("${namespace}.queryForPage", baseQuery);
+    }
 
 }

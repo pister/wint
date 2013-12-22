@@ -45,5 +45,18 @@
 			${genUpdateNoId}
 		]]>
 	</update>
-	
+
+    <select id="queryForPageCount" resultClass="int">
+        select count(0) from ${tableName} t #if($logicDeleted) where t.deleted = 0 #end
+
+    </select>
+
+    <select id="queryForPage" resultMap="${mappingName}">
+        select
+        <include refid="${aliasDomainName}-full-columns" />
+        from ${tableName} t #if($logicDeleted) where t.deleted = 0 #end
+
+        limit #startRow#, #pageSize#
+    </select>
+
 </sqlMap>

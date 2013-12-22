@@ -1,0 +1,96 @@
+package ${thisPackage};
+
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import wint.help.biz.query.BaseQuery;
+import wint.help.biz.result.Result;
+import wint.help.biz.result.ResultSupport;
+import wint.help.biz.result.StringResultCode;
+import ${domainFullName};
+import ${aoFullName};
+import ${daoFullClassName};
+
+
+/**
+* this file is auto generate.
+*/
+public class ${thisClassName} implements ${aoClassName} {
+
+    private static final Logger log = LoggerFactory.getLogger(${thisClassName}.class);
+
+    private ${daoClassName} ${daoBeanName};
+
+    @Override
+    public Result create${domainUpper}(${domainName} ${domainParam}) {
+        Result result = new ResultSupport(false);
+        try {
+            // TODO add your biz code here
+
+            ${idType} id = ${daoBeanName}.create(${domainParam});
+            result.getModels().put("id", id);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("create${domainUpper} error", e);
+        }
+        return result;
+    }
+
+    @Override
+    public Result view${domainUpper}(${idType} id) {
+        Result result = new ResultSupport(false);
+        try {
+            // TODO add your biz code here
+
+            ${domainName} ${domainParam} = ${daoBeanName}.queryById(id);
+            if (${domainParam} == null) {
+                // here replace your result code like:
+                // result.setResultCode(${domainName}ResultCodes.${aliasAllUpper}_NOT_EXIST);
+                result.setResultCode(new StringResultCode("${alias} not exist"));
+                return result;
+            }
+
+            result.getModels().put("${domainParam}", ${domainParam});
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("view${domainUpper} error", e);
+        }
+        return result;
+    }
+
+    @Override
+    public Result viewList(BaseQuery query) {
+        Result result = new ResultSupport(false);
+        try {
+            // TODO add your biz code here
+
+            List<${domainName}> ${alias}s = ${daoBeanName}.queryForPage(query);
+
+            result.getModels().put("${alias}s", ${alias}s);
+            result.getModels().put("query", query);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("viewList error", e);
+        }
+        return result;
+    }
+
+    @Override
+    public Result delete${domainUpper}(${idType} id) {
+        Result result = new ResultSupport(false);
+        try {
+            // TODO add your biz code here
+
+            ${daoBeanName}.delete(id);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("delete${domainUpper} error", e);
+        }
+        return result;
+    }
+
+    public void set${daoClassName}(${daoClassName} ${daoParamName}) {
+        this.${daoBeanName} = ${daoParamName};
+    }
+
+}
