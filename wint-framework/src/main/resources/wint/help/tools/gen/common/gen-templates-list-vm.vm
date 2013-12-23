@@ -4,18 +4,18 @@
 <table>
     <tr>
         #foreach($field in $fields)
-        <th>$field.name</th>
+<th>$field.name</th>
         #end
-        <th>
+<th>
             operations
         </th>
     </tr>
     $foreachStart
         <tr>
             #foreach($field in $fields)
-            <td>$${alias}.${field.name}</td>
+<td>$${alias}.${field.name}</td>
             #end
-            <td>
+<td>
                 <a href="$editPageAction">edit...</a>
                 <a href="$detailPageAction">view detail</a>
                 <a href="$deleteDoAction" onclick="return confirm('It will deleting, Are you sure?')">delete</a>
