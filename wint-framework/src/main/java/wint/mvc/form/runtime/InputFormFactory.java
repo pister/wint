@@ -34,6 +34,10 @@ public class InputFormFactory implements FormFactory {
 		resultForms.put(name, runTimeForm);
 	}
 
+    public RunTimeForm getResultForm(String name) {
+        return resultForms.get(name);
+    }
+
 	public void removeResultForm(String name) {
 		resultForms.remove(name);
 	}

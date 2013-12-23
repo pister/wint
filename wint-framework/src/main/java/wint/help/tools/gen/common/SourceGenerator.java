@@ -3,7 +3,7 @@ package wint.help.tools.gen.common;
 import wint.help.tools.gen.dao.DaoGenUtil;
 import wint.help.tools.gen.dao.DefaultMappingPolicy;
 import wint.help.tools.gen.dao.DefaultResultRender;
-import wint.help.tools.gen.dao.FormField;
+import wint.help.tools.gen.dao.DomainField;
 import wint.help.tools.gen.dao.IbatisResult;
 import wint.help.tools.gen.dao.MappingPolicy;
 import wint.help.tools.gen.dao.OptionEnum;
@@ -226,8 +226,30 @@ public class SourceGenerator {
 
         String daoBeanName = StringUtil.lowercaseFirstLetter(daoClassName);
         String daoParamName = daoBeanName;
+        String domainInDb = alias + "Indb";
+        String idGetter = "get" + StringUtil.uppercaseFirstLetter(idName);
 
+        MagicClass magicClass = MagicClass.wrap(domainClass);
+        Map<String, Property> propertyMap = magicClass.getProperties();
+        List<DomainField> fields = new ArrayList<DomainField>();
+        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
+            Property property = entry.getValue();
+            String name = entry.getKey();
+            if (!property.isWritable() || !property.isReadable()) {
+                continue;
+            }
+            if (name.equals(idName) || name.equals(gmtModifiedName) || name.equals(gmtCreateName)) {
+                continue;
+            }
+
+            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
+        }
+
+
+        context.put("fields", fields);
         context.put("daoFullClassName", genMetaInfo.getDaoFullClassName());
+        context.put("domainInDb", domainInDb);
+        context.put("idGetter", idGetter);
         context.put("aliasAllUpper", alias.toUpperCase());
         context.put("daoParamName", daoParamName);
         context.put("daoBeanName", daoBeanName);
@@ -279,15 +301,14 @@ public class SourceGenerator {
         Map<String, Object> context = MapUtil.newHashMap();
 
         String alias = DaoGenUtil.getDoAlias(domainClass);
-        String formBaseName = alias;
-        String formCreateDefine = "#set($form=$formFactory.getForm(\""+ formBaseName +".create\"))\n" ;
+        String formCreateDefine = "#set($form=$formFactory.getForm(\""+ alias +".create\"))\n" ;
         context.put("formCreateDefine", formCreateDefine);
         context.put("alias", alias);
         context.put("doCreateAction", "$baseModule.setTarget('"+ actionContext + "/" + alias + "/doCreate" +"')");
 
         MagicClass magicClass = MagicClass.wrap(domainClass);
         Map<String, Property> propertyMap = magicClass.getProperties();
-        List<FormField> fields = new ArrayList<FormField>();
+        List<DomainField> fields = new ArrayList<DomainField>();
         for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
             Property property = entry.getValue();
             String name = entry.getKey();
@@ -298,7 +319,7 @@ public class SourceGenerator {
                 continue;
             }
 
-            fields.add(new FormField(name, property.getPropertyClass().getTargetClass()));
+            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
         }
 
         context.put("fields", fields);
@@ -360,16 +381,33 @@ public class SourceGenerator {
         Map<String, Object> context = MapUtil.newHashMap();
 
         String alias = DaoGenUtil.getDoAlias(domainClass);
+        String formEditDefine = "#set($form=$formFactory.getForm(\""+ alias +".edit\"))\n" ;
 
         String listPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/list')";
-        String updateDoAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/doUpdate')";
+        String doUpdateAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/doUpdate')";
 
         MagicClass magicClass = MagicClass.wrap(domainClass);
-        Set<String> propertyNames = new TreeSet<String>(magicClass.getReadableProperties().keySet());
+        Map<String, Property> propertyMap = magicClass.getProperties();
+        List<DomainField> fields = new ArrayList<DomainField>();
+        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
+            Property property = entry.getValue();
+            String name = entry.getKey();
+            if (!property.isWritable() || !property.isReadable()) {
+                continue;
+            }
+            if (name.equals(idName) || name.equals(gmtModifiedName) || name.equals(gmtCreateName)) {
+                continue;
+            }
+
+            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
+        }
+
+        context.put("fields", fields);
 
         context.put("alias", alias);
-        context.put("propertyNames", propertyNames);
-        context.put("updateDoAction", updateDoAction);
+        context.put("idName", idName);
+        context.put("formEditDefine", formEditDefine);
+        context.put("doUpdateAction", doUpdateAction);
         context.put("listPageAction", listPageAction);
 
 
@@ -411,7 +449,11 @@ public class SourceGenerator {
 
         String idType = genMetaInfo.getIdType();
         String idTypeUpper = StringUtil.uppercaseFirstLetter(idType);
+        String idGetter = "get" + StringUtil.uppercaseFirstLetter(idName);
 
+
+        context.put("idGetter", idGetter);
+        context.put("alias", alias);
         context.put("idTypeUpper", idTypeUpper);
         context.put("idType", idType);
         context.put("baseActionTarget", baseActionTarget);
@@ -438,7 +480,7 @@ public class SourceGenerator {
         MagicClass magicClass = MagicClass.wrap(clazz);
         Map<String, Property> propertyMap = magicClass.getProperties();
 
-        List<FormField> fields = new ArrayList<FormField>();
+        List<DomainField> fields = new ArrayList<DomainField>();
         for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
             Property property = entry.getValue();
             String name = entry.getKey();
@@ -449,7 +491,7 @@ public class SourceGenerator {
                 continue;
             }
 
-            fields.add(new FormField(name, property.getPropertyClass().getTargetClass()));
+            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
         }
 
         context.put("name", genMetaInfo.getDoAlias());

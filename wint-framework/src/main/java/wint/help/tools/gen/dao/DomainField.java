@@ -1,6 +1,7 @@
 package wint.help.tools.gen.dao;
 
 import wint.lang.utils.MapUtil;
+import wint.lang.utils.StringUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Map;
  * Date: 13-12-21
  * Time: 下午2:00
  */
-public class FormField {
+public class DomainField {
 
     private static Map<Class<?>, String> class2type = MapUtil.newHashMap();
 
@@ -35,13 +36,18 @@ public class FormField {
 
     private String type;
 
-    public FormField(String name, Class<?> javaType) {
+    private boolean booleanType = false;
+
+    public DomainField(String name, Class<?> javaType) {
         this.name = name;
         String type = class2type.get(javaType);
         if (type == null) {
             type = "string";
         }
         this.type = type;
+        if (javaType == Boolean.TYPE || javaType == Boolean.class) {
+            booleanType = true;
+        }
     }
 
     public String getName() {
@@ -53,11 +59,24 @@ public class FormField {
     }
 
     public String getFieldMessage() {
-        return "#errorMessageDiv($!form."+ name +".message)";
+        return "#errorMessageDiv($!form." + name + ".message)";
     }
 
+    public String getGetter() {
+        if (booleanType) {
+            return "is" + StringUtil.uppercaseFirstLetter(name);
+        } else {
+            return "get" + StringUtil.uppercaseFirstLetter(name);
+        }
+    }
+
+    public String getSetter() {
+        return "set" + StringUtil.uppercaseFirstLetter(name);
+    }
+
+
     public String getFieldValue() {
-        return "$!form."+ name + ".value";
+        return "$!form." + name + ".value";
     }
 
     public String getType() {

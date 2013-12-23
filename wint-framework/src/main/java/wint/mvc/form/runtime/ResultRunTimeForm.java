@@ -1,10 +1,12 @@
 package wint.mvc.form.runtime;
 
+import java.util.Date;
 import java.util.Map;
 
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
 import wint.lang.convert.ConvertUtil;
 import wint.lang.magic.MagicObject;
+import wint.lang.utils.DateUtil;
 import wint.lang.utils.MapUtil;
 import wint.mvc.form.DefaultField;
 import wint.mvc.form.Field;
@@ -53,6 +55,14 @@ public class ResultRunTimeForm implements RunTimeForm {
 			super();
 			initFields(form, object);
 		}
+
+        private String valueToString(Object propertyValue) {
+            if (propertyValue instanceof Date) {
+                return DateUtil.formatFullDate(propertyValue);
+            }
+            return ConvertUtil.toString(propertyValue);
+        }
+
 		
 		private void initFields(Form form, Object object) {
 			MagicObject magicObject = MagicObject.wrap(object);
@@ -63,7 +73,7 @@ public class ResultRunTimeForm implements RunTimeForm {
 				Field runtimeField = new DefaultField(field.getFieldConfig(), form);
 				
 				Object propertyValue = magicObject.getPropertyValue(name);
-				String stringValue = ConvertUtil.toString(propertyValue);
+				String stringValue = valueToString(propertyValue);
 				runtimeField.setValue(stringValue);
 				// TODO
 				//runtimeField.setValues(values);

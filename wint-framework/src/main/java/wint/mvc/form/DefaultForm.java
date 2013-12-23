@@ -60,7 +60,7 @@ public class DefaultForm implements Form {
 			return;
 		}
         FormFactory formFactory = (FormFactory)flowData.getInnerContext().get(Constants.Form.TEMPLATE_FORM_FACTORY_NAME);
-        if (formFactory.getForm(getName()) != null) {
+        if (formFactory.getResultForm(getName()) != null) {
             // 已经有form设置了，不再进行覆盖
             isHeld = true;
             return;

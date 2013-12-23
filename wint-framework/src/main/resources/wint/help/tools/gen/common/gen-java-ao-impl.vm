@@ -22,6 +22,32 @@ public class ${thisClassName} implements ${aoClassName} {
     private ${daoClassName} ${daoBeanName};
 
     @Override
+    public Result update${domainUpper}(${domainName} ${domainParam}) {
+        Result result = new ResultSupport(false);
+        try {
+            // TODO add your biz code here
+
+            ${idType} id = ${domainParam}.${idGetter}();
+            ${domainName} ${domainInDb} = ${daoBeanName}.queryById(id);
+            if (${domainInDb} == null) {
+                // here replace your result code like:
+                // result.setResultCode(${domainName}ResultCodes.${aliasAllUpper}_NOT_EXIST);
+                result.setResultCode(new StringResultCode("${alias} not exist"));
+                return result;
+            }
+            #foreach($field in $fields)
+        ${domainInDb}.${field.setter}(${domainParam}.${field.getter}());
+            #end
+
+            ${daoBeanName}.update(${domainInDb});
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("create${domainUpper} error", e);
+        }
+        return result;
+    }
+
+    @Override
     public Result create${domainUpper}(${domainName} ${domainParam}) {
         Result result = new ResultSupport(false);
         try {
@@ -54,6 +80,28 @@ public class ${thisClassName} implements ${aoClassName} {
             result.setSuccess(true);
         } catch (Exception e) {
             log.error("view${domainUpper} error", e);
+        }
+        return result;
+    }
+
+    @Override
+    public Result view${domainUpper}ForEdit(${idType} id) {
+        Result result = new ResultSupport(false);
+        try {
+            // TODO add your biz code here
+
+            ${domainName} ${domainParam} = ${daoBeanName}.queryById(id);
+            if (${domainParam} == null) {
+                // here replace your result code like:
+                // result.setResultCode(${domainName}ResultCodes.${aliasAllUpper}_NOT_EXIST);
+                result.setResultCode(new StringResultCode("${alias} not exist"));
+                return result;
+            }
+
+            result.getModels().put("${alias}", ${domainParam});
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("view${domainUpper}ForEdit error", e);
         }
         return result;
     }

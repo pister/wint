@@ -11,7 +11,11 @@ public interface ${thisClassName} {
 
     Result create${domainUpper}(${domainName} ${domainParam});
 
+    Result update${domainUpper}(${domainName} ${domainParam});
+
     Result view${domainUpper}(${idType} id);
+
+    Result view${domainUpper}ForEdit(${idType} id);
 
     Result viewList(BaseQuery query);
 

@@ -8,4 +8,5 @@ public interface FormFactory {
 	
 	void removeResultForm(String name);
 
+    RunTimeForm getResultForm(String name);
 }

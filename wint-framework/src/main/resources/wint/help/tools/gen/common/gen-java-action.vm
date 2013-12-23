@@ -47,6 +47,34 @@ public class ${thisClassName} extends BaseAction {
         this.proccessResult(result, flowData, context);
     }
 
+    public void edit(FlowData flowData, Context context) {
+        ${idType} id = flowData.getParameters().get${idTypeUpper}("id");
+        Result result = ${aoBeanName}.view${domainUpper}ForEdit(id);
+        if (result.isSuccess()) {
+            ${domainName} ${domainParam} = (${domainName})result.getModels().get("${alias}");
+            Form form = flowData.getForm("${formName}.edit");
+            form.hold(${domainParam});
+            this.result2Context(result, context);
+        } else {
+            this.handleErrorToCommon(result, flowData, context);
+        }
+    }
+
+    @Action (defaultTarget = "${baseActionTarget}/edit")
+    public void doUpdate(FlowData flowData, Context context) {
+        Form form = flowData.getForm("${formName}.edit");
+        ${domainName} ${domainParam} = new ${domainName}();
+        if (!form.apply(${domainParam})) {
+            return;
+        }
+        Result result = ${aoBeanName}.update${domainUpper}(${domainParam});
+        if (result.isSuccess()) {
+            flowData.redirectTo("baseModule", "${baseActionTarget}/detail").param("id", ${domainParam}.${idGetter}());
+        } else {
+            this.handleErrorToCommon(result, flowData, context);
+        }
+    }
+
     public void doDelete(FlowData flowData, Context context) {
         ${idType} id = flowData.getParameters().get${idTypeUpper}("id");
         Result result = ${aoBeanName}.delete${domainUpper}(id);
