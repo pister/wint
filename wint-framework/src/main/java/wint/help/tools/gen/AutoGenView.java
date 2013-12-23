@@ -51,6 +51,10 @@ public class AutoGenView extends BaseAutoGen {
             genJavaAOImpl(sourceGenerator, clazz, baseFile, getFileWriter(force), javaMainSrcPath);
             genJavaAction(sourceGenerator, clazz, actionContext, getFileWriter(force), javaMainSrcPath);
             genViewTemplates(sourceGenerator, clazz, actionContext, getFileWriter(force));
+
+            String alias = DaoGenUtil.getDoAlias(clazz);
+
+            log("http://127.0.0.1:8080/"+ actionContext + "/" + alias + "/list.htm");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

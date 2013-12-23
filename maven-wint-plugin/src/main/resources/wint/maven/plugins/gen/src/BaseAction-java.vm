@@ -15,7 +15,7 @@ public class BaseAction {
     protected void handleErrorToCommon(Result result, FlowData flowData, Context context) {
         ResultCode resultCode = getResultCode(result, flowData);
         if (resultCode == null) {
-            return;
+            resultCode = CommonResultCodes.SYSTEM_ERROR;
         }
         context.put("resultCode", resultCode);
         flowData.setTarget("error");
@@ -24,7 +24,7 @@ public class BaseAction {
     protected void handleErrorAtCurrent(Result result, FlowData flowData, Context context) {
         ResultCode resultCode = getResultCode(result, flowData);
         if (resultCode == null) {
-            return;
+            resultCode = CommonResultCodes.SYSTEM_ERROR;
         }
         context.put("resultCode", resultCode);
     }
@@ -43,7 +43,7 @@ public class BaseAction {
         if (resultCode == null) {
             return CommonResultCodes.SYSTEM_ERROR;
         }
-        return null;
+        return resultCode;
     }
 
     protected Object result2Context(Result result, Context context, String name) {

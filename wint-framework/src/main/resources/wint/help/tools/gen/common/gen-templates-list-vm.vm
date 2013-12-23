@@ -1,17 +1,29 @@
 <h1>$alias list</h1>
 
-<ul>
 
-$foreachStart
-    <li>
-        $${alias}
-        <a href="$editPageAction">edit...</a>
-        <a href="$detailPageAction">view detail</a>
-        <a href="$deleteDoAction" onclick="return confirm('It will deleting, Are you sure?')">delete</a>
-    </li>
-$end
+<table>
+    <tr>
+        #foreach($field in $fields)
+        <th>$field.name</th>
+        #end
+        <th>
+            operations
+        </th>
+    </tr>
+    $foreachStart
+        <tr>
+            #foreach($field in $fields)
+            <td>$${alias}.${field.name}</td>
+            #end
+            <td>
+                <a href="$editPageAction">edit...</a>
+                <a href="$detailPageAction">view detail</a>
+                <a href="$deleteDoAction" onclick="return confirm('It will deleting, Are you sure?')">delete</a>
+            </td>
+        </tr>
+    $end
+</table>
 
-</ul>
 
 <div>
     <a href="$createPageAction">create...</a>

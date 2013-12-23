@@ -22,6 +22,12 @@ public class TemplateSourceGenator {
 
     private String encoding = "utf-8";
 
+    private SimpleVelocityEngine simpleTemplateEngine = new SimpleVelocityEngine();
+
+    public TemplateSourceGenator() {
+        simpleTemplateEngine.init(encoding);
+    }
+
     protected void genSource(Map<String, Object> context, String templateName, File targetFile, FileWriter fileWriter) {
         StringWriter contentWriter = new StringWriter();
         genSource(context, contentWriter, templateName);
@@ -30,8 +36,6 @@ public class TemplateSourceGenator {
 
     protected void genSource(Map<String, Object> context, Writer out, String templateName) {
         try {
-            SimpleVelocityEngine simpleTemplateEngine = new SimpleVelocityEngine();
-            simpleTemplateEngine.init(encoding);
             Reader reader = getTemplateReader(templateName);
             Map<String, Object> targetContext = MapUtil.newHashMap(context);
             simpleTemplateEngine.merge(reader, out, targetContext);

@@ -343,6 +343,25 @@ public class SourceGenerator {
         String editPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/edit').param('id', $"+ alias +".id)";
         String detailPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/detail').param('id', $"+ alias +".id)";
 
+        MagicClass magicClass = MagicClass.wrap(domainClass);
+        Map<String, Property> propertyMap = magicClass.getProperties();
+        List<DomainField> fields = new ArrayList<DomainField>();
+        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
+            Property property = entry.getValue();
+            String name = entry.getKey();
+            if (!property.isWritable() || !property.isReadable()) {
+                continue;
+            }
+            if (name.equals(gmtModifiedName) || name.equals(gmtCreateName)) {
+                continue;
+            }
+
+            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
+        }
+
+
+
+        context.put("fields", fields);
         context.put("alias", alias);
         context.put("foreachStart", foreachStart);
         context.put("end", end);

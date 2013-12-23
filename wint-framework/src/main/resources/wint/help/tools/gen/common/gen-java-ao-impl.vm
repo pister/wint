@@ -36,7 +36,7 @@ public class ${thisClassName} implements ${aoClassName} {
                 return result;
             }
             #foreach($field in $fields)
-        ${domainInDb}.${field.setter}(${domainParam}.${field.getter}());
+${domainInDb}.${field.setter}(${domainParam}.${field.getter}());
             #end
 
             ${daoBeanName}.update(${domainInDb});
