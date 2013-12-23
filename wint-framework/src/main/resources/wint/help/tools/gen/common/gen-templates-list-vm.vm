@@ -1,7 +1,7 @@
 <h1>$alias list</h1>
 
 
-<table>
+<table class="table">
     <tr>
         #foreach($field in $fields)
 <th>$field.name</th>

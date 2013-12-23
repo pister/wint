@@ -3,21 +3,21 @@ $formEditDefine
 <h1>$alias edit</h1>
 
 
-<form action="$doUpdateAction" method="post">
+<form action="$doUpdateAction" method="post" role="form">
     $securityUtil.tokenHtml
     <input type="hidden" name="$form.${idName}.name" value="$${alias}.id" />
     #foreach($field in $fields)
-        <div>
-            <label>
+        <div class="form-group row">
+            <label for="${field.name}-id" class="col-sm-1 control-label">
                 ${field.name}
-                <input type="text" name="$form.${field.name}.name" value="$field.fieldValue" />
             </label>
+            <div class="col-xs-4">
+                <input type="text" class="form-control" id="${field.name}-id" name="$form.${field.name}.name" value="$field.fieldValue" />
+            </div>
             $field.fieldMessage
         </div>
     #end
 
-    <div>
-        <input type="submit" value="save!" />
-    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
 
 </form>

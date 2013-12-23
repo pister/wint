@@ -12,7 +12,12 @@
 	<url name="staticServer">
 		<server-url>${${config.artifactId}.static.url}</server-url>
 	</url>
-	
+
+
+    <url name="bootstrapServer" extends="staticServer">
+        <path>bootstrap</path>
+    </url>
+
 	<url name="jsServer" extends="staticServer">
 		<path>js</path>
 	</url>

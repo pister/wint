@@ -1,14 +1,15 @@
-<h1>detail</h1>
+<h1>$alias detail</h1>
 
-$alias
 
-<ul>
+
+<table class="table table-bordered">
     #foreach($propertyName in $propertyNames)
-    <li>$propertyName : $${alias}.${propertyName} </li>
+        <tr>
+            <td>$propertyName</td>
+            <td>$${alias}.${propertyName}</td>
+        </tr>
     #end
-
-</ul>
-
+</table>
 
 <a href="$listPageAction">back to list</a>
 <a href="$editPageAction">edit...</a>

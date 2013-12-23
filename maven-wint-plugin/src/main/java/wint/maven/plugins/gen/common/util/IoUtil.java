@@ -1,6 +1,7 @@
 package wint.maven.plugins.gen.common.util;
 
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,7 +22,7 @@ public class IoUtil {
 			os.write(buf, 0, len);
 		}
 	}
-	
+
 	public static void copyAndClose(InputStream is, OutputStream os) throws IOException {
 		copy(is, os);
 		close(is);
