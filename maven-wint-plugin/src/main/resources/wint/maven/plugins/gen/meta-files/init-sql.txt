@@ -7,6 +7,7 @@ use `${config.dbName}`;
 
 delete from mysql.user where User = '${dbUser}';
 grant select,update,delete,insert on `${config.dbName}`.* to '${dbUser}'@'%' identified by '${dbPwd}';
+grant select,update,delete,insert on `${config.dbName}`.* to '${dbUser}'@'localhost' identified by '${dbPwd}';
 flush privileges;
 
 

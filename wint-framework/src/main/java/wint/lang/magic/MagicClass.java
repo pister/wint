@@ -30,6 +30,28 @@ public abstract class MagicClass implements Serializable {
 	}
 
 	public abstract Map<String, Property> getProperties();
+
+    public Map<String, Property> getReadableProperties() {
+        Map<String, Property> ret = MapUtil.newHashMap();
+        Map<String, Property> propertyMap = getProperties();
+        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
+            if (entry.getValue().isReadable()) {
+                ret.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return ret;
+    }
+
+    public Map<String, Property> getWritableProperties() {
+        Map<String, Property> ret = MapUtil.newHashMap();
+        Map<String, Property> propertyMap = getProperties();
+        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
+            if (entry.getValue().isWritable()) {
+                ret.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return ret;
+    }
 	
 	public Property getProperty(String name) {
 		return getProperties().get(name);

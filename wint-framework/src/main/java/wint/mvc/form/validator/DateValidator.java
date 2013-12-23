@@ -1,25 +1,38 @@
 package wint.mvc.form.validator;
 
+import wint.lang.utils.StringUtil;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class DateValidator extends AbstractValidator {
 
-	private static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	
-	private String format = DEFAULT_FORMAT;
+	private List<String> formats = Arrays.asList("yyyy-MM-dd","yyyy-MM-dd HH:mm:ss");
 	
 	private Date min;
-	
+
 	private Date max;
-	
+
+    private Date acceptDate(String value) {
+        for (String format: formats) {
+            Date date = toDate(format, value);
+            if (date != null) {
+                return date;
+            }
+        }
+        return null;
+    }
+
+
 	@Override
 	protected boolean validate(String fieldValue) {
 		if (fieldValue == null || fieldValue.length() == 0) {
 			return true;
 		}
-		Date d = toDate(fieldValue);
+		Date d = acceptDate(fieldValue);
 		if (d == null) {
 			return false;
 		}
@@ -32,12 +45,7 @@ public class DateValidator extends AbstractValidator {
  		return true;
 	}
 	
-	private String toString(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		return sdf.format(date);
-	}
-	
-	private Date toDate(String input) {
+	private Date toDate(String format, String input) {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		try {
 			return sdf.parse(input);
@@ -45,29 +53,17 @@ public class DateValidator extends AbstractValidator {
 			return null;
 		}
 	}
-	
-	public String getFormat() {
-		return format;
-	}
 
-	public void setFormat(String format) {
-		this.format = format;
-	}
+    public void setFormats(String formats) {
+        this.formats = StringUtil.splitTrim(formats, ",");
+    }
 
-	public String getMin() {
-		return toString(min);
-	}
-
-	public void setMin(String min) {
-		this.min = toDate(min);
-	}
-
-	public String getMax() {
-		return toString(max);
+    public void setMin(String min) {
+		this.min = acceptDate(min);
 	}
 
 	public void setMax(String max) {
-		this.max = toDate(max);
+		this.max = acceptDate(max);
 	}
 
 }

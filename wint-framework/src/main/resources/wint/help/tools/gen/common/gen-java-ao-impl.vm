@@ -50,7 +50,7 @@ public class ${thisClassName} implements ${aoClassName} {
                 return result;
             }
 
-            result.getModels().put("${domainParam}", ${domainParam});
+            result.getModels().put("${alias}", ${domainParam});
             result.setSuccess(true);
         } catch (Exception e) {
             log.error("view${domainUpper} error", e);

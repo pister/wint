@@ -27,7 +27,7 @@
     <form name="$!{name}.edit" extends="$!{name}.base">
         <field name="${idName}">
             <validator type="required" message="${idName} can not be empty!"></validator>
-        </validator>
+        </field>
     </form>
 
     <!--
@@ -63,8 +63,9 @@
             </validator>
 
             <validator type="date" message="your message">
-                <param name="min" value="optional min date formate: yyyy-MM-dd HH:mm:ss" />
-                <param name="max" value="optional max date formate: yyyy-MM-dd HH:mm:ss" />
+                <param name="formats" value="optional multi accept date formate: yyyy-MM-dd HH:mm:ss,yyyy-MM-dd" />
+                <param name="min" value="optional min date formate: yyyy-MM-dd HH:mm:ss,yyyy-MM-dd" />
+                <param name="max" value="optional max date formate: yyyy-MM-dd HH:mm:ss,yyyy-MM-dd" />
             </validator>
 
             <validator type="enums" message="your message">

@@ -52,8 +52,12 @@ public class FormField {
         this.name = name;
     }
 
-    public String getMessage() {
+    public String getFieldMessage() {
         return "#errorMessageDiv($!form."+ name +".message)";
+    }
+
+    public String getFieldValue() {
+        return "$!form."+ name + ".value";
     }
 
     public String getType() {

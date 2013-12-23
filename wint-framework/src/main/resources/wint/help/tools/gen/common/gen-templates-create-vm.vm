@@ -5,8 +5,11 @@ ${formCreateDefine}
     $securityUtil.tokenHtml
     #foreach($field in $fields)
     <div>
-        <input type="text" name="$form.${field.name}.name" value="$!form.${field.name}.value"/>
-        $field.message
+        <label>
+            ${field.name}
+            <input type="text" name="$form.${field.name}.name" value="$field.fieldValue" />
+        </label>
+        $field.fieldMessage
     </div>
     #end
 

@@ -1,1 +1,14 @@
 <h1>detail</h1>
+
+$alias
+
+<ul>
+    #foreach($propertyName in $propertyNames)
+    <li>$propertyName : $${alias}.${propertyName} </li>
+    #end
+
+</ul>
+
+
+<a href="$listPageAction">back to list</a>
+<a href="$editPageAction">edit...</a>

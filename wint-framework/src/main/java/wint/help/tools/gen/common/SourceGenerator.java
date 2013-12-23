@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * User: longyi
@@ -308,20 +309,80 @@ public class SourceGenerator {
     }
 
 
+    private void renderList(Class<?> domainClass, File moduleDir, String actionContext, FileWriter fileWriter) {
+        Map<String, Object> context = MapUtil.newHashMap();
+
+        String alias = DaoGenUtil.getDoAlias(domainClass);
+
+        String foreachStart = "#foreach($"+ alias +" in $"+ alias +"s)";
+
+        String end = "#end";
+        String createPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/create')";
+        String deleteDoAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/doDelete').param('id', $"+ alias +".id).withToken()";
+        String editPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/edit').param('id', $"+ alias +".id)";
+        String detailPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/detail').param('id', $"+ alias +".id)";
+
+        context.put("alias", alias);
+        context.put("foreachStart", foreachStart);
+        context.put("end", end);
+        context.put("createPageAction", createPageAction);
+        context.put("deleteDoAction", deleteDoAction);
+        context.put("editPageAction", editPageAction);
+        context.put("detailPageAction", detailPageAction);
+
+
+        File createFile = new File(moduleDir, "list.vm");
+        templateSourceGenator.genSource(context, "gen-templates-list-vm.vm", createFile, fileWriter);
+    }
+
+    private void renderDetail(Class<?> domainClass, File moduleDir, String actionContext, FileWriter fileWriter) {
+        Map<String, Object> context = MapUtil.newHashMap();
+
+        String alias = DaoGenUtil.getDoAlias(domainClass);
+
+        String listPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/list')";
+        String editPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/edit').param('id', $"+ alias +".id)";
+
+        MagicClass magicClass = MagicClass.wrap(domainClass);
+        Set<String> propertyNames = new TreeSet<String>(magicClass.getReadableProperties().keySet());
+
+        context.put("alias", alias);
+        context.put("propertyNames", propertyNames);
+        context.put("editPageAction", editPageAction);
+        context.put("listPageAction", listPageAction);
+
+
+        File createFile = new File(moduleDir, "detail.vm");
+        templateSourceGenator.genSource(context, "gen-templates-detail-vm.vm", createFile, fileWriter);
+    }
+
+    private void renderEdit(Class<?> domainClass, File moduleDir, String actionContext, FileWriter fileWriter) {
+        Map<String, Object> context = MapUtil.newHashMap();
+
+        String alias = DaoGenUtil.getDoAlias(domainClass);
+
+        String listPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/list')";
+        String updateDoAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/doUpdate')";
+
+        MagicClass magicClass = MagicClass.wrap(domainClass);
+        Set<String> propertyNames = new TreeSet<String>(magicClass.getReadableProperties().keySet());
+
+        context.put("alias", alias);
+        context.put("propertyNames", propertyNames);
+        context.put("updateDoAction", updateDoAction);
+        context.put("listPageAction", listPageAction);
+
+
+        File createFile = new File(moduleDir, "edit.vm");
+        templateSourceGenator.genSource(context, "gen-templates-edit-vm.vm", createFile, fileWriter);
+    }
+
+
     public void genViewTemplates(Class<?> domainClass, File moduleDir, String actionContext, FileWriter fileWriter) {
-
         renderCreate(domainClass, moduleDir, actionContext, fileWriter);
-        /*
-        File listFile = new File(moduleDir, "list.vm");
-        templateSourceGenator.genSource(context, "gen-templates-list-vm.vm", listFile, fileWriter);
-
-        File detailFile = new File(moduleDir, "detail.vm");
-        templateSourceGenator.genSource(context, "gen-templates-detail-vm.vm", detailFile, fileWriter);
-
-        File editFile = new File(moduleDir, "edit.vm");
-        templateSourceGenator.genSource(context, "gen-templates-edit-vm.vm", editFile, fileWriter);
-          */
-
+        renderList(domainClass, moduleDir, actionContext, fileWriter);
+        renderDetail(domainClass, moduleDir, actionContext, fileWriter);
+        renderEdit(domainClass, moduleDir, actionContext, fileWriter);
     }
 
     public void genJavaAction(String className, Class<?> domainClass, Writer out, String actionContextPackage) {
