@@ -36,8 +36,6 @@ public class AutoGenDAO extends BaseAutoGen {
     public AutoGenDAO(String prefix) {
         this.prefix = prefix;
     }
-
-
     private String getBeanId(String beanClassName) {
         String className = StringUtil.getLastAfter(beanClassName, ".");
         if (className.endsWith(daoSuffix)) {
@@ -81,14 +79,6 @@ public class AutoGenDAO extends BaseAutoGen {
         System.out.println();
         System.out.flush();
         System.out.println("=====================================================");
-    }
-
-    private boolean checkExist(File file, String input) throws IOException {
-        String content = FileUtil.readAsString(file);
-        if (content.contains(input)) {
-            return true;
-        }
-        return false;
     }
 
     private void addSqlmapToRootFile(File baseFile, String sqlmapFileName) throws IOException {
