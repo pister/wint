@@ -11,10 +11,25 @@ import java.util.List;
 public class DateValidator extends AbstractValidator {
 
 	private List<String> formats = Arrays.asList("yyyy-MM-dd","yyyy-MM-dd HH:mm:ss");
-	
+
+    private String minStr;
+
+    private String maxStr;
+
 	private Date min;
 
 	private Date max;
+
+    @Override
+    public void init() {
+        super.init();
+        if (!StringUtil.isEmpty(minStr)) {
+            this.min = acceptDate(minStr);
+        }
+        if (!StringUtil.isEmpty(maxStr)) {
+            this.max = acceptDate(maxStr);
+        }
+    }
 
     private Date acceptDate(String value) {
         for (String format: formats) {
@@ -59,11 +74,11 @@ public class DateValidator extends AbstractValidator {
     }
 
     public void setMin(String min) {
-		this.min = acceptDate(min);
+        this.minStr = min;
 	}
 
 	public void setMax(String max) {
-		this.max = acceptDate(max);
+        this.maxStr = max;
 	}
 
 }
