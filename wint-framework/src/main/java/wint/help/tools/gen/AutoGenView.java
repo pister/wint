@@ -47,12 +47,13 @@ public class AutoGenView extends BaseAutoGen {
             sourceGenerator.setTablePrefix(prefix);
 
             File javaMainSrcPath = new File(baseFile, JAVA_MAIN_SRC);
+            File templatesSrcPath = new File(baseFile, viewTemplatePath);
 
             genForm(sourceGenerator, clazz, baseFile, getFileWriter(force));
             genJavaAO(sourceGenerator, clazz, getFileWriter(force), javaMainSrcPath);
             genJavaAOImpl(sourceGenerator, clazz, baseFile, getFileWriter(force), javaMainSrcPath);
             genJavaAction(sourceGenerator, clazz, actionContext, getFileWriter(force), javaMainSrcPath);
-            genViewTemplates(sourceGenerator, clazz, actionContext, getFileWriter(force));
+            genViewTemplates(sourceGenerator, clazz, actionContext, getFileWriter(force), templatesSrcPath);
 
             String alias = DaoGenUtil.getDoAlias(clazz);
 
@@ -101,20 +102,19 @@ public class AutoGenView extends BaseAutoGen {
 
     }
 
-    private void genViewTemplates(SourceGenerator sourceGenerator, Class<?> clazz, String actionContext, FileWriter fileWriter) {
-        File viewTemplateFile = new File(viewTemplatePath);
-        if (!viewTemplateFile.exists()) {
-            viewTemplateFile.mkdirs();
+    private void genViewTemplates(SourceGenerator sourceGenerator, Class<?> clazz, String actionContext, FileWriter fileWriter,  File templatesSrcPath) {
+        if (!templatesSrcPath.exists()) {
+            templatesSrcPath.mkdirs();
         }
-        File pageDir = new File(viewTemplatePath, "page");
+        File pageDir = new File(templatesSrcPath, "page");
         if (!pageDir.exists()) {
             pageDir.mkdirs();
         }
-        File layoutDir = new File(viewTemplatePath, "layout");
+        File layoutDir = new File(templatesSrcPath, "layout");
         if (!layoutDir.exists()) {
             layoutDir.mkdirs();
         }
-        File widgetDir = new File(viewTemplatePath, "widget");
+        File widgetDir = new File(templatesSrcPath, "widget");
         if (!widgetDir.exists()) {
             widgetDir.mkdirs();
         }
