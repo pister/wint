@@ -59,7 +59,7 @@ public class DomainField {
     }
 
     public String getFieldMessage() {
-        return "#errorMessageDiv($!form." + name + ".message)";
+        return "#errorMessage($!form." + name + ".message)";
     }
 
     public String getGetter() {

@@ -1,6 +1,7 @@
 package wint.mvc.url;
 
 import wint.core.config.Constants;
+import wint.help.biz.query.BaseQuery;
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
 import wint.lang.convert.ConvertUtil;
 import wint.lang.exceptions.UrlException;

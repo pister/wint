@@ -27,6 +27,7 @@ public class BaseAutoGen {
         return templateSourceGenator;
     }
 
+
     protected void genJavaSrc(String name, String content, File javaMainSrcPath, FileWriter fileWriter) {
         String className = StringUtil.getLastAfter(name, ".");
         String packageName = StringUtil.getLastBefore(name, ".");

@@ -28,3 +28,5 @@
 <div>
     <a href="$createPageAction">create...</a>
 </div>
+
+$paginationWidget

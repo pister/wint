@@ -216,7 +216,7 @@ public class ProjectGenerator {
     }
 
     private void genTemplates(File templatesFile, ProjectConfig projectConfig) throws IOException {
-        renderFile(basePath + "/templates/macro.vm", new File(templatesFile, "macro.vm"), projectConfig);
+        copyFile(basePath + "/templates/macro.vm", new File(templatesFile, "macro.vm"));
 
         File pageDir = new File(templatesFile, "page");
         pageDir.mkdirs();
@@ -234,6 +234,11 @@ public class ProjectGenerator {
         widgetDir.mkdirs();
 
         renderFile(basePath + "/templates/widget/sample.vm", new File(widgetDir, "sample.vm"), projectConfig);
+
+        File widgetCommonDir = new File(widgetDir, "common");
+        widgetCommonDir.mkdirs();
+
+        copyFile(basePath + "/templates/widget/common/pagination.vm", new File(widgetCommonDir, "pagination.vm"));
     }
 
     private void genStatics(File statisFile, ProjectConfig projectConfig) throws IOException {

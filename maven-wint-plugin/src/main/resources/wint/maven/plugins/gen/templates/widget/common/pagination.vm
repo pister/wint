@@ -1,0 +1,53 @@
+#set($max_page_item_count = 5)
+
+#if ($query.pageCount > $max_page_item_count)
+    #set($page_item_count = $max_page_item_count)
+#else
+    #set($page_item_count = $query.pageCount)
+#end
+
+#set($begin_page_no = $query.pageNo - $page_item_count/2)
+#set($end_page_no = $query.pageNo + $page_item_count/2)
+
+#if ($query.pageNo <= $page_item_count/2)
+    #set($end_page_no = $end_page_no + ($page_item_count/2 - $query.pageNo) + 1)
+#end
+
+#if ($query.pageNo >= $query.pageCount - $page_item_count/2)
+    #set($begin_page_no = $begin_page_no - ($page_item_count/2 - ($query.pageCount - $query.pageNo)))
+#end
+
+#if($begin_page_no <= 0)
+    #set($begin_page_no = 1)
+#end
+#if ($end_page_no > $query.pageCount)
+    #set($end_page_no = $query.pageCount)
+#end
+
+
+#set($page_iter = [$begin_page_no .. $end_page_no])
+
+#set($prev_page = $query.pageNo - 1)
+#set($next_page = $query.pageNo + 1)
+
+<ul class="pagination">
+    #if($query.pageNo == 1)
+        <li class="disabled"><a href="#">&laquo;</a></li>
+    #else
+        <li><a href="$query.appendTo($pageModule.param('page', $prev_page))">&laquo;</a></li>
+    #end
+
+    #foreach($page in $page_iter)
+        #if ($page == $query.PageNo)
+            <li class="active"><a href="#">$page</a></li>
+        #else
+            <li><a href="$query.appendTo($pageModule.param('page', $page))">$page</a></li>
+        #end
+    #end
+    #if($query.pageNo == $query.pageCount)
+        <li class="disabled"><a href="#">&raquo;</a></li>
+    #else
+        <li><a href="$query.appendTo($pageModule.param('page', $next_page))">&raquo;</a></li>
+    #end
+</ul>
+

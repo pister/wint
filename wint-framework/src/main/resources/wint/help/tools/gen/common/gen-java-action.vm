@@ -36,7 +36,7 @@ public class ${thisClassName} extends BaseAction {
         int page = flowData.getParameters().get${idTypeUpper}("page");
         BaseQuery query = new BaseQuery();
         query.setPageNo(page);
-        query.setPageSize(20);
+        query.setPageSize(10);
         Result result = ${aoBeanName}.viewList(query);
         this.proccessResult(result, flowData, context);
     }

@@ -40,6 +40,8 @@ public class AutoGenView extends BaseAutoGen {
         try {
             File baseFile = getProjectBasePath(clazz);
 
+            actionContext = StringUtil.trimToEmpty(actionContext);
+
             SourceGenerator sourceGenerator = new SourceGenerator();
             sourceGenerator.setIdName(idName);
             sourceGenerator.setTablePrefix(prefix);
@@ -54,7 +56,7 @@ public class AutoGenView extends BaseAutoGen {
 
             String alias = DaoGenUtil.getDoAlias(clazz);
 
-            log("http://127.0.0.1:8080/"+ actionContext + "/" + alias + "/list.htm");
+            log("http://127.0.0.1:8080/"+ sourceGenerator.getActionContext(actionContext) + alias + "/list.htm");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -83,6 +85,7 @@ public class AutoGenView extends BaseAutoGen {
         String content = stringWriter.toString();
         this.genJavaSrc(aoFullname, content, javaMainSrcPath, fileWriter);
     }
+
 
     private void genJavaAOImpl(SourceGenerator sourceGenerator, Class<?> clazz, File baseFile, FileWriter fileWriter, File javaMainSrcPath) throws IOException {
         StringWriter stringWriter = new StringWriter();
@@ -145,9 +148,16 @@ public class AutoGenView extends BaseAutoGen {
         String doPackage = clazz.getPackage().getName();
         String baseBizPackage = StringUtil.getLastBefore(doPackage, ".biz.");
         String baseActionPackage = baseBizPackage + ".web.action";
-        actionContext = normalizeContext(actionContext);
-        String actionContextPackage = actionContext.replace('/', '.');
-        String targetActionPackage = baseActionPackage + "." + actionContextPackage;
+        String targetActionPackage;
+        String actionContextPackage;
+        if (!StringUtil.isEmpty(actionContext)) {
+            actionContext = normalizeContext(actionContext);
+            actionContextPackage = actionContext.replace('/', '.');
+            targetActionPackage = baseActionPackage + "." + actionContextPackage;
+        } else {
+            targetActionPackage = baseActionPackage;
+            actionContextPackage = "";
+        }
         String actionClassName = StringUtil.uppercaseFirstLetter(DaoGenUtil.getDoAlias(clazz));
         String fullActionName = targetActionPackage + "." + actionClassName;
         StringWriter stringWriter = new StringWriter();

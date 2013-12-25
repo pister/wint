@@ -200,6 +200,13 @@ public class SourceGenerator {
         return ret;
     }
 
+    public String getActionContext(String actionContext) {
+        if (StringUtil.isEmpty(actionContext)) {
+            return "";
+        }
+        return actionContext + "/";
+    }
+
     private String getTestValueForType(Class<?> type) {
         String value = SourceGenerator.typeDefaults.get(type);
         return value;
@@ -304,7 +311,7 @@ public class SourceGenerator {
         String formCreateDefine = "#set($form=$formFactory.getForm(\""+ alias +".create\"))\n" ;
         context.put("formCreateDefine", formCreateDefine);
         context.put("alias", alias);
-        context.put("doCreateAction", "$baseModule.setTarget('"+ actionContext + "/" + alias + "/doCreate" +"')");
+        context.put("doCreateAction", "$baseModule.setTarget('"+ getActionContext(actionContext) + alias + "/doCreate" +"')");
 
         MagicClass magicClass = MagicClass.wrap(domainClass);
         Map<String, Property> propertyMap = magicClass.getProperties();
@@ -338,10 +345,12 @@ public class SourceGenerator {
         String foreachStart = "#foreach($"+ alias +" in $"+ alias +"s)";
 
         String end = "#end";
-        String createPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/create')";
-        String deleteDoAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/doDelete').param('id', $"+ alias +".id).withToken()";
-        String editPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/edit').param('id', $"+ alias +".id)";
-        String detailPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/detail').param('id', $"+ alias +".id)";
+        String createPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/create')";
+        String deleteDoAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/doDelete').param('id', $"+ alias +".id).withToken()";
+        String editPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/edit').param('id', $"+ alias +".id)";
+        String detailPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/detail').param('id', $"+ alias +".id)";
+
+        String paginationWidget = "$widget.setTemplate('common/pagination').addToContext('pageModule', $baseModule.setTarget('" + getActionContext(actionContext) + alias + "/list')).addToContext('query', $query)";
 
         MagicClass magicClass = MagicClass.wrap(domainClass);
         Map<String, Property> propertyMap = magicClass.getProperties();
@@ -361,6 +370,7 @@ public class SourceGenerator {
 
 
 
+        context.put("paginationWidget", paginationWidget);
         context.put("fields", fields);
         context.put("alias", alias);
         context.put("foreachStart", foreachStart);
@@ -380,8 +390,8 @@ public class SourceGenerator {
 
         String alias = DaoGenUtil.getDoAlias(domainClass);
 
-        String listPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/list')";
-        String editPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/edit').param('id', $"+ alias +".id)";
+        String listPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/list')";
+        String editPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/edit').param('id', $"+ alias +".id)";
 
         MagicClass magicClass = MagicClass.wrap(domainClass);
         Set<String> propertyNames = new TreeSet<String>(magicClass.getReadableProperties().keySet());
@@ -464,7 +474,7 @@ public class SourceGenerator {
         String baseActionPackage = baseBizPackage + ".web.common.base";
 
         String contextPath = actionContextPackage.replace('.', '/');
-        String baseActionTarget = contextPath + "/" + alias;
+        String baseActionTarget = getActionContext(contextPath) + alias;
 
         String idType = genMetaInfo.getIdType();
         String idTypeUpper = StringUtil.uppercaseFirstLetter(idType);
