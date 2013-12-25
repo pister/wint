@@ -33,7 +33,7 @@ public class ${thisClassName} extends BaseAction {
     }
 
     public void list(FlowData flowData, Context context) {
-        int page = flowData.getParameters().get${idTypeUpper}("page");
+        int page = flowData.getParameters().getInt("page");
         BaseQuery query = new BaseQuery();
         query.setPageNo(page);
         query.setPageSize(10);
