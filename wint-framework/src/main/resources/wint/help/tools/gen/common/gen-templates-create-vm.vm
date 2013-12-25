@@ -1,5 +1,5 @@
 ${formCreateDefine}
-<h1>create ${alias}</h1>
+<h3>create ${alias}</h3>
 
 <form action="$doCreateAction" method="post" role="form">
     $securityUtil.tokenHtml

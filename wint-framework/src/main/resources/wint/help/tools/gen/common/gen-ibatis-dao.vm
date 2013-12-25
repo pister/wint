@@ -34,13 +34,13 @@ public class ${className} extends ReadWriteSqlMapClientDaoSupport implements ${d
 	}
 
     @Override
-    public List<${domainName}> queryForPage(BaseQuery baseQuery) {
-        int count = (Integer)this.getSqlMapClientTemplate().queryForObject("${namespace}.queryForPageCount", baseQuery);
+    public List<${domainName}> queryForPage(BaseQuery query) {
+        int count = (Integer)this.getSqlMapClientTemplate().queryForObject("${namespace}.queryForPageCount", query);
         if (count == 0) {
             return new ArrayList<${domainName}>(0);
         }
-        baseQuery.setTotalResultCount(count);
-        return (List<${domainName}>)this.getSqlMapClientTemplate().queryForList("${namespace}.queryForPage", baseQuery);
+        query.setTotalResultCount(count);
+        return (List<${domainName}>)this.getSqlMapClientTemplate().queryForList("${namespace}.queryForPage", query);
     }
 
 }

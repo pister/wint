@@ -1,4 +1,4 @@
-<h1>$alias list</h1>
+<h3>$alias list</h3>
 
 
 <table class="table">
@@ -26,7 +26,7 @@
 
 
 <div>
-    <a href="$createPageAction">create...</a>
+    <a href="$createPageAction" class="btn btn-primary" role="button">create...</a>
 </div>
 
 $paginationWidget

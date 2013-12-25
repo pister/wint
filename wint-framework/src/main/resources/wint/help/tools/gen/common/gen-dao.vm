@@ -17,5 +17,5 @@ public interface ${className} {
 
 	${domainName} queryById(${idType} id);
 
-    List<${domainName}> queryForPage(BaseQuery baseQuery);
+    List<${domainName}> queryForPage(BaseQuery query);
 }

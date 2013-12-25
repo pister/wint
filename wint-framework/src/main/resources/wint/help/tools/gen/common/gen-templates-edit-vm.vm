@@ -1,6 +1,6 @@
 $formEditDefine
 
-<h1>$alias edit</h1>
+<h3>$alias edit</h3>
 
 
 <form action="$doUpdateAction" method="post" role="form">
