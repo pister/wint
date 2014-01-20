@@ -26,7 +26,7 @@
 
 
 <div>
-    <a href="$createPageAction" class="btn btn-primary" role="button">create...</a>
+    <a href="$createPageAction" class="btn" role="button">create...</a>
 </div>
 
 $paginationWidget
