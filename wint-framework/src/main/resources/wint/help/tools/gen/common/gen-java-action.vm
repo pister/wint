@@ -69,7 +69,7 @@ public class ${thisClassName} extends BaseAction {
         }
         Result result = ${aoBeanName}.update${domainUpper}(${domainParam});
         if (result.isSuccess()) {
-            flowData.redirectTo("baseModule", "${baseActionTarget}/detail").param("id", ${domainParam}.${idGetter}());
+            flowData.redirectTo("baseModule", "${baseActionTarget}/list");
         } else {
             this.handleErrorToCommon(result, flowData, context);
         }
