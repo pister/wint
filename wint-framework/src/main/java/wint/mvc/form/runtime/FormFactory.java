@@ -1,5 +1,7 @@
 package wint.mvc.form.runtime;
 
+import java.util.Map;
+
 public interface FormFactory {
 	
 	RunTimeForm getForm(String name);
@@ -9,4 +11,6 @@ public interface FormFactory {
 	void removeResultForm(String name);
 
     RunTimeForm getResultForm(String name);
+
+    Map<String, RunTimeForm> getForms();
 }

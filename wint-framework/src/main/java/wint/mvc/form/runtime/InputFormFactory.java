@@ -1,5 +1,6 @@
 package wint.mvc.form.runtime;
 
+import java.util.Collections;
 import java.util.Map;
 
 import wint.lang.utils.MapUtil;
@@ -29,7 +30,11 @@ public class InputFormFactory implements FormFactory {
 		Form form = flowData.getForm(name);
 		return new DefaultRunTimeForm(form);
 	}	
-	
+
+    public Map<String, RunTimeForm> getForms() {
+        return Collections.unmodifiableMap(resultForms);
+    }
+
 	public void addResultForm(String name, RunTimeForm runTimeForm) {
 		resultForms.put(name, runTimeForm);
 	}

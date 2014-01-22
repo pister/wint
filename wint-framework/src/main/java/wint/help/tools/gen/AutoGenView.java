@@ -36,6 +36,20 @@ public class AutoGenView extends BaseAutoGen {
         this.prefix = prefix;
     }
 
+    public void genForm(Class<?> clazz, String idName, boolean force) {
+        try {
+            File baseFile = getProjectBasePath(clazz);
+
+            SourceGenerator sourceGenerator = new SourceGenerator();
+            sourceGenerator.setIdName(idName);
+            sourceGenerator.setTablePrefix(prefix);
+            genForm(sourceGenerator, clazz, baseFile, getFileWriter(force));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private void genImpl(Class<?> clazz, String idName, String actionContext, boolean force) {
         try {
             File baseFile = getProjectBasePath(clazz);

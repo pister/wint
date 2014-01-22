@@ -18,6 +18,7 @@ import wint.mvc.form.runtime.ResultRunTimeForm;
 import wint.mvc.form.validator.ValidateResult;
 import wint.mvc.form.validator.Validator;
 import wint.mvc.parameters.Parameters;
+import wint.mvc.view.types.ViewTypes;
 
 /**
  * @author pister

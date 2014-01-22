@@ -38,4 +38,24 @@ public class AutoGen {
         autoGenView.forceGen(clazz, actionContext);
     }
 
+    public void genDAOAndForm(Class<?> clazz, String idName) {
+        autoGenDAO.gen(clazz, idName);
+        autoGenView.genForm(clazz, idName, false);
+    }
+
+    public void forceGenDAOAndForm(Class<?> clazz, String idName) {
+        autoGenDAO.forceGen(clazz, idName);
+        autoGenView.genForm(clazz, idName, true);
+    }
+
+    public void genDAOAndForm(Class<?> clazz) {
+        autoGenDAO.gen(clazz);
+        autoGenView.genForm(clazz, "id", false);
+    }
+
+    public void forceGenDAOAndForm(Class<?> clazz) {
+        autoGenDAO.forceGen(clazz);
+        autoGenView.genForm(clazz, "id", true);
+    }
+
 }

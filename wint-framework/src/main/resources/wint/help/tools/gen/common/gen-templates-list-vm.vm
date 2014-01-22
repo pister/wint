@@ -1,6 +1,11 @@
 <h3>$alias list</h3>
 
 
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li class="active">List</li>
+</ol>
+
 <table class="table">
     <tr>
         #foreach($field in $fields)
@@ -24,9 +29,8 @@
     $end
 </table>
 
+$paginationWidget
 
 <div>
     <a href="$createPageAction" class="btn" role="button">create...</a>
 </div>
-
-$paginationWidget
