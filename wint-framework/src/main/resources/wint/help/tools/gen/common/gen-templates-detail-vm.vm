@@ -16,5 +16,4 @@
     #end
 </table>
 
-<a href="$listPageAction">back to list</a>
 <a href="$editPageAction">edit...</a>
