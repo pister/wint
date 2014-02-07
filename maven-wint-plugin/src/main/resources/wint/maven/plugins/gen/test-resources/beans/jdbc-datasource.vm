@@ -4,7 +4,7 @@
      "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="byName">
 
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
+	<bean id="dataSource" class="wint.help.sql.datasource.SimpleDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="${${config.artifactId}.jdbc.url}" />
 		<property name="username" value="${${config.artifactId}.jdbc.username}" />

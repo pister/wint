@@ -13,6 +13,9 @@ import java.util.Map;
 public class BaseAction {
 
     protected void handleErrorToCommon(Result result, FlowData flowData, Context context) {
+        if (result.isHasFieldResultCodes()) {
+            return;
+        }
         ResultCode resultCode = getResultCode(result, flowData);
         if (resultCode == null) {
             resultCode = CommonResultCodes.SYSTEM_ERROR;
@@ -22,6 +25,9 @@ public class BaseAction {
     }
 
     protected void handleErrorAtCurrent(Result result, FlowData flowData, Context context) {
+        if (result.isHasFieldResultCodes()) {
+            return;
+        }
         ResultCode resultCode = getResultCode(result, flowData);
         if (resultCode == null) {
             resultCode = CommonResultCodes.SYSTEM_ERROR;
