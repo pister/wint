@@ -16,6 +16,7 @@
 					<object class="wint.mvc.pipeline.valves.LoadModuleValve">
 						<value name="label">loadModule</value>
 					</object>
+                    <object class="wint.mvc.pipeline.valves.CheckCsrfTokenValve"></object>
 					<object class="wint.mvc.pipeline.valves.PerformActionValve"></object>
 				</list>
 			</object>

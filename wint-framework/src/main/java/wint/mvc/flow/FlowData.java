@@ -49,8 +49,8 @@ public interface FlowData {
     String getTarget();
 
     /**
-     * 在执行action前，设置目标action
-     * 如果是在执行了action内或是后，则设置渲染目标
+     * 在执行action前调用：则设置目标action；
+     * 在执行了action内或是后调用：如果是doAction，相当于内部重定向，会执行目标和渲染模板，否则只设置渲染目标。
      *
      * @param target
      */
