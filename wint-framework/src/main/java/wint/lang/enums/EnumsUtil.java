@@ -1,5 +1,9 @@
 package wint.lang.enums;
 
+import wint.lang.WintException;
+import wint.lang.magic.MagicClass;
+import wint.lang.magic.MagicMethod;
+import wint.lang.magic.config.MagicType;
 import wint.lang.utils.StringUtil;
 
 import java.lang.reflect.Method;
@@ -80,11 +84,20 @@ public class EnumsUtil {
             enumMap = toEnumMaps(enumClass, values);
             cache.put(enumClass, enumMap);
         }
-        return (Enum<E>)enumMap.get(key);
+        return (Enum<E>) enumMap.get(key);
     }
 
     public static <E extends Enum<E>> Enum<E> findEnumByValue(Enum<E>[] values, Object fieldValue) {
         return findEnumByFieldValue(values, "value", fieldValue);
+    }
+
+    public static Enum[] enums(String enumClass) {
+        MagicClass magicClass = MagicClass.forName(enumClass);
+        if (!magicClass.isEnum()) {
+             throw new WintException(enumClass +" is not an Enum!");
+        }
+        MagicMethod valueMethod = magicClass.getMethod("values");
+        return (Enum[]) valueMethod.invoke(magicClass.getTargetClass(), null);
     }
 
 }

@@ -58,6 +58,7 @@
 			<object name="securityUtil" class="wint.lang.utils.SecurityUtil"/>
 			<object name="systemUtil" class="wint.lang.utils.SystemUtil"/>
 			<object name="dateUtil" class="wint.lang.utils.DateUtil"/>
+			<object name="enumsUtil" class="wint.lang.enums.EnumsUtil"/>
 		</object>
 	</object>
 	

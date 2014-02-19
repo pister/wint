@@ -78,6 +78,10 @@ public abstract class MagicClass implements Serializable {
 	public boolean isArray() {
 		return targetClass.isArray();
 	}
+
+    public boolean isEnum() {
+        return targetClass.isEnum();
+    }
 	
 	public boolean isCollectionLike() {
 		if (isArray()) {
@@ -89,7 +93,7 @@ public abstract class MagicClass implements Serializable {
 	public boolean isMap() {
 		return (Map.class.isAssignableFrom(targetClass));
 	}
-	
+
 	public abstract MagicMethod getMethod(String methodName);
 	
 	public abstract MagicMethod getMethod(String methodName, Class<?>[] argumentTypes);
