@@ -34,6 +34,7 @@ public class CheckCsrfTokenValve extends AbstractValve {
         Module module = innerFlowData.getModule();
         if (!module.isDoAction()) {
             pipelineContext.invokeNext(innerFlowData);
+            return;
         }
         // 针对do-action做检查
         if (!CsrfTokenUtil.checkCsrfByParameter(innerFlowData, tokenName)) {
@@ -42,6 +43,8 @@ public class CheckCsrfTokenValve extends AbstractValve {
             } else {
                 innerFlowData.setStatusCode(StatusCodes.SC_FORBIDDEN);
             }
+        } else {
+            pipelineContext.invokeNext(innerFlowData);
         }
     }
 
