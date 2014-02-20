@@ -4,10 +4,13 @@ import wint.lang.WintException;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicMethod;
 import wint.lang.magic.config.MagicType;
+import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.StringUtil;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -76,6 +79,7 @@ public class EnumsUtil {
 
     /**
      * 通过枚举类的成员名称和成员值获取枚举，如果没有则返回null
+     *
      * @param values
      * @param fieldName
      * @param fieldValue
@@ -98,6 +102,7 @@ public class EnumsUtil {
 
     /**
      * 获取成员为value对应值的枚举，如果没有则返回null
+     *
      * @param values
      * @param fieldValue
      * @param <E>
@@ -108,18 +113,50 @@ public class EnumsUtil {
     }
 
     /**
+     * 获取enum所有值列表
+     * @param values
+     * @param fieldname
+     * @return
+     */
+    public static List<Object> enumValues(Enum[] values, String fieldname) {
+        if (values == null || values.length == 0) {
+            return CollectionUtil.newArrayList(0);
+        }
+        Class enumClass = values[0].getDeclaringClass();
+        Map<String, Method> namedMethods = getterMethods(enumClass);
+        Method method = namedMethods.get(fieldname);
+        List<Object> ret = new ArrayList<Object>(values.length);
+        for (Enum value : values) {
+            try {
+                ret.add(method.invoke(value, null));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+
+            }
+        }
+        return ret;
+    }
+
+
+    /**
      * 通过一个类目类名，返回其枚举值，相当于调用 <code>Enum.values()</code> 方法，
-     * @throws WintException 如果目标不是一个枚举类，则抛出异常
+     *
      * @param enumClass
      * @return
+     * @throws WintException 如果目标不是一个枚举类，则抛出异常
      */
     public static Enum[] enums(String enumClass) {
         MagicClass magicClass = MagicClass.forName(enumClass);
         if (!magicClass.isEnum()) {
-             throw new WintException(enumClass +" is not an Enum!");
+            throw new WintException(enumClass + " is not an Enum!");
         }
         MagicMethod valueMethod = magicClass.getMethod("values");
         return (Enum[]) valueMethod.invoke(magicClass.getTargetClass(), null);
+    }
+
+    public static void main(String[] args) {
+        List<Object> result = enumValues(MagicType.values(), "name");
+        System.out.println(result);
     }
 
 }
