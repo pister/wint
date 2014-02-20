@@ -70,6 +70,8 @@
 
             <validator type="enums" message="your message">
                 <param name="values" value="your enum chars such as: 123,44,555" />
+                or
+                <param name="target" value="com.yourprojectpackage.YourEnumName#yourValueField"></param>
             </validator>
 
             <validator type="phone" message="your message"></validator>
