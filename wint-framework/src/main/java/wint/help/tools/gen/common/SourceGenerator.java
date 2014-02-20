@@ -1,14 +1,7 @@
 package wint.help.tools.gen.common;
 
-import wint.help.tools.gen.dao.DaoGenUtil;
-import wint.help.tools.gen.dao.DefaultMappingPolicy;
-import wint.help.tools.gen.dao.DefaultResultRender;
-import wint.help.tools.gen.dao.DomainField;
-import wint.help.tools.gen.dao.IbatisResult;
-import wint.help.tools.gen.dao.MappingPolicy;
-import wint.help.tools.gen.dao.OptionEnum;
-import wint.help.tools.gen.dao.ResultRender;
-import wint.help.tools.gen.dao.SqlTypes;
+import wint.help.tools.gen.dao.*;
+import wint.lang.WintException;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.Property;
 import wint.lang.utils.ClassUtil;
@@ -787,11 +780,19 @@ public class SourceGenerator {
         return sb.toString();
     }
 
+    private void checkPropertyName(String name) {
+        String normalizeName = StringUtil.camelToUnderLineString(name).toUpperCase();
+        if (Keywords.MYSQL_KEYWORDS.contains(normalizeName)) {
+            throw new WintException("property '" + name + "' is a keyword of mysql.");
+        }
+    }
+
     private List<IbatisResult> getResult(Class<?> c, Set<String> filters, OptionEnum resultOptionEnum) {
         MagicClass clazz = MagicClass.wrap(c);
         Map<String, Property> properties = clazz.getProperties();
         List<IbatisResult> ret = new ArrayList<IbatisResult>();
         for (Map.Entry<String, Property> entry : properties.entrySet()) {
+            checkPropertyName(entry.getKey());
             if (filters != null && filters.contains(entry.getKey())) {
                 continue;
             }
