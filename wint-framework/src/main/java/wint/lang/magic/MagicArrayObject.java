@@ -51,21 +51,6 @@ public class MagicArrayObject extends MagicObject {
 		throw new WintException("unsupport operate on a array :" + targetObject);
 	}
 
-	@Override
-	public boolean equalSame(MagicObject anothor) {
-		throw new WintException("unsupport operate on a array :" + targetObject);
-	}
-
-	@Override
-	public boolean equalNormal(MagicObject anothor) {
-		throw new WintException("unsupport operate on a array :" + targetObject);
-	}
-
-	@Override
-	public boolean equalLike(MagicObject anothor) {
-		throw new WintException("unsupport operate on a array :" + targetObject);
-	}
-
 	public int getLength() {
 		return Array.getLength(targetObject);
 	}

@@ -5,8 +5,17 @@ import java.lang.reflect.Method;
 import wint.lang.utils.ArrayUtil;
 import wint.lang.utils.StringUtil;
 
+/**
+ * 属性工具
+ * @author pister
+ */
 public class PropertyUtil {
-	
+
+    /**
+     * 获取属性名称
+     * @param methodName
+     * @return
+     */
 	public static String getPropertyName(String methodName) {
 		if (methodName.startsWith("get") || methodName.startsWith("set")) {
 			return StringUtil.lowercaseFirstLetter(methodName.substring(3));
@@ -16,6 +25,11 @@ public class PropertyUtil {
 		return null;
 	}
 
+    /**
+     * 是否写属性
+     * @param method
+     * @return
+     */
 	public static boolean isWritableMethod(Method method) {
 		if (method == null) {
 			return false;
@@ -26,7 +40,12 @@ public class PropertyUtil {
 		String name = method.getName();
 		return name.startsWith("set") && name.length() > 3;
 	}
-	
+
+    /**
+     * 是否为读属性
+     * @param method
+     * @return
+     */
 	public static boolean isReadableMethod(Method method) {
 		if (method == null) {
 			return false;

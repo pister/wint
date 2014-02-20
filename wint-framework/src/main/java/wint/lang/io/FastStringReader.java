@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 /**
- * 
+ * 线程不安全版本的java.io.StringReader
  * @author pister 2011-12-29 03:55:23
  */
 public class FastStringReader extends Reader {

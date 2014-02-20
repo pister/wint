@@ -11,6 +11,7 @@ import wint.lang.magic.MagicList;
 import wint.lang.magic.MagicMethod;
 
 /**
+ * 通过cglib实现的方法
  * @author pister 2012-3-5 10:38:39
  */
 public class CglibMagicMethod extends MagicMethod {

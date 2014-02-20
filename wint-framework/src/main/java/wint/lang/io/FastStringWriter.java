@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
+ * 线程不安全版本的java.io.StringWriter
  * @author pister 2011-12-29 03:52:52
  */
 public class FastStringWriter extends Writer {

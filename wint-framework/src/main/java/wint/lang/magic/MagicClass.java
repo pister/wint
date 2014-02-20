@@ -16,6 +16,13 @@ import wint.lang.utils.SystemUtil;
 
 
 /**
+ * class魔术包装类，提供了简单方便的class操作，
+ * 实现上根据环境分为反射实现和cglib实现。 <br />
+ *
+ * 使用可以用 MagicClass.wrap(Class) 或是 Magic.forName(ClasName)来包括
+ *
+ * 获取原始的可以通过 MagicClass.getTargetClass()方法获取
+ *
  * @author pister 2011-12-22 10:07:21
  */
 public abstract class MagicClass implements Serializable {
@@ -29,8 +36,16 @@ public abstract class MagicClass implements Serializable {
 		this.targetClass = targetClass;
 	}
 
+    /**
+     * 获取所有属性
+     * @return
+     */
 	public abstract Map<String, Property> getProperties();
 
+    /**
+     * 获取所有可读属性
+     * @return
+     */
     public Map<String, Property> getReadableProperties() {
         Map<String, Property> ret = MapUtil.newHashMap();
         Map<String, Property> propertyMap = getProperties();
@@ -42,6 +57,10 @@ public abstract class MagicClass implements Serializable {
         return ret;
     }
 
+    /**
+     * 获取所有可写熟悉
+     * @return
+     */
     public Map<String, Property> getWritableProperties() {
         Map<String, Property> ret = MapUtil.newHashMap();
         Map<String, Property> propertyMap = getProperties();
@@ -52,11 +71,21 @@ public abstract class MagicClass implements Serializable {
         }
         return ret;
     }
-	
+
+    /**
+     * 根据名称获取属性
+     * @param name
+     * @return
+     */
 	public Property getProperty(String name) {
 		return getProperties().get(name);
 	}
-	
+
+    /**
+     * 根据名称获取字段（字段可能为private）
+     * @param name
+     * @return
+     */
 	public Field getField(String name) {
 		try {
 			Field f = targetClass.getDeclaredField(name);
@@ -67,68 +96,127 @@ public abstract class MagicClass implements Serializable {
 		}
 	}
 
+    /**
+     * 根据默认构造函数，创建实例
+     * @return
+     */
 	public abstract MagicObject newInstance();
 
+    /**
+     * 根据特定的构造函数，创建实例
+     * @param parameterTypes 构造函数类型
+     * @param constructorArguments 构造函数参数
+     * @return
+     */
 	public abstract MagicObject newInstance(Class<?>[] parameterTypes, Object[] constructorArguments);
-	
+
+    /**
+     * 获取被包装的目标class
+     * @return
+     */
 	public Class<?> getTargetClass() {
 		return targetClass;
 	}
-	
+
+    /**
+     * 是否是数组
+     * @return
+     */
 	public boolean isArray() {
 		return targetClass.isArray();
 	}
 
+    /**
+     * 是否枚举
+     * @return
+     */
     public boolean isEnum() {
         return targetClass.isEnum();
     }
-	
+
+    /**
+     * 是否是collection或是array
+     * @return
+     */
 	public boolean isCollectionLike() {
 		if (isArray()) {
 			return true;
 		}
 		return (Collection.class.isAssignableFrom(targetClass));
 	}
-	
+
+    /**
+     * 是否是map
+     * @return
+     */
 	public boolean isMap() {
 		return (Map.class.isAssignableFrom(targetClass));
 	}
 
+    /**
+     * 根据名称获取方法，如果有多种重载，则抛出异常，如果没有，返回null
+     * @param methodName
+     * @return
+     */
 	public abstract MagicMethod getMethod(String methodName);
-	
+
+    /**
+     * 根据名称，方法参数获取方法，如果没有，返回null
+     * @param methodName
+     * @param argumentTypes
+     * @return
+     */
 	public abstract MagicMethod getMethod(String methodName, Class<?>[] argumentTypes);
-	
+
+    /**
+     * 参数中的对象是否是该类的实例
+     * @param object
+     * @return
+     */
 	public boolean isInstanceof(Object object) {
 		return targetClass.isInstance(object);
 	}
 
+    /**
+     * 参数中的类型是否能赋值给该类
+     * @param cls
+     * @return
+     */
 	public boolean isAssignableFrom(Class<?> cls) {
 		return cls.isAssignableFrom(targetClass);
 	}
 
-	/**
-	 * @param cls
-	 * @return
-	 */
-	public boolean isAssignableFromCompatible(Class<?> cls) {
-		if (isAssignableFrom(cls)) {
-			return true;
-		}
-		return false;
-	}
-	
+    /**
+     * 是否基础类型
+     * @return
+     */
 	public boolean isPrimary() {
 		return targetClass.isPrimitive();
 	}
-	
+
+    /**
+     * 根据类名包装
+     * @param className
+     * @return
+     */
 	public static MagicClass forName(String className) {
 		return wrap(ClassUtil.forName(className));
 	}
-	
+
+    /**
+     * 根据类包装
+     * @param clazz
+     * @return
+     */
 	public static MagicClass wrap(Class<?> clazz) {
 		return MagicFactory.getMagicFactory().newMagicClass(clazz);
 	}
-	
+
+    /**
+     * 根据对象包装
+     * @param object
+     * @return
+     */
 	public static MagicClass wrap(Object object) {
 		if (object == null) {
 			return NullMagicClass.getInstance();

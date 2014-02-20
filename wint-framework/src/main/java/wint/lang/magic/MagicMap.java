@@ -8,6 +8,10 @@ import java.util.Set;
 import wint.lang.convert.ConvertUtil;
 import wint.lang.utils.MapUtil;
 
+/**
+ * map的方便包装类
+ * @author pister
+ */
 public class MagicMap implements Map<String, Object> {
 
 	private Map<String, Object> map;

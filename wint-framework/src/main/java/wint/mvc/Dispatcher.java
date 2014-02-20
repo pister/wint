@@ -38,6 +38,7 @@ import wint.session.WintSessionProcessor;
 import wint.session.WintSessionProcessor.ProcessorHandler;
 
 /**
+ * wint框架初始化及请求派发类
  * @author pister
  * 2012-1-11 02:29:22
  */
@@ -58,7 +59,11 @@ public class Dispatcher {
 	private String charset;
 	
 	private boolean wintSessionUse;
-	
+
+    /**
+     * 初始化
+     * @param dispatcherInitializor
+     */
 	public void init(DispatcherInitializor dispatcherInitializor) {
 		Configuration configuration = dispatcherInitializor.loadConfiguration();
 		String objectMagicType = configuration.getProperties().getString(Constants.PropertyKeys.OBJECT_MAGIC_TYPE, Constants.Defaults.OBJECT_MAGIC_TYPE);

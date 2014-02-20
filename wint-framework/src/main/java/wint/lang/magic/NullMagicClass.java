@@ -4,6 +4,9 @@ import java.util.Map;
 
 import wint.lang.utils.MapUtil;
 
+/**
+ * @author pister
+ */
 public class NullMagicClass extends MagicClass {
 
 	private static final long serialVersionUID = -4272003387109471285L;
@@ -63,11 +66,6 @@ public class NullMagicClass extends MagicClass {
 
 	@Override
 	public boolean isAssignableFrom(Class<?> cls) {
-		return false;
-	}
-
-	@Override
-	public boolean isAssignableFromCompatible(Class<?> cls) {
 		return false;
 	}
 

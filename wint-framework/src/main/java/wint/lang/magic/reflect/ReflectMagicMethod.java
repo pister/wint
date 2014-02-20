@@ -8,6 +8,10 @@ import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicList;
 import wint.lang.magic.MagicMethod;
 
+/**
+ * 通过反射实现的方法
+ * @author pister
+ */
 public class ReflectMagicMethod extends MagicMethod {
 
 	public ReflectMagicMethod(Method method) {

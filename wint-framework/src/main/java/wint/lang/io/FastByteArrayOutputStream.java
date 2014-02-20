@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 /**
+ * 线程不安全版本的java.io.ByteArrayOutputStream
  * @author pister
  * 2011-12-29 04:04:57
  */

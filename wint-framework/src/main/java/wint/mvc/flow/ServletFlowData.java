@@ -325,7 +325,7 @@ public class ServletFlowData implements InnerFlowData {
                 "Please add the property  enctype=\"multipart/form-data\"  to your form, \r\n" +
                 "Add commons-uploadfile library to your classpath (optional: commons-io).\r\n" +
                 "a suggest maven dependencies are:\r\n\r\n" +
-                "<dependency>\r\n\t<groupId>commons-fileupload</groupId>\r\n\t<artifactId>commons-fileupload</artifactId>\r\n\t<version>1.2.2</version>\r\n</dependency>\r\n\r\n" +
+                "<dependency>\r\n\t<groupId>commons-fileupload</groupId>\r\n\t<artifactId>commons-fileupload</artifactId>\r\n\t<version>1.3.1</version>\r\n</dependency>\r\n\r\n" +
                 "<dependency>\r\n\t<groupId>commons-io</groupId>\r\n\t<artifactId>commons-io</artifactId>\r\n\t<version>2.1</version>\r\n</dependency>\r\n\r\n");
     }
 

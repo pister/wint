@@ -14,6 +14,7 @@ import wint.lang.magic.MagicMap;
 
 
 /**
+ * 派遣初始化类
  * @author pister
  * 2012-1-11 02:37:37
  */

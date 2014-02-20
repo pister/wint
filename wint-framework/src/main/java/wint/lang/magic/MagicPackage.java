@@ -125,11 +125,4 @@ public class MagicPackage {
 		return true;
 	}
 	
-	public static void main(String[] args) {
-		MagicPackage p = new MagicPackage("java.util");
-		System.out.println(p.exist());
-		 p = new MagicPackage("java.util.xxxx");
-		 System.out.println(p.exist());
-	}
-	
 }

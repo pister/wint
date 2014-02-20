@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
+ * 请求数据流对象
  * @author pister 2011-12-29 04:08:04
  */
 public interface FlowData {
@@ -111,12 +112,16 @@ public interface FlowData {
      */
     void setContentType(String contentType);
 
+    /**
+     * 获取本地对象
+     * @return
+     */
     Locale getLocale();
 
     void setLocale(Locale locale);
 
     /**
-     * 获取表单，参见form.xml的配置
+     * 根据名称获取表单，参见form.xml的配置
      *
      * @param name
      * @return
@@ -124,14 +129,20 @@ public interface FlowData {
     Form getForm(String name);
 
     /**
-     * 获取执行的方法参数，目的是提供一种另外的途径可以不用在方法参数中获取
-     *
+     * 获取执行的方法参数，目的是提供一种另外的途径可以不用在方法参数中获取 <br />
+     * http://127.0.0.1/hello/123-456-abc.htm
+     * 返回 ["123", "456", "abc"] 类似的参数
      * @return
      */
     Arguments getArguments();
 
+
     String getViewType();
 
+    /**
+     * 设置视图类型，参考 ViewTypes
+     * @param viewType
+     */
     void setViewType(String viewType);
 
     Context getInnerContext();
@@ -140,16 +151,42 @@ public interface FlowData {
 
     ServiceContext getServiceContext();
 
+    /**
+     * 获取session对象
+     * @return
+     */
     Session getSession();
 
+    /**
+     * 创建一个url对象
+     * @param urlModuleName
+     * @param target
+     * @return
+     */
     UrlBroker forkUrl(String urlModuleName, String target);
 
+    /**
+     * 获取上传文件
+     * @return
+     */
     Map<String, UploadFile> getUploadFiles();
 
+    /**
+     * 获取layout
+     * @return
+     */
     String getLayout();
 
+    /**
+     * 设置layout
+     * @param layout
+     */
     void setLayout(String layout);
 
+    /**
+     * 获取ip地址
+     * @return
+     */
     String getRemoteAddr();
 
 }

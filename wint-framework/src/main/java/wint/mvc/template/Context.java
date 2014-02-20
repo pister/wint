@@ -2,6 +2,10 @@ package wint.mvc.template;
 
 import java.util.Map;
 
+/**
+ * 上下文对象
+ * @author pister
+ */
 public interface Context {
 
 	void put(String name, Object value);

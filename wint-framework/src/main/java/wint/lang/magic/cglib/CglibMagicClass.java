@@ -88,10 +88,6 @@ public class CglibMagicClass extends MagicClass {
 		}
 	}
 	
-	protected void cleanCglibInnerProperties(Map<String, Method> properties) {
-		
-	}
-	
 	protected Map<String, Property> findPropertiesFromClass() {
 		Method[] methods = this.targetClass.getMethods();
 		Map<String, Method> readableMethods = MapUtil.newHashMap();

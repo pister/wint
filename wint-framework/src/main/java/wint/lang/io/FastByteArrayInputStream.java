@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * 线程不安全版本的java.io.ByteArrayInputStream
  * @author pister
  * 2011-12-29 04:01:14
  */

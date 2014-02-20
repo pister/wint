@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 枚举工具类
  * User: longyi
  * Date: 14-1-20
  * Time: 下午5:18
@@ -73,6 +74,14 @@ public class EnumsUtil {
         return fieldsEnum;
     }
 
+    /**
+     * 通过枚举类的成员名称和成员值获取枚举，如果没有则返回null
+     * @param values
+     * @param fieldName
+     * @param fieldValue
+     * @param <E>
+     * @return
+     */
     public static <E extends Enum<E>> Enum<E> findEnumByFieldValue(Enum<E>[] values, String fieldName, Object fieldValue) {
         if (values == null || values.length == 0) {
             return null;
@@ -87,10 +96,23 @@ public class EnumsUtil {
         return (Enum<E>) enumMap.get(key);
     }
 
+    /**
+     * 获取成员为value对应值的枚举，如果没有则返回null
+     * @param values
+     * @param fieldValue
+     * @param <E>
+     * @return
+     */
     public static <E extends Enum<E>> Enum<E> findEnumByValue(Enum<E>[] values, Object fieldValue) {
         return findEnumByFieldValue(values, "value", fieldValue);
     }
 
+    /**
+     * 通过一个类目类名，返回其枚举值，相当于调用 <code>Enum.values()</code> 方法，
+     * @throws WintException 如果目标不是一个枚举类，则抛出异常
+     * @param enumClass
+     * @return
+     */
     public static Enum[] enums(String enumClass) {
         MagicClass magicClass = MagicClass.forName(enumClass);
         if (!magicClass.isEnum()) {

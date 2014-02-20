@@ -10,6 +10,7 @@ import wint.lang.utils.ArrayUtil;
 import wint.lang.utils.ObjectUtil;
 
 /**
+ * 方便操作对象的包装
  * @author pister 2011-12-22 10:05:59
  */
 public abstract class MagicObject {
@@ -17,7 +18,12 @@ public abstract class MagicObject {
 	protected final Object targetObject;
 	
 	protected final MagicClass magicClass;
-	
+
+    /**
+     * 获取字段值
+     * @param name
+     * @return
+     */
 	public Object getField(String name) {
 		Field f = magicClass.getField(name);
 		try {
@@ -26,7 +32,12 @@ public abstract class MagicObject {
 			throw new WintException(e);
 		}
 	}
-	
+
+    /**
+     * 获取属性值
+     * @param propertyName
+     * @return
+     */
 	public Object getPropertyValue(String propertyName) {
 		Property property = magicClass.getProperty(propertyName);
 		if (property == null) {
@@ -35,11 +46,24 @@ public abstract class MagicObject {
 		return property.getValue(targetObject);
 	}
 
+    /**
+     * 方法调用
+     * @param methodName
+     * @param argumentTypes
+     * @param arguments
+     * @return
+     */
 	public Object invoke(String methodName, Class<?>[] argumentTypes, Object[] arguments) {
 		ensureNotNull();
 		return magicClass.getMethod(methodName, argumentTypes).invoke(targetObject, arguments);
 	}
-	
+
+    /**
+     * 方法调用（不支持方法重载）
+     * @param methodName
+     * @param arguments
+     * @return
+     */
 	public Object invoke(String methodName, Object[] arguments) {
 		ensureNotNull();
 		MagicMethod magicMethod = magicClass.getMethod(methodName);
@@ -53,11 +77,17 @@ public abstract class MagicObject {
 		return magicClass.isArray();
 	}
 
+    /**
+     * 设置属性值
+     * @param propertyName
+     * @param newValue
+     */
 	public void setPropertyValue(String propertyName, Object newValue) {
 		magicClass.getProperty(propertyName).setValue(targetObject, newValue);
 	}
 	
 	/**
+     * 设置属性值，并做自动参数类型转换
 	 * @param propertyName
 	 * @param newValue
 	 */
@@ -65,6 +95,10 @@ public abstract class MagicObject {
 		magicClass.getProperty(propertyName).setValueExt(targetObject, newValue);
 	}
 
+    /**
+     * 获取被封装的目标对象
+     * @return
+     */
 	public Object getObject() {
 		return targetObject;
 	}
@@ -73,11 +107,21 @@ public abstract class MagicObject {
 		this.targetObject = targetObject;
 		this.magicClass = MagicClass.wrap(targetObject);
 	}
-	
+
+    /**
+     * 调用无参数的方法
+     * @param methodName
+     * @return
+     */
 	public Object invoke(String methodName) {
 		return invoke(methodName, ArrayUtil.EMPTY_CLASS_ARRAY, null);
 	}
-	
+
+    /**
+     * 创建一个代理对象
+     * @param interceptors 代理对象被应用的拦截器
+     * @return
+     */
 	public abstract MagicObject asProxyObject(List<? extends Interceptor> interceptors);
 	
 	
@@ -85,34 +129,6 @@ public abstract class MagicObject {
 		if (targetObject == null) {
 			throw new NullPointerException("object is null at MagicObject@" + Integer.toHexString(this.hashCode()));
 		}
-	}
-	
-	/**
-	 * @param anothor
-	 * @return
-	 */
-	public boolean equalSame(MagicObject anothor) {
-		if (anothor == null) {
-			return false;
-		}
-		return targetObject == anothor.targetObject;
-	}
-	
-	
-	/**
-	 * @param anothor
-	 * @return
-	 */
-	public boolean equalNormal(MagicObject anothor) {
-		if (anothor == null) {
-			return false;
-		}
-		return ObjectUtil.equals(targetObject,  anothor.targetObject);
-	}
-	
-	public boolean equalLike(MagicObject anothor) {
-		// TODO 
-		return false;
 	}
 	
 	@Override
@@ -148,15 +164,28 @@ public abstract class MagicObject {
 	public boolean isNull() {
 		return (targetObject == null);
 	}
-	
+
+    /**
+     * 同getObject
+     * @return
+     */
 	public Object get() {
 		return targetObject;
 	}
-	
+
+    /**
+     * 获取相应的包装类
+     * @return
+     */
 	public MagicClass getMagicClass() {
 		return magicClass;
 	}
 
+    /**
+     * 包括一个对象
+     * @param object
+     * @return
+     */
 	public static MagicObject wrap(Object object) {
 		return MagicFactory.getMagicFactory().newMagicObject(object);
 	}
