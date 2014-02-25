@@ -2,44 +2,44 @@ package wint.help.tools.gen.dao;
 
 public class IbatisResult {
 
-	private String column;
-	
-	private String property;
+    private String column;
 
-	private Class<?> type;
-	
-	private String extend;
-	
-	public String getColumn() {
-		return column;
-	}
+    private String property;
 
-	public void setColumn(String column) {
-		this.column = column;
-	}
+    private Class<?> type;
 
-	public String getProperty() {
-		return property;
-	}
+    private String extend;
 
-	public void setProperty(String property) {
-		this.property = property;
-	}
+    public String getColumn() {
+        return column;
+    }
 
-	public Class<?> getType() {
-		return type;
-	}
+    public void setColumn(String column) {
+        this.column = column;
+    }
 
-	public void setType(Class<?> type) {
-		this.type = type;
-	}
+    public String getProperty() {
+        return property;
+    }
 
-	public String getExtend() {
-		return extend;
-	}
+    public void setProperty(String property) {
+        this.property = property;
+    }
 
-	public void setExtend(String extend) {
-		this.extend = extend;
-	}
-	
+    public Class<?> getType() {
+        return type;
+    }
+
+    public void setType(Class<?> type) {
+        this.type = type;
+    }
+
+    public String getExtend() {
+        return extend;
+    }
+
+    public void setExtend(String extend) {
+        this.extend = extend;
+    }
+
 }

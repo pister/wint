@@ -5,10 +5,10 @@ import wint.help.tools.gen.common.SourceGenerator;
 import java.io.OutputStreamWriter;
 
 /**
-* User: longyi
-* Date: 13-12-22
-* Time: 上午10:40
-*/
+ * User: longyi
+ * Date: 13-12-22
+ * Time: 上午10:40
+ */
 public class IbatisGenUtil {
 
 /*	public static void genToConsole(String prefix, Class<?> clazz) {
@@ -24,9 +24,11 @@ public class IbatisGenUtil {
     public static void genCreateTableSqlToConsole(String prefix, Class<?> clazz) {
         genCreateTableSqlToConsole(prefix, clazz, true);
     }
+
     public static void genCreateTableSqlToConsole(String prefix, Class<?> clazz, boolean notNull) {
         genCreateTableSqlToConsole(prefix, clazz, notNull, "id");
     }
+
     public static void genCreateTableSqlToConsole(String prefix, Class<?> clazz, String idName) {
         genCreateTableSqlToConsole(prefix, clazz, true, idName);
     }
@@ -42,7 +44,7 @@ public class IbatisGenUtil {
         System.out.println();
         System.out.println();
         System.out.println();
-        sourceGenerator.genSqlMap(clazz,  new OutputStreamWriter(System.out));
+        sourceGenerator.genSqlMap(clazz, new OutputStreamWriter(System.out));
     }
 
     public static void genCreateTableSqlToConsole(String prefix, Class<?> clazz, boolean notNull, String idName) {
@@ -52,7 +54,7 @@ public class IbatisGenUtil {
         System.out.println();
         System.out.println();
         System.out.println();
-        sourceGenerator.genCreateTableSql(clazz,  new OutputStreamWriter(System.out), notNull);
+        sourceGenerator.genCreateTableSql(clazz, new OutputStreamWriter(System.out), notNull);
     }
 
     public static void genIbatisDaoToConsole(String prefix, Class<?> clazz, String idName) {
@@ -62,7 +64,7 @@ public class IbatisGenUtil {
         System.out.println();
         System.out.println();
         System.out.println();
-        sourceGenerator.genIbatisDao(clazz,  new OutputStreamWriter(System.out), null);
+        sourceGenerator.genIbatisDao(clazz, new OutputStreamWriter(System.out), null);
     }
 
     public static void genDaoToConsole(String prefix, Class<?> clazz, String idName) {
@@ -72,7 +74,7 @@ public class IbatisGenUtil {
         System.out.println();
         System.out.println();
         System.out.println();
-        sourceGenerator.genDAO(clazz,  new OutputStreamWriter(System.out));
+        sourceGenerator.genDAO(clazz, new OutputStreamWriter(System.out));
     }
 
     public static void genTestsToConsole(String prefix, Class<?> clazz, String idName) {
@@ -82,7 +84,7 @@ public class IbatisGenUtil {
         System.out.println();
         System.out.println();
         System.out.println();
-        sourceGenerator.genDaoTests(clazz,  new OutputStreamWriter(System.out));
+        sourceGenerator.genDaoTests(clazz, new OutputStreamWriter(System.out));
     }
 
 }

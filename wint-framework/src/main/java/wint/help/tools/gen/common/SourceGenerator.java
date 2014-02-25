@@ -219,7 +219,7 @@ public class SourceGenerator {
         String aoFullName = aoPackage + "." + aoClassName;
         String thisPackage = aoPackage + ".impl";
         String thisClassName = aoClassName + "Impl";
-        String aoImplFullClassName = thisPackage + "." + thisClassName ;
+        String aoImplFullClassName = thisPackage + "." + thisClassName;
         String idType = genMetaInfo.getIdType();
 
         String daoClassName = genMetaInfo.getDaoSimpleClassName();
@@ -301,10 +301,10 @@ public class SourceGenerator {
         Map<String, Object> context = MapUtil.newHashMap();
 
         String alias = DaoGenUtil.getDoAlias(domainClass);
-        String formCreateDefine = "#set($form=$formFactory.getForm(\""+ alias +".create\"))\n" ;
+        String formCreateDefine = "#set($form=$formFactory.getForm(\"" + alias + ".create\"))\n";
         context.put("formCreateDefine", formCreateDefine);
         context.put("alias", alias);
-        context.put("doCreateAction", "$baseModule.setTarget('"+ getActionContext(actionContext) + alias + "/doCreate" +"')");
+        context.put("doCreateAction", "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/doCreate" + "')");
 
         MagicClass magicClass = MagicClass.wrap(domainClass);
         Map<String, Property> propertyMap = magicClass.getProperties();
@@ -335,13 +335,13 @@ public class SourceGenerator {
 
         String alias = DaoGenUtil.getDoAlias(domainClass);
 
-        String foreachStart = "#foreach($"+ alias +" in $"+ alias +"s)";
+        String foreachStart = "#foreach($" + alias + " in $" + alias + "s)";
 
         String end = "#end";
         String createPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/create')";
-        String deleteDoAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/doDelete').param('id', $"+ alias +".id).withToken()";
-        String editPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/edit').param('id', $"+ alias +".id)";
-        String detailPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/detail').param('id', $"+ alias +".id)";
+        String deleteDoAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/doDelete').param('id', $" + alias + ".id).withToken()";
+        String editPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/edit').param('id', $" + alias + ".id)";
+        String detailPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/detail').param('id', $" + alias + ".id)";
 
         String paginationWidget = "$widget.setTemplate('common/pagination').addToContext('pageModule', $baseModule.setTarget('" + getActionContext(actionContext) + alias + "/list')).addToContext('query', $query)";
 
@@ -360,7 +360,6 @@ public class SourceGenerator {
 
             fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
         }
-
 
 
         context.put("paginationWidget", paginationWidget);
@@ -384,7 +383,7 @@ public class SourceGenerator {
         String alias = DaoGenUtil.getDoAlias(domainClass);
 
         String listPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/list')";
-        String editPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/edit').param('id', $"+ alias +".id)";
+        String editPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/edit').param('id', $" + alias + ".id)";
 
         MagicClass magicClass = MagicClass.wrap(domainClass);
         Set<String> propertyNames = new TreeSet<String>(magicClass.getReadableProperties().keySet());
@@ -403,7 +402,7 @@ public class SourceGenerator {
         Map<String, Object> context = MapUtil.newHashMap();
 
         String alias = DaoGenUtil.getDoAlias(domainClass);
-        String formEditDefine = "#set($form=$formFactory.getForm(\""+ alias +".edit\"))\n" ;
+        String formEditDefine = "#set($form=$formFactory.getForm(\"" + alias + ".edit\"))\n";
 
         String listPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/list')";
         String doUpdateAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/doUpdate')";

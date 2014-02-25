@@ -2,10 +2,9 @@ package wint.help.tools.ibatis;
 
 import wint.help.tools.gen.common.BaseAutoGen;
 import wint.help.tools.gen.common.FileWriter;
-import wint.help.tools.gen.dao.DaoGenUtil;
 import wint.help.tools.gen.common.GenMetaInfo;
 import wint.help.tools.gen.common.SourceGenerator;
-import wint.lang.utils.FileUtil;
+import wint.help.tools.gen.dao.DaoGenUtil;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.SystemUtil;
 
@@ -36,6 +35,7 @@ public class AutoGenDAO extends BaseAutoGen {
     public AutoGenDAO(String prefix) {
         this.prefix = prefix;
     }
+
     private String getBeanId(String beanClassName) {
         String className = StringUtil.getLastAfter(beanClassName, ".");
         if (className.endsWith(daoSuffix)) {

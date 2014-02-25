@@ -89,9 +89,9 @@ public class GenMetaInfo {
 
         ibatisPackage = daoPackage + ".ibatis";
         ibatisSimpleClassName = daoSimpleClassName + implSuffix;
-        ibatisFullClassName = ibatisPackage + "."  + ibatisSimpleClassName;
+        ibatisFullClassName = ibatisPackage + "." + ibatisSimpleClassName;
 
-        testDaoSimpleClassName = daoSimpleClassName +"Tests";
+        testDaoSimpleClassName = daoSimpleClassName + "Tests";
         testDaoPackage = daoPackage;
         testDaoFullClassName = testDaoPackage + "." + testDaoSimpleClassName;
 

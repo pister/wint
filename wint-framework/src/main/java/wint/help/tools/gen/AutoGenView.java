@@ -71,7 +71,7 @@ public class AutoGenView extends BaseAutoGen {
 
             String alias = DaoGenUtil.getDoAlias(clazz);
 
-            log("http://127.0.0.1:8080/"+ sourceGenerator.getActionContext(actionContext) + alias + "/list.htm");
+            log("http://127.0.0.1:8080/" + sourceGenerator.getActionContext(actionContext) + alias + "/list.htm");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -116,7 +116,7 @@ public class AutoGenView extends BaseAutoGen {
 
     }
 
-    private void genViewTemplates(SourceGenerator sourceGenerator, Class<?> clazz, String actionContext, FileWriter fileWriter,  File templatesSrcPath) {
+    private void genViewTemplates(SourceGenerator sourceGenerator, Class<?> clazz, String actionContext, FileWriter fileWriter, File templatesSrcPath) {
         if (!templatesSrcPath.exists()) {
             templatesSrcPath.mkdirs();
         }
@@ -135,7 +135,7 @@ public class AutoGenView extends BaseAutoGen {
 
         File actionDir = new File(pageDir, actionContext);
         if (!actionDir.exists()) {
-             actionDir.mkdirs();
+            actionDir.mkdirs();
         }
         String alias = DaoGenUtil.getDoAlias(clazz);
         File moduleDir = new File(actionDir, alias);
@@ -206,7 +206,6 @@ public class AutoGenView extends BaseAutoGen {
         nodeStr = "\t" + nodeStr + SystemUtil.LINE_SEPARATOR;
         addNodeToPath(rootFile, "(</forms>)", nodeStr);
     }
-
 
 
 }
