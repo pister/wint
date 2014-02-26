@@ -43,17 +43,15 @@ public class CookieUtil {
 			cookieBuilder.append(PATH).append(KEY_VALUE_SEPARATOR).append(cookie.getPath());
 			cookieBuilder.append(COOKIE_SEPARATOR);
 		}
-
         /*
 		if (cookie.getMaxAge() >= 0) {
 			cookieBuilder.append(EXPIRES).append(KEY_VALUE_SEPARATOR).append(getCookieExpires(cookie));
 			cookieBuilder.append(COOKIE_SEPARATOR);
 		}
-		
+		  */
 		if (httpOnly) {
 			cookieBuilder.append(HTTP_ONLY);
 		}
-		*/
 		return cookieBuilder.toString();
 	}
 
