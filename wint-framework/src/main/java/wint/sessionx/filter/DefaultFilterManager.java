@@ -20,9 +20,12 @@ public class DefaultFilterManager implements FilterManager {
 
     public FilterContext performFilters(Map<String, Object> initAttributes) {
         DefaultFilterContext filterContext = new DefaultFilterContext(filters.iterator());
-
+        if (initAttributes != null) {
+            for (Map.Entry<String, Object> entry : initAttributes.entrySet()) {
+                filterContext.setAttribute(entry.getKey(), entry.getValue());
+            }
+        }
         filterContext.invokeNext();
-
         return filterContext;
     }
 

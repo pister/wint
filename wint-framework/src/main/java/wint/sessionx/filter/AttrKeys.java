@@ -11,6 +11,8 @@ public interface AttrKeys {
 
     String RAW_RESPONSE = "raw_http_response";
 
+    String SERVLET_CONTEXT = "http_servlet_context";
+
     String NEW_REQUEST = "new_http_request";
 
     String NEW_RESPONSE = "new_http_response";

@@ -7,13 +7,21 @@ import java.io.Serializable;
  * Date: 14-2-26
  * Time: 下午1:33
  */
-public class SessionEntry implements Serializable{
+public class SessionData implements Serializable{
 
     private static final long serialVersionUID = 6823163590591332462L;
 
     private String name;
 
-    private Object value;
+    private Object data;
+
+    public SessionData(String name, Object data) {
+        this.name = name;
+        this.data = data;
+    }
+
+    public SessionData() {
+    }
 
     public String getName() {
         return name;
@@ -23,11 +31,11 @@ public class SessionEntry implements Serializable{
         this.name = name;
     }
 
-    public Object getValue() {
-        return value;
+    public Object getData() {
+        return data;
     }
 
-    public void setValue(Object value) {
-        this.value = value;
+    public void setData(Object data) {
+        this.data = data;
     }
 }

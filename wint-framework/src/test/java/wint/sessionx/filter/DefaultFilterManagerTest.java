@@ -26,7 +26,7 @@ public class DefaultFilterManagerTest extends TestCase {
             }
         });
 
-        defaultFilterManager.performFilters(null, null);
+        defaultFilterManager.performFilters(null);
     }
 
 

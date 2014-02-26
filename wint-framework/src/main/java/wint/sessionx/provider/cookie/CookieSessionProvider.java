@@ -1,0 +1,41 @@
+package wint.sessionx.provider.cookie;
+
+import wint.lang.magic.MagicMap;
+import wint.sessionx.provider.RequestParser;
+import wint.sessionx.provider.SessionProvider;
+import wint.sessionx.provider.SessionStoreCreator;
+import wint.sessionx.serialize.SerializeService;
+import wint.sessionx.serialize.StringSerializeService;
+
+import javax.servlet.ServletContext;
+
+/**
+ * Created by pister on 14-2-26.
+ */
+public class CookieSessionProvider implements SessionProvider {
+
+    private CookieRequestParser cookieRequestParser;
+
+    private CookieSessionStoreCreator cookieSessionStoreCreator;
+
+    private CookieSessionConfig config;
+
+    private SerializeService serializeService;
+
+    private CookieCodec cookieCodec;
+
+    public void init(MagicMap initParamters, ServletContext servletContext) {
+        config = new CookieSessionConfig(initParamters);
+        serializeService = new StringSerializeService();
+        cookieCodec = new CookieCodec(config, serializeService);
+        cookieRequestParser = new CookieRequestParser(config, serializeService, cookieCodec);
+    }
+
+    public RequestParser getRequestParser() {
+        return cookieRequestParser;
+    }
+
+    public SessionStoreCreator getSessionStoreCreator() {
+        return cookieSessionStoreCreator;
+    }
+}

@@ -1,7 +1,8 @@
 package wint.sessionx;
 
-import wint.sessionx.filter.FilterContext;
+import wint.mvc.servlet.ServletUtil;
 import wint.sessionx.provider.SessionProvider;
+import wint.sessionx.provider.cookie.CookieSessionProvider;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -24,13 +25,14 @@ public class WintSessionFilter implements Filter {
 
     public void init(FilterConfig filterConfig) throws ServletException {
         sessionContainer = new SessionContainer();
-        SessionProvider sessionProvider = null; //TODO set default
-        sessionContainer.init(sessionProvider);
+        SessionProvider sessionProvider = new CookieSessionProvider();
+        sessionProvider.init(ServletUtil.getInitParameters(filterConfig), filterConfig.getServletContext());
+        sessionContainer.init(sessionProvider, filterConfig.getServletContext());
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest)request;
-        HttpServletResponse httpResponse = (HttpServletResponse)response;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
         sessionContainer.handleRequest(httpRequest, httpResponse, chain);
     }
 

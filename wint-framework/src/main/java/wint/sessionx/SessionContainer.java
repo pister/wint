@@ -5,13 +5,11 @@ import wint.sessionx.filter.AttrKeys;
 import wint.sessionx.filter.DefaultFilterManager;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.filter.FilterManager;
-import wint.sessionx.filter.filters.CommitFilter;
-import wint.sessionx.filter.filters.CreateNewRequestResponseFilter;
-import wint.sessionx.filter.filters.CreateSessionStoreFilter;
-import wint.sessionx.filter.filters.ParseRequestFilter;
+import wint.sessionx.filter.filters.*;
 import wint.sessionx.provider.SessionProvider;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,10 +29,11 @@ public class SessionContainer {
 
     private SessionProvider sessionProvider;
 
-    public void init(SessionProvider sessionProvider) {
+    public void init(SessionProvider sessionProvider, ServletContext servletContext) {
         this.sessionProvider = sessionProvider;
 
         requestFilterManager = new DefaultFilterManager();
+        requestFilterManager.addFilter(new InitializeFilter(servletContext));
         requestFilterManager.addFilter(new ParseRequestFilter(sessionProvider.getRequestParser()));
         requestFilterManager.addFilter(new CreateSessionStoreFilter(sessionProvider.getSessionStoreCreator()));
         requestFilterManager.addFilter(new CreateNewRequestResponseFilter());

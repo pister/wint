@@ -1,5 +1,9 @@
 package wint.sessionx.provider;
 
+import wint.lang.magic.MagicMap;
+
+import javax.servlet.ServletContext;
+
 /**
  * User: longyi
  * Date: 14-2-26
@@ -7,7 +11,7 @@ package wint.sessionx.provider;
  */
 public interface SessionProvider {
 
-    void init();
+    void init(MagicMap initParamters, ServletContext servletContext);
 
     RequestParser getRequestParser();
 
