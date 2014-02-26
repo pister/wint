@@ -88,7 +88,7 @@ public class StringSerializeService implements SerializeService {
 		}
 		Class<?> type = input.getClass();
 		String name = getName(type);
-		String data = null;
+		String data;
 		if (type2name.containsKey(type)) {
 			data = UrlUtil.encode(input.toString(), URL_ENCODE_CHARSET);
 		} else {
@@ -145,7 +145,7 @@ public class StringSerializeService implements SerializeService {
 		Object defaultValue = defaultValues.get(type);
 		if (type != null) {
 			data = UrlUtil.decode(data.toString(), URL_ENCODE_CHARSET);
-			return ConvertUtil.convertTo((Object)data, type, defaultValue);
+			return ConvertUtil.convertTo(data, type, defaultValue);
 		} else {
 			if (NULL_CLASS_NAME.equals(typeName)) {
 				return null;

@@ -109,15 +109,27 @@ public class DefaultSessionStore implements SessionStore {
 
 				sessionDataService.setSerializeService(sessionDataServiceConfig.getSerializeService());
 				sessionId = sessionDataService.init(wintSessionHttpServletRequest, wintSessionHttpServletResponse, sessionDataConfigs, sessionDataServiceConfig.getSessionStoreConfig());
-				
-				sessionDataServices.add(sessionDataService);
+
+                long lastAccessedTime = sessionDataService.getLastAccessTime();
+
+                if (System.currentTimeMillis() - lastAccessedTime > sessionConfig.getExpire() * 1000) {
+                    // 已经过期，忽略此session
+                    sessionId = null;
+                    sessionDataService.clearAll();
+                    sessionDataServices.add(sessionDataService);
+                    continue;
+                }
+
+                sessionDataServices.add(sessionDataService);
 				for (SessionDataConfig sessionDataConfig : sessionDataConfigs) {
 					namedSessionDataServices.put(sessionDataConfig.getName(), sessionDataService);
 				}
+
 			}
 			
 			initSessionCreateTime();
 			updateLastAccessTime();
+
 			inited = true;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -136,7 +148,9 @@ public class DefaultSessionStore implements SessionStore {
 	}
 	
 	private void updateLastAccessTime() {
-		lastAccessedTime = System.currentTimeMillis();
+        if (lastAccessedTime == 0) {
+		    lastAccessedTime = System.currentTimeMillis();
+        }
 	}
 	
 	public Object getAttribute(String name) {
@@ -150,7 +164,6 @@ public class DefaultSessionStore implements SessionStore {
 
 	public void setAttribute(String name, Object value) {
 		SessionData newSessionData = new SessionData(name, value);
-		newSessionData.setExpire(getExpire());
 		getSessionDataService(name).set(name, newSessionData);
 	}
 

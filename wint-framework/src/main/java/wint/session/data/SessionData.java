@@ -13,11 +13,6 @@ public class SessionData implements Serializable {
 	 */
 	private Object data;
 	
-	/**
-	 * 有效期(秒)
-	 */
-	private int expire;
-
 	public SessionData() {
 		super();
 	}
@@ -44,12 +39,5 @@ public class SessionData implements Serializable {
 		this.data = data;
 	}
 
-	public int getExpire() {
-		return expire;
-	}
-
-	public void setExpire(int expire) {
-		this.expire = expire;
-	}
 
 }

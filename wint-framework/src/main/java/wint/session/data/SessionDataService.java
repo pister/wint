@@ -27,5 +27,8 @@ public interface SessionDataService {
 	void commit(WintSessionHttpServletRequest wintSessionHttpServletRequest, WintSessionHttpServletResponse wintSessionHttpServletResponse, int expire);
 	
 	void setSerializeService(SerializeService serializeService);
-	
+
+    long getLastAccessTime();
+
+    void clearAll();
 }

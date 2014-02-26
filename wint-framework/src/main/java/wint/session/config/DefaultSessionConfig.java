@@ -32,8 +32,6 @@ public class DefaultSessionConfig implements SessionConfig {
 	 */
 	private int expire = WintSessionContants.WINT_COOKIE_SESSION_EXPIRE;
 	
-	private String sessionIdName = WintSessionContants.SESSION_ID_NAME;
-	
 	private List<SessionDataServiceConfig> sessionDataServiceConfigs = CollectionUtil.newArrayList();
 
 	private CookieSessionStoreConfig cookieSessionStoreConfig = new CookieSessionStoreConfig();
@@ -124,16 +122,8 @@ public class DefaultSessionConfig implements SessionConfig {
 		return sessionDataServiceConfigs;
 	}
 
-	public String getSessionIdName() {
-		return sessionIdName;
-	}
-
 	public void setExpire(int expire) {
 		this.expire = expire;
-	}
-
-	public void setSessionIdName(String sessionIdName) {
-		this.sessionIdName = sessionIdName;
 	}
 
 	public void setSessionDataServiceConfigs(List<SessionDataServiceConfig> sessionDataServiceConfigs) {

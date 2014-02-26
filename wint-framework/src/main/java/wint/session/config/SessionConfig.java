@@ -11,8 +11,6 @@ public interface SessionConfig {
 
 	public List<SessionDataServiceConfig> getSessionDataServiceConfigs();
 
-	public String getSessionIdName();
-	
 	public MagicMap getParameters();
 
 }

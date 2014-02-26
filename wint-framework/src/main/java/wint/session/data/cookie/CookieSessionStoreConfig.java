@@ -26,7 +26,6 @@ public class CookieSessionStoreConfig implements SessionStoreConfig {
 		this.domain = sessionConfig.getParameters().getString(SessionConfigKeys.COOKIE_DOMAIN, WintSessionContants.WINT_COOKIE_SESSION_DOMAIN);
 		this.dataSeparate = sessionConfig.getParameters().getString(SessionConfigKeys.COOKIE_DATASEPARATE, ";");
 		this.cookieDataMaxSize = sessionConfig.getParameters().getInt(SessionConfigKeys.COOKIE_COOKIEDATAMAXSIZE, WintSessionContants.WINT_COOKIE_DATA_MAX_SIZE);
-		
 	}
 
 	public String getPrefixName() {
@@ -51,10 +50,6 @@ public class CookieSessionStoreConfig implements SessionStoreConfig {
 
 	public String getDomain() {
 		return domain;
-	}
-
-	public void setDomain(String domain) {
-		this.domain = domain;
 	}
 
 }

@@ -48,10 +48,14 @@ public class CookieStoreSessionDataService implements SessionDataService {
 	
 	private SerializeService serializeService;
 	
-	private String sessionIdAttributeName = "_wint_sid";
-	
+	private static final String SESSION_ID_ATTRIBUTE_NAME = "_wint_sid";
+
+	private static final String LAST_ACCESS_TIME_NAME = "_wint_xlast";
+
 	private String sessionId;
-	
+
+    private long lastAccessTime;
+
 	boolean needUpdateCookie() {
 		return (!toBeDeleteNames.isEmpty()) || (!updatedData.isEmpty());
 	}
@@ -146,7 +150,9 @@ public class CookieStoreSessionDataService implements SessionDataService {
 		}
 		return true;
 	}
-	
+
+
+
 	private String parseDataCookies(List<Cookie> dataCookies) {
 		Map<String, SessionData> data = MapUtil.newHashMap();
 		for (Cookie cookie : dataCookies) {
@@ -154,7 +160,16 @@ public class CookieStoreSessionDataService implements SessionDataService {
 			parseData(value, data);
 		}
 		this.orgData = data;
-		SessionData sessionIdData = data.remove(sessionIdAttributeName);
+
+        SessionData sessionLastAccessData = data.remove(LAST_ACCESS_TIME_NAME);
+        if (sessionLastAccessData != null) {
+            Long lastAccessTime = (Long)sessionLastAccessData.getData();
+            if (lastAccessTime != null) {
+                this.lastAccessTime = lastAccessTime;
+            }
+        }
+
+        SessionData sessionIdData = data.remove(SESSION_ID_ATTRIBUTE_NAME);
 		if (sessionIdData != null) {
 			return (String)sessionIdData.getData();
 		} else {
@@ -194,8 +209,11 @@ public class CookieStoreSessionDataService implements SessionDataService {
 		List<String> cookieStrings = CollectionUtil.newArrayList();
 		
 		// append session id
-		needOutputData.put(sessionIdAttributeName, new SessionData(sessionIdAttributeName, sessionId));
-		
+		needOutputData.put(SESSION_ID_ATTRIBUTE_NAME, new SessionData(SESSION_ID_ATTRIBUTE_NAME, sessionId));
+
+        // add last update time
+		needOutputData.put(LAST_ACCESS_TIME_NAME, new SessionData(LAST_ACCESS_TIME_NAME, System.currentTimeMillis()));
+
 		// need update
 		for (Map.Entry<String, SessionData> entry : needOutputData.entrySet()) {
 			StringBuilder sb = new StringBuilder();
@@ -254,4 +272,15 @@ public class CookieStoreSessionDataService implements SessionDataService {
 		return sessionId;
 	}
 
+    public long getLastAccessTime() {
+        return lastAccessTime;
+    }
+
+    public void clearAll() {
+        sessionId = null;
+        lastAccessTime = 0;
+        updatedData.clear();
+        orgData.clear();
+        toBeDeleteNames.clear();
+    }
 }
