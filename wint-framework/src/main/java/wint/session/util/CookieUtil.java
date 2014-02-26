@@ -44,6 +44,7 @@ public class CookieUtil {
 			cookieBuilder.append(COOKIE_SEPARATOR);
 		}
 
+        /*
 		if (cookie.getMaxAge() >= 0) {
 			cookieBuilder.append(EXPIRES).append(KEY_VALUE_SEPARATOR).append(getCookieExpires(cookie));
 			cookieBuilder.append(COOKIE_SEPARATOR);
@@ -52,6 +53,7 @@ public class CookieUtil {
 		if (httpOnly) {
 			cookieBuilder.append(HTTP_ONLY);
 		}
+		*/
 		return cookieBuilder.toString();
 	}
 
