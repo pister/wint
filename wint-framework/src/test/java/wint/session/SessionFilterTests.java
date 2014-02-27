@@ -17,8 +17,10 @@ import wint.mvc.servlet.mock.HttpServletRequestMock;
 import wint.mvc.servlet.mock.HttpServletResponseMock;
 import wint.mvc.servlet.mock.ServletConfigMock;
 import wint.mvc.servlet.mock.SimpleServletFilterChainMock;
-import wint.session.config.SessionConfigKeys;
-import wint.session.util.CookieUtil;
+import wint.sessionx.WintSessionFilter;
+import wint.sessionx.cookie.CookieUtil;
+import wint.sessionx.provider.cookie.CookieContants;
+import wint.sessionx.provider.cookie.CookieSessionConfig;
 
 public class SessionFilterTests extends TestCase {
 
@@ -42,8 +44,7 @@ public class SessionFilterTests extends TestCase {
 		MagicMap initParameters = MagicMap.newMagicMap();
 		initParameters.put(Constants.PropertyKeys.APP_PACKAGE, "wint.demo.app");
 		initParameters.put(Constants.PropertyKeys.TEMPLATE_PATH, "test_template");
-		initParameters.put(SessionConfigKeys.COOKIE_ENCRYPT_USE, "true");
-		servletConfigMock = new ServletConfigMock(initParameters, initParameters);	
+		servletConfigMock = new ServletConfigMock(initParameters, initParameters);
 		
 		filterConfigMock = new FilterConfigMock("myFilter", servletConfigMock.getServletContext());
 		

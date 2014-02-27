@@ -1,5 +1,16 @@
 package wint.mvc.servlet.mock;
 
+import wint.lang.magic.MagicMap;
+import wint.lang.utils.CollectionUtil;
+import wint.lang.utils.StringUtil;
+import wint.sessionx.cookie.CookieUtil;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,237 +23,225 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import wint.lang.magic.MagicMap;
-import wint.lang.utils.CollectionUtil;
-import wint.lang.utils.StringUtil;
-import wint.session.util.CookieUtil;
-
 public class HttpServletRequestMock implements HttpServletRequest {
 
-	private MagicMap headers = MagicMap.newMagicMap();
-	
-	private MagicMap parameters = MagicMap.newMagicMap();
+    private MagicMap headers = MagicMap.newMagicMap();
 
-	private String method = "GET";
-	
-	private String pathInfo;
-	
-	private String charsetEncoding = "utf-8"; 
-	
-	private MagicMap attributes = MagicMap.newMagicMap();
-	
-	private HttpSession httpSession;
-	
-	private static final String COOKIE_DATE_PATTERN = "EEE, dd-MMM-yyyy HH:mm:ss 'GMT'";
-	
-	public HttpServletRequestMock(String pathInfo, MagicMap parameters, ServletContext servletContext) {
-		super();
-		this.pathInfo = pathInfo;
-		this.parameters = parameters;
-		this.httpSession = new HttpSessionMock(servletContext);
-		
-	}
+    private MagicMap parameters = MagicMap.newMagicMap();
 
-	public String getAuthType() {
-		return null;
-	}
+    private String method = "GET";
 
-	public String getContextPath() {
-		return pathInfo;
-	}
+    private String pathInfo;
 
-	private int getMaxAge(String source) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat(COOKIE_DATE_PATTERN, Locale.US);
-			Date date = sdf.parse(source);
-			long ts = (date.getTime() - (new Date()).getTime());
-			return (int)(ts/1000);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	public Cookie[] getCookies() {
-		String cookies = headers.getString(CookieUtil.COOKIE);
-		if (cookies == null) {
-			return null;
-		}
-		List<String> stringCookies = StringUtil.splitTrim(cookies, ";");
-		List<Cookie> ret = CollectionUtil.newArrayList();
-		
-		Cookie lastCookie = null;
-		for (String stringCookie : stringCookies) {
-			String name = StringUtil.getFirstBefore(stringCookie, "=");
-			String value = StringUtil.getLastAfter(stringCookie, "=");
-			
-			if (CookieUtil.EXPIRES.equals(name)) {
-				if (lastCookie == null) {
-					continue;
-				}
-				lastCookie.setMaxAge(getMaxAge(value));
-				continue;
-			}
-			if (CookieUtil.HTTP_ONLY.equals(name)) {
-				// 会略httpOnly
-				continue;
-			}
-			if (CookieUtil.DOMAIN.equals(name)) {
-				// 会略httpOnly
-				continue;
-			}
-			
-			if (CookieUtil.PATH.equals(name)) {
-				if (lastCookie == null) {
-					continue;
-				}
-				lastCookie.setPath(value);
-			}
-			
-			Cookie cookie = new Cookie(name, value);
-			ret.add(cookie);
-		}
-		return ret.toArray(new Cookie[0]);
-	}
+    private String charsetEncoding = "utf-8";
 
-	public long getDateHeader(String name) {
-		return headers.getLong(name);
-	}
+    private MagicMap attributes = MagicMap.newMagicMap();
 
-	public String getHeader(String name) {
-		return headers.getString(name);
-	}
+    private HttpSession httpSession;
 
-	
-	public Enumeration<?> getHeaderNames() {
-		return Collections.enumeration(headers.keySet());
-	}
+    private static final String COOKIE_DATE_PATTERN = "EEE, dd-MMM-yyyy HH:mm:ss 'GMT'";
 
-	public Enumeration<?> getHeaders(String name) {
-		return null;
-	}
+    public HttpServletRequestMock(String pathInfo, MagicMap parameters, ServletContext servletContext) {
+        super();
+        this.pathInfo = pathInfo;
+        this.parameters = parameters;
+        this.httpSession = new HttpSessionMock(servletContext);
 
-	public int getIntHeader(String name) {
-		return headers.getInt(name);
-	}
+    }
 
-	public MagicMap getHeaders() {
-		return headers;
-	}
+    public String getAuthType() {
+        return null;
+    }
 
-	public String getMethod() {
-		return method;
-	}
+    public String getContextPath() {
+        return pathInfo;
+    }
 
-	public String getPathInfo() {
-		return pathInfo;
-	}
+    private int getMaxAge(String source) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(COOKIE_DATE_PATTERN, Locale.US);
+            Date date = sdf.parse(source);
+            long ts = (date.getTime() - (new Date()).getTime());
+            return (int) (ts / 1000);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public String getPathTranslated() {
-		return null;
-	}
+    public Cookie[] getCookies() {
+        String cookies = headers.getString(CookieUtil.COOKIE);
+        if (cookies == null) {
+            return null;
+        }
+        List<String> stringCookies = StringUtil.splitTrim(cookies, ";");
+        List<Cookie> ret = CollectionUtil.newArrayList();
 
-	public String getQueryString() {
-		return parameters.join("=", "&");
-	}
+        Cookie lastCookie = null;
+        for (String stringCookie : stringCookies) {
+            String name = StringUtil.getFirstBefore(stringCookie, "=");
+            String value = StringUtil.getLastAfter(stringCookie, "=");
 
-	public String getRemoteUser() {
-		return null;
-	}
+            if (CookieUtil.EXPIRES.equals(name)) {
+                if (lastCookie == null) {
+                    continue;
+                }
+                lastCookie.setMaxAge(getMaxAge(value));
+                continue;
+            }
+            if (CookieUtil.HTTP_ONLY.equals(name)) {
+                // 会略httpOnly
+                continue;
+            }
+            if (CookieUtil.DOMAIN.equals(name)) {
+                // 会略httpOnly
+                continue;
+            }
 
-	public String getRequestURI() {
-		return pathInfo;
-	}
+            if (CookieUtil.PATH.equals(name)) {
+                if (lastCookie == null) {
+                    continue;
+                }
+                lastCookie.setPath(value);
+            }
 
-	public StringBuffer getRequestURL() {
-		return null;
-	}
+            Cookie cookie = new Cookie(name, value);
+            ret.add(cookie);
+        }
+        return ret.toArray(new Cookie[0]);
+    }
 
-	public String getRequestedSessionId() {
-		return null;
-	}
+    public long getDateHeader(String name) {
+        return headers.getLong(name);
+    }
 
-	public String getServletPath() {
-		return pathInfo;
-	}
+    public String getHeader(String name) {
+        return headers.getString(name);
+    }
 
-	public HttpSession getSession() {
-		return httpSession;
-	}
 
-	public HttpSession getSession(boolean create) {
-		return httpSession;
-	}
+    public Enumeration<?> getHeaderNames() {
+        return Collections.enumeration(headers.keySet());
+    }
 
-	public Principal getUserPrincipal() {
-		return null;
-	}
+    public Enumeration<?> getHeaders(String name) {
+        return null;
+    }
 
-	public boolean isRequestedSessionIdFromCookie() {
-		return false;
-	}
+    public int getIntHeader(String name) {
+        return headers.getInt(name);
+    }
 
-	public boolean isRequestedSessionIdFromURL() {
-		return false;
-	}
+    public MagicMap getHeaders() {
+        return headers;
+    }
 
-	public boolean isRequestedSessionIdFromUrl() {
-		return false;
-	}
+    public String getMethod() {
+        return method;
+    }
 
-	public boolean isRequestedSessionIdValid() {
-		return false;
-	}
+    public String getPathInfo() {
+        return pathInfo;
+    }
 
-	public boolean isUserInRole(String role) {
-		return false;
-	}
+    public String getPathTranslated() {
+        return null;
+    }
 
-	public Object getAttribute(String name) {
-		return attributes.get(name);
-	}
+    public String getQueryString() {
+        return parameters.join("=", "&");
+    }
 
-	public Enumeration<?> getAttributeNames() {
-		return Collections.enumeration(attributes.keySet());
-	}
+    public String getRemoteUser() {
+        return null;
+    }
 
-	public String getCharacterEncoding() {
-		return charsetEncoding;
-	}
+    public String getRequestURI() {
+        return pathInfo;
+    }
 
-	public int getContentLength() {
-		return 0;
-	}
+    public StringBuffer getRequestURL() {
+        return null;
+    }
 
-	public String getContentType() {
-		return null;
-	}
+    public String getRequestedSessionId() {
+        return null;
+    }
 
-	public ServletInputStream getInputStream() throws IOException {
-		return null;
-	}
+    public String getServletPath() {
+        return pathInfo;
+    }
 
-	public String getLocalAddr() {
-		return null;
-	}
+    public HttpSession getSession() {
+        return httpSession;
+    }
 
-	public String getLocalName() {
-		return null;
-	}
+    public HttpSession getSession(boolean create) {
+        return httpSession;
+    }
 
-	public int getLocalPort() {
-		return 0;
-	}
+    public Principal getUserPrincipal() {
+        return null;
+    }
 
-	public Locale getLocale() {
+    public boolean isRequestedSessionIdFromCookie() {
+        return false;
+    }
+
+    public boolean isRequestedSessionIdFromURL() {
+        return false;
+    }
+
+    public boolean isRequestedSessionIdFromUrl() {
+        return false;
+    }
+
+    public boolean isRequestedSessionIdValid() {
+        return false;
+    }
+
+    public boolean isUserInRole(String role) {
+        return false;
+    }
+
+    public Object getAttribute(String name) {
+        return attributes.get(name);
+    }
+
+    public Enumeration<?> getAttributeNames() {
+        return Collections.enumeration(attributes.keySet());
+    }
+
+    public String getCharacterEncoding() {
+        return charsetEncoding;
+    }
+
+    public int getContentLength() {
+        return 0;
+    }
+
+    public String getContentType() {
+        return null;
+    }
+
+    public ServletInputStream getInputStream() throws IOException {
+        return null;
+    }
+
+    public String getLocalAddr() {
+        return null;
+    }
+
+    public String getLocalName() {
+        return null;
+    }
+
+    public int getLocalPort() {
+        return 0;
+    }
+
+    public Locale getLocale() {
         // TODO， 正确的方法是解析类似的 文本 zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4
-		String lang = this.headers.getString("Accept-Language");
+        String lang = this.headers.getString("Accept-Language");
         if (lang == null) {
             return null;
         }
@@ -252,88 +251,88 @@ public class HttpServletRequestMock implements HttpServletRequest {
         if (lang.contains("en")) {
             if (lang.contains("US")) {
                 return Locale.US;
-            }   else {
+            } else {
                 return Locale.ENGLISH;
             }
         }
         // othe not support
         return null;
-	}
+    }
 
-	public Enumeration<?> getLocales() {
-		return null;
-	}
+    public Enumeration<?> getLocales() {
+        return null;
+    }
 
-	public String getParameter(String name) {
-		return parameters.getString(name);
-	}
+    public String getParameter(String name) {
+        return parameters.getString(name);
+    }
 
-	public Map<?, ?> getParameterMap() {
-		return Collections.unmodifiableMap(parameters);
-	}
+    public Map<?, ?> getParameterMap() {
+        return Collections.unmodifiableMap(parameters);
+    }
 
-	public Enumeration<?> getParameterNames() {
-		return Collections.enumeration(parameters.keySet());
-	}
+    public Enumeration<?> getParameterNames() {
+        return Collections.enumeration(parameters.keySet());
+    }
 
-	public String[] getParameterValues(String name) {
-		return new String[] { parameters.getString(name) };
-	}
+    public String[] getParameterValues(String name) {
+        return new String[]{parameters.getString(name)};
+    }
 
-	public String getProtocol() {
-		return null;
-	}
+    public String getProtocol() {
+        return null;
+    }
 
-	public BufferedReader getReader() throws IOException {
-		return null;
-	}
+    public BufferedReader getReader() throws IOException {
+        return null;
+    }
 
-	public String getRealPath(String path) {
-		return null;
-	}
+    public String getRealPath(String path) {
+        return null;
+    }
 
-	public String getRemoteAddr() {
-		return null;
-	}
+    public String getRemoteAddr() {
+        return null;
+    }
 
-	public String getRemoteHost() {
-		return null;
-	}
+    public String getRemoteHost() {
+        return null;
+    }
 
-	public int getRemotePort() {
-		return 0;
-	}
+    public int getRemotePort() {
+        return 0;
+    }
 
-	public RequestDispatcher getRequestDispatcher(String path) {
-		return null;
-	}
+    public RequestDispatcher getRequestDispatcher(String path) {
+        return null;
+    }
 
-	public String getScheme() {
-		return null;
-	}
+    public String getScheme() {
+        return null;
+    }
 
-	public String getServerName() {
-		return null;
-	}
+    public String getServerName() {
+        return null;
+    }
 
-	public int getServerPort() {
-		return 0;
-	}
+    public int getServerPort() {
+        return 0;
+    }
 
-	public boolean isSecure() {
-		return false;
-	}
+    public boolean isSecure() {
+        return false;
+    }
 
-	public void removeAttribute(String name) {
-		this.attributes.remove(name);
-	}
+    public void removeAttribute(String name) {
+        this.attributes.remove(name);
+    }
 
-	public void setAttribute(String name, Object o) {
-		attributes.put(name, o);
-	}
+    public void setAttribute(String name, Object o) {
+        attributes.put(name, o);
+    }
 
-	public void setCharacterEncoding(String env) throws UnsupportedEncodingException {
-		this.charsetEncoding = env;
-	}
+    public void setCharacterEncoding(String env) throws UnsupportedEncodingException {
+        this.charsetEncoding = env;
+    }
 
 }

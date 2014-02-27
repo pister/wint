@@ -27,11 +27,7 @@ public class SessionContainer {
 
     private FilterManager responseFilterManager;
 
-    private SessionProvider sessionProvider;
-
     public void init(SessionProvider sessionProvider, MagicMap initParamters, ServletContext servletContext) {
-        this.sessionProvider = sessionProvider;
-
         requestFilterManager = new DefaultFilterManager(initParamters);
         requestFilterManager.addFilter(new InitializeFilter(servletContext));
         requestFilterManager.addFilter(new ParseRequestFilter(sessionProvider.getRequestParser()));
