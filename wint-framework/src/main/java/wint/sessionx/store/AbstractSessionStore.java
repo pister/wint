@@ -1,5 +1,8 @@
 package wint.sessionx.store;
 
+import wint.lang.magic.MagicMap;
+
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -7,14 +10,14 @@ import java.util.Set;
  */
 public abstract class AbstractSessionStore implements SessionStore {
 
-    private boolean isNew;
+    private boolean isNew = false;
 
     public String getString(String name) {
         SessionData sessionData = this.get(name);
         if (sessionData == null) {
             return null;
         }
-        return (String)sessionData.getData();
+        return (String) sessionData.getData();
     }
 
     public Long getLong(String name) {
@@ -22,7 +25,7 @@ public abstract class AbstractSessionStore implements SessionStore {
         if (sessionData == null) {
             return null;
         }
-        return (Long)sessionData.getData();
+        return (Long) sessionData.getData();
     }
 
     public Integer getInteger(String name) {
@@ -30,7 +33,7 @@ public abstract class AbstractSessionStore implements SessionStore {
         if (sessionData == null) {
             return null;
         }
-        return (Integer)sessionData.getData();
+        return (Integer) sessionData.getData();
     }
 
     public void setData(String name, Object data) {
@@ -44,6 +47,7 @@ public abstract class AbstractSessionStore implements SessionStore {
         }
         return sessionData.getData();
     }
+
     public void invalidate() {
         Set<String> names = getNames();
         for (String name : names) {
@@ -55,4 +59,10 @@ public abstract class AbstractSessionStore implements SessionStore {
         return isNew;
     }
 
+    public void init(MagicMap initProperties) {
+        isNew = true;
+        for (Map.Entry<String, Object> entry : initProperties.entrySet()) {
+            setData(entry.getKey(), entry.getValue());
+        }
+    }
 }

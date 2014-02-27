@@ -1,5 +1,6 @@
 package wint.sessionx;
 
+import wint.lang.magic.MagicMap;
 import wint.mvc.servlet.ServletUtil;
 import wint.sessionx.provider.SessionProvider;
 import wint.sessionx.provider.cookie.CookieSessionProvider;
@@ -26,16 +27,32 @@ public class WintSessionFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         sessionContainer = new SessionContainer();
         SessionProvider sessionProvider = new CookieSessionProvider();
-        sessionProvider.init(ServletUtil.getInitParameters(filterConfig), filterConfig.getServletContext());
-        sessionContainer.init(sessionProvider, filterConfig.getServletContext());
+        MagicMap properties = ServletUtil.getInitParameters(filterConfig);
+        sessionProvider.init(properties, filterConfig.getServletContext());
+        sessionContainer.init(sessionProvider, properties, filterConfig.getServletContext());
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        sessionContainer.handleRequest(httpRequest, httpResponse, chain);
+        sessionContainer.handleRequest(httpRequest, httpResponse, new FilterProcessorHandler(chain));
     }
 
     public void destroy() {
+    }
+
+    public static class FilterProcessorHandler implements WintSessionProcessor.ProcessorHandler {
+
+        private FilterChain chain;
+
+        public FilterProcessorHandler(FilterChain chain) {
+            super();
+            this.chain = chain;
+        }
+
+        public void onProcess(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException, ServletException {
+            chain.doFilter(httpRequest, httpResponse);
+        }
+
     }
 }

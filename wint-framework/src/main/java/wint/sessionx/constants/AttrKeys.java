@@ -1,4 +1,4 @@
-package wint.sessionx.filter;
+package wint.sessionx.constants;
 
 /**
  * User: longyi
@@ -20,5 +20,7 @@ public interface AttrKeys {
     String SESSION_STORE = "session_store";
 
     String PARSE_REQUEST_RESULT = "parse_request_result";
+
+    String SESSION_ID_GENERATOR = "session_id_generator";
 
 }

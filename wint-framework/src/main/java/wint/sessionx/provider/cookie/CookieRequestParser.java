@@ -1,14 +1,14 @@
 package wint.sessionx.provider.cookie;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
+import wint.lang.utils.StringUtil;
 import wint.sessionx.provider.RequestParser;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.store.SessionData;
-import wint.sessionx.util.SessionIdGenerator;
 
 import javax.servlet.http.Cookie;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,9 +28,32 @@ public class CookieRequestParser implements RequestParser {
         this.cookieCodec = cookieCodec;
     }
 
-    public Object parseRequest(Cookie[] cookies) {
-        CookieSessionStore cookieSessionStore = new CookieSessionStore();
+    private List<Cookie> filterDataCookies(Cookie[] cookies) {
+        if (cookies == null) {
+            return CollectionUtil.newArrayList();
+        }
+        String prefixName = config.getPrefixName();
+        List<Cookie> dataCookies = CollectionUtil.newArrayList();
+        for (Cookie cookie : cookies) {
+            String name = cookie.getName();
+            if (StringUtil.isEmpty(name)) {
+                continue;
+            }
+            if (!name.startsWith(prefixName)) {
+                continue;
+            }
+            dataCookies.add(cookie);
+        }
+        return dataCookies;
+    }
+
+
+    public Object parseRequest(Cookie[] inputCookies) {
+        CookieSessionStore cookieSessionStore = new CookieSessionStore(cookieCodec);
         Map<String, SessionData> data = MapUtil.newHashMap();
+
+        List<Cookie> cookies = filterDataCookies(inputCookies);
+
         for (Cookie cookie : cookies) {
             String value = cookie.getValue();
             Map<String, SessionData> dataResult = cookieCodec.parseData(value);
@@ -38,20 +61,9 @@ public class CookieRequestParser implements RequestParser {
                 data.putAll(dataResult);
             }
         }
-        SessionData sessionLastAccessData = data.remove(CookieContants.LAST_ACCESS_TIME_NAME);
-        if (sessionLastAccessData != null) {
-            Long lastAccessTime = (Long)sessionLastAccessData.getData();
-            if (lastAccessTime != null) {
-                cookieSessionStore.setLastAccessTime(lastAccessTime);
-            }
-        }
 
-        SessionData sessionIdData = data.remove(CookieContants.SESSION_ID_ATTRIBUTE_NAME);
-        if (sessionIdData != null) {
-            cookieSessionStore.setSessionId((String)sessionIdData.getData());
-        } else {
-            cookieSessionStore.setSessionId(SessionIdGenerator.generateSessionId());
-        }
+        cookieSessionStore.initData(data);
+
         return cookieSessionStore;
     }
 

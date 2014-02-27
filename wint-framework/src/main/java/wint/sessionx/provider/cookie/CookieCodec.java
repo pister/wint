@@ -7,6 +7,7 @@ import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.UrlUtil;
+import wint.sessionx.constants.SpecSessionKeys;
 import wint.sessionx.cookie.WintCookie;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.store.SessionData;
@@ -96,12 +97,6 @@ public class CookieCodec {
 
         List<String> cookieStrings = CollectionUtil.newArrayList();
 
-        // append session id
-        needOutputData.put(CookieContants.SpecAttrKey.SESSION_ID, new SessionData(CookieContants.SpecAttrKey.SESSION_ID, cookieSessionStore.getSessionId()));
-
-        // add last update time
-        needOutputData.put(CookieContants.SpecAttrKey.LAST_ACCESSED_TIME, new SessionData(CookieContants.SpecAttrKey.LAST_ACCESSED_TIME, System.currentTimeMillis()));
-
         // need update
         for (Map.Entry<String, SessionData> entry : needOutputData.entrySet()) {
             StringBuilder sb = new StringBuilder();
@@ -113,7 +108,7 @@ public class CookieCodec {
         }
 
         String cookieValue = CollectionUtil.join(cookieStrings, config.getDataSeparate());
-        String encodeCookieValue = encodeCookie(wint.session.util.WintSessionContants.WINT_COOKIE_MAGIC_TOKEN + cookieValue);
+        String encodeCookieValue = encodeCookie(CookieContants.WINT_COOKIE_MAGIC_TOKEN + cookieValue);
         if (encodeCookieValue == null) {
             return null;
         }

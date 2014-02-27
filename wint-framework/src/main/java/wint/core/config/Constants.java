@@ -78,6 +78,8 @@ public interface Constants {
 
         String FILE_FOR_DIR_TARGET = "wint.file.for.dir.target";
 
+        String WINT_SESSION_EXPIRE = "wint.session.expire";
+
 	}
 	
 	interface FlowDataAttributeKeys {
@@ -167,6 +169,8 @@ public interface Constants {
         String URL_PATH_AS_TARGET_NAME = ".";
 
         String FILE_FOR_DIR_TARGET = "default";
+
+        int WINT_SESSION_EXPIRE = 30 * 60;
 
     }
 	

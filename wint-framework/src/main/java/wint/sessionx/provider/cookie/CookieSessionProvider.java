@@ -29,6 +29,7 @@ public class CookieSessionProvider implements SessionProvider {
         serializeService = new StringSerializeService();
         cookieCodec = new CookieCodec(config, serializeService);
         cookieRequestParser = new CookieRequestParser(config, serializeService, cookieCodec);
+        cookieSessionStoreCreator = new CookieSessionStoreCreator();
     }
 
     public RequestParser getRequestParser() {

@@ -2,10 +2,8 @@ package wint.sessionx.provider.cookie;
 
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
-import wint.lang.utils.UrlUtil;
-import wint.mvc.holder.WintContext;
 import wint.sessionx.cookie.WintCookie;
-import wint.sessionx.filter.AttrKeys;
+import wint.sessionx.constants.AttrKeys;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.servlet.WintSessionHttpServletResponse;
 import wint.sessionx.store.AbstractSessionStore;
@@ -25,11 +23,11 @@ public class CookieSessionStore extends AbstractSessionStore {
 
     private Map<String, SessionData> updatedData = MapUtil.newHashMap();
 
-    private long lastAccessTime;
-
-    private String sessionId;
-
     private CookieCodec cookieCodec;
+
+    public CookieSessionStore(CookieCodec cookieCodec) {
+        this.cookieCodec = cookieCodec;
+    }
 
     public void set(String name, SessionData data) {
         updatedData.put(name, data);
@@ -52,22 +50,6 @@ public class CookieSessionStore extends AbstractSessionStore {
         toBeDeleteNames.add(name);
     }
 
-    public long getLastAccessTime() {
-        return lastAccessTime;
-    }
-
-    public void setLastAccessTime(long lastAccessTime) {
-        this.lastAccessTime = lastAccessTime;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
     public Set<String> getNames() {
         Set<String> ret = CollectionUtil.newHashSet();
         ret.addAll(orgData.keySet());
@@ -76,7 +58,8 @@ public class CookieSessionStore extends AbstractSessionStore {
         return ret;
     }
 
-    public void rollback() {
+    public void clearAll() {
+        orgData.clear();
         toBeDeleteNames.clear();
         updatedData.clear();
     }
@@ -93,6 +76,11 @@ public class CookieSessionStore extends AbstractSessionStore {
     public Map<String, SessionData> getOrgData() {
         return orgData;
     }
+
+    public void initData(Map<String, SessionData> data) {
+        this.orgData.putAll(data);
+    }
+
 
     public Set<String> getToBeDeleteNames() {
         return toBeDeleteNames;

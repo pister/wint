@@ -1,7 +1,7 @@
 package wint.sessionx.servlet;
 
+import wint.sessionx.constants.SpecSessionKeys;
 import wint.sessionx.filter.FilterContext;
-import wint.sessionx.provider.cookie.CookieContants;
 import wint.sessionx.store.SessionStore;
 
 import javax.servlet.ServletContext;
@@ -28,7 +28,7 @@ public class WintHttpSession implements HttpSession {
 	}
 	
 	public long getCreationTime() {
-        Long value = sessionStore.getLong(CookieContants.SpecAttrKey.CREATE_TIME);
+        Long value = sessionStore.getLong(SpecSessionKeys.CREATE_TIME);
         if (value == null) {
             return 0L;
         }
@@ -36,11 +36,11 @@ public class WintHttpSession implements HttpSession {
 	}
 
 	public String getId() {
-		return sessionStore.getString(CookieContants.SpecAttrKey.SESSION_ID);
+		return sessionStore.getString(SpecSessionKeys.SESSION_ID);
 	}
 
 	public long getLastAccessedTime() {
-        Long value = sessionStore.getLong(CookieContants.SpecAttrKey.LAST_ACCESSED_TIME);
+        Long value = sessionStore.getLong(SpecSessionKeys.LAST_ACCESSED_TIME);
         if (value == null) {
             return 0L;
         }
@@ -52,11 +52,11 @@ public class WintHttpSession implements HttpSession {
 	}
 
 	public void setMaxInactiveInterval(int interval) {
-        sessionStore.setData(CookieContants.SpecAttrKey.MAX_INACTIVE_INTERVAL, interval);
+        sessionStore.setData(SpecSessionKeys.MAX_INACTIVE_INTERVAL, interval);
 	}
 
 	public int getMaxInactiveInterval() {
-        Integer value = sessionStore.getInteger(CookieContants.SpecAttrKey.MAX_INACTIVE_INTERVAL);
+        Integer value = sessionStore.getInteger(SpecSessionKeys.MAX_INACTIVE_INTERVAL);
         if (value == null) {
             return 0;
         }

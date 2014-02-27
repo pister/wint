@@ -17,14 +17,12 @@ import wint.core.io.resource.Resource;
 import wint.core.service.ServiceContext;
 import wint.core.service.env.Environment;
 import wint.core.service.supports.ServiceContextSupport;
-import wint.help.mvc.security.csrf.CsrfTokenUtil;
 import wint.lang.WintException;
 import wint.lang.magic.MagicMap;
 import wint.lang.magic.config.MagicConfig;
 import wint.lang.magic.config.MagicType;
 import wint.lang.misc.profiler.Profiler;
 import wint.lang.utils.IoUtil;
-import wint.lang.utils.SecurityUtil;
 import wint.mvc.flow.FlowDataService;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.flow.StatusCodes;
@@ -34,8 +32,7 @@ import wint.mvc.init.DispatcherInitializor;
 import wint.mvc.pipeline.Pipeline;
 import wint.mvc.pipeline.PipelineService;
 import wint.mvc.servlet.ServletUtil;
-import wint.session.WintSessionProcessor;
-import wint.session.WintSessionProcessor.ProcessorHandler;
+import wint.sessionx.WintSessionProcessor;
 
 /**
  * wint框架初始化及请求派发类
@@ -54,7 +51,7 @@ public class Dispatcher {
 	
 	private WintSessionProcessor wintSessionProcessor;
 	
-	private ProcessorHandler processorHandler;
+	private WintSessionProcessor.ProcessorHandler processorHandler;
 	
 	private String charset;
 	
@@ -98,7 +95,7 @@ public class Dispatcher {
 		if (wintSessionUse) {
 			dispatcherInitializor.getLogger().log("Wint Session Use: " + wintSessionUse);
 			
-			processorHandler = new ProcessorHandler() {
+			processorHandler = new WintSessionProcessor.ProcessorHandler() {
 				public void onProcess(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ServletException, IOException {
 					executeImpl(httpRequest, httpResponse);
 				}

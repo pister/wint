@@ -1,7 +1,6 @@
 package wint.sessionx.filter.filters;
 
-import wint.sessionx.filter.AttrKeys;
-import wint.sessionx.filter.Filter;
+import wint.sessionx.constants.AttrKeys;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.servlet.WintSessionHttpServletRequest;
 import wint.sessionx.servlet.WintSessionHttpServletResponse;
@@ -11,7 +10,7 @@ import wint.sessionx.servlet.WintSessionHttpServletResponse;
  * Date: 14-2-26
  * Time: 下午2:16
  */
-public class CommitFilter implements Filter {
+public class CommitFilter extends AbstractFilter {
 
     public void doFilter(FilterContext filterContext) {
         try {
@@ -25,7 +24,6 @@ public class CommitFilter implements Filter {
             wintSessionHttpServletResponse.commit(filterContext);
         }
     }
-
 
 
 }

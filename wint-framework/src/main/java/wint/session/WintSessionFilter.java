@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import wint.mvc.servlet.ServletUtil;
 import wint.session.WintSessionProcessor.ProcessorHandler;
 
+/**
+ * @deprecated use wint.sessionx.* instead !
+ */
 public class WintSessionFilter implements Filter {
 
 	private WintSessionProcessor wintSessionProcessor = new WintSessionProcessor();

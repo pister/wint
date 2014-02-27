@@ -14,6 +14,9 @@ import wint.session.config.SessionConfig;
 import wint.session.servlet.WintSessionHttpServletRequest;
 import wint.session.servlet.WintSessionHttpServletResponse;
 
+/**
+ * @deprecated use wint.sessionx.* instead !
+ */
 public class WintSessionProcessor {
 	
 	private SessionConfig sessionConfig;

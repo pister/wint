@@ -1,14 +1,14 @@
 package wint.sessionx;
 
+import wint.lang.magic.MagicMap;
 import wint.lang.utils.MapUtil;
-import wint.sessionx.filter.AttrKeys;
+import wint.sessionx.constants.AttrKeys;
 import wint.sessionx.filter.DefaultFilterManager;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.filter.FilterManager;
 import wint.sessionx.filter.filters.*;
 import wint.sessionx.provider.SessionProvider;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,27 +29,28 @@ public class SessionContainer {
 
     private SessionProvider sessionProvider;
 
-    public void init(SessionProvider sessionProvider, ServletContext servletContext) {
+    public void init(SessionProvider sessionProvider, MagicMap initParamters, ServletContext servletContext) {
         this.sessionProvider = sessionProvider;
 
-        requestFilterManager = new DefaultFilterManager();
+        requestFilterManager = new DefaultFilterManager(initParamters);
         requestFilterManager.addFilter(new InitializeFilter(servletContext));
         requestFilterManager.addFilter(new ParseRequestFilter(sessionProvider.getRequestParser()));
         requestFilterManager.addFilter(new CreateSessionStoreFilter(sessionProvider.getSessionStoreCreator()));
+        requestFilterManager.addFilter(new EnsureStatusFilter());
         requestFilterManager.addFilter(new CreateNewRequestResponseFilter());
 
-        responseFilterManager = new DefaultFilterManager();
+        responseFilterManager = new DefaultFilterManager(initParamters);
         responseFilterManager.addFilter(new CommitFilter());
     }
 
-    public void handleRequest(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void handleRequest(HttpServletRequest request, HttpServletResponse response, WintSessionProcessor.ProcessorHandler processorHandler) throws IOException, ServletException {
         Map<String, Object> attributes = MapUtil.newHashMap();
         attributes.put(AttrKeys.RAW_REQUEST, request);
         attributes.put(AttrKeys.RAW_RESPONSE, response);
         FilterContext filterContext = requestFilterManager.performFilters(attributes);
         HttpServletRequest newRequest = (HttpServletRequest)filterContext.getAttribute(AttrKeys.NEW_REQUEST);
         HttpServletResponse newResponse = (HttpServletResponse)filterContext.getAttribute(AttrKeys.NEW_RESPONSE);
-        chain.doFilter(newRequest, newResponse);
+        processorHandler.onProcess(newRequest, newResponse);
         responseFilterManager.performFilters(filterContext.getAttributes());
     }
 

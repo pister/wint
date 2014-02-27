@@ -1,5 +1,6 @@
 package wint.sessionx.store;
 
+import wint.lang.magic.MagicMap;
 import wint.sessionx.filter.FilterContext;
 
 import java.util.Set;
@@ -17,7 +18,7 @@ public interface SessionStore {
 
     void remove(String name);
 
-    void rollback();
+    void clearAll();
 
     void commit(FilterContext filterContext);
 
@@ -34,6 +35,8 @@ public interface SessionStore {
     Set<String> getNames();
 
     void invalidate();
+
+    void init(MagicMap initProperties);
 
     boolean isNew();
 }

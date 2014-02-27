@@ -1,6 +1,6 @@
 package wint.sessionx.filter.filters;
 
-import wint.sessionx.filter.AttrKeys;
+import wint.sessionx.constants.AttrKeys;
 import wint.sessionx.filter.Filter;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.provider.SessionStoreCreator;
@@ -11,7 +11,7 @@ import wint.sessionx.store.SessionStore;
  * Date: 14-2-26
  * Time: 下午2:08
  */
-public class CreateSessionStoreFilter implements Filter {
+public class CreateSessionStoreFilter extends AbstractFilter {
 
     private SessionStoreCreator sessionStoreCreator;
 

@@ -1,6 +1,6 @@
 package wint.sessionx.filter.filters;
 
-import wint.sessionx.filter.AttrKeys;
+import wint.sessionx.constants.AttrKeys;
 import wint.sessionx.filter.Filter;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.provider.RequestParser;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
  * Date: 14-2-26
  * Time: 下午1:21
  */
-public class ParseRequestFilter implements Filter {
+public class ParseRequestFilter extends AbstractFilter {
 
     private RequestParser requestParser;
 
@@ -22,8 +22,8 @@ public class ParseRequestFilter implements Filter {
 
     public void doFilter(FilterContext filterContext) {
         HttpServletRequest request = (HttpServletRequest)filterContext.getAttribute(AttrKeys.RAW_REQUEST);
-        Object parseRequest = requestParser.parseRequest(request.getCookies());
-        filterContext.setAttribute(AttrKeys.PARSE_REQUEST_RESULT, parseRequest);
+        Object parseResult = requestParser.parseRequest(request.getCookies());
+        filterContext.setAttribute(AttrKeys.PARSE_REQUEST_RESULT, parseResult);
         filterContext.invokeNext();
     }
 }

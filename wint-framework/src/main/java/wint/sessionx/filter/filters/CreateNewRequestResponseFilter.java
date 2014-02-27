@@ -1,6 +1,6 @@
 package wint.sessionx.filter.filters;
 
-import wint.sessionx.filter.AttrKeys;
+import wint.sessionx.constants.AttrKeys;
 import wint.sessionx.filter.Filter;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.servlet.WintSessionHttpServletRequest;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 14-2-26
  * Time: 下午2:15
  */
-public class CreateNewRequestResponseFilter implements Filter {
+public class CreateNewRequestResponseFilter extends AbstractFilter {
 
     public void doFilter(FilterContext filterContext) {
         HttpServletRequest request = (HttpServletRequest)filterContext.getAttribute(AttrKeys.RAW_REQUEST);
