@@ -7,6 +7,7 @@ import wint.lang.magic.MagicMap;
 import wint.lang.utils.FileUtil;
 import wint.lang.utils.StreamUtil;
 import wint.lang.utils.StringUtil;
+import wint.sessionx.util.WebResourceUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -85,7 +86,7 @@ public class CookieSessionConfig {
             log.warn("session key load from resource: " + new File(new File(System.getProperty("user.home")), CookieContants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH));
             return is;
         }
-        is =  WebResourceUtil.getWebResouceAsStream(CookieContants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
+        is = WebResourceUtil.getWebResouceAsStream(CookieContants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
         if (is != null) {
             log.warn("session key load from resource: " + CookieContants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
             return is;
