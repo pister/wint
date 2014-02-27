@@ -147,6 +147,7 @@ public class ProjectGenerator {
         renderFile(basePath + "/resources/logback.vm", new File(mainResourcesFile, "logback.xml"), projectConfig);
         renderFile(basePath + "/resources/url.vm", new File(mainResourcesFile, "url.xml"), projectConfig);
         copyFile(basePath + "/resources/form.vm", new File(mainResourcesFile, "form.xml"));
+        copyFile(basePath + "/resources/wint.vm", new File(mainResourcesFile, "wint.xml"));
 
 
         File webDir = new File(mainResourcesFile, "web");

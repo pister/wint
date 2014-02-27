@@ -4,6 +4,7 @@ import wint.core.config.Constants;
 import wint.core.service.env.Environment;
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
 import wint.lang.WintException;
+import wint.lang.utils.StringUtil;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.flow.StatusCodes;
 import wint.mvc.module.Module;
@@ -23,6 +24,10 @@ public class CheckCsrfTokenValve extends AbstractValve {
 
     private Environment environment;
 
+    private String redirectModule;
+
+    private String redirectTarget;
+
     @Override
     public void init() {
         super.init();
@@ -41,11 +46,20 @@ public class CheckCsrfTokenValve extends AbstractValve {
             if (Environment.DEV == environment) {
                 handleMessage(innerFlowData);
             } else {
-                innerFlowData.setStatusCode(StatusCodes.SC_FORBIDDEN);
+                handleCsrf(innerFlowData);
             }
         } else {
             pipelineContext.invokeNext(innerFlowData);
         }
+    }
+
+    private void handleCsrf(InnerFlowData innerFlowData) {
+        if (!StringUtil.isEmpty(redirectModule) && !StringUtil.isEmpty(redirectTarget)) {
+            innerFlowData.redirectTo(redirectModule, redirectTarget);
+        } else {
+            innerFlowData.setStatusCode(StatusCodes.SC_FORBIDDEN);
+        }
+
     }
 
     private void handleMessage(InnerFlowData innerFlowData) {
@@ -59,4 +73,11 @@ public class CheckCsrfTokenValve extends AbstractValve {
         }
     }
 
+    public void setRedirectModule(String redirectModule) {
+        this.redirectModule = redirectModule;
+    }
+
+    public void setRedirectTarget(String redirectTarget) {
+        this.redirectTarget = redirectTarget;
+    }
 }
