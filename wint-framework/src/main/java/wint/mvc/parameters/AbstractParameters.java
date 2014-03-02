@@ -3,6 +3,7 @@ package wint.mvc.parameters;
 import java.util.Date;
 
 import wint.lang.convert.ConvertUtil;
+import wint.lang.utils.StringUtil;
 
 public abstract class AbstractParameters implements Parameters {
 
@@ -133,5 +134,24 @@ public abstract class AbstractParameters implements Parameters {
 		}
 		return ret;
 	}
+
+    protected String normalizeName(String name) {
+        return StringUtil.fixedCharToCamel(name, "-_");
+    }
+
+    public String getString(String name, String defaultValue) {
+        name = normalizeName(name);
+        return getStringImpl(name, defaultValue);
+    }
+
+    public String[] getStringArray(String name, String[] defaultArray) {
+        name = normalizeName(name);
+        return getStringArrayImpl(name, defaultArray);
+    }
+
+    protected abstract String getStringImpl(String name, String defaultValue);
+
+    protected abstract String[] getStringArrayImpl(String name, String[] defaultArray);
+
 
 }

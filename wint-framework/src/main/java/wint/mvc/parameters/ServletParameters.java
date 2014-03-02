@@ -24,15 +24,16 @@ public class ServletParameters extends AbstractParameters {
 		}
 	}
 
-	public String getString(String name, String defaultValue) {
-		String[] values = getStringArray(name, null);
+	public String getStringImpl(String name, String defaultValue) {
+        name = normalizeName(name);
+        String[] values = getStringArray(name, null);
 		if (values == null || values.length == 0) {
 			return defaultValue;
 		}
 		return values[0];
 	}
 
-	public String[] getStringArray(String name, String[] defaultArray) {
+	public String[] getStringArrayImpl(String name, String[] defaultArray) {
 		name = normalizeName(name);
 		String[] values = parameters.get(name);
 		if (values == null || values.length == 0) {
@@ -41,10 +42,6 @@ public class ServletParameters extends AbstractParameters {
 		return values;
 	}
 
-	protected String normalizeName(String name) {
-		return StringUtil.fixedCharToCamel(name, "-_");
-	}
-	
 	public Set<String> getNames() {
 		return parameters.keySet();
 	}
