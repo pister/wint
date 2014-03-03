@@ -58,7 +58,8 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine implements Te
 	    		velocityConfiguration.setProperty(Velocity.VM_LIBRARY_AUTORELOAD, true);
 	    	} else {
 	    		velocityConfiguration.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
-	    		velocityConfiguration.setProperty(MODIFICATION_CHECK_INTERVAL,  String.valueOf(Constants.Defaults.TEMPLATE_MODIFICATION_CHECK_INTERVAL));
+                int checkInterval = wintConfiguration.getProperties().getInt(Constants.PropertyKeys.TEMPLATE_MODIFICATION_CHECK_INTERVAL, Constants.Defaults.TEMPLATE_MODIFICATION_CHECK_INTERVAL);
+	    		velocityConfiguration.setProperty(MODIFICATION_CHECK_INTERVAL,  String.valueOf(checkInterval));
 	    	}
 	    	
 	    	if (!StringUtil.isEmpty(templatePath)) {

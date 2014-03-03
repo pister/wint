@@ -80,6 +80,8 @@ public interface Constants {
 
         String WINT_SESSION_EXPIRE = "wint.session.expire";
 
+        String TEMPLATE_MODIFICATION_CHECK_INTERVAL = "wint.templates.modification.check.interval";
+
 	}
 	
 	interface FlowDataAttributeKeys {

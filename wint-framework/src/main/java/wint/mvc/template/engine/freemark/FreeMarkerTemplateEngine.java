@@ -39,7 +39,8 @@ public class FreeMarkerTemplateEngine extends AbstractTemplateEngine implements 
 			if (Environment.DEV == serviceContext.getConfiguration().getEnvironment()) {
 				freemarkerConfiguration.setTemplateUpdateDelay(0);
 			} else {
-				freemarkerConfiguration.setTemplateUpdateDelay(Constants.Defaults.TEMPLATE_MODIFICATION_CHECK_INTERVAL);
+                int checkInterval = serviceContext.getConfiguration().getProperties().getInt(Constants.PropertyKeys.TEMPLATE_MODIFICATION_CHECK_INTERVAL, Constants.Defaults.TEMPLATE_MODIFICATION_CHECK_INTERVAL);
+                freemarkerConfiguration.setTemplateUpdateDelay(checkInterval);
 			}
 			
 			final ObjectWrapper objectWrapper = freemarkerConfiguration.getObjectWrapper();
