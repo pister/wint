@@ -15,6 +15,7 @@ import org.apache.commons.fileupload.servlet.ServletRequestContext;
 import wint.lang.exceptions.FlowDataException;
 import wint.lang.utils.LibUtil;
 import wint.lang.utils.MapUtil;
+import wint.mvc.form.fileupload.FileUploadParameters;
 import wint.mvc.form.fileupload.UploadFile;
 import wint.mvc.form.fileupload.UploadFileFactory;
 import wint.mvc.form.fileupload.UploadFileInfo;
@@ -74,7 +75,7 @@ public class JakartaUploadFileFactory implements UploadFileFactory {
 		} catch (Exception e) {
 			throw new FlowDataException(e);
 		}
-		Parameters parameters = new MapParameters(parametersMap);
+        FileUploadParameters parameters = new FileUploadParameters(parametersMap, uploadFiles);
 		return new UploadFileInfo(uploadFiles, parameters);
 	}
 

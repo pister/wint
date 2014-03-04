@@ -1,9 +1,13 @@
 package wint.mvc.parameters;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import wint.lang.convert.ConvertUtil;
+import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.StringUtil;
+import wint.mvc.form.fileupload.UploadFile;
 
 public abstract class AbstractParameters implements Parameters {
 
@@ -153,5 +157,11 @@ public abstract class AbstractParameters implements Parameters {
 
     protected abstract String[] getStringArrayImpl(String name, String[] defaultArray);
 
+    public UploadFile getUploadFile(String name) {
+        return null;
+    }
 
+    public Set<String> getUploadFileNames() {
+        return new HashSet<String>(0);
+    }
 }

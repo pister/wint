@@ -8,9 +8,9 @@ public class UploadFileInfo {
 	
 	private Map<String, UploadFile> uploadFiles;
 	
-	private Parameters parameters;
+	private FileUploadParameters parameters;
 
-	public UploadFileInfo(Map<String, UploadFile> uploadFiles, Parameters parameters) {
+	public UploadFileInfo(Map<String, UploadFile> uploadFiles, FileUploadParameters parameters) {
 		super();
 		this.uploadFiles = uploadFiles;
 		this.parameters = parameters;
@@ -20,16 +20,8 @@ public class UploadFileInfo {
 		return uploadFiles;
 	}
 
-	public void setUploadFiles(Map<String, UploadFile> uploadFiles) {
-		this.uploadFiles = uploadFiles;
-	}
-
-	public Parameters getParameters() {
+	public FileUploadParameters getParameters() {
 		return parameters;
-	}
-
-	public void setParameters(Parameters parameters) {
-		this.parameters = parameters;
 	}
 
 }

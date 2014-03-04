@@ -168,6 +168,7 @@ public interface FlowData {
     /**
      * 获取上传文件
      * @return
+     * @deprecated use getParameter().getUploadFile() instead
      */
     Map<String, UploadFile> getUploadFiles();
 
