@@ -82,6 +82,10 @@ public interface Constants {
 
         String TEMPLATE_MODIFICATION_CHECK_INTERVAL = "wint.templates.modification.check.interval";
 
+        String WINT_DEBUG_VIEW_SUPPORT = "wint.debug.view.support";
+
+        String WINT_DEBUG_VIEW_PARAM_NAME = "wint.debug.view.param.name";
+
 	}
 	
 	interface FlowDataAttributeKeys {
@@ -173,6 +177,10 @@ public interface Constants {
         String FILE_FOR_DIR_TARGET = "default";
 
         int WINT_SESSION_EXPIRE = 30 * 60;
+
+        boolean WINT_DEBUG_VIEW_SUPPORT = true;
+
+        String WINT_DEBUG_VIEW_PARAM_NAME = "_debug_view";
 
     }
 	

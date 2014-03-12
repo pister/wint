@@ -59,7 +59,7 @@ public class PerformActionValve extends AbstractValve {
 					ViewRender viewRender = viewRenderService.getDefaultViewRender();
 					viewRender.render(context, flowData, target, module.getType());
 				} else {
-					ViewRender viewRender = viewRenderService.getViewRender(viewType);
+					ViewRender viewRender = viewRenderService.getViewRender(flowData, viewType);
 					if (viewRender == null) {
 						viewRender = viewRenderService.getDefaultViewRender();
 					} 

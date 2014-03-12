@@ -3,7 +3,6 @@ package wint.mvc.form.validator;
 import java.util.HashMap;
 import java.util.Map;
 
-import wint.help.mvc.security.csrf.CsrfTokenValidator;
 import wint.lang.exceptions.TypeNotMatchException;
 import wint.lang.exceptions.ValidatorNotFound;
 import wint.lang.magic.MagicClass;
@@ -29,7 +28,6 @@ public class ValidatorUtil {
 		registerInner("enums", EnumValuesValidator.class);
 		registerInner("phone", PhoneValidator.class);
 		registerInner("excludeChars", ExcludeCharValidator.class);
-		registerInner("csrf", CsrfTokenValidator.class);
 		registerInner("boolean", BooleanValidator.class);
 	}
 	
