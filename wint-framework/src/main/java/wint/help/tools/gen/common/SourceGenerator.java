@@ -43,10 +43,10 @@ public class SourceGenerator {
         typeDefaults.put(Integer.class, "2");
         typeDefaults.put(Long.TYPE, "3L");
         typeDefaults.put(Long.class, "3L");
-        typeDefaults.put(Float.TYPE, "1.1L");
-        typeDefaults.put(Float.class, "1.1L");
-        typeDefaults.put(Double.TYPE, "1.2L");
-        typeDefaults.put(Double.class, "1.2L");
+        typeDefaults.put(Float.TYPE, "1.1");
+        typeDefaults.put(Float.class, "1.1");
+        typeDefaults.put(Double.TYPE, "1.2");
+        typeDefaults.put(Double.class, "1.2");
         typeDefaults.put(String.class, "\"a\"");
         typeDefaults.put(Date.class, "new java.util.Date()");
         typeDefaults.put(java.sql.Date.class, "new java.sql.Date(new java.util.Date().getTime())");
