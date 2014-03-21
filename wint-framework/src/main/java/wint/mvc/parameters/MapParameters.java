@@ -16,7 +16,7 @@ public class MapParameters extends AbstractParameters {
         Map<String, String[]> newMapParameters = MapUtil.newHashMap();
         for (Map.Entry<String, String[]> entry : mapParameters.entrySet()) {
             String paramName = normalizeName(entry.getKey());
-            String[] values = mapParameters.get(paramName);
+            String[] values = mapParameters.get(entry.getKey());
             newMapParameters.put(paramName, values);
         }
         this.mapParameters = newMapParameters;
