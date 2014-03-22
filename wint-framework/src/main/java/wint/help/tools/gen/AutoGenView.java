@@ -164,8 +164,8 @@ public class AutoGenView extends BaseAutoGen {
         String baseActionPackage = baseBizPackage + ".web.action";
         String targetActionPackage;
         String actionContextPackage;
+        actionContext = normalizeContext(actionContext);
         if (!StringUtil.isEmpty(actionContext)) {
-            actionContext = normalizeContext(actionContext);
             actionContextPackage = actionContext.replace('/', '.');
             targetActionPackage = baseActionPackage + "." + actionContextPackage;
         } else {
