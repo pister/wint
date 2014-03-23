@@ -1,5 +1,6 @@
 package wint.help.tools.gen.common;
 
+import wint.help.tools.gen.dao.ColumnNameContants;
 import wint.help.tools.gen.dao.DaoGenUtil;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.Property;
@@ -76,6 +77,16 @@ public class GenMetaInfo {
         if (idProperty == null) {
             throw new RuntimeException("the id " + idName + " from " + targetDoClass + " not exist!");
         }
+        Property gmtModifiedProperty = magicClass.getProperty(ColumnNameContants.gmtModifiedName);
+        if (gmtModifiedProperty == null) {
+            throw new RuntimeException("the gmtModified: " + ColumnNameContants.gmtModifiedName + " from " + targetDoClass + " not exist!");
+        }
+
+        Property gmtCreateProperty = magicClass.getProperty(ColumnNameContants.gmtCreateName);
+        if (gmtCreateProperty == null) {
+            throw new RuntimeException("the gmtCreate: " + ColumnNameContants.gmtCreateName + " from " + targetDoClass + " not exist!");
+        }
+
         idClass = idProperty.getPropertyClass().getTargetClass();
         idType = ClassUtil.getShortClassName(idClass);
         idTypeWrapper = ClassUtil.getShortClassName(ClassUtil.getWrapperClass(idClass));

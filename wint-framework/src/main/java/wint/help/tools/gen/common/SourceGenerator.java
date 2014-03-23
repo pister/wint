@@ -64,9 +64,6 @@ public class SourceGenerator {
 
     private ResultRender resultRender = new DefaultResultRender();
 
-    private String gmtModifiedName = "gmtModified";
-
-    private String gmtCreateName = "gmtCreate";
 
     private String idName = "id";
 
@@ -130,8 +127,8 @@ public class SourceGenerator {
         context.put("logicDeleted", logicDeleted);
         context.put("idNameColumn", StringUtil.camelToUnderLineString(idName));
         context.put("idNameProperty", StringUtil.fixedCharToCamel(idName, "_-"));
-        context.put("gmtModifiedName", StringUtil.camelToUnderLineString(gmtModifiedName));
-        context.put("gmtCreateName", gmtCreateName);
+        context.put("gmtModifiedName", StringUtil.camelToUnderLineString(ColumnNameContants.gmtModifiedName));
+        context.put("gmtCreateName", ColumnNameContants.gmtCreateName);
 
         genFromTemplate(context, out, sqlMapTemplateName);
         DaoGenUtil.writeLine(out);
@@ -238,7 +235,7 @@ public class SourceGenerator {
             if (!property.isWritable() || !property.isReadable()) {
                 continue;
             }
-            if (name.equals(idName) || name.equals(gmtModifiedName) || name.equals(gmtCreateName)) {
+            if (name.equals(idName) || name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
                 continue;
             }
 
@@ -315,7 +312,7 @@ public class SourceGenerator {
             if (!property.isWritable() || !property.isReadable()) {
                 continue;
             }
-            if (name.equals(idName) || name.equals(gmtModifiedName) || name.equals(gmtCreateName)) {
+            if (name.equals(idName) || name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
                 continue;
             }
 
@@ -354,7 +351,7 @@ public class SourceGenerator {
             if (!property.isWritable() || !property.isReadable()) {
                 continue;
             }
-            if (name.equals(gmtModifiedName) || name.equals(gmtCreateName)) {
+            if (name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
                 continue;
             }
 
@@ -416,7 +413,7 @@ public class SourceGenerator {
             if (!property.isWritable() || !property.isReadable()) {
                 continue;
             }
-            if (name.equals(idName) || name.equals(gmtModifiedName) || name.equals(gmtCreateName)) {
+            if (name.equals(idName) || name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
                 continue;
             }
 
@@ -508,7 +505,7 @@ public class SourceGenerator {
             if (!property.isWritable() || !property.isReadable()) {
                 continue;
             }
-            if (name.equals(idName) || name.equals(gmtModifiedName) || name.equals(gmtCreateName)) {
+            if (name.equals(idName) || name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
                 continue;
             }
 
@@ -709,7 +706,7 @@ public class SourceGenerator {
             sb.append(result.getColumn());
             sb.append("= ");
             String propertyName = result.getProperty();
-            if (propertyName.equals(gmtModifiedName)) {
+            if (propertyName.equals(ColumnNameContants.gmtModifiedName)) {
                 sb.append("now()");
             } else {
                 sb.append("#");
@@ -751,7 +748,7 @@ public class SourceGenerator {
                 sb.append(", ");
             }
             String propertyName = result.getProperty();
-            if (propertyName.equals(gmtModifiedName) || propertyName.equals(gmtCreateName)) {
+            if (propertyName.equals(ColumnNameContants.gmtModifiedName) || propertyName.equals(ColumnNameContants.gmtCreateName)) {
                 sb.append("now()");
             } else {
                 sb.append("#");
