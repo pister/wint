@@ -33,10 +33,4 @@
 	</form>
 	
 	<resource file="person.xml" />
-	
-	<form name="token.support">
-		<field name="csrfToken" >
-			<validator type="csrf" message="请不要重复提交"></validator>
-		</field>
-	</form>
 </forms>
