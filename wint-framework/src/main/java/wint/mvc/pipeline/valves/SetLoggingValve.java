@@ -18,7 +18,7 @@ public class SetLoggingValve extends AbstractValve implements EnvironmentAwire {
 			pipelineContext.invokeNext(flowData);
 		} catch (Throwable e) {
 			log.error("invoke valve error", e);
-			if (environment == Environment.DEV) {
+			if (environment.isSupportDev()) {
 				throw new WintException(e);
 			}
 		}

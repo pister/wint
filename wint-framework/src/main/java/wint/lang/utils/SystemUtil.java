@@ -22,5 +22,9 @@ public class SystemUtil {
        RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();  
        return runtime.getName();
     }
+
+    public static String getUserHome() {
+        return System.getProperty("user.home");
+    }
 	
 }

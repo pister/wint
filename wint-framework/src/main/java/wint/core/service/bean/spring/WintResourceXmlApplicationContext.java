@@ -59,7 +59,7 @@ public class WintResourceXmlApplicationContext extends AbstractXmlApplicationCon
 					}
 					
 					private boolean autoloadSqlmap(Object bean, String beanName) {
-						if (environment != Environment.DEV) {
+						if (!environment.isSupportDev()) {
 							return false;
 						}
 						if (!sqlmapAutoload) {

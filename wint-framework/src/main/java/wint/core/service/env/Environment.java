@@ -2,21 +2,29 @@ package wint.core.service.env;
 
 public enum Environment {
 	
-	DEV("dev"),
-	TEST("test"),
-	PRODUCT("product");
+	MOCK("mock", true),
+    DEV("dev", true),
+	TEST("test", false),
+	PRODUCT("product", false);
 	
-	private Environment(String name) {
+	private Environment(String name, boolean supportDev) {
 		this.name = name;
+        this.supportDev = supportDev;
 	}
 	
 	private final String name;
 
+    private final boolean supportDev;
+
 	public String getName() {
 		return name;
 	}
-	
-	public static Environment valueFromName(String name) {
+
+    public boolean isSupportDev() {
+        return supportDev;
+    }
+
+    public static Environment valueFromName(String name) {
 		for (Environment e : values()) {
 			if (e.name.equals(name)) {
 				return e;

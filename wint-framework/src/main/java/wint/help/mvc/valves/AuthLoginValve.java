@@ -3,6 +3,7 @@ package wint.help.mvc.valves;
 import java.util.List;
 import java.util.Set;
 
+import wint.core.service.env.Environment;
 import wint.help.mvc.DefaultSessionKeys;
 import wint.help.mvc.WebConstants;
 import wint.lang.utils.CollectionUtil;
@@ -31,8 +32,16 @@ public class AuthLoginValve extends AbstractValve {
 	private Set<String> protectedUrls = CollectionUtil.newHashSet();
 	
 	private Set<String> unprotectedUrls = CollectionUtil.newHashSet();
-	
-	public void invoke(PipelineContext pipelineContext, InnerFlowData flowData) {
+
+    private Environment environment;
+
+    @Override
+    public void init() {
+        super.init();
+        environment = serviceContext.getConfiguration().getEnvironment();
+    }
+
+    public void invoke(PipelineContext pipelineContext, InnerFlowData flowData) {
 		if (canVisit(pipelineContext, flowData)) {
 			pipelineContext.invokeNext(flowData);
 		} else {
@@ -61,6 +70,9 @@ public class AuthLoginValve extends AbstractValve {
 	}
 	
 	protected boolean canVisit(PipelineContext pipelineContext, InnerFlowData flowData) {
+        if (environment == Environment.MOCK) {
+            return true;
+        }
 		Module module = flowData.getModule();
 		if (module.getModuleInfo() == null) {
 			// 如果仅仅是template，则不判断登录

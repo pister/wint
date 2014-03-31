@@ -43,7 +43,7 @@ public class CheckCsrfTokenValve extends AbstractValve {
         }
         // 针对do-action做检查
         if (!CsrfTokenUtil.checkCsrfByParameter(innerFlowData, tokenName)) {
-            if (Environment.DEV == environment) {
+            if (environment.isSupportDev()) {
                 handleMessage(innerFlowData);
             } else {
                 handleCsrf(innerFlowData);

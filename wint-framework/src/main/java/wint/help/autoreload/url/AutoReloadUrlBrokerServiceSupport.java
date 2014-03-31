@@ -19,7 +19,7 @@ public class AutoReloadUrlBrokerServiceSupport extends DefaultUrlBrokerService {
 	
 	@Override
 	public Map<String, UrlModule> getUrlModules() {
-		if (environment != Environment.DEV) {
+		if (!environment.isSupportDev()) {
 			return super.getUrlModules();
 		} else {
 			return autoReloadUrlBrokerService.getUrlModules();
@@ -31,7 +31,7 @@ public class AutoReloadUrlBrokerServiceSupport extends DefaultUrlBrokerService {
 	public void init() {
 		super.init();
 		environment = serviceContext.getConfiguration().getEnvironment();
-		if (environment != Environment.DEV) {
+		if (!environment.isSupportDev()) {
 			return;
 		}
 		autoReloadUrlBrokerService = new AutoReloadUrlBrokerService(this, serviceContext);

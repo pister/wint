@@ -133,7 +133,7 @@ public class Dispatcher {
 			flowData.commitData();
 		} catch (Throwable e) {
 			response.setStatus(StatusCodes.SC_INTERNAL_SERVER_ERROR);
-			if (serviceContext.getConfiguration().getEnvironment() == Environment.DEV) {
+			if (serviceContext.getConfiguration().getEnvironment().isSupportDev()) {
 				if (e instanceof RuntimeException) {
 					throw (RuntimeException)e;
 				} else {

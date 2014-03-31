@@ -86,7 +86,12 @@ public interface Constants {
 
         String WINT_DEBUG_VIEW_PARAM_NAME = "wint.debug.view.param.name";
 
-	}
+        String MOCK_DATA_PREFIX = "wint.mock.data.name";
+
+        String WINT_FORCE_MOCK = "wint.mock.force";
+
+
+    }
 	
 	interface FlowDataAttributeKeys {
 		
@@ -181,6 +186,10 @@ public interface Constants {
         boolean WINT_DEBUG_VIEW_SUPPORT = true;
 
         String WINT_DEBUG_VIEW_PARAM_NAME = "_debug_view";
+
+        String MOCK_DATA_PREFIX = "wint_mock";
+
+        String WINT_FORCE_MOCK = "_force_mock";
 
     }
 	

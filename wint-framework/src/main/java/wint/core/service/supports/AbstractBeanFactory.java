@@ -22,7 +22,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 			if (property.isWritable()) {
 				Object obj = getObject(name);
 				if (obj != null) {
-					property.setValue(target, getObject(name));
+					property.setValue(target, obj);
 					ret.add(property);
 				}
 				

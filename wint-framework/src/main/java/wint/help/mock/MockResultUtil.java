@@ -1,0 +1,73 @@
+package wint.help.mock;
+
+import com.alibaba.fastjson.JSONObject;
+import wint.core.config.Constants;
+import wint.help.biz.result.Result;
+import wint.help.biz.result.ResultSupport;
+import wint.lang.WintException;
+import wint.lang.utils.FileUtil;
+import wint.lang.utils.SystemUtil;
+import wint.lang.utils.TargetUtil;
+import wint.mvc.flow.FlowData;
+
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * User: longyi
+ * Date: 14-3-31
+ * Time: 上午7:49
+ */
+public class MockResultUtil {
+
+    public static Result loadMockResult(FlowData flowData) {
+        String data = getMockDataFileData(flowData);
+        ResultSupport resultSupport = JSONObject.parseObject(data, ResultSupport.class);
+        return resultSupport;
+    }
+
+    private static String getMockDataFileData(FlowData flowData) {
+        String target = flowData.getTarget();
+        String mockNamePrefix = flowData.getServiceContext().getConfiguration().getProperties().getString(Constants.PropertyKeys.MOCK_DATA_PREFIX, Constants.Defaults.MOCK_DATA_PREFIX);
+        String userHomePath = SystemUtil.getUserHome();
+        File userHome = new File(userHomePath);
+        if (!userHome.exists()) {
+            throw new WintException("user home:" + userHomePath + " not exist!");
+        }
+        if (!userHome.isDirectory()) {
+            throw new WintException("user home:" + userHomePath + " is not a directory!");
+        }
+        File mockPath = new File(userHome, mockNamePrefix);
+        if (!mockPath.exists()) {
+            mockPath.mkdirs();
+        }
+
+        String filePath = TargetUtil.normalizeTarget(target);
+        filePath = filePath + ".json";
+        File targetPath = new File(mockPath, filePath);
+        File parent = targetPath.getParentFile();
+        if (!parent.exists()) {
+            parent.mkdirs();
+        }
+        if (!targetPath.exists()) {
+            return initTargetPath(targetPath);
+        } else {
+            try {
+                return FileUtil.readAsString(targetPath);
+            } catch (IOException e) {
+                throw new WintException(e);
+            }
+        }
+    }
+
+    private static String initTargetPath(File targetPath) {
+        String defaultData = "{'success': true, 'models': {}}";
+        try {
+            FileUtil.writeContent(targetPath, defaultData);
+            return defaultData;
+        } catch (IOException e) {
+            throw new WintException(e);
+        }
+    }
+
+}

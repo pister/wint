@@ -36,7 +36,7 @@ public class FreeMarkerTemplateEngine extends AbstractTemplateEngine implements 
 			freemarkerConfiguration.setOutputEncoding(encoding);
 			freemarkerConfiguration.setDefaultEncoding(encoding);
 			
-			if (Environment.DEV == serviceContext.getConfiguration().getEnvironment()) {
+			if (serviceContext.getConfiguration().getEnvironment().isSupportDev()) {
 				freemarkerConfiguration.setTemplateUpdateDelay(0);
 			} else {
                 int checkInterval = serviceContext.getConfiguration().getProperties().getInt(Constants.PropertyKeys.TEMPLATE_MODIFICATION_CHECK_INTERVAL, Constants.Defaults.TEMPLATE_MODIFICATION_CHECK_INTERVAL);

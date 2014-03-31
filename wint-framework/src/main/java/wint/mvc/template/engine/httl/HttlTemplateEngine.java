@@ -44,7 +44,7 @@ public class HttlTemplateEngine extends AbstractTemplateEngine implements Templa
         properties.setProperty("output.encoding", encoding);
         properties.setProperty("localized", "false");
 
-        if (Environment.DEV == wintConfiguration.getEnvironment()) {
+        if (wintConfiguration.getEnvironment().isSupportDev()) {
             properties.setProperty("reloadable", "true");
             properties.setProperty("precompiled", "false");
         } else {

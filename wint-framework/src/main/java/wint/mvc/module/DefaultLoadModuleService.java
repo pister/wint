@@ -3,9 +3,7 @@ package wint.mvc.module;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -19,7 +17,6 @@ import wint.core.service.bean.BeanFactoryService;
 import wint.core.service.env.Environment;
 import wint.core.service.initial.ConfigurationAwire;
 import wint.core.service.thread.LocalThreadService;
-import wint.core.service.thread.ThreadPoolService;
 import wint.lang.exceptions.FlowDataException;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicList;
@@ -29,13 +26,10 @@ import wint.lang.magic.MagicPackage;
 import wint.lang.utils.ClassUtil;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
-import wint.lang.utils.NumberUtil;
 import wint.lang.utils.TargetUtil;
 import wint.mvc.flow.FlowData;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.module.annotations.Action;
-import wint.mvc.parameters.Arguments;
-import wint.mvc.template.TemplateEntry;
 
 /**
  * @author pister 2012-1-2 03:16:57
@@ -49,6 +43,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 	private BeanFactoryService beanFactoryService;
     private ExecutorService executorService;
     private ConcurrentMap<String, FutureTask<ExecutionModule>> cachedModules = MapUtil.newConcurrentHashMap();
+    private String forceMock;
 
 	@Override
 	public void init() {
@@ -56,6 +51,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 		String appPackage = configuration.getProperties().getString(Constants.PropertyKeys.APP_PACKAGE, Constants.Defaults.APP_PACKAGE);
 		basePackage = new MagicPackage(appPackage);
 		moduleMethod = configuration.getProperties().getString(Constants.PropertyKeys.APP_MODULE_METHOD, Constants.Defaults.MODULE_METHOD);
+        forceMock = configuration.getProperties().getString(Constants.PropertyKeys.WINT_FORCE_MOCK, Constants.Defaults.WINT_FORCE_MOCK);
 		environment = configuration.getEnvironment();
 		beanFactoryService = this.serviceContext.getService(BeanFactoryService.class);
 
@@ -67,7 +63,15 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 	}
 
 	public ExecutionModule loadModule(final String target, final String moduleType, final InnerFlowData innerFlowData) {
-		if (environment == Environment.DEV) {
+        if (environment == Environment.MOCK) {
+           boolean useMockForce = innerFlowData.getParameters().getBoolean(forceMock, false);
+           if (useMockForce) {
+               return new NopModule(target, moduleType);
+           } else {
+               return loadModuleImpl(target, moduleType, innerFlowData);
+
+           }
+        } else if (environment.isSupportDev()) {
 			return loadModuleImpl(target, moduleType, innerFlowData);
 		} else {
 			String key = makeModuleCacheKey(target, moduleType);

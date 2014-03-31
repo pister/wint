@@ -54,7 +54,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine implements Te
 	    	velocityConfiguration.setProperty(Velocity.INPUT_ENCODING, encoding);
 	    	velocityConfiguration.setProperty(Velocity.OUTPUT_ENCODING, encoding);
 	    	
-	    	if (Environment.DEV == wintConfiguration.getEnvironment()) {
+	    	if (wintConfiguration.getEnvironment().isSupportDev()) {
 	    		velocityConfiguration.setProperty(Velocity.VM_LIBRARY_AUTORELOAD, true);
 	    	} else {
 	    		velocityConfiguration.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);

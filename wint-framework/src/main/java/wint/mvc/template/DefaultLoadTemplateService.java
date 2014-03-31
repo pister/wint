@@ -107,7 +107,7 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
     }
 
     protected TemplateEntry loadTemplateEntry(final String templateName, final String type) {
-        if (environment == Environment.DEV) {
+        if (environment.isSupportDev()) {
             return loadTemplateEntryImpl(templateName, type);
         } else {
             String key = makeCacheKey(templateName, type);

@@ -8,6 +8,8 @@ import wint.core.service.ServiceContext;
 import wint.core.service.bean.BeanFactory;
 import wint.core.service.bean.BeanFactoryService;
 import wint.core.service.bean.WintBeanFactory;
+import wint.core.service.bean.mock.MockBeanFactory;
+import wint.core.service.env.Environment;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicObject;
 import wint.lang.utils.LibUtil;
@@ -31,7 +33,13 @@ public class SpringSupportBeanFactoryService extends AbstractService implements 
 			springContextFile = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.SPRING_CONTEXT_FILE, Constants.Defaults.SPRING_CONTEXT_FILE);
 		}
 		resourceLoader = serviceContext.getResourceLoader();
-		if (needUseSpring()) {
+        Environment environment = serviceContext.getConfiguration().getEnvironment();
+        if (environment == Environment.MOCK) {
+           if (log.isInfoEnabled()) {
+               log.info("Mock environment, Spring will NOT be load!");
+           }
+           beanFactory = new MockBeanFactory();
+        } else if (needUseSpring()) {
 			if (log.isInfoEnabled()) {
 				log.info("Spring library used, initializing it...");
 			}

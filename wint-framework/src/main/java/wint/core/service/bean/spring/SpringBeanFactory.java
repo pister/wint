@@ -3,6 +3,9 @@ package wint.core.service.bean.spring;
 import wint.core.service.bean.BeanFactory;
 import wint.core.service.supports.AbstractBeanFactory;
 import wint.lang.magic.MagicObject;
+import wint.lang.magic.Property;
+
+import java.util.Set;
 
 /**
  * @author pister 2012-3-4 11:30:36

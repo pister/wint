@@ -18,7 +18,7 @@ public class AutoReloadFormServiceSupport extends DefaultFormService {
 	
 	@Override
 	public Form getForm(String name, InnerFlowData flowData) {
-		if (environment != Environment.DEV) {
+		if (!environment.isSupportDev()) {
 			return super.getForm(name, flowData);
 		} else {
 			return autoReloadFormService.getForm(name, flowData);
@@ -29,7 +29,7 @@ public class AutoReloadFormServiceSupport extends DefaultFormService {
 	public void init() {
 		super.init();
 		environment = serviceContext.getConfiguration().getEnvironment();
-		if (environment != Environment.DEV) {
+		if (!environment.isSupportDev()) {
 			return;
 		}
 		autoReloadFormService = new AutoReloadFormService(serviceContext);
