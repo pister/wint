@@ -67,13 +67,11 @@
 			<version>${config.mysqlJdbcVersion}</version>
 			<scope>runtime</scope>
 		</dependency>
-        <!--
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${config.fastjsonVersion}</version>
         </dependency>
-        -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
