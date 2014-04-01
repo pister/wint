@@ -1,7 +1,10 @@
 package wint.help.mock;
 
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wint.core.config.Constants;
+import wint.core.io.resource.loader.ResourceLoader;
 import wint.help.biz.result.Result;
 import wint.help.biz.result.ResultSupport;
 import wint.lang.WintException;
@@ -12,6 +15,7 @@ import wint.mvc.flow.FlowData;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * User: longyi
@@ -20,7 +24,13 @@ import java.io.IOException;
  */
 public class MockResultUtil {
 
+    private static final Logger log = LoggerFactory.getLogger(MockResultUtil.class);
+
     public static Result loadMockResult(FlowData flowData) {
+        String xx = getProjectName();
+        log.warn("================");
+        log.warn(xx);
+        log.warn("================");
         String data = getMockDataFileData(flowData);
         ResultSupport resultSupport = JSONObject.parseObject(data, ResultSupport.class);
         return resultSupport;
@@ -68,6 +78,17 @@ public class MockResultUtil {
         } catch (IOException e) {
             throw new WintException(e);
         }
+    }
+
+    private static String getProjectName() {
+//        ResourceLoader resourceLoader = flowData.getServiceContext().getResourceLoader();
+        URL url = MockResultUtil.class.getResource(MockResultUtil.class.getSimpleName() + ".class");
+        return url.toString();
+    }
+
+    public static void main(String[] args) {
+        String a = getProjectName();
+        System.out.println(a);
     }
 
 }

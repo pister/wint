@@ -52,10 +52,14 @@ public class ResultSupport implements Result {
 	}
 
     public void setFieldResultCode(String fieldName, ResultCode resultCode) {
+        setResultCode(fieldName, resultCode);
+    }
+
+    public void setResultCode(String fieldName, ResultCode resultCode) {
         FlowData flowData = WintContext.getFlowData();
         String lastFormName = (String)flowData.getAttribute(Constants.Form.LAST_FORM_NAME);
         if (lastFormName == null) {
-           throw new WintException("you must call FormService.getForm() method before Result.setFieldResultCode on this thread.");
+            throw new WintException("you must call FormService.getForm() method before Result.setFieldResultCode on this thread.");
         }
         FormFactory formFactory = (FormFactory)flowData.getInnerContext().get(Constants.Form.TEMPLATE_FORM_FACTORY_NAME);
 
