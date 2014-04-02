@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import wint.core.config.Constants;
+import wint.core.service.env.Environment;
 import wint.lang.exceptions.FlowDataException;
 import wint.lang.exceptions.ResourceException;
 import wint.lang.magic.MagicMap;
@@ -28,6 +29,8 @@ public class TemplateViewRender extends AbstractViewRender {
 	
 	private String pageContentName;
 
+    private Environment environment;
+
 	public String getViewType() {
 		return ViewTypes.TEMPLATE_VIEW_TYPE;
 	}
@@ -39,6 +42,7 @@ public class TemplateViewRender extends AbstractViewRender {
 		MagicMap properties = serviceContext.getConfiguration().getProperties();
 		layoutName = properties.getString(Constants.PropertyKeys.TEMPLATE_LAYOUT, Constants.Defaults.TEMPLATE_LAYOUT);
 		pageContentName = properties.getString(Constants.PropertyKeys.PAGE_CONTENT_NAME, Constants.Defaults.PAGE_CONTENT_NAME);
+        environment = serviceContext.getConfiguration().getEnvironment();
 	}
 
 	public void render(Context context, InnerFlowData flowData, String target, String moduleType) {
@@ -81,7 +85,11 @@ public class TemplateViewRender extends AbstractViewRender {
 	}
 	
 	protected boolean onResourceNotFound(InnerFlowData flowData, String target) {
-		flowData.setStatusCode(StatusCodes.SC_NOT_FOUND);
+        if (environment.isSupportDev()) {
+            writeContent(flowData.getWriter(), "can not find target:" + target);
+        } else {
+            flowData.setStatusCode(StatusCodes.SC_NOT_FOUND);
+        }
 		return true;
 	}
 
