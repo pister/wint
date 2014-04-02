@@ -17,6 +17,7 @@ import wint.mvc.form.runtime.FormFactory;
 import wint.mvc.form.runtime.ResultRunTimeForm;
 import wint.mvc.form.validator.ValidateResult;
 import wint.mvc.form.validator.Validator;
+import wint.mvc.parameters.MapParameters;
 import wint.mvc.parameters.Parameters;
 import wint.mvc.view.types.ViewTypes;
 
@@ -157,7 +158,20 @@ public class DefaultForm implements Form {
 		return fields;
 	}
 
-	public void setFields(Map<String, Field> fields) {
+    public Parameters getValues() {
+        Map<String, String[]> values = MapUtil.newHashMap();
+        for(Map.Entry<String, Field> entry : fields.entrySet()) {
+            String name = entry.getKey();
+            Field field = entry.getValue();
+            if (field == null) {
+                continue;
+            }
+            values.put(name, field.getValues());
+        }
+        return new MapParameters(values);
+    }
+
+    public void setFields(Map<String, Field> fields) {
 		this.fields = fields;
 	}
 

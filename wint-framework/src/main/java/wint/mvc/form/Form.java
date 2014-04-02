@@ -2,7 +2,9 @@ package wint.mvc.form;
 
 import java.util.Map;
 
+import wint.lang.magic.MagicMap;
 import wint.mvc.form.validator.ValidateResult;
+import wint.mvc.parameters.Parameters;
 
 /**
  * @author pister
@@ -21,6 +23,8 @@ public interface Form {
 	void hold(Object object);
 	
 	Map<String, Field> getFields();
+
+    Parameters getValues();
 	
 	void holdRequest();
 	
