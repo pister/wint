@@ -34,7 +34,9 @@ public class DefaultForm implements Form {
 	private ValidateResult validateResult;
 	
 	private Map<String, Field> fields;
-	
+
+    private Parameters parameters;
+
 	private boolean isHeld = false;
 
 	public DefaultForm(FormConfig formConfig, InnerFlowData flowData) {
@@ -133,10 +135,24 @@ public class DefaultForm implements Form {
 		}
 		validateResult = theResult;
 		boolean ret = validateResult.isSuccess();
+        buildParameters();
 		holdRequest();
 		return ret;
 	}
-	
+
+    private void buildParameters() {
+        Map<String, String[]> values = MapUtil.newHashMap();
+        for(Map.Entry<String, Field> entry : fields.entrySet()) {
+            String name = entry.getKey();
+            Field field = entry.getValue();
+            if (field == null) {
+                continue;
+            }
+            values.put(name, field.getValues());
+        }
+        parameters = new MapParameters(values);
+    }
+
 	public void holdRequest() {
 		ResultRunTimeForm resultFormFactory = new ResultRunTimeForm(this);
 		FormFactory formFactory = (FormFactory)flowData.getInnerContext().get(Constants.Form.TEMPLATE_FORM_FACTORY_NAME);
@@ -159,16 +175,7 @@ public class DefaultForm implements Form {
 	}
 
     public Parameters getValues() {
-        Map<String, String[]> values = MapUtil.newHashMap();
-        for(Map.Entry<String, Field> entry : fields.entrySet()) {
-            String name = entry.getKey();
-            Field field = entry.getValue();
-            if (field == null) {
-                continue;
-            }
-            values.put(name, field.getValues());
-        }
-        return new MapParameters(values);
+        return parameters;
     }
 
     public void setFields(Map<String, Field> fields) {
