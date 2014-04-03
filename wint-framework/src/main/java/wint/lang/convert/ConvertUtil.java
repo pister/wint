@@ -5,15 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import wint.lang.convert.converts.BooleanConvert;
-import wint.lang.convert.converts.Convert;
-import wint.lang.convert.converts.DoubleConvert;
-import wint.lang.convert.converts.FloatConvert;
-import wint.lang.convert.converts.IntConvert;
-import wint.lang.convert.converts.LongConvert;
-import wint.lang.convert.converts.ShortConvert;
-import wint.lang.convert.converts.SmartDateConvert;
-import wint.lang.convert.converts.StringConvert;
+import wint.lang.convert.converts.*;
 import wint.lang.exceptions.ConvertException;
 import wint.lang.utils.ClassUtil;
 
@@ -30,6 +22,8 @@ public class ConvertUtil {
 	static {
 		types2Convert.put("boolean", new BooleanConvert());
 		types2Convert.put("Boolean", new BooleanConvert());
+		types2Convert.put("byte", new ByteConvert());
+		types2Convert.put("Byte", new ByteConvert());
 		types2Convert.put("short", new ShortConvert());
 		types2Convert.put("Short", new ShortConvert());
 		types2Convert.put("int", new IntConvert());

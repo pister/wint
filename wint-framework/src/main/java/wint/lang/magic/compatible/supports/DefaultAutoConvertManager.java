@@ -4,16 +4,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Map;
 
-import wint.lang.convert.converts.BooleanConvert;
-import wint.lang.convert.converts.Convert;
-import wint.lang.convert.converts.DoubleConvert;
-import wint.lang.convert.converts.FloatConvert;
-import wint.lang.convert.converts.IntConvert;
-import wint.lang.convert.converts.LongConvert;
-import wint.lang.convert.converts.ShortConvert;
-import wint.lang.convert.converts.SmartDateConvert;
-import wint.lang.convert.converts.SmartTimestampConvert;
-import wint.lang.convert.converts.StringConvert;
+import wint.lang.convert.converts.*;
 import wint.lang.exceptions.CanNotFindObjectException;
 import wint.lang.magic.compatible.AutoConvertManager;
 import wint.lang.utils.MapUtil;
@@ -29,8 +20,10 @@ public class DefaultAutoConvertManager extends AutoConvertManager {
 	protected void registerDefaultConverts() {
 		converts.put(boolean.class, new BooleanConvert());
 		converts.put(Boolean.class, new BooleanConvert());
-		converts.put(short.class, new ShortConvert());
-		converts.put(Short.class, new ShortConvert());
+        converts.put(Byte.class, new ByteConvert());
+        converts.put(byte.class, new ByteConvert());
+        converts.put(short.class, new ShortConvert());
+        converts.put(Short.class, new ShortConvert());
 		converts.put(int.class, new IntConvert());
 		converts.put(Integer.class, new IntConvert());
 		converts.put(long.class, new LongConvert());
@@ -56,8 +49,5 @@ public class DefaultAutoConvertManager extends AutoConvertManager {
 		return convert.convertTo(input);
 	}
 	
-	public <T> void registerConvert(Class<T> clazz, Convert<T> convert) {
-		converts.put(clazz, convert);
-	}
 
 }
