@@ -159,7 +159,7 @@ public interface Constants {
 		
 		String SPRING_CONTEXT_FILE = "applicationContext.xml";
 		
-		String OBJECT_MAGIC_TYPE = "auto";
+		String OBJECT_MAGIC_TYPE = "java";
 		
 		String PARAMS_NAME = "params";
 		

@@ -9,6 +9,7 @@ import java.util.Map;
 import wint.lang.WintException;
 import wint.lang.exceptions.TooManyMethodMatchesException;
 import wint.lang.magic.config.MagicFactory;
+import wint.lang.magic.reflect.ReflectMagicClass;
 import wint.lang.magic.reflect.ReflectMagicMethod;
 import wint.lang.utils.ClassUtil;
 import wint.lang.utils.MapUtil;
@@ -209,7 +210,7 @@ public abstract class MagicClass implements Serializable {
      * @return
      */
 	public static MagicClass wrap(Class<?> clazz) {
-		return MagicFactory.getMagicFactory().newMagicClass(clazz);
+ 		return MagicFactory.getMagicFactory().newMagicClass(clazz);
 	}
 
     /**
@@ -260,14 +261,14 @@ public abstract class MagicClass implements Serializable {
 			String name = entry.getKey();
 			Method readMethod = entry.getValue();
 			Method writeMethod = writableMethods.remove(name);
-			MagicClass propertyClass = MagicClass.wrap(readMethod.getReturnType());
+			MagicClass propertyClass = new ReflectMagicClass(readMethod.getReturnType());
 			Property property = new Property(name, propertyClass, new ReflectMagicMethod(readMethod), (writeMethod != null ? new ReflectMagicMethod(writeMethod) : null));
 			ret.put(name, property);
 		}
 		for (Map.Entry<String, Method> entry : writableMethods.entrySet()) {
 			String name = entry.getKey();
 			Method writeMethod = entry.getValue();
-			MagicClass propertyClass = MagicClass.wrap(writeMethod.getParameterTypes()[0]);
+			MagicClass propertyClass = new ReflectMagicClass(writeMethod.getParameterTypes()[0]);
 			Property property = new Property(name, propertyClass, null, new ReflectMagicMethod(writeMethod));
 			ret.put(name, property);
 		}

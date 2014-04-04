@@ -1,9 +1,8 @@
 package wint.lang.enums;
 
 import wint.lang.WintException;
-import wint.lang.magic.MagicClass;
-import wint.lang.magic.MagicMethod;
 import wint.lang.magic.config.MagicType;
+import wint.lang.utils.ClassUtil;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.StringUtil;
 
@@ -114,6 +113,7 @@ public class EnumsUtil {
 
     /**
      * 获取enum所有值列表
+     *
      * @param values
      * @param fieldname
      * @return
@@ -146,12 +146,16 @@ public class EnumsUtil {
      * @throws WintException 如果目标不是一个枚举类，则抛出异常
      */
     public static Enum[] enums(String enumClass) {
-        MagicClass magicClass = MagicClass.forName(enumClass);
-        if (!magicClass.isEnum()) {
+        Class<?> clazz = ClassUtil.forName(enumClass);
+        if (!clazz.isEnum()) {
             throw new WintException(enumClass + " is not an Enum!");
         }
-        MagicMethod valueMethod = magicClass.getMethod("values");
-        return (Enum[]) valueMethod.invoke(magicClass.getTargetClass(), null);
+        try {
+            Method method = clazz.getMethod("values");
+            return (Enum[]) method.invoke(clazz);
+        } catch (Exception e) {
+            throw new WintException(e);
+        }
     }
 
     public static void main(String[] args) {

@@ -26,6 +26,10 @@
 			<param-name>wint.session.use</param-name>
 			<param-value>true</param-value>
 		</init-param>
+        <init-param>
+            <param-name>wint.app.object.magic.type</param-name>
+            <param-value>java</param-value>
+        </init-param>
 		<init-param>
 			<param-name>wint.session.cookie.key.file</param-name>
 			<param-value>keys/${config.artifactId}-session-key</param-value>

@@ -9,6 +9,7 @@ import java.lang.reflect.Proxy;
 import java.net.URI;
 
 import wint.lang.magic.MagicObject;
+import wint.lang.magic.reflect.ReflectMagicObject;
 import wint.lang.utils.ClassUtil;
 import wint.lang.utils.IoUtil;
 
@@ -25,7 +26,7 @@ public class HttpHandlerUtil {
 
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 				if (method.getName().equals("handle")) {
-					MagicObject httpExchange = MagicObject.wrap(args[0]);
+					MagicObject httpExchange = new ReflectMagicObject(args[0]);
 					try {
 						URI uri = (URI)httpExchange.invoke("getRequestURI");
 						String file = uri.getPath();
@@ -36,7 +37,7 @@ public class HttpHandlerUtil {
 						}
 						httpExchange.invoke("sendResponseHeaders", new Class<?>[] {Integer.TYPE, Long.TYPE}, new Object[] {200, f.length()});
 						FileInputStream fis = new FileInputStream(f);
-						MagicObject.wrap(httpExchange.invoke("getResponseHeaders")).invoke("add", new Class<?>[] {String.class, String.class}, new Object[] {"content-type", contentType});
+						new ReflectMagicObject(httpExchange.invoke("getResponseHeaders")).invoke("add", new Class<?>[] {String.class, String.class}, new Object[] {"content-type", contentType});
 						IoUtil.copy(fis, (OutputStream)httpExchange.invoke("getResponseBody"));
 					} catch(Throwable e) {
 						throw e;

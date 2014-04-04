@@ -32,8 +32,8 @@ public class ReflectMagicObject extends MagicObject {
 			return this;
 		}
 		
-		return MagicObject.wrap(Proxy.newProxyInstance(targetObject.getClass().getClassLoader(), interfaces.toArray(new Class<?>[0]), new InvocationHandler() {
-			
+		return new ReflectMagicObject(Proxy.newProxyInstance(targetObject.getClass().getClassLoader(), interfaces.toArray(new Class<?>[0]), new InvocationHandler() {
+
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 				return ProxyInterceptorUtil.invokeByInterceptors(interceptors, targetObject, new MethodInvoker(method), args);
 			}
