@@ -20,7 +20,7 @@ public class CglibMagicMethod extends MagicMethod {
 	
 	public CglibMagicMethod(Method targetMethod, FastClass fastClass) {
 		super(targetMethod);
-		fastMethod = fastClass.getMethod(targetMethod);
+		fastMethod = fastClass.getMethod(targetMethod.getName(), targetMethod.getParameterTypes());
 	}
 	public MagicList<MagicClass> getParameterTypes() {
 		Class<?>[] types = targetMethod.getParameterTypes();

@@ -80,7 +80,7 @@ public class CglibMagicClass extends MagicClass {
 	public MagicObject newInstance(Class<?>[] parameterTypes, Object[] constructorArguments) {
 		try {
 			FastConstructor fastConstructor = fastClass.getConstructor(parameterTypes);
-			return new ReflectMagicObject(fastConstructor.newInstance(constructorArguments));
+			return new CglibMagicObject(fastConstructor.newInstance(constructorArguments));
 		} catch (InvocationTargetException e) {
 			throw new WintException(e.getTargetException());
 		} catch (Exception e) {
@@ -109,10 +109,10 @@ public class CglibMagicClass extends MagicClass {
 			Method writeMethod = writableMethods.remove(name);
 			Class<?> type = readMethod.getReturnType();
 			if (type.isArray()) {
-				
+			    continue;
 			}
-			MagicClass propertyClass = MagicClass.wrap(type);
-			Property property = new Property(name, propertyClass, new ReflectMagicMethod(readMethod), (writeMethod != null ? new ReflectMagicMethod(writeMethod) : null));
+            MagicClass propertyClass = CglibMagicClass.fromClass(type);
+			Property property = new Property(name, propertyClass, new CglibMagicMethod(readMethod, fastClass), (writeMethod != null ? new CglibMagicMethod(writeMethod, fastClass) : null));
 			ret.put(name, property);
 		}
 		for (Map.Entry<String, Method> entry : writableMethods.entrySet()) {
@@ -120,12 +120,16 @@ public class CglibMagicClass extends MagicClass {
 			Method writeMethod = entry.getValue();
 			Class<?> type = writeMethod.getParameterTypes()[0];
 			if (type.isArray()) {
-				
+			    continue;
 			}
-			MagicClass propertyClass = MagicClass.wrap(type);
-			Property property = new Property(name, propertyClass, null, new ReflectMagicMethod(writeMethod));
+            MagicClass propertyClass = CglibMagicClass.fromClass(type);
+			Property property = new Property(name, propertyClass, null, new CglibMagicMethod(writeMethod, fastClass));
 			ret.put(name, property);
 		}
 		return ret;
 	}
+
+    public FastClass getFastClass() {
+        return fastClass;
+    }
 }

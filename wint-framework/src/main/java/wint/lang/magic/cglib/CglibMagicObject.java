@@ -15,7 +15,7 @@ import wint.lang.magic.MagicObject;
 public class CglibMagicObject extends MagicObject {
 
 	public CglibMagicObject(Object targetObject) {
-		super(targetObject);
+		super(targetObject, CglibMagicClass.fromClass(targetObject.getClass()));
 	}
 	
 	@Override

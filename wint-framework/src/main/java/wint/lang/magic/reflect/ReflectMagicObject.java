@@ -19,7 +19,7 @@ import wint.lang.utils.CollectionUtil;
 public class ReflectMagicObject extends MagicObject {
 
 	public ReflectMagicObject(Object targetObject) {
-		super(targetObject);
+		super(targetObject, new ReflectMagicClass(targetObject.getClass()));
 	}
 	
 	@Override

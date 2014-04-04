@@ -103,9 +103,9 @@ public abstract class MagicObject {
 		return targetObject;
 	}
 	
-	protected MagicObject(Object targetObject) {
+	protected MagicObject(Object targetObject, MagicClass magicClass) {
 		this.targetObject = targetObject;
-		this.magicClass = MagicClass.wrap(targetObject);
+		this.magicClass = magicClass;
 	}
 
     /**

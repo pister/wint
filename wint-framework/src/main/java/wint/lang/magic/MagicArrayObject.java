@@ -8,7 +8,7 @@ import wint.lang.WintException;
 public class MagicArrayObject extends MagicObject {
 
 	protected MagicArrayObject(Object targetObject) {
-		super(targetObject);
+		super(targetObject, new MagicArrayClass(targetObject.getClass()));
 	}
 
 	@Override

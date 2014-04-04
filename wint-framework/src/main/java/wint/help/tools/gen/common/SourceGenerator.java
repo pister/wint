@@ -89,6 +89,8 @@ public class SourceGenerator {
 
     private String genJavaAOImplTemplateName = "gen-java-ao-impl.vm";
 
+    private boolean withName = false;
+
     public String setTablePrefix(String prefix) {
         String ret = mappingPolicy.getTablePrefix();
         mappingPolicy.setTablePrefix(prefix);
@@ -321,9 +323,42 @@ public class SourceGenerator {
 
         context.put("fields", fields);
 
-        File createFile = new File(moduleDir, "create.vm");
+        String targetName = getCreateName(alias) + ".vm";
+
+        File createFile = new File(moduleDir, targetName);
         templateSourceGenator.genSource(context, "gen-templates-create-vm.vm", createFile, fileWriter);
 
+    }
+
+    private String getCreateName(String alias) {
+        if (withName) {
+            return "create" + StringUtil.uppercaseFirstLetter(alias);
+        } else {
+            return "create";
+        }
+    }
+    private String getEditName(String alias) {
+        if (withName) {
+            return "edit" + StringUtil.uppercaseFirstLetter(alias);
+        } else {
+            return "edit";
+        }
+    }
+
+    private String getListName(String alias) {
+        if (withName) {
+            return "list" + StringUtil.uppercaseFirstLetter(alias);
+        } else {
+            return "list";
+        }
+    }
+
+    private String getDetailName(String alias) {
+        if (withName) {
+            return alias + "Detail";
+        } else {
+            return "detail";
+        }
     }
 
 
@@ -369,8 +404,9 @@ public class SourceGenerator {
         context.put("editPageAction", editPageAction);
         context.put("detailPageAction", detailPageAction);
 
+        String targetName = getListName(alias) + ".vm";
 
-        File createFile = new File(moduleDir, "list.vm");
+        File createFile = new File(moduleDir, targetName);
         templateSourceGenator.genSource(context, "gen-templates-list-vm.vm", createFile, fileWriter);
     }
 
@@ -391,7 +427,9 @@ public class SourceGenerator {
         context.put("listPageAction", listPageAction);
 
 
-        File createFile = new File(moduleDir, "detail.vm");
+        String targetName = getDetailName(alias) + ".vm";
+
+        File createFile = new File(moduleDir, targetName);
         templateSourceGenator.genSource(context, "gen-templates-detail-vm.vm", createFile, fileWriter);
     }
 
@@ -429,7 +467,10 @@ public class SourceGenerator {
         context.put("listPageAction", listPageAction);
 
 
-        File createFile = new File(moduleDir, "edit.vm");
+        String targetName = getEditName(alias) + ".vm";
+
+
+        File createFile = new File(moduleDir, targetName);
         templateSourceGenator.genSource(context, "gen-templates-edit-vm.vm", createFile, fileWriter);
     }
 
@@ -831,4 +872,11 @@ public class SourceGenerator {
         this.idName = idName;
     }
 
+    public boolean isWithName() {
+        return withName;
+    }
+
+    public void setWithName(boolean withName) {
+        this.withName = withName;
+    }
 }
