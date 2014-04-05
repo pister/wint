@@ -1,5 +1,6 @@
 package wint.help.tools.gen.common;
 
+import wint.help.biz.annations.Domain;
 import wint.help.tools.gen.dao.*;
 import wint.lang.WintException;
 import wint.lang.magic.MagicClass;
@@ -82,6 +83,8 @@ public class SourceGenerator {
     private String genTestsTemplateName = "gen-tests.vm";
 
     private String genFormTemplateName = "gen-form-template.vm";
+
+    private String genFormTemplateNameCn = "gen-form-template-cn.vm";
 
     private String genJavaActionTemplateName = "gen-java-action.vm";
 
@@ -557,7 +560,21 @@ public class SourceGenerator {
         context.put("fields", fields);
         context.put("idName", idName);
 
-        templateSourceGenator.genSource(context, genFormTemplateName, formFile, fileWriter);
+        String cnName = cnName(clazz);
+        if (StringUtil.isEmpty(cnName)) {
+            templateSourceGenator.genSource(context, genFormTemplateName, formFile, fileWriter);
+        } else {
+            templateSourceGenator.genSource(context, genFormTemplateNameCn, formFile, fileWriter);
+        }
+
+    }
+
+    private String cnName(Class<?> clazz) {
+        Domain domain = clazz.getAnnotation(Domain.class);
+        if (domain == null) {
+            return null;
+        }
+        return domain.cnName();
     }
 
 

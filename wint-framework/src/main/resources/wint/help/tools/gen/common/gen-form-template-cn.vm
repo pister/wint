@@ -3,17 +3,18 @@
 <forms>
 
     <!--
-        note:
-            this is file is auto gen by wint,
-            You can rename the file such as ${name}.xml and add to form.xml with node   <resource file="forms/${name}.xml" />
+        注意:
+            这个文件是由wint自动生成的，生成中文的原因是你使用了wint.help.biz.annations.Domain注解,
+            你应该把这个文件重命名名类似于${name}.xml并且添加到form.xml中：
+            <resource file="forms/${name}.xml" />
     -->
 
     <form name="$!{name}.base">
 
         #foreach($field in $fields)
 <field name="$field.name">
-            <validator type="required" message="${field.name} can not be empty!"></validator>
-            <validator type="${field.type}" message="${field.name} must be a ${field.type}">
+            <validator type="required" message="${field.name}不能为空!"></validator>
+            <validator type="${field.type}" message="${field.name}必须是${field.type}类型">
             </validator>
         </field>
         #end
@@ -26,12 +27,12 @@
 
     <form name="$!{name}.edit" extends="$!{name}.base">
         <field name="${idName}">
-            <validator type="required" message="${idName} can not be empty!"></validator>
+            <validator type="required" message="${idName}不能为空!"></validator>
         </field>
     </form>
 
     <!--
-        embed validators are:
+        内置校验器列表:
 
             <validator type="required" message="your message"></validator>
 
@@ -80,6 +81,6 @@
                 <param name="chars" value="the chars can be not contains, such as: *%&#@" />
             </validator>
 
-        Or you can define your Owner Validator extends from AbstractValidator
+        如果上述校验器不能满足你的要求，你可以从AbstractValidator继承实现自定义的校验器。
     -->
 </forms>
