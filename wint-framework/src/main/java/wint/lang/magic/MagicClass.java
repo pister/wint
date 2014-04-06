@@ -59,6 +59,21 @@ public abstract class MagicClass implements Serializable {
     }
 
     /**
+     * 获取所有可读and可写熟悉
+     * @return
+     */
+    public Map<String, Property> getReadAndWritableProperties() {
+        Map<String, Property> ret = MapUtil.newHashMap();
+        Map<String, Property> propertyMap = getProperties();
+        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
+            if (entry.getValue().isReadable() && entry.getValue().isWritable()) {
+                ret.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return ret;
+    }
+
+    /**
      * 获取所有可写熟悉
      * @return
      */
