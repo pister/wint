@@ -24,7 +24,9 @@ public class ClassUtil {
 	public static final String INNER_CLASS_SEPARATOR = String.valueOf(INNER_CLASS_SEPARATOR_CHAR);
 	
 	private static final Map<Class<?>, Class<?>> primary2wrapper = MapUtil.newHashMap();
-	
+
+	private static final Map<Class<?>, Class<?>> wrapper2primary = MapUtil.newHashMap();
+
 	private static final Set<Class<?>> simpleTypes = CollectionUtil.newHashSet();
 	
 	static {
@@ -37,6 +39,16 @@ public class ClassUtil {
 		primary2wrapper.put(Float.TYPE, Float.class);
 		primary2wrapper.put(Double.TYPE, Double.class);
 		primary2wrapper.put(Void.TYPE, Void.class);
+
+        wrapper2primary.put(Byte.class, Byte.TYPE);
+        wrapper2primary.put(Boolean.class, Boolean.TYPE);
+        wrapper2primary.put(Short.class, Short.TYPE);
+        wrapper2primary.put(Character.class, Character.TYPE);
+        wrapper2primary.put(Integer.class, Integer.TYPE);
+        wrapper2primary.put(Long.class, Long.TYPE);
+        wrapper2primary.put(Float.class, Float.TYPE);
+        wrapper2primary.put(Double.class, Double.TYPE);
+        wrapper2primary.put(Void.class, Void.TYPE);
 		
 		simpleTypes.add(Void.TYPE);
 		simpleTypes.add(Void.class);
@@ -105,6 +117,14 @@ public class ClassUtil {
 		}
 		return ret;
 	}
+
+    public static Class<?> getPrimary(Class<?> wrapperClass) {
+        Class<?> ret = wrapper2primary.get(wrapperClass);
+        if (ret == null) {
+            return wrapperClass;
+        }
+        return ret;
+    }
 
 	public static InputStream getResourceAsStream(Class<?> clazz, String name) {
 		InputStream is = clazz.getResourceAsStream(name);

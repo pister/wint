@@ -1,5 +1,6 @@
 package wint.help.tools.gen.dao;
 
+import wint.lang.magic.cglib.CglibUtil;
 import wint.lang.utils.ClassUtil;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.SystemUtil;
@@ -15,6 +16,7 @@ import java.io.Writer;
 public class DaoGenUtil {
 
     public static String getDoAlias(Class<?> clazz) {
+        clazz = CglibUtil.getJavaClass(clazz);
         String name = ClassUtil.getShortClassName(clazz);
         name = StringUtil.lowercaseFirstLetter(name);
         if (name.endsWith("DO") || name.endsWith("Do")) {
