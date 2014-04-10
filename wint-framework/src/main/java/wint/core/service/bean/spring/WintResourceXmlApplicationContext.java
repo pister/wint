@@ -106,12 +106,16 @@ public class WintResourceXmlApplicationContext extends AbstractXmlApplicationCon
 		refresh();
 	}
 
-	@Override
+    @Override
+    protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+        return super.obtainFreshBeanFactory();
+    }
+
+    @Override
 	protected Resource[] getConfigResources() {
 		wint.core.io.resource.Resource wintResource = resourceLoader.getResource(resourceName);
 		WintSpringResource wintSpringResource = new WintSpringResource(wintResource);
 		return new Resource[] { wintSpringResource };
 	}
-
 
 }
