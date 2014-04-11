@@ -18,6 +18,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
+import com.ibatis.sqlmap.engine.builder.xml.SqlMapClasspathEntityResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -214,6 +215,7 @@ public class AutoLoadSqlMapClientFactoryBean extends SqlMapClientFactoryBean imp
 				DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 				documentBuilderFactory.setNamespaceAware(true);
 				DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+                builder.setEntityResolver(new SqlMapClasspathEntityResolver());
 				Document document = builder.parse(is);
 
 				NodeList sqlmapNodes = (NodeList) sqlmapExpr.evaluate(document, XPathConstants.NODESET);
