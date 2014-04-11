@@ -38,7 +38,7 @@ public class WintResourceXmlApplicationContext extends AbstractXmlApplicationCon
 		this.resourceName = resourceName;
 		this.resourceLoader = serviceContext.getResourceLoader();
 		
-		this.profilerSupportBeans = CollectionUtil.newHashSet(Arrays.asList("AO", "Manager", "DAO", "BO", "Service"));
+		this.profilerSupportBeans = CollectionUtil.newHashSet(Arrays.asList("AO", "DAO", "BO", "Service"));
 		
 		final MagicMap properties = serviceContext.getConfiguration().getProperties();
 		final Environment environment = serviceContext.getConfiguration().getEnvironment();
