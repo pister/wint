@@ -2,6 +2,7 @@ package wint.mvc.parameters;
 
 import wint.lang.WintException;
 import wint.lang.utils.MapUtil;
+import wint.lang.utils.StringUtil;
 import wint.mvc.form.fileupload.UploadFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,7 @@ public class ServletParameters extends AbstractParameters {
         if (values == null || values.length == 0) {
             return defaultValue;
         }
-        return values[0];
+        return StringUtil.trimToEmpty(values[0]);
     }
 
     public String[] getStringArrayImpl(String name, String[] defaultArray) {

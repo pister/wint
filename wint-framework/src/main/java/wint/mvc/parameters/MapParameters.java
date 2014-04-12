@@ -1,6 +1,7 @@
 package wint.mvc.parameters;
 
 import wint.lang.utils.MapUtil;
+import wint.lang.utils.StringUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +35,7 @@ public class MapParameters extends AbstractParameters {
 		if (ret.length == 0) {
 			return defaultValue;
 		}
-		return ret[0];
+		return StringUtil.trimToEmpty(ret[0]);
 	}
 
 	public String[] getStringArrayImpl(String name, String[] defaultArray) {

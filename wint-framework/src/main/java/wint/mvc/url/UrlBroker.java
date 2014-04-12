@@ -1,7 +1,6 @@
 package wint.mvc.url;
 
 import wint.core.config.Constants;
-import wint.help.biz.query.BaseQuery;
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
 import wint.lang.convert.ConvertUtil;
 import wint.lang.exceptions.UrlException;
@@ -14,6 +13,7 @@ import wint.mvc.view.Render;
 
 /**
  * 一个urlBroker类，用于生成URL
+ *
  * @author pister 2012-3-2 07:50:40
  */
 public class UrlBroker implements Render {
@@ -42,6 +42,7 @@ public class UrlBroker implements Render {
     /**
      * 参数，用于生成queryString
      * 同parameter
+     *
      * @param name
      * @param value
      * @return
@@ -52,6 +53,7 @@ public class UrlBroker implements Render {
 
     /**
      * url上附带csrf token
+     *
      * @return
      */
     public UrlBroker withToken() {
@@ -60,6 +62,7 @@ public class UrlBroker implements Render {
 
     /**
      * 参数，用于生成queryString
+     *
      * @param name
      * @param value
      * @return
@@ -73,6 +76,7 @@ public class UrlBroker implements Render {
     /**
      * 设置arg参数
      * 同argument
+     *
      * @param index
      * @param value
      * @return
@@ -83,6 +87,7 @@ public class UrlBroker implements Render {
 
     /**
      * 设置arg参数
+     *
      * @param index
      * @param value
      * @return
@@ -113,6 +118,7 @@ public class UrlBroker implements Render {
 
     /**
      * 一次设置多个arg参数，参数索引从0开始
+     *
      * @param values
      * @return
      */
@@ -131,6 +137,7 @@ public class UrlBroker implements Render {
     /**
      * 一次设置多个arg参数，参数索引从0开始
      * 同arguments
+     *
      * @param values
      * @return
      */

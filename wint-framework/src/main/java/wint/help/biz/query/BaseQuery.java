@@ -2,7 +2,6 @@ package wint.help.biz.query;
 
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.Property;
-import wint.lang.utils.MapUtil;
 import wint.mvc.url.UrlBroker;
 
 import java.io.Serializable;
