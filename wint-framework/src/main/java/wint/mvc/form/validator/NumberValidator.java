@@ -4,9 +4,9 @@ import wint.lang.utils.StringUtil;
 
 public class NumberValidator extends AbstractValidator {
 
-	private double min = Double.MIN_VALUE;
+	private Double min;
 	
-	private double max = Double.MAX_VALUE;
+	private Double max;
 	
 	public boolean validate(String fieldValue) {
 		if (StringUtil.isEmpty(fieldValue)) {
@@ -14,20 +14,23 @@ public class NumberValidator extends AbstractValidator {
 		}
 		try {
 			double value = Double.parseDouble(fieldValue);
-			if (value >= min && value <= max) {
-				return true;
-			}
+            if (min != null && value < min) {
+                return false;
+            }
+            if (max != null && value > max) {
+                return false;
+            }
+            return true;
 		} catch(Exception e) {
 			return false;
 		}
-		return false;
 	}
 
 	public double getMin() {
 		return min;
 	}
 
-	public void setMin(double min) {
+	public void setMin(Double min) {
 		this.min = min;
 	}
 
@@ -35,7 +38,7 @@ public class NumberValidator extends AbstractValidator {
 		return max;
 	}
 
-	public void setMax(double max) {
+	public void setMax(Double max) {
 		this.max = max;
 	}
 	
