@@ -1,11 +1,10 @@
 package wint.lang.convert;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import wint.lang.convert.converts.*;
+import wint.lang.convert.converts.array.*;
 import wint.lang.exceptions.ConvertException;
 import wint.lang.utils.ClassUtil;
 
@@ -56,24 +55,23 @@ public class ConvertUtil {
 			return convert.convertTo(input, defaultValue);
 		}
 	}
-	
-	public static String toString(Object input) {
+
+    public static Object convertTo(Object input, String type) {
+        Convert<Object> convert = (Convert<Object>)types2Convert.get(type);
+        if (convert == null) {
+            return null;
+        } else {
+            return convert.convertTo(input);
+        }
+    }
+
+
+    public static String toString(Object input) {
 		if (input == null) {
 			return null;
 		}
 		return input.toString();
 	}
-	
-	/*public static String[] toStringArray(Object input) {
-		if (input == null) {
-			return null;
-		}
-		MagicObject magicObject = MagicObject.wrap(input);
-		if (magicObject.isArray()) {
-			
-		}
-	//	return input.toString();
-	}*/
 	
 	@SuppressWarnings("unchecked")
 	public static Object convertTo(Object input, Class<?> targetClass, Object defaultValue) {

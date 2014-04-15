@@ -204,6 +204,24 @@ public class XmlFormConfigLoader implements FormConfigLoader {
 			} else {
 				fieldConfig.setLabel(label);
 			}
+
+
+            String multipleValueString = XMLParseUtil.getAttribute(fieldNode, "multipleValue");
+            String multipleValueSeparator = XMLParseUtil.getAttribute(fieldNode, "multipleValueSeparator");
+            String multipleValueType = XMLParseUtil.getAttribute(fieldNode, "multipleValueType");
+
+            if (!StringUtil.isEmpty(multipleValueString)) {
+                 fieldConfig.setMultipleValue(Boolean.valueOf(multipleValueString));
+            }
+
+            if (!StringUtil.isEmpty(multipleValueSeparator)) {
+                fieldConfig.setMultipleValueSeparator(multipleValueSeparator);
+            }
+
+            if (!StringUtil.isEmpty(multipleValueType)) {
+                fieldConfig.setMultipleValueType(multipleValueType);
+            }
+
 			
 			NodeList validators = (NodeList)formFieldValidatorExpr.evaluate(fieldNode, XPathConstants.NODESET);
 			evalValidators(validators, fieldConfig);

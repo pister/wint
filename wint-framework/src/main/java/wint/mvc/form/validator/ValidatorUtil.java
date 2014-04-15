@@ -29,6 +29,7 @@ public class ValidatorUtil {
 		registerInner("phone", PhoneValidator.class);
 		registerInner("excludeChars", ExcludeCharValidator.class);
 		registerInner("boolean", BooleanValidator.class);
+		registerInner("values", ValuesValidator.class);
 	}
 	
 	private static void registerInner(String name, Class<? extends Validator> clazz) {

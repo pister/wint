@@ -7,6 +7,12 @@ public class FieldConfig {
 	private String name;
 	
 	private String label;
+
+    private boolean multipleValue = false;
+
+    private String multipleValueSeparator = ",";
+
+    private String multipleValueType = "string";
 	
 	private FormConfig formConfig;
 	
@@ -44,4 +50,27 @@ public class FieldConfig {
 		this.formConfig = formConfig;
 	}
 
+    public boolean isMultipleValue() {
+        return multipleValue;
+    }
+
+    public void setMultipleValue(boolean multipleValue) {
+        this.multipleValue = multipleValue;
+    }
+
+    public String getMultipleValueSeparator() {
+        return multipleValueSeparator;
+    }
+
+    public void setMultipleValueSeparator(String multipleValueSeparator) {
+        this.multipleValueSeparator = multipleValueSeparator;
+    }
+
+    public String getMultipleValueType() {
+        return multipleValueType;
+    }
+
+    public void setMultipleValueType(String multipleValueType) {
+        this.multipleValueType = multipleValueType;
+    }
 }

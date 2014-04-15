@@ -1,5 +1,6 @@
 package wint.mvc.form;
 
+import wint.lang.utils.StringUtil;
 import wint.mvc.form.config.FieldConfig;
 
 public class DefaultField implements Field {
@@ -63,5 +64,21 @@ public class DefaultField implements Field {
 	public void setValues(String[] values) {
 		this.values = values;
 	}
+
+    public boolean hasValue(Object value)  {
+        if (value == null) {
+            return false;
+        }
+        if (values == null || values.length == 0) {
+            return false;
+        }
+        String stringValue = value.toString();
+        for (String v : values) {
+            if (StringUtil.equals(v, stringValue)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

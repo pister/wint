@@ -1,9 +1,11 @@
 package wint.mvc.form;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import wint.core.config.Constants;
+import wint.lang.convert.ConvertUtil;
 import wint.lang.magic.MagicList;
 import wint.lang.magic.MagicObject;
 import wint.lang.magic.Property;
@@ -86,9 +88,9 @@ public class DefaultForm implements Form {
 		
 		for (Map.Entry<String, Field> entry: fields.entrySet()) {
 			String name = entry.getKey();
-			String value = entry.getValue().getValue();
-			// TODO array or list, how ?
-		//	String[] values = entry.getValue().getValues();
+            Field field = entry.getValue();
+            FieldConfig fieldConfig = field.getFieldConfig();
+
 			Property property = properties.get(name);
 			if (property == null) {
 				continue;
@@ -96,10 +98,47 @@ public class DefaultForm implements Form {
 			if (!property.isWritable()) {
 				continue;
 			}
+
+            String value = entry.getValue().getValue();
+            String[] values = entry.getValue().getValues();
+
+            if (property.getPropertyClass().isArray()) {
+                property.setValueExt(target, values);
+                continue;
+            }
+
+            if (property.getPropertyClass().isCollectionLike()) {
+                property.setValueExt(target, toTargetCollection(values, fieldConfig.getMultipleValueType()));
+                continue;
+            }
+
+            if (fieldConfig.isMultipleValue()) {
+                String stringValue = valuesToString(values, fieldConfig);
+                property.setValueExt(target, stringValue);
+                continue;
+            }
+
 			property.setValueExt(target, value);
 		}
 		return true;
 	}
+
+    protected String valuesToString(String[] values, FieldConfig fieldConfig) {
+        return MagicList.wrap(values).join(fieldConfig.getMultipleValueSeparator());
+    }
+
+    protected Collection toTargetCollection(String[] values, String multipleValueType) {
+        if (values == null) {
+            return null;
+        }
+        Collection ret = CollectionUtil.newArrayList(values.length);
+        for (String value : values) {
+            Object newValue =  ConvertUtil.convertTo(value, multipleValueType);
+            ret.add(newValue);
+        }
+        return ret;
+    }
+
 	
 	public String getName() {
 		return formConfig.getName();
