@@ -5,19 +5,25 @@ import java.util.Map;
 
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
 import wint.lang.convert.ConvertUtil;
+import wint.lang.convert.converts.array.StringArrayConvert;
 import wint.lang.magic.MagicObject;
 import wint.lang.utils.DateUtil;
 import wint.lang.utils.MapUtil;
+import wint.lang.utils.StringUtil;
 import wint.mvc.form.DefaultField;
 import wint.mvc.form.Field;
 import wint.mvc.form.Form;
+import wint.mvc.form.config.FieldConfig;
 
 /**
  * @author pister 2012-2-26 09:59:26
  */
 public class ResultRunTimeForm implements RunTimeForm {
 
-	private RunTimeForm runTimeForm;
+    private final static StringArrayConvert stringArrayConvert = new StringArrayConvert();
+
+
+    private RunTimeForm runTimeForm;
 	
 	public ResultRunTimeForm(Form form) {
 		super();
@@ -70,16 +76,33 @@ public class ResultRunTimeForm implements RunTimeForm {
 			for (Map.Entry<String, Field> entry : fields.entrySet()) {
 				String name = entry.getKey();
 				Field field = entry.getValue();
+                FieldConfig fieldConfig = field.getFieldConfig();
 				Field runtimeField = new DefaultField(field.getFieldConfig(), form);
 				
 				Object propertyValue = magicObject.getPropertyValue(name);
 				String stringValue = valueToString(propertyValue);
 				runtimeField.setValue(stringValue);
-				// TODO
-				//runtimeField.setValues(values);
+
+                String[] values = getStringValues(propertyValue, stringValue, fieldConfig);
+                runtimeField.setValues(values);
+
 				runtimeFields.put(name, runtimeField);
 			}
 		}
+
+        private String[] getStringValues(Object propertyValue, String stringValue, FieldConfig fieldConfig) {
+            if (propertyValue == null || stringValue == null) {
+                return null;
+            }
+            MagicObject magicValues = MagicObject.wrap(propertyValue);
+            if (magicValues.getMagicClass().isCollectionLike()) {
+                return (String[])stringArrayConvert.convertTo(propertyValue);
+            } else if (fieldConfig.isMultipleValue()) {
+                return stringValue.split(fieldConfig.getMultipleValueSeparator());
+            } else {
+                return new String[] {stringValue};
+            }
+        }
 
 		public Field get(String name) {
 			return runtimeFields.get(name);
