@@ -8,7 +8,7 @@ import wint.mvc.form.config.FormConfig;
  * Date: 14-4-15
  * Time: 上午9:48
  */
-public class ValuesValidator implements Validator {
+public class CountValidator implements Validator {
 
     private Integer min;
 

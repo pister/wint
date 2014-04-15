@@ -76,6 +76,11 @@
 
             <validator type="phone" message="your message"></validator>
 
+            <validator type="count" message="your message"s>
+                <param name="min" value="optional min count of selected values"></param>
+                <param name="max" value="optional max count of selected values"></param>
+        	</validator>
+
             <validator type="excludeChars" message="your message">
                 <param name="chars" value="the chars can be not contains, such as: *%&#@" />
             </validator>
