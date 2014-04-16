@@ -11,8 +11,8 @@ ${formCreateDefine}
         <div class="col-xs-4">
             <input type="text" class="form-control" id="${field.name}-id" name="$form.${field.name}.name" value="$field.fieldValue"/>
         </div>
+        $field.fieldMessage
     </div>
-    $field.fieldMessage
     #end
 
     <button type="submit" class="btn btn-primary">Create!</button>
