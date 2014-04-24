@@ -6,15 +6,17 @@ public class StringResultCode extends ResultCode {
 	
 	private String message;
 
-	@Override
-	public int getCode() {
-		return -1;
-	}
-
 	public StringResultCode(String message) {
 		super();
+        this.setCode(-1);
 		this.message = message;
 	}
+
+    public StringResultCode(int code, String message) {
+        super();
+        this.setCode(code);
+        this.message = message;
+    }
 
 	@Override
 	public String getMessage() {
