@@ -132,16 +132,11 @@ public class Dispatcher {
 			
 			flowData.commitData();
 		} catch (Throwable e) {
-			response.setStatus(StatusCodes.SC_INTERNAL_SERVER_ERROR);
-			if (serviceContext.getConfiguration().getEnvironment().isSupportDev()) {
-				if (e instanceof RuntimeException) {
-					throw (RuntimeException)e;
-				} else {
-					throw new WintException(e);
-				}
-			} else {
-				onProccessError(request, response);
-			}
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException)e;
+            } else {
+                throw new WintException(e);
+            }
 		} finally {
 			WintContext.clear();
 			Profiler.release();
