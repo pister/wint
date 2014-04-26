@@ -132,10 +132,18 @@ public class Dispatcher {
 			
 			flowData.commitData();
 		} catch (Throwable e) {
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException)e;
+            if (serviceContext.getConfiguration().getEnvironment().isSupportDev()) {
+                if (e instanceof RuntimeException) {
+                    throw (RuntimeException)e;
+                } else {
+                    throw new WintException(e);
+                }
             } else {
-                throw new WintException(e);
+                try {
+                    response.sendError(StatusCodes.SC_INTERNAL_SERVER_ERROR);
+                } catch (IOException e1) {
+                    log.error("error", e1);
+                }
             }
 		} finally {
 			WintContext.clear();
@@ -148,16 +156,6 @@ public class Dispatcher {
 			wintSessionProcessor.process(request, response, processorHandler);
 		} else {
 			executeImpl(request, response);
-		}
-	}
-	
-	protected void onProccessError(HttpServletRequest request, HttpServletResponse response) {
-		String errorFile = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.ERROR_PAGE_DEFAULT, Constants.Defaults.ERROR_PAGE_DEFAULT);
-		Resource resource = serviceContext.getResourceLoader().getResource(errorFile);
-		try {
-			IoUtil.copyAndClose(resource.getInputStream(), response.getOutputStream());
-		} catch (IOException e) {
-			log.warn("process error", e);
 		}
 	}
 	
