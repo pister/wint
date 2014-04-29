@@ -22,4 +22,7 @@ public interface Field {
 	
 	FieldConfig getFieldConfig();
 
+    boolean hasValue(Object value);
+
+    int getValuesLength();
 }

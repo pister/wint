@@ -65,6 +65,13 @@ public class DefaultField implements Field {
 		this.values = values;
 	}
 
+    public int getValuesLength() {
+        if (value == null || values == null) {
+            return 0;
+        }
+        return values.length;
+    }
+
     public boolean hasValue(Object value)  {
         if (value == null) {
             return false;
