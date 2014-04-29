@@ -53,4 +53,12 @@ public class MessageHoldField implements Field {
     public FieldConfig getFieldConfig() {
         throw new UnsupportedOperationException();
     }
+
+    public boolean hasValue(Object value) {
+        return false;
+    }
+
+    public int getValuesLength() {
+        return 0;
+    }
 }
