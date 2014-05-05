@@ -69,7 +69,13 @@ public class DefaultField implements Field {
         if (value == null || values == null) {
             return 0;
         }
-        return values.length;
+        int count = 0;
+        for (String v : values) {
+            if (!StringUtil.isEmpty(v)) {
+                 count++;
+            }
+        }
+        return count;
     }
 
     public boolean hasValue(Object value)  {
