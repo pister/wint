@@ -20,16 +20,6 @@ public class JsonViewRender extends AbstractViewRender {
 
 	private JsonRender jsonRender = new FastJsonRender();
 
-    private String contentType;
-
-    @Override
-    public void init() {
-        super.init();
-        MagicMap properties = serviceContext.getConfiguration().getProperties();
-        String charset = properties.getString(Constants.PropertyKeys.CHARSET_ENCODING, Constants.Defaults.CHARSET_ENCODING);
-        contentType = "application/json; charset=" + charset;
-    }
-
     @Override
 	public String getViewType() {
 		return ViewTypes.JSON_VIEW_TYPE;
@@ -63,7 +53,6 @@ public class JsonViewRender extends AbstractViewRender {
 	@Override
 	public void render(Context context, InnerFlowData flowData, String target, String moduleType) {
 		try {
-         //   flowData.setContentType(contentType);
             handleFormResult(context, flowData);
 			Writer out = flowData.getWriter();
 			jsonRender.render(context, out);
