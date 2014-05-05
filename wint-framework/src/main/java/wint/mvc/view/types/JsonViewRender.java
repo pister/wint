@@ -63,7 +63,7 @@ public class JsonViewRender extends AbstractViewRender {
 	@Override
 	public void render(Context context, InnerFlowData flowData, String target, String moduleType) {
 		try {
-            flowData.setContentType(contentType);
+         //   flowData.setContentType(contentType);
             handleFormResult(context, flowData);
 			Writer out = flowData.getWriter();
 			jsonRender.render(context, out);
