@@ -242,9 +242,12 @@ public class StringUtil {
 	 * @return
 	 */
 	public static List<String> splitTrim(String input, String regex) {
-		List<String> ret = new ArrayList<String>();
+        if (isEmpty(input)) {
+            return CollectionUtil.newArrayList(0);
+        }
 		String[] parts = input.split(regex);
-		for (String part : parts) {
+        List<String> ret = new ArrayList<String>(parts.length);
+        for (String part : parts) {
 			String trimmedPart = StringUtil.trimToEmpty(part);
 			if (StringUtil.isEmpty(trimmedPart)) {
 				continue;
