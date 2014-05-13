@@ -30,7 +30,7 @@ public class Binder {
                 
                 MethodPair methodPair = TypeUtil.getMethodPair(arg.getClass());
                 if (methodPair == null) {
-                    throw new WintException("未找到方法:" + arg);
+                    throw new WintException("未找到方法:" + arg.getClass());
                 }
                 Method setter = methodPair.getSetter();
                 setter.invoke(pstmt, i++, arg);
