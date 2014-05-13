@@ -2,6 +2,8 @@ package wint.help.sql;
 
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
+import java.sql.Types;
+import java.util.Date;
 
 import wint.help.sql.TypeUtil.MethodPair;
 import wint.lang.WintException;
@@ -24,10 +26,14 @@ public class Binder {
         for (Object arg : args) {
             try {
                 if (arg == null) {
-                    pstmt.setString(i++, null);
+                    pstmt.setNull(i++, Types.VARCHAR);
                     continue;
                 } 
-                
+
+                if (arg.getClass().equals(Date.class)) {
+                    Date d = (Date)arg;
+                    arg = new java.sql.Date(d.getTime());
+                }
                 MethodPair methodPair = TypeUtil.getMethodPair(arg.getClass());
                 if (methodPair == null) {
                     throw new WintException("未找到方法:" + arg.getClass());
