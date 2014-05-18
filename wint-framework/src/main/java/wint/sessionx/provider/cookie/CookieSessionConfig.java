@@ -31,6 +31,8 @@ public class CookieSessionConfig {
 
     private String prefixName;
 
+    private int cookieDataIndex;
+
     private String domain;
 
     private int expire;
@@ -51,6 +53,7 @@ public class CookieSessionConfig {
         cookieDataMaxSize = properties.getInt(CookieContants.PropertyKeys.DATA_MAX_SIZE, CookieContants.DefaultValues.DATA_MAX_SIZE);
         expire = properties.getInt(CookieContants.PropertyKeys.EXPIRE, CookieContants.DefaultValues.EXPIRE);
         prefixName = properties.getString(CookieContants.PropertyKeys.COOKIE_DATA_PREFIX, CookieContants.DefaultValues.COOKIE_DATA_PREFIX);
+        cookieDataIndex = properties.getInt(CookieContants.PropertyKeys.COOKIE_DATA_INDEX, CookieContants.DefaultValues.COOKIE_DATA_INDEX);
         domain = properties.getString(CookieContants.PropertyKeys.DOMAIN, CookieContants.DefaultValues.DOMAIN);
         path = properties.getString(CookieContants.PropertyKeys.PATH, CookieContants.DefaultValues.PATH);
 
@@ -124,5 +127,9 @@ public class CookieSessionConfig {
 
     public String getPath() {
         return path;
+    }
+
+    public int getCookieDataIndex() {
+        return cookieDataIndex;
     }
 }

@@ -65,7 +65,7 @@ public class CookieSessionStore extends AbstractSessionStore {
     }
 
     public void commit(FilterContext filterContext) {
-        WintCookie cookie = cookieCodec.buildCookie(0, this);
+        WintCookie cookie = cookieCodec.buildCookie(this);
         if (cookie == null) {
             return;
         }

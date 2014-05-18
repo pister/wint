@@ -17,6 +17,7 @@ public interface CookieContants {
         String DATA_SEPARATE = "wint.session.cookie.data.separate";
         String DATA_MAX_SIZE = "wint.session.cookie.data.maxsize";
         String COOKIE_DATA_PREFIX = "wint.session.cookie.data.prefix";
+        String COOKIE_DATA_INDEX = "wint.session.cookie.data.index";
         String DOMAIN = "wint.session.cookie.domain";
         String PATH = "wint.session.cookie.path";
         String EXPIRE = Constants.PropertyKeys.WINT_SESSION_EXPIRE;
@@ -28,6 +29,7 @@ public interface CookieContants {
         String ENCRYPT_KEY = "TestWintKey";
         String DATA_SEPARATE = ";";
         int DATA_MAX_SIZE = 1024 * 3;
+        int COOKIE_DATA_INDEX = 0;
         String COOKIE_DATA_PREFIX = "w_data_";
         String DOMAIN = "";
         String PATH = "/";

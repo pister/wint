@@ -86,7 +86,7 @@ public class CookieCodec {
     }
 
 
-    public WintCookie buildCookie(int index, CookieSessionStore cookieSessionStore) {
+    public WintCookie buildCookie(CookieSessionStore cookieSessionStore) {
         Map<String, SessionData> needOutputData = MapUtil.newHashMap(cookieSessionStore.getOrgData());
         needOutputData.putAll(cookieSessionStore.getUpdatedData());
 
@@ -117,7 +117,7 @@ public class CookieCodec {
             throw new WintException("too long session data size!");
         }
 
-        WintCookie ret = new WintCookie(config.getPrefixName() + index, encodeCookieValue);
+        WintCookie ret = new WintCookie(config.getPrefixName() + config.getCookieDataIndex(), encodeCookieValue);
 
         String domain = config.getDomain();
         if (!StringUtil.isEmpty(domain)) {

@@ -16,6 +16,7 @@ import wint.core.service.bean.BeanFactory;
 import wint.core.service.bean.BeanFactoryService;
 import wint.core.service.env.Environment;
 import wint.core.service.initial.ConfigurationAwire;
+import wint.core.service.initial.ServiceContextAwire;
 import wint.core.service.thread.LocalThreadService;
 import wint.lang.exceptions.FlowDataException;
 import wint.lang.magic.MagicClass;
@@ -122,6 +123,10 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 		MagicObject magicObject = magicClass.newInstance();
 		BeanFactory beanFactory = beanFactoryService.getBeanFactory();
 		beanFactory.injectProperties(magicObject.getObject());
+        Object targetObject = magicObject.getObject();
+        if (targetObject instanceof ServiceContextAwire) {
+            ((ServiceContextAwire)targetObject).setServiceContext(serviceContext);
+        }
 		return magicObject;
 	}
 
