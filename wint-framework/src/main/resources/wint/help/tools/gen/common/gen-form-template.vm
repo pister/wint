@@ -31,6 +31,12 @@
     </form>
 
     <!--
+        multiple value support attribute:
+
+        multipleValue="true"
+        multipleValueSeparator=","
+        multipleValueType="string"
+
         embed validators are:
 
             <validator type="required" message="your message"></validator>
