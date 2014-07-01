@@ -90,6 +90,8 @@ public interface Constants {
 
         String WINT_FORCE_MOCK = "wint.mock.force";
 
+        String WINT_JSON_ROOT = "wint.json.root.name";
+
 
     }
 	
@@ -190,6 +192,8 @@ public interface Constants {
         String MOCK_DATA_PREFIX = "wint_mock";
 
         String WINT_FORCE_MOCK = "_force_mock";
+
+        String WINT_JSON_ROOT = "%json_root%";
 
     }
 	

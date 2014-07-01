@@ -18,7 +18,14 @@ import wint.mvc.view.types.json.JsonRender;
 
 public class JsonViewRender extends AbstractViewRender {
 
-	private JsonRender jsonRender = new FastJsonRender();
+	private JsonRender jsonRender;
+
+    @Override
+    public void init() {
+        super.init();
+        String jsonRoot = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_JSON_ROOT, Constants.Defaults.WINT_JSON_ROOT);
+        jsonRender = new FastJsonRender(jsonRoot);
+    }
 
     @Override
 	public String getViewType() {
