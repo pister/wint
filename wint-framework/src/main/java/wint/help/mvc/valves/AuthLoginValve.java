@@ -82,6 +82,8 @@ public class AuthLoginValve extends AbstractValve {
             }
         }
 		String target = flowData.getTarget();
+        log.warn("target:" + target);
+
 		target = TargetUtil.normalizeTarget(target);
 		if (StringUtil.equals(target, loginTarget) || StringUtil.equals(target, doLoginTarget)) {
 			return true;
