@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import wint.core.config.Configuration;
 import wint.core.config.Constants;
 import wint.core.config.Constants.PropertyKeys;
-import wint.core.io.resource.Resource;
 import wint.core.service.ServiceContext;
 import wint.core.service.env.Environment;
 import wint.core.service.supports.ServiceContextSupport;
@@ -22,7 +21,6 @@ import wint.lang.magic.MagicMap;
 import wint.lang.magic.config.MagicConfig;
 import wint.lang.magic.config.MagicType;
 import wint.lang.misc.profiler.Profiler;
-import wint.lang.utils.IoUtil;
 import wint.mvc.flow.FlowDataService;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.flow.StatusCodes;
@@ -54,7 +52,9 @@ public class Dispatcher {
 	private WintSessionProcessor.ProcessorHandler processorHandler;
 	
 	private String charset;
-	
+
+    private String requestContextPath;
+
 	private boolean wintSessionUse;
 
     /**
@@ -66,6 +66,7 @@ public class Dispatcher {
 		String objectMagicType = configuration.getProperties().getString(Constants.PropertyKeys.OBJECT_MAGIC_TYPE, Constants.Defaults.OBJECT_MAGIC_TYPE);
 		
 		charset = configuration.getProperties().getString(PropertyKeys.CHARSET_ENCODING, Constants.Defaults.CHARSET_ENCODING);
+        requestContextPath = configuration.getProperties().getString(PropertyKeys.WINT_REQUEST_CONTEXT_PATH, Constants.Defaults.WINT_REQUEST_CONTEXT_PATH);
 
         MagicType magicType = MagicType.fromName(objectMagicType);
 		MagicConfig.getMagicConfig().setMagicType(magicType);
@@ -118,7 +119,8 @@ public class Dispatcher {
 		try {
 			request.setCharacterEncoding(charset);		
 			
-			String path = ServletUtil.getServletPath(request);
+			String path = ServletUtil.getServletPathWithRequestContext(request, requestContextPath);
+
 			Profiler.enter("process action: " + path);
 			Pipeline pipeline = pipelineService.getPipeline(getPipelineName(request));
 			InnerFlowData flowData = flowDataService.createFlowData(request, response);

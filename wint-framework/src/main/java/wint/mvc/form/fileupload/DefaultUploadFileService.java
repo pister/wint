@@ -21,12 +21,16 @@ public class DefaultUploadFileService extends AbstractService implements UploadF
 	private String charset;
 	
 	private long uploadFileMaxSize = 0;
-	
+
+    private String requestContextPath;
+
 	@Override
 	public void init() {
 		super.init();
 		MagicMap properties = this.getServiceContext().getConfiguration().getProperties();
-		if (StringUtil.isEmpty(charset)) {
+        requestContextPath = properties.getString(Constants.PropertyKeys.WINT_REQUEST_CONTEXT_PATH, Constants.Defaults.WINT_REQUEST_CONTEXT_PATH);
+
+        if (StringUtil.isEmpty(charset)) {
 			charset = properties.getString(Constants.PropertyKeys.CHARSET_ENCODING, Constants.Defaults.CHARSET_ENCODING);
 		}
 		if (uploadFileMaxSize == 0) {
@@ -61,7 +65,7 @@ public class DefaultUploadFileService extends AbstractService implements UploadF
 		UploadFileInfo uploadFileInfo = uploadFileFactory.getUploadFiles(request, null);
 		Parameters parameters = uploadFileInfo.getParameters();
 		Map<String, UploadFile> uploadFiles = uploadFileInfo.getUploadFiles();
-		return new UploadFileFlowData(request, httpServletResponse, serviceContext, uploadFiles, parameters);
+		return new UploadFileFlowData(request, httpServletResponse, serviceContext, requestContextPath, uploadFiles, parameters);
 	}
 
 	public void setCharset(String charset) {

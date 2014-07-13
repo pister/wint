@@ -82,14 +82,14 @@ public class ServletFlowData implements InnerFlowData {
 
     private Module module;
 
-    public ServletFlowData(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, ServiceContext serviceContext) {
+    public ServletFlowData(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, ServiceContext serviceContext, String requestContextPath) {
         super();
         this.httpServletRequest = httpServletRequest;
         this.httpServletResponse = httpServletResponse;
         this.serviceContext = serviceContext;
 
         servletParameters = new ServletParameters(httpServletRequest);
-        target = ServletUtil.getServletPath(httpServletRequest);
+        target = ServletUtil.getServletPathWithRequestContext(httpServletRequest, requestContextPath);
         locale = httpServletRequest.getLocale();
 
         viewType = ViewTypes.TEMPLATE_VIEW_TYPE;

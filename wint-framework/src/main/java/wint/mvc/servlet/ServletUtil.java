@@ -8,6 +8,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import wint.core.config.Configuration;
 import wint.lang.magic.MagicMap;
 import wint.lang.utils.StringUtil;
 
@@ -16,7 +17,16 @@ import wint.lang.utils.StringUtil;
  */
 public class ServletUtil {
 
-	public static String getServletPath(HttpServletRequest request) {
+    public static String getServletPathWithRequestContext(HttpServletRequest request, String requestContextPath) {
+        String path = getServletPath(request);
+        if (path.startsWith(requestContextPath)) {
+            path = path.substring(requestContextPath.length());
+        }
+        return path;
+    }
+
+
+    public static String getServletPath(HttpServletRequest request) {
 		final String pathInfo = request.getPathInfo();
 		if (!StringUtil.isEmpty(pathInfo)) {
 			return pathInfo;

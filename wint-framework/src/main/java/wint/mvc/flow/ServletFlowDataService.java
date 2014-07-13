@@ -3,6 +3,7 @@ package wint.mvc.flow;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import wint.core.config.Constants;
 import wint.core.service.AbstractService;
 import wint.core.service.ServiceContext;
 import wint.mvc.form.fileupload.UploadFileService;
@@ -14,13 +15,17 @@ import wint.mvc.form.fileupload.UploadFileService;
 public class ServletFlowDataService extends AbstractService implements FlowDataService {
 
 	private UploadFileService uploadFileService;
-	
+
+    private String requestContextPath;
+
 	@Override
 	public void init() {
 		super.init();
 		uploadFileService = serviceContext.getService(UploadFileService.class);
-		
-		if (uploadFileService == null) {
+        requestContextPath = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_REQUEST_CONTEXT_PATH, Constants.Defaults.WINT_REQUEST_CONTEXT_PATH);
+
+
+        if (uploadFileService == null) {
 			uploadFileService = new UploadFileService() {
 				
 				public InnerFlowData getUploadFileFlowData(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
@@ -53,7 +58,7 @@ public class ServletFlowDataService extends AbstractService implements FlowDataS
 		if (uploadFileService.isUploadFile(httpServletRequest)) {
 			return uploadFileService.getUploadFileFlowData(httpServletRequest, httpServletResponse);
 		} else {
-			return new ServletFlowData(httpServletRequest, httpServletResponse, serviceContext);
+			return new ServletFlowData(httpServletRequest, httpServletResponse, serviceContext, requestContextPath);
 		}
 	}
 

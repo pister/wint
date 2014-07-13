@@ -92,6 +92,8 @@ public interface Constants {
 
         String WINT_JSON_ROOT = "wint.json.root.name";
 
+        String WINT_REQUEST_CONTEXT_PATH = "wint.request.context.path";
+
 
     }
 	
@@ -194,6 +196,9 @@ public interface Constants {
         String WINT_FORCE_MOCK = "_force_mock";
 
         String WINT_JSON_ROOT = "%json_root%";
+
+        String WINT_REQUEST_CONTEXT_PATH = "";
+
 
     }
 	

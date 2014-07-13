@@ -15,8 +15,8 @@ public class UploadFileFlowData extends ServletFlowData {
 	
 	private Parameters uploadFileParameters;
 
-	public UploadFileFlowData(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, ServiceContext serviceContext, Map<String, UploadFile> uploadFiles, Parameters uploadFileParameters) {
-		super(httpServletRequest, httpServletResponse, serviceContext);
+	public UploadFileFlowData(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, ServiceContext serviceContext, String requestContextPath, Map<String, UploadFile> uploadFiles, Parameters uploadFileParameters) {
+		super(httpServletRequest, httpServletResponse, serviceContext, requestContextPath);
 		this.uploadFiles = uploadFiles;
 		this.uploadFileParameters = uploadFileParameters;
 	}
