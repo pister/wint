@@ -9,4 +9,5 @@ public interface BeanFactoryService extends Service {
 	
 	BeanFactory getBeanFactory();
 
+    Object getApplicationContext();
 }

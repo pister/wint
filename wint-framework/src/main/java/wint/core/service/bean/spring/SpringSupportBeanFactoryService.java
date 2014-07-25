@@ -26,6 +26,8 @@ public class SpringSupportBeanFactoryService extends AbstractService implements 
 	
 	private ResourceLoader resourceLoader;
 
+    private MagicObject applicationContext;
+
 	@Override
 	public void init() {
 		super.init();
@@ -49,6 +51,7 @@ public class SpringSupportBeanFactoryService extends AbstractService implements 
 			if (log.isInfoEnabled()) {
 				log.info("Spring library has been initialized.");
 			}
+            this.applicationContext = applicationContext;
 		} else {
 			beanFactory = new WintBeanFactory();
 		}
@@ -72,7 +75,11 @@ public class SpringSupportBeanFactoryService extends AbstractService implements 
 		return true;
 	}
 
-	public BeanFactory getBeanFactory() {
+    public Object getApplicationContext() {
+        return applicationContext.getObject();
+    }
+
+    public BeanFactory getBeanFactory() {
 		return beanFactory;
 	}
 

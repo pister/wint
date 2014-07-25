@@ -52,5 +52,8 @@ public class WintBeanFactoryService extends AbstractService implements BeanFacto
 			this.autoLoadPackages.add(new MagicPackage(autoLoadPackage));
 		}
 	}
-	
+
+    public Object getApplicationContext() {
+        return null;
+    }
 }
