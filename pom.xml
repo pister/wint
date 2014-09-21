@@ -8,15 +8,8 @@
 	<name>wint</name>
 	<url>http://maven.apache.org</url>
 
-
-
-	<build>
-
-	</build>
-
 	<modules>
 		<module>wint-framework</module>
 		<module>maven-wint-plugin</module>
-		<module>wint-tools</module>
   </modules>
 </project>

@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 /**
  * User: longyi
@@ -87,4 +89,10 @@ public class SimpleDataSource implements DataSource {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    // override for jdk7 compiler.
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        return null;
+    }
+
 }

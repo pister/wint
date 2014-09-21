@@ -1,5 +1,6 @@
 package wint.help.sql.connection;
 
+import java.lang.reflect.Method;
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -17,6 +18,7 @@ import java.sql.Statement;
 import java.sql.Struct;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 /**
  * 调用close无效，需要执行close动作需要调用方法closeConnection
@@ -235,5 +237,47 @@ public class NotCloseConnection implements Connection {
 	public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
 		return connection.createStruct(typeName, attributes);
 	}
+
+    public int getNetworkTimeout() throws SQLException {
+        try {
+            Method method = Connection.class.getMethod("getNetworkTimeout");
+            return (Integer) method.invoke(connection);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+        try {
+            Method method = Connection.class.getMethod("setNetworkTimeout", Executor.class, int.class);
+            method.invoke(connection, executor, milliseconds);
+        } catch (Exception e) {
+        }
+    }
+
+    public void abort(Executor executor) throws SQLException {
+        try {
+            Method method = Connection.class.getMethod("abort", Executor.class);
+            method.invoke(connection, executor);
+        } catch (Exception e) {
+        }
+    }
+
+    public String getSchema() throws SQLException {
+        try {
+            Method method = Connection.class.getMethod("getSchema");
+            return (String)method.invoke(connection);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void setSchema(String schema) throws SQLException {
+        try {
+            Method method = Connection.class.getMethod("setSchema", String.class);
+            method.invoke(connection, schema);
+        } catch (Exception e) {
+        }
+    }
 
 }

@@ -8,6 +8,6 @@ import wint.core.service.aop.ProxyInterceptorUtil.Invoker;
  */
 public interface Interceptor {
 
-	Object invoke(Object target, Invoker invoker, Object[] argments) throws Throwable;
+	Object invoke(Object target, Invoker invoker, Object[] arguments) throws Throwable;
 
 }
