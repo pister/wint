@@ -65,7 +65,7 @@ public class NullMagicClass extends MagicClass {
 	}
 
 	@Override
-	public boolean isAssignableFrom(Class<?> cls) {
+	public boolean isAssignableTo(Class<?> cls) {
 		return false;
 	}
 

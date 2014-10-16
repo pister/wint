@@ -26,7 +26,7 @@ public class WintHttpSession implements HttpSession {
 	public void commit(FilterContext filterContext) {
 		sessionStore.commit(filterContext);
 	}
-	
+
 	public long getCreationTime() {
         Long value = sessionStore.getLong(SpecSessionKeys.CREATE_TIME);
         if (value == null) {

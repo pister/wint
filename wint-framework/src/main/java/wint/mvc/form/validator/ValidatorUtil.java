@@ -43,7 +43,7 @@ public class ValidatorUtil {
 			return validatorClass.newInstance();
 		}
 		MagicClass clazz = MagicClass.forName(typeName);
-		if (!clazz.isAssignableFrom(Validator.class)) {
+		if (!clazz.isAssignableTo(Validator.class)) {
 			throw new TypeNotMatchException(clazz.getTargetClass() + " is not a Validator type.");
 		}
 		return clazz.newInstance();

@@ -187,7 +187,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
  			return false;
  		}
  		for (MagicClass parameterType : parameterTypes) {
- 			if (parameterType.isAssignableFrom(FlowData.class)) {
+ 			if (parameterType.isAssignableTo(FlowData.class)) {
  				return true;
  			}
  		}

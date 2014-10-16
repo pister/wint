@@ -1,8 +1,9 @@
 package wint.sessionx;
 
+import wint.core.config.Constants;
 import wint.lang.magic.MagicMap;
 import wint.sessionx.provider.SessionProvider;
-import wint.sessionx.provider.cookie.CookieSessionProvider;
+import wint.sessionx.provider.SessionProviderFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,11 +15,13 @@ public class WintSessionProcessor {
 
     private SessionContainer sessionContainer;
 
-    public void init(MagicMap initParamters, ServletContext servletContext) {
+    public void init(MagicMap initParameters, ServletContext servletContext) {
         sessionContainer = new SessionContainer();
-        SessionProvider sessionProvider = new CookieSessionProvider();
-        sessionProvider.init(initParamters, servletContext);
-        sessionContainer.init(sessionProvider, initParamters, servletContext);
+        String sessionType = initParameters.getString(Constants.PropertyKeys.WINT_SESSION_TYPE, Constants.Defaults.WINT_SESSION_TYPE);
+        servletContext.log("Wint sessionType: " + sessionType);
+        SessionProvider sessionProvider = SessionProviderFactory.getSessionProvider(sessionType);
+        sessionProvider.init(initParameters, servletContext);
+        sessionContainer.init(sessionProvider, initParameters, servletContext);
         servletContext.log("Wint SessionX has been initialized.");
     }
 

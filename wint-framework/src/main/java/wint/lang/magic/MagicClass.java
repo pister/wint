@@ -198,7 +198,7 @@ public abstract class MagicClass implements Serializable {
      * @param cls
      * @return
      */
-	public boolean isAssignableFrom(Class<?> cls) {
+	public boolean isAssignableTo(Class<?> cls) {
 		return cls.isAssignableFrom(targetClass);
 	}
 

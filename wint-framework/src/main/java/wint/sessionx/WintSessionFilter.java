@@ -1,8 +1,10 @@
 package wint.sessionx;
 
+import wint.core.config.Constants;
 import wint.lang.magic.MagicMap;
 import wint.mvc.servlet.ServletUtil;
 import wint.sessionx.provider.SessionProvider;
+import wint.sessionx.provider.SessionProviderFactory;
 import wint.sessionx.provider.cookie.CookieSessionProvider;
 
 import javax.servlet.Filter;
@@ -26,8 +28,10 @@ public class WintSessionFilter implements Filter {
 
     public void init(FilterConfig filterConfig) throws ServletException {
         sessionContainer = new SessionContainer();
-        SessionProvider sessionProvider = new CookieSessionProvider();
         MagicMap properties = ServletUtil.getInitParameters(filterConfig);
+        String sessionType = properties.getString(Constants.PropertyKeys.WINT_SESSION_TYPE, Constants.Defaults.WINT_SESSION_TYPE);
+        filterConfig.getServletContext().log("Wint sessionType: " + sessionType);
+        SessionProvider sessionProvider = SessionProviderFactory.getSessionProvider(sessionType);
         sessionProvider.init(properties, filterConfig.getServletContext());
         sessionContainer.init(sessionProvider, properties, filterConfig.getServletContext());
     }

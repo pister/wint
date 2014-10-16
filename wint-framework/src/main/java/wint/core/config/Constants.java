@@ -1,5 +1,7 @@
 package wint.core.config;
 
+import wint.sessionx.constants.DefaultSupportTypes;
+
 public interface Constants {
 	
 	interface PropertyKeys {
@@ -79,6 +81,8 @@ public interface Constants {
         String FILE_FOR_DIR_TARGET = "wint.file.for.dir.target";
 
         String WINT_SESSION_EXPIRE = "wint.session.expire";
+
+        String WINT_SESSION_TYPE = "wint.session.type";
 
         String TEMPLATE_MODIFICATION_CHECK_INTERVAL = "wint.templates.modification.check.interval";
 
@@ -199,6 +203,7 @@ public interface Constants {
 
         String WINT_REQUEST_CONTEXT_PATH = "";
 
+        String WINT_SESSION_TYPE = DefaultSupportTypes.COOKIE;
 
     }
 	

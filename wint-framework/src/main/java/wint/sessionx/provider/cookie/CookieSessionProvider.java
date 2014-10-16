@@ -24,8 +24,8 @@ public class CookieSessionProvider implements SessionProvider {
 
     private CookieCodec cookieCodec;
 
-    public void init(MagicMap initParamters, ServletContext servletContext) {
-        config = new CookieSessionConfig(initParamters);
+    public void init(MagicMap initParameters, ServletContext servletContext) {
+        config = new CookieSessionConfig(initParameters);
         serializeService = new StringSerializeService();
         cookieCodec = new CookieCodec(config, serializeService);
         cookieRequestParser = new CookieRequestParser(config, serializeService, cookieCodec);

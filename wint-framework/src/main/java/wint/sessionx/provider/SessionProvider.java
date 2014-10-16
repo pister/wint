@@ -11,7 +11,7 @@ import javax.servlet.ServletContext;
  */
 public interface SessionProvider {
 
-    void init(MagicMap initParamters, ServletContext servletContext);
+    void init(MagicMap initParameters, ServletContext servletContext);
 
     RequestParser getRequestParser();
 
