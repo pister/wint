@@ -8,7 +8,7 @@ package wint.sessionx.provider.sessionid;
 public abstract class SessionIdGenerators {
 
     public static SessionIdGenerator getSessionIdGenerator() {
-        return new UuidSessionIdGenerator();
+        return new DefaultSessionIdGenerator();
     }
 
 }
