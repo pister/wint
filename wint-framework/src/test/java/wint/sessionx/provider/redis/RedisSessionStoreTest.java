@@ -1,11 +1,10 @@
 package wint.sessionx.provider.redis;
 
-import junit.framework.TestCase;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import wint.lang.magic.MagicMap;
 import wint.sessionx.provider.sessionid.SessionIdGenerator;
-import wint.sessionx.provider.sessionid.UuidSessionIdGenerator;
+import wint.sessionx.provider.sessionid.SessionIdGenerators;
 import wint.sessionx.serialize.JsonStringSerializeService;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.store.SessionData;
@@ -25,7 +24,7 @@ public class RedisSessionStoreTest {
     public void testForBench() {
         JedisPool jedisPool = new JedisPool(initPoolConfig(), "127.0.0.1", 6379);
         RedisSessionConfig config = initRedisSessionConfig();
-        SessionIdGenerator sessionIdGenerator = new UuidSessionIdGenerator();
+        SessionIdGenerator sessionIdGenerator = SessionIdGenerators.getSessionIdGenerator();
         String sessionId = "test-session-id-123";
 
         int benchTimes = 100000;
@@ -45,7 +44,7 @@ public class RedisSessionStoreTest {
 
                 long end = System.currentTimeMillis();
                 long ts = end - start;
-                long operCount =  ct * 8;
+                long operCount = ct * 8;
                 long qps = operCount * 1000 / ts;
                 System.out.println(qps);
             }

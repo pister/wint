@@ -4,7 +4,7 @@ import redis.clients.jedis.JedisPool;
 import wint.lang.utils.StringUtil;
 import wint.sessionx.provider.SessionStoreCreator;
 import wint.sessionx.provider.sessionid.SessionIdGenerator;
-import wint.sessionx.provider.sessionid.UuidSessionIdGenerator;
+import wint.sessionx.provider.sessionid.SessionIdGenerators;
 import wint.sessionx.serialize.JsonStringSerializeService;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.store.SessionStore;
@@ -16,7 +16,7 @@ import wint.sessionx.store.SessionStore;
  */
 public class RedisSessionStoreCreator implements SessionStoreCreator {
 
-    private SessionIdGenerator sessionIdGenerator = new UuidSessionIdGenerator();
+    private SessionIdGenerator sessionIdGenerator = SessionIdGenerators.getSessionIdGenerator();
     private SerializeService serializeService = new JsonStringSerializeService();
     private JedisPool jedisPool;
     private RedisSessionConfig config;
