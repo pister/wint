@@ -1,6 +1,9 @@
 package wint.sessionx.store;
 
 import wint.lang.magic.MagicMap;
+import wint.sessionx.constants.SpecSessionKeys;
+import wint.sessionx.provider.BaseConfig;
+import wint.sessionx.provider.sessionid.SessionIdGenerator;
 
 import java.util.Map;
 import java.util.Set;
@@ -64,5 +67,22 @@ public abstract class AbstractSessionStore implements SessionStore {
         for (Map.Entry<String, Object> entry : initProperties.entrySet()) {
             setData(entry.getKey(), entry.getValue());
         }
+    }
+
+    protected abstract BaseConfig getConfig();
+
+    protected abstract SessionIdGenerator getSessionIdGenerator();
+
+    public void reset() {
+        clearAll();
+        MagicMap magicMap = MagicMap.newMagicMap();
+
+        String newSessionId = getSessionIdGenerator().generateSessionId();
+        magicMap.put(SpecSessionKeys.SESSION_ID, newSessionId);
+        magicMap.put(SpecSessionKeys.MAX_INACTIVE_INTERVAL, getConfig().getExpire());
+        magicMap.put(SpecSessionKeys.CREATE_TIME, System.currentTimeMillis());
+        magicMap.put(SpecSessionKeys.LAST_ACCESSED_TIME, System.currentTimeMillis());
+
+        init(magicMap);
     }
 }

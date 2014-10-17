@@ -36,7 +36,7 @@ public class WintHttpSession implements HttpSession {
 	}
 
 	public String getId() {
-		return sessionStore.getString(SpecSessionKeys.SESSION_ID);
+		return sessionStore.getSessionId();
 	}
 
 	public long getLastAccessedTime() {

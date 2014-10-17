@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Date: 14-2-26
  * Time: 下午1:33
  */
-public class SessionData implements Serializable{
+public class SessionData implements Serializable {
 
     private static final long serialVersionUID = 6823163590591332462L;
 

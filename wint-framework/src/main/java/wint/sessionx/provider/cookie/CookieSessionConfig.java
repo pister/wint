@@ -7,6 +7,7 @@ import wint.lang.magic.MagicMap;
 import wint.lang.utils.FileUtil;
 import wint.lang.utils.StreamUtil;
 import wint.lang.utils.StringUtil;
+import wint.sessionx.provider.BaseConfig;
 import wint.sessionx.util.WebResourceUtil;
 
 import java.io.File;
@@ -17,7 +18,7 @@ import java.io.InputStream;
 /**
  * Created by pister on 14-2-26.
  */
-public class CookieSessionConfig {
+public class CookieSessionConfig extends BaseConfig {
 
     private static final Logger log = LoggerFactory.getLogger(CookieSessionConfig.class);
 
@@ -33,13 +34,8 @@ public class CookieSessionConfig {
 
     private int cookieDataIndex;
 
-    private String domain;
-
-    private int expire;
-
-    private String path;
-
     public CookieSessionConfig(MagicMap properties) {
+        super(properties);
         encrypt = properties.getBoolean(CookieContants.PropertyKeys.ENCRYPT, CookieContants.DefaultValues.ENCRYPT);
         encryptKey = properties.getString(CookieContants.PropertyKeys.ENCRYPT_KEY, CookieContants.DefaultValues.ENCRYPT_KEY);
 
@@ -51,12 +47,8 @@ public class CookieSessionConfig {
 
         dataSeparate = properties.getString(CookieContants.PropertyKeys.DATA_SEPARATE, CookieContants.DefaultValues.DATA_SEPARATE);
         cookieDataMaxSize = properties.getInt(CookieContants.PropertyKeys.DATA_MAX_SIZE, CookieContants.DefaultValues.DATA_MAX_SIZE);
-        expire = properties.getInt(CookieContants.PropertyKeys.EXPIRE, CookieContants.DefaultValues.EXPIRE);
         prefixName = properties.getString(CookieContants.PropertyKeys.COOKIE_DATA_PREFIX, CookieContants.DefaultValues.COOKIE_DATA_PREFIX);
         cookieDataIndex = properties.getInt(CookieContants.PropertyKeys.COOKIE_DATA_INDEX, CookieContants.DefaultValues.COOKIE_DATA_INDEX);
-        domain = properties.getString(CookieContants.PropertyKeys.DOMAIN, CookieContants.DefaultValues.DOMAIN);
-        path = properties.getString(CookieContants.PropertyKeys.PATH, CookieContants.DefaultValues.PATH);
-
     }
 
 
@@ -115,18 +107,6 @@ public class CookieSessionConfig {
 
     public String getPrefixName() {
         return prefixName;
-    }
-
-    public String getDomain() {
-        return domain;
-    }
-
-    public int getExpire() {
-        return expire;
-    }
-
-    public String getPath() {
-        return path;
     }
 
     public int getCookieDataIndex() {

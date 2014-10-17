@@ -10,9 +10,9 @@ import wint.sessionx.constants.DefaultSupportTypes;
  */
 public class SessionProviderFactoryTest extends TestCase {
 
-    public void testAx() {
-        SessionProvider s = SessionProviderFactory.getSessionProvider(DefaultSupportTypes.COOKIE);
-        System.out.println(s);
+    public void testGetProvider() {
+        SessionProvider sessionProvider = SessionProviderFactory.getSessionProvider(DefaultSupportTypes.COOKIE);
+        TestCase.assertNotNull(sessionProvider);
     }
 
 }

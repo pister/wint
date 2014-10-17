@@ -12,6 +12,8 @@ import java.util.Set;
  */
 public interface SessionStore {
 
+    String getSessionId();
+
     SessionData get(String name);
 
     void set(String name, SessionData sessionData);
@@ -39,4 +41,6 @@ public interface SessionStore {
     void init(MagicMap initProperties);
 
     boolean isNew();
+
+    void reset();
 }

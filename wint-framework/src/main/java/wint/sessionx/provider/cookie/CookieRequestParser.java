@@ -4,6 +4,8 @@ import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 import wint.sessionx.provider.RequestParser;
+import wint.sessionx.provider.sessionid.SessionIdGenerator;
+import wint.sessionx.provider.sessionid.UuidSessionIdGenerator;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.store.SessionData;
 
@@ -18,13 +20,12 @@ public class CookieRequestParser implements RequestParser {
 
     private CookieSessionConfig config;
 
-    private SerializeService serializeService;
-
     private CookieCodec cookieCodec;
 
-    public CookieRequestParser(CookieSessionConfig config, SerializeService serializeService, CookieCodec cookieCodec) {
+    private SessionIdGenerator sessionIdGenerator = new UuidSessionIdGenerator();
+
+    public CookieRequestParser(CookieSessionConfig config, CookieCodec cookieCodec) {
         this.config = config;
-        this.serializeService = serializeService;
         this.cookieCodec = cookieCodec;
     }
 
@@ -49,7 +50,7 @@ public class CookieRequestParser implements RequestParser {
 
 
     public Object parseRequest(Cookie[] inputCookies) {
-        CookieSessionStore cookieSessionStore = new CookieSessionStore(cookieCodec);
+        CookieSessionStore cookieSessionStore = new CookieSessionStore(cookieCodec, config, sessionIdGenerator);
         Map<String, SessionData> data = MapUtil.newHashMap();
 
         List<Cookie> cookies = filterDataCookies(inputCookies);
