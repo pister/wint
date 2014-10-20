@@ -201,7 +201,7 @@ public class EnumsUtil {
         return filterEnums(enums, enumFilter);
     }
 
-    public static Enum[] enumsIncludeValues(String enumClass, String valueName, Object... values) {
+    public static Enum[] enumsIncludeValues(String enumClass, Object... values) {
         return enumsIncludes(enumClass, "value", values);
     }
 
