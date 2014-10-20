@@ -33,8 +33,8 @@ public class RedisSessionProvider implements SessionProvider {
 
     protected JedisPool initJedisPool(RedisSessionConfig redisSessionConfig) {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxTotal(100);
-        jedisPoolConfig.setMaxIdle(50);
+        jedisPoolConfig.setMaxTotal(80);
+        jedisPoolConfig.setMaxIdle(5);
         jedisPoolConfig.setMaxWaitMillis(1000);
         jedisPoolConfig.setTestOnBorrow(true);
         jedisPoolConfig.setTestOnReturn(true);

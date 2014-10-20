@@ -48,12 +48,19 @@ public class RedisSessionStore extends AbstractSessionStore {
         }
     }
 
+    protected String getRedisKey() {
+        if (StringUtil.isEmpty(config.getRedisKeyPrefix())) {
+            return sessionId;
+        }
+        return config.getRedisKeyPrefix() + sessionId;
+    }
+
     @Override
     public SessionData get(final String name) {
         return exec(new Command<SessionData>() {
             @Override
             public SessionData doInExec(Jedis jedis) {
-                String data = jedis.hget(sessionId, name);
+                String data = jedis.hget(getRedisKey(), name);
                 return (SessionData) serializeService.unserialize(data);
             }
         });
@@ -65,7 +72,7 @@ public class RedisSessionStore extends AbstractSessionStore {
             @Override
             public Object doInExec(Jedis jedis) {
                 String data = (String) serializeService.serialize(sessionData);
-                jedis.hset(sessionId, name, data);
+                jedis.hset(getRedisKey(), name, data);
                 return null;
             }
         });
@@ -76,7 +83,7 @@ public class RedisSessionStore extends AbstractSessionStore {
         exec(new Command<Object>() {
             @Override
             public Object doInExec(Jedis jedis) {
-                jedis.hdel(sessionId, name);
+                jedis.hdel(getRedisKey(), name);
                 return null;
             }
         });
@@ -87,7 +94,7 @@ public class RedisSessionStore extends AbstractSessionStore {
         exec(new Command<Object>() {
             @Override
             public Object doInExec(Jedis jedis) {
-                jedis.del(sessionId);
+                jedis.del(getRedisKey());
                 return null;
             }
         });
@@ -98,8 +105,9 @@ public class RedisSessionStore extends AbstractSessionStore {
         exec(new Command<Object>() {
             @Override
             public Object doInExec(Jedis jedis) {
-                if (jedis.exists(sessionId)) {
-                    jedis.expire(sessionId, config.getExpire());
+                String key = getRedisKey();
+                if (jedis.exists(key)) {
+                    jedis.expire(key, config.getExpire());
                 }
                 return null;
             }
@@ -110,7 +118,8 @@ public class RedisSessionStore extends AbstractSessionStore {
             cookie.setDomain(domain);
         }
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(config.getExpire());
+        // 设置为非持久化cookie
+      //  cookie.setMaxAge(config.getExpire());
         cookie.setPath(config.getPath());
         WintSessionHttpServletResponse response = (WintSessionHttpServletResponse) filterContext.getAttribute(AttrKeys.NEW_RESPONSE);
         response.addWintCookie(cookie);
@@ -121,7 +130,7 @@ public class RedisSessionStore extends AbstractSessionStore {
         return exec(new Command<Set<String>>() {
             @Override
             public Set<String> doInExec(Jedis jedis) {
-                return jedis.hkeys(sessionId);
+                return jedis.hkeys(getRedisKey());
             }
         });
     }
@@ -137,7 +146,7 @@ public class RedisSessionStore extends AbstractSessionStore {
     }
 
     protected SessionIdGenerator getSessionIdGenerator() {
-       return sessionIdGenerator;
+        return sessionIdGenerator;
     }
 
     protected static interface Command<T> {

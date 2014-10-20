@@ -16,11 +16,14 @@ public class RedisSessionConfig extends BaseConfig {
 
     private String sessionIdName;
 
+    private String redisKeyPrefix;
+
     public RedisSessionConfig(MagicMap properties) {
         super(properties);
         redisDb = properties.getInt(RedisConstants.PropertyKeys.REDIS_DB, RedisConstants.DefaultValues.REDIS_DB);
         sessionIdName = properties.getString(RedisConstants.PropertyKeys.SESSION_ID_NAME, RedisConstants.DefaultValues.SESSION_ID_NAME);
         redisServerAddress = properties.getString(RedisConstants.PropertyKeys.REDIS_SERVER_ADDRESS, RedisConstants.DefaultValues.REDIS_SERVER_ADDRESS);
+        redisKeyPrefix = properties.getString(RedisConstants.PropertyKeys.REDIS_KEY_PREFIX, RedisConstants.DefaultValues.REDIS_KEY_PREFIX);
     }
 
     public int getRedisDb() {
@@ -33,5 +36,9 @@ public class RedisSessionConfig extends BaseConfig {
 
     public String getRedisServerAddress() {
         return redisServerAddress;
+    }
+
+    public String getRedisKeyPrefix() {
+        return redisKeyPrefix;
     }
 }

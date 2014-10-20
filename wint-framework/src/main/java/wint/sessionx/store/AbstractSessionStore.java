@@ -31,6 +31,15 @@ public abstract class AbstractSessionStore implements SessionStore {
         return (Long) sessionData.getData();
     }
 
+    @Override
+    public Boolean getBoolean(String name) {
+        SessionData sessionData = this.get(name);
+        if (sessionData == null) {
+            return null;
+        }
+        return (Boolean) sessionData.getData();
+    }
+
     public Integer getInteger(String name) {
         SessionData sessionData = this.get(name);
         if (sessionData == null) {

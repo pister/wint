@@ -28,6 +28,8 @@ public interface SessionStore {
 
     Long getLong(String name);
 
+    Boolean getBoolean(String name);
+
     Integer getInteger(String name);
 
     void setData(String name, Object data);
