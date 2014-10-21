@@ -14,6 +14,7 @@ import org.mortbay.jetty.plugin.ScanTargetPattern;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -253,7 +254,29 @@ public abstract class WintJettyRunMojoBase extends AbstractJettyRunMojo {
     }
 
 
+    private List<File> getWebInfoClasses(Object o) {
+        try {
+            Field field = o.getClass().getDeclaredField("webInfClasses");
+            field.setAccessible(true);
+            return (List<File>)field.get(o);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private void setClasspathFiles(Object o, Object value) {
+        try {
+            Field field = o.getClass().getDeclaredField("classpathFiles");
+            field.setAccessible(true);
+            field.set(o, value);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public void configureWebApplication() throws Exception
@@ -272,10 +295,15 @@ public abstract class WintJettyRunMojoBase extends AbstractJettyRunMojo {
         if (webAppConfig.getBaseResource() == null)
             webAppConfig.setBaseResource(webAppSourceDirectoryResource);
 
-        webAppConfig.setWebInfClasses (getClassesDirs());
-        webAppConfig.setWebInfLib (getDependencyFiles());
+        // fixed
+        List<File> files = getWebInfoClasses(webAppConfig);
+        files.addAll(getClassesDirs());
+       // webAppConfig.setWebInfClasses (getClassesDirs());
+        webAppConfig.setWebInfLib(getDependencyFiles());
 
-        setClassPathFiles(setUpClassPath(webAppConfig.getWebInfClasses(), webAppConfig.getWebInfLib()));
+        // fixed
+       // setClassPathFiles(setUpClassPath(webAppConfig.getWebInfClasses(), webAppConfig.getWebInfLib()));
+        setClassPathFiles(setUpClassPath(files, webAppConfig.getWebInfLib()));
 
         //if we have not already set web.xml location, need to set one up
         if (webAppConfig.getDescriptor() == null)
@@ -312,9 +340,12 @@ public abstract class WintJettyRunMojoBase extends AbstractJettyRunMojo {
         }
         getLog().info( "web.xml file = "+webAppConfig.getDescriptor());
 
-        if (webAppConfig.getClassPathFiles() == null)
-            webAppConfig.setClassPathFiles(getClassPathFiles());
 
+        // fixed
+        if (webAppConfig.getClassPathFiles() == null) {
+            setClasspathFiles(webAppConfig, getClassPathFiles());
+           // webAppConfig.setClassPathFiles(getClassPathFiles());
+        }
 
         getLog().info("Webapp directory = " + getWebAppSourceDirectory().getCanonicalPath());
     }
@@ -385,7 +416,9 @@ public abstract class WintJettyRunMojoBase extends AbstractJettyRunMojo {
             scanList.add(jettyWebXmlFile);
         scanList.addAll(getExtraScanTargets());
         scanList.add(getExecutedProject().getFile());
-        scanList.addAll(getClassPathFiles());
+        if (getClassPathFiles() != null) {
+            scanList.addAll(getClassPathFiles());
+        }
         setScanList(scanList);
         ArrayList<Scanner.BulkListener> listeners = new ArrayList<Scanner.BulkListener>();
         listeners.add(new Scanner.BulkListener()

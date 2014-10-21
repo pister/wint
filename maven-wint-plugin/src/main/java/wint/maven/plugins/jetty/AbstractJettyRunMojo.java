@@ -559,7 +559,11 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
         while (itor!=null && itor.hasNext())
             scanner.addListener((Scanner.Listener)itor.next());
         getLog().info("Starting scanner at interval of " + getScanIntervalSeconds()+ " seconds.");
-        scanner.start();
+        try {
+            scanner.start();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
