@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class BaseAction {
 
-    protected void handleErrorToCommon(Result result, FlowData flowData, Context context) {
+    protected void handleError(Result result, FlowData flowData, Context context) {
         if (result.isHasFieldResultCodes()) {
             return;
         }
@@ -22,17 +22,6 @@ public class BaseAction {
         }
         context.put("resultCode", resultCode);
         flowData.setTarget("error");
-    }
-
-    protected void handleErrorAtCurrent(Result result, FlowData flowData, Context context) {
-        if (result.isHasFieldResultCodes()) {
-            return;
-        }
-        ResultCode resultCode = getResultCode(result, flowData);
-        if (resultCode == null) {
-            resultCode = CommonResultCodes.SYSTEM_ERROR;
-        }
-        context.put("resultCode", resultCode);
     }
 
     private ResultCode getResultCode(Result result, FlowData flowData) {
