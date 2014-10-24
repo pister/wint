@@ -32,6 +32,9 @@ public class RedisRequestParser implements RequestParser {
     }
 
     private Cookie getSessionIdCookie(Cookie[] cookies) {
+        if (cookies == null) {
+            return null;
+        }
         for (Cookie cookie : cookies) {
             if (StringUtil.equals(redisSessionConfig.getSessionIdName(), cookie.getName())) {
                 return cookie;
