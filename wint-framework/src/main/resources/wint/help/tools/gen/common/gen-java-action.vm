@@ -28,7 +28,7 @@ public class ${thisClassName} extends BaseAction {
         if (result.isSuccess()) {
             flowData.redirectTo("baseModule", "${baseActionTarget}/list");
         } else {
-            this.handleErrorToCommon(result, flowData, context);
+            this.handleError(result, flowData, context);
         }
     }
 
@@ -56,7 +56,7 @@ public class ${thisClassName} extends BaseAction {
             form.hold(${domainParam});
             this.result2Context(result, context);
         } else {
-            this.handleErrorToCommon(result, flowData, context);
+            this.handleError(result, flowData, context);
         }
     }
 
@@ -71,7 +71,7 @@ public class ${thisClassName} extends BaseAction {
         if (result.isSuccess()) {
             flowData.redirectTo("baseModule", "${baseActionTarget}/list");
         } else {
-            this.handleErrorToCommon(result, flowData, context);
+            this.handleError(result, flowData, context);
         }
     }
 
@@ -81,7 +81,7 @@ public class ${thisClassName} extends BaseAction {
         if (result.isSuccess()) {
             flowData.redirectTo("baseModule", "${baseActionTarget}/list");
         } else {
-            this.handleErrorToCommon(result, flowData, context);
+            this.handleError(result, flowData, context);
         }
     }
 

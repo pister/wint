@@ -57,7 +57,7 @@ public class BaseAction {
         if (result.isSuccess()) {
             this.result2Context(result, context);
         } else {
-            this.handleErrorToCommon(result, flowData, context);
+            this.handleError(result, flowData, context);
         }
     }
 
