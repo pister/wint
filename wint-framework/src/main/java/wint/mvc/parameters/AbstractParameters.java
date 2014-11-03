@@ -1,143 +1,193 @@
 package wint.mvc.parameters;
 
+import wint.lang.convert.ConvertUtil;
+import wint.lang.utils.StringUtil;
+import wint.mvc.form.fileupload.UploadFile;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import wint.lang.convert.ConvertUtil;
-import wint.lang.utils.CollectionUtil;
-import wint.lang.utils.StringUtil;
-import wint.mvc.form.fileupload.UploadFile;
-
 public abstract class AbstractParameters implements Parameters {
+    @Override
+    public Integer getIntX(String name) {
+        String stringValue = getString(name, null);
+        if (StringUtil.isEmpty(stringValue)) {
+            return null;
+        }
+        try {
+            return Integer.valueOf(stringValue);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-	public boolean getBoolean(String name) {
-		return getBoolean(name, false);
-	}
+    @Override
+    public Long getLongX(String name) {
+        String stringValue = getString(name, null);
+        if (StringUtil.isEmpty(stringValue)) {
+            return null;
+        }
+        try {
+            return Long.valueOf(stringValue);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-	public Date getDate(String name) {
-		return getDate(name, (Date)null);
-	}
+    @Override
+    public Float getFloatX(String name) {
+        String stringValue = getString(name, null);
+        if (StringUtil.isEmpty(stringValue)) {
+            return null;
+        }
+        try {
+            return Float.valueOf(stringValue);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-	public Date getDate(String name, String format) {
-		return getDate(name, format, (Date)null);
-	}
+    @Override
+    public Double getDoubleX(String name) {
+        String stringValue = getString(name, null);
+        if (StringUtil.isEmpty(stringValue)) {
+            return null;
+        }
+        try {
+            return Double.valueOf(stringValue);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-	public double getDouble(String name) {
-		return getDouble(name, 0.0);
-	}
+    public boolean getBoolean(String name) {
+        return getBoolean(name, false);
+    }
 
-	public double[] getDoubleArray(String name) {
-		return getDoubleArray(name, null);
-	}
+    public Date getDate(String name) {
+        return getDate(name, (Date) null);
+    }
 
-	public float getFloat(String name) {
-		return getFloat(name, 0.0f);
-	}
+    public Date getDate(String name, String format) {
+        return getDate(name, format, (Date) null);
+    }
 
-	public float[] getFloatArray(String name) {
-		return getFloatArray(name, null);
-	}
+    public double getDouble(String name) {
+        return getDouble(name, 0.0);
+    }
 
-	public int getInt(String name) {
-		return getInt(name, 0);
-	}
+    public double[] getDoubleArray(String name) {
+        return getDoubleArray(name, null);
+    }
 
-	public int[] getIntArray(String name) {
-		return getIntArray(name, null);
-	}
+    public float getFloat(String name) {
+        return getFloat(name, 0.0f);
+    }
 
-	public long getLong(String name) {
-		return getLong(name, 0L);
-	}
+    public float[] getFloatArray(String name) {
+        return getFloatArray(name, null);
+    }
 
-	public long[] getLongArray(String name) {
-		return getLongArray(name, null);
-	}
+    public int getInt(String name) {
+        return getInt(name, 0);
+    }
 
-	public String getString(String name) {
-		return getString(name, null);
-	}
+    public int[] getIntArray(String name) {
+        return getIntArray(name, null);
+    }
 
-	public String[] getStringArray(String name) {
-		return getStringArray(name, null);
-	}
+    public long getLong(String name) {
+        return getLong(name, 0L);
+    }
 
-	public boolean getBoolean(String name, boolean defaultValue) {
-		return ConvertUtil.toBoolean(getString(name), defaultValue);
-	}
+    public long[] getLongArray(String name) {
+        return getLongArray(name, null);
+    }
 
-	public Date getDate(String name, Date defaultDate) {
-		return ConvertUtil.toDate(getString(name), defaultDate);
-	}
+    public String getString(String name) {
+        return getString(name, null);
+    }
 
-	public Date getDate(String name, String format, Date defaultDate) {
-		return ConvertUtil.toDate(getString(name), format, defaultDate);
-	}
+    public String[] getStringArray(String name) {
+        return getStringArray(name, null);
+    }
 
-	public double getDouble(String name, double defaultValue) {
-		return ConvertUtil.toDouble(getString(name), defaultValue);
-	}
+    public boolean getBoolean(String name, boolean defaultValue) {
+        return ConvertUtil.toBoolean(getString(name), defaultValue);
+    }
 
-	public double[] getDoubleArray(String name, double[] defaultArray) {
-		String[] stringArray = getStringArray(name);
-		if (stringArray == null) {
-			return defaultArray;
-		}
-		double[] ret = new double[stringArray.length];
-		for (int i = 0, len = stringArray.length; i < len; ++i) {
-			ret[i] = ConvertUtil.toDouble(stringArray[i], 0.0);
-		}
-		return ret;
-	}
+    public Date getDate(String name, Date defaultDate) {
+        return ConvertUtil.toDate(getString(name), defaultDate);
+    }
 
-	public float getFloat(String name, float defaultValue) {
-		return ConvertUtil.toFloat(getString(name), defaultValue);
-	}
+    public Date getDate(String name, String format, Date defaultDate) {
+        return ConvertUtil.toDate(getString(name), format, defaultDate);
+    }
 
-	public float[] getFloatArray(String name, float[] defaultArray) {
-		String[] stringArray = getStringArray(name);
-		if (stringArray == null) {
-			return defaultArray;
-		}
-		float[] ret = new float[stringArray.length];
-		for (int i = 0, len = stringArray.length; i < len; ++i) {
-			ret[i] = ConvertUtil.toFloat(stringArray[i], 0.0f);
-		}
-		return ret;
-	}
+    public double getDouble(String name, double defaultValue) {
+        return ConvertUtil.toDouble(getString(name), defaultValue);
+    }
 
-	public int getInt(String name, int defaultValue) {
-		return ConvertUtil.toInt(getString(name), defaultValue);
-	}
+    public double[] getDoubleArray(String name, double[] defaultArray) {
+        String[] stringArray = getStringArray(name);
+        if (stringArray == null) {
+            return defaultArray;
+        }
+        double[] ret = new double[stringArray.length];
+        for (int i = 0, len = stringArray.length; i < len; ++i) {
+            ret[i] = ConvertUtil.toDouble(stringArray[i], 0.0);
+        }
+        return ret;
+    }
 
-	public int[] getIntArray(String name, int[] defaultArray) {
-		String[] stringArray = getStringArray(name);
-		if (stringArray == null) {
-			return defaultArray;
-		}
-		int[] ret = new int[stringArray.length];
-		for (int i = 0, len = stringArray.length; i < len; ++i) {
-			ret[i] = ConvertUtil.toInt(stringArray[i], 0);
-		}
-		return ret;
-	}
+    public float getFloat(String name, float defaultValue) {
+        return ConvertUtil.toFloat(getString(name), defaultValue);
+    }
 
-	public long getLong(String name, long defaultValue) {
-		return ConvertUtil.toLong(getString(name), defaultValue);
-	}
+    public float[] getFloatArray(String name, float[] defaultArray) {
+        String[] stringArray = getStringArray(name);
+        if (stringArray == null) {
+            return defaultArray;
+        }
+        float[] ret = new float[stringArray.length];
+        for (int i = 0, len = stringArray.length; i < len; ++i) {
+            ret[i] = ConvertUtil.toFloat(stringArray[i], 0.0f);
+        }
+        return ret;
+    }
 
-	public long[] getLongArray(String name, long[] defaultArray) {
-		String[] stringArray = getStringArray(name);
-		if (stringArray == null) {
-			return defaultArray;
-		}
-		long[] ret = new long[stringArray.length];
-		for (int i = 0, len = stringArray.length; i < len; ++i) {
-			ret[i] = ConvertUtil.toLong(stringArray[i], 0L);
-		}
-		return ret;
-	}
+    public int getInt(String name, int defaultValue) {
+        return ConvertUtil.toInt(getString(name), defaultValue);
+    }
+
+    public int[] getIntArray(String name, int[] defaultArray) {
+        String[] stringArray = getStringArray(name);
+        if (stringArray == null) {
+            return defaultArray;
+        }
+        int[] ret = new int[stringArray.length];
+        for (int i = 0, len = stringArray.length; i < len; ++i) {
+            ret[i] = ConvertUtil.toInt(stringArray[i], 0);
+        }
+        return ret;
+    }
+
+    public long getLong(String name, long defaultValue) {
+        return ConvertUtil.toLong(getString(name), defaultValue);
+    }
+
+    public long[] getLongArray(String name, long[] defaultArray) {
+        String[] stringArray = getStringArray(name);
+        if (stringArray == null) {
+            return defaultArray;
+        }
+        long[] ret = new long[stringArray.length];
+        for (int i = 0, len = stringArray.length; i < len; ++i) {
+            ret[i] = ConvertUtil.toLong(stringArray[i], 0L);
+        }
+        return ret;
+    }
 
     protected String normalizeName(String name) {
         return StringUtil.fixedCharToCamel(name, "-_");

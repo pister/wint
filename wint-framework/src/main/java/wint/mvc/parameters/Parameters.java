@@ -16,6 +16,13 @@ public interface Parameters {
 	int getInt(String name, int defaultValue);
 	
 	int getInt(String name);
+
+    /**
+     * 如果没有值，则返回null
+     * @param name
+     * @return
+     */
+    Integer getIntX(String name);
 	
 	boolean getBoolean(String name, boolean defaultValue);
 	
@@ -24,14 +31,35 @@ public interface Parameters {
 	long getLong(String name, long defaultValue);
 	
 	long getLong(String name);
+
+    /**
+     * 如果没有值，则返回null
+     * @param name
+     * @return
+     */
+    Long getLongX(String name);
 	
 	float getFloat(String name, float defaultValue);
 	
 	float getFloat(String name);
+
+    /**
+     * 如果没有值，则返回null
+     * @param name
+     * @return
+     */
+    Float getFloatX(String name);
 	
 	double getDouble(String name, double defaultValue);
 	
 	double getDouble(String name);
+
+    /**
+     * 如果没有值，则返回null
+     * @param name
+     * @return
+     */
+    Double getDoubleX(String name);
 	
 	int[] getIntArray(String name, int[] defaultArray);
 	
