@@ -130,6 +130,8 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
 		return magicObject;
 	}
 
+
+
 	protected String getMethodName(String name) {
 		return name;
 	}

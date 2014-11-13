@@ -2,7 +2,7 @@ package wint.sessionx.serialize;
 
 import wint.core.config.Constants;
 import wint.lang.WintException;
-import wint.lang.codec.Base64;
+import wint.sessionx.util.Base64;
 import wint.lang.convert.ConvertUtil;
 import wint.lang.utils.ClassUtil;
 import wint.lang.utils.MapUtil;
