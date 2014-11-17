@@ -1,7 +1,7 @@
 package wint.lang.codec;
 
 
-public class Base64 {
+public class Base64Util {
 	
 	/**
      * Chunk size per RFC 2045 section 6.8.
@@ -111,10 +111,10 @@ public class Base64 {
 
     /**
      * Tests a given byte array to see if it contains
-     * only valid characters within the Base64 alphabet.
+     * only valid characters within the Base64Util alphabet.
      *
      * @param arrayOctect byte array to test
-     * @return true if all bytes are valid characters in the Base64
+     * @return true if all bytes are valid characters in the Base64Util
      *         alphabet or if the byte array is empty; false, otherwise
      */
     public static boolean isArrayByteBase64(byte[] arrayOctect) {
@@ -140,7 +140,7 @@ public class Base64 {
      * does not chunk the output.
      *
      * @param binaryData binary data to encode
-     * @return Base64 characters
+     * @return Base64Util characters
      */
     public static byte[] encodeBase64(byte[] binaryData) {
         return encodeBase64(binaryData, false);
@@ -151,7 +151,7 @@ public class Base64 {
      * the encoded output into 76 character blocks
      *
      * @param binaryData binary data to encode
-     * @return Base64 characters chunked in 76 character blocks
+     * @return Base64Util characters chunked in 76 character blocks
      */
     public static byte[] encodeBase64Chunked(byte[] binaryData) {
         return encodeBase64(binaryData, true);
@@ -159,9 +159,9 @@ public class Base64 {
 
     /**
      * Decodes a byte[] containing containing
-     * characters in the Base64 alphabet.
+     * characters in the Base64Util alphabet.
      *
-     * @param pArray A byte array containing Base64 character data
+     * @param pArray A byte array containing Base64Util character data
      * @return a byte array containing binary data
      */
     public byte[] decode(byte[] pArray) {
@@ -175,7 +175,7 @@ public class Base64 {
      * @param binaryData Array containing binary data to encode.
      * @param isChunked if isChunked is true this encoder will chunk
      *                  the base64 output into 76 character blocks
-     * @return Base64-encoded data.
+     * @return Base64Util-encoded data.
      */
     public static byte[] encodeBase64(byte[] binaryData, boolean isChunked) {
         int lengthDataBits = binaryData.length * EIGHTBIT;
@@ -312,13 +312,13 @@ public class Base64 {
     }
 
     /**
-     * Decodes Base64 data into octects
+     * Decodes Base64Util data into octects
      *
-     * @param base64Data Byte array containing Base64 data
+     * @param base64Data Byte array containing Base64Util data
      * @return Array containing decoded data.
      */
     public static byte[] decodeBase64(byte[] base64Data) {
-        // RFC 2045 requires that we discard ALL non-Base64 characters
+        // RFC 2045 requires that we discard ALL non-Base64Util characters
         base64Data = discardNonBase64(base64Data);
 
         // handle the edge case, so we don't have to worry about it later
@@ -438,10 +438,10 @@ public class Base64 {
 
     /**
      * Encodes a byte[] containing binary data, into a byte[] containing
-     * characters in the Base64 alphabet.
+     * characters in the Base64Util alphabet.
      *
      * @param pArray a byte array containing binary data
-     * @return A byte array containing only Base64 character data
+     * @return A byte array containing only Base64Util character data
      */
     public byte[] encode(byte[] pArray) {
         return encodeBase64(pArray, false);

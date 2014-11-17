@@ -81,7 +81,7 @@ public class BlowFishUtil {
 		if (StringUtils.isNotBlank(s)) {
 			try {
 				byte[] encrypted = enCipher.doFinal(s.getBytes());
-				result = new String(BlowFishBase64.encodeBase64(encrypted));
+				result = new String(WintInnerHackBase64.encodeBase64(encrypted));
 			} catch (Exception e) {
 				resetInstance(); // 抛弃当前对象，防止enCipher出现中间状态
 				log.warn("加密失败", e);
@@ -102,7 +102,7 @@ public class BlowFishUtil {
 
 		if (StringUtils.isNotBlank(s)) {
 			try {
-				byte[] decrypted = BlowFishBase64.decodeBase64(s.getBytes());
+				byte[] decrypted = WintInnerHackBase64.decodeBase64(s.getBytes());
 				result = new String(deCipher.doFinal(decrypted));
 			} catch (Exception e) {
 				resetInstance(); // 抛弃当前对象，防止deCipher出现中间状态

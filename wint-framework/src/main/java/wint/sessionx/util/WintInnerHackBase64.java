@@ -1,7 +1,7 @@
 package wint.sessionx.util;
 
 
-class BlowFishBase64 {
+public class WintInnerHackBase64 {
 	
 	/**
      * Chunk size per RFC 2045 section 6.8.
@@ -111,10 +111,10 @@ class BlowFishBase64 {
 
     /**
      * Tests a given byte array to see if it contains
-     * only valid characters within the BlowFishBase64 alphabet.
+     * only valid characters within the WintInnerHackBase64 alphabet.
      *
      * @param arrayOctect byte array to test
-     * @return true if all bytes are valid characters in the BlowFishBase64
+     * @return true if all bytes are valid characters in the WintInnerHackBase64
      *         alphabet or if the byte array is empty; false, otherwise
      */
     public static boolean isArrayByteBase64(byte[] arrayOctect) {
@@ -140,7 +140,7 @@ class BlowFishBase64 {
      * does not chunk the output.
      *
      * @param binaryData binary data to encode
-     * @return BlowFishBase64 characters
+     * @return WintInnerHackBase64 characters
      */
     public static byte[] encodeBase64(byte[] binaryData) {
         return encodeBase64(binaryData, false);
@@ -151,7 +151,7 @@ class BlowFishBase64 {
      * the encoded output into 76 character blocks
      *
      * @param binaryData binary data to encode
-     * @return BlowFishBase64 characters chunked in 76 character blocks
+     * @return WintInnerHackBase64 characters chunked in 76 character blocks
      */
     public static byte[] encodeBase64Chunked(byte[] binaryData) {
         return encodeBase64(binaryData, true);
@@ -159,9 +159,9 @@ class BlowFishBase64 {
 
     /**
      * Decodes a byte[] containing containing
-     * characters in the BlowFishBase64 alphabet.
+     * characters in the WintInnerHackBase64 alphabet.
      *
-     * @param pArray A byte array containing BlowFishBase64 character data
+     * @param pArray A byte array containing WintInnerHackBase64 character data
      * @return a byte array containing binary data
      */
     public byte[] decode(byte[] pArray) {
@@ -175,7 +175,7 @@ class BlowFishBase64 {
      * @param binaryData Array containing binary data to encode.
      * @param isChunked if isChunked is true this encoder will chunk
      *                  the base64 output into 76 character blocks
-     * @return BlowFishBase64-encoded data.
+     * @return WintInnerHackBase64-encoded data.
      */
     public static byte[] encodeBase64(byte[] binaryData, boolean isChunked) {
         int lengthDataBits = binaryData.length * EIGHTBIT;
@@ -312,13 +312,13 @@ class BlowFishBase64 {
     }
 
     /**
-     * Decodes BlowFishBase64 data into octects
+     * Decodes WintInnerHackBase64 data into octects
      *
-     * @param base64Data Byte array containing BlowFishBase64 data
+     * @param base64Data Byte array containing WintInnerHackBase64 data
      * @return Array containing decoded data.
      */
     public static byte[] decodeBase64(byte[] base64Data) {
-        // RFC 2045 requires that we discard ALL non-BlowFishBase64 characters
+        // RFC 2045 requires that we discard ALL non-WintInnerHackBase64 characters
         base64Data = discardNonBase64(base64Data);
 
         // handle the edge case, so we don't have to worry about it later
@@ -438,10 +438,10 @@ class BlowFishBase64 {
 
     /**
      * Encodes a byte[] containing binary data, into a byte[] containing
-     * characters in the BlowFishBase64 alphabet.
+     * characters in the WintInnerHackBase64 alphabet.
      *
      * @param pArray a byte array containing binary data
-     * @return A byte array containing only BlowFishBase64 character data
+     * @return A byte array containing only WintInnerHackBase64 character data
      */
     public byte[] encode(byte[] pArray) {
         return encodeBase64(pArray, false);
