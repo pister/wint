@@ -1,6 +1,8 @@
 package wint.sessionx.servlet;
 
+import wint.sessionx.constants.AttrKeys;
 import wint.sessionx.constants.SpecSessionKeys;
+import wint.sessionx.cookie.WintCookie;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.store.SessionStore;
 
@@ -24,7 +26,12 @@ public class WintHttpSession implements HttpSession {
 	}
 
 	public void commit(FilterContext filterContext) {
-		sessionStore.commit(filterContext);
+        WintCookie wintCookie = sessionStore.commitForCookie();
+        if (wintCookie == null) {
+            return;
+        }
+        WintSessionHttpServletResponse response = (WintSessionHttpServletResponse) filterContext.getAttribute(AttrKeys.NEW_RESPONSE);
+        response.addWintCookie(wintCookie);
 	}
 
 	public long getCreationTime() {

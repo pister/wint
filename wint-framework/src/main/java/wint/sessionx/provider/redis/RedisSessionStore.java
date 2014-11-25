@@ -101,7 +101,7 @@ public class RedisSessionStore extends AbstractSessionStore {
     }
 
     @Override
-    public void commit(FilterContext filterContext) {
+    public WintCookie commitForCookie() {
         exec(new Command<Object>() {
             @Override
             public Object doInExec(Jedis jedis) {
@@ -121,8 +121,7 @@ public class RedisSessionStore extends AbstractSessionStore {
         // 设置为非持久化cookie
       //  cookie.setMaxAge(config.getExpire());
         cookie.setPath(config.getPath());
-        WintSessionHttpServletResponse response = (WintSessionHttpServletResponse) filterContext.getAttribute(AttrKeys.NEW_RESPONSE);
-        response.addWintCookie(cookie);
+        return cookie;
     }
 
     @Override

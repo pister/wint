@@ -1,6 +1,7 @@
 package wint.sessionx.store;
 
 import wint.lang.magic.MagicMap;
+import wint.sessionx.cookie.WintCookie;
 import wint.sessionx.filter.FilterContext;
 
 import java.util.Set;
@@ -22,7 +23,7 @@ public interface SessionStore {
 
     void clearAll();
 
-    void commit(FilterContext filterContext);
+    WintCookie commitForCookie();
 
     String getString(String name);
 

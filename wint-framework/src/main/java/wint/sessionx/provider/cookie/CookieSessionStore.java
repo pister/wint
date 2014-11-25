@@ -79,13 +79,8 @@ public class CookieSessionStore extends AbstractSessionStore {
         updatedData.clear();
     }
 
-    public void commit(FilterContext filterContext) {
-        WintCookie cookie = cookieCodec.buildCookie(this);
-        if (cookie == null) {
-            return;
-        }
-        WintSessionHttpServletResponse response = (WintSessionHttpServletResponse)filterContext.getAttribute(AttrKeys.NEW_RESPONSE);
-        response.addWintCookie(cookie);
+    public WintCookie commitForCookie() {
+        return cookieCodec.buildCookie(this);
     }
 
     public Map<String, SessionData> getOrgData() {
