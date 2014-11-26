@@ -4,7 +4,7 @@ import javax.servlet.http.Cookie;
 
 public class WintCookie extends Cookie {
 
-	 private boolean httpOnly;
+	private boolean httpOnly;
 	
 	public WintCookie(String name, String value) {
 		super(name, value);

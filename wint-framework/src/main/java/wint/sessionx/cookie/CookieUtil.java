@@ -42,12 +42,10 @@ public class CookieUtil {
 			cookieBuilder.append(PATH).append(KEY_VALUE_SEPARATOR).append(cookie.getPath());
 			cookieBuilder.append(COOKIE_SEPARATOR);
 		}
-        /*
 		if (cookie.getMaxAge() >= 0) {
 			cookieBuilder.append(EXPIRES).append(KEY_VALUE_SEPARATOR).append(getCookieExpires(cookie));
 			cookieBuilder.append(COOKIE_SEPARATOR);
 		}
-		  */
 		if (httpOnly) {
 			cookieBuilder.append(HTTP_ONLY);
 		}
@@ -56,7 +54,7 @@ public class CookieUtil {
 
 
 	public static String getCookieExpires(Cookie cookie) {
-		String result = null;
+		String result;
 		int maxAge = cookie.getMaxAge();
 		if (maxAge > 0) {
 			Calendar calendar = Calendar.getInstance();
