@@ -1,6 +1,7 @@
 package wint.sessionx.provider.redis;
 
 import redis.clients.jedis.JedisPool;
+import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.StringUtil;
 import wint.sessionx.provider.SessionStoreCreator;
 import wint.sessionx.provider.sessionid.SessionIdGenerator;
@@ -8,6 +9,9 @@ import wint.sessionx.provider.sessionid.SessionIdGenerators;
 import wint.sessionx.serialize.JsonStringSerializeService;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.store.SessionStore;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * User: huangsongli

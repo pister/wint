@@ -14,18 +14,26 @@ public class StringUtil {
 		}
 		return false;
 	}
+
+    public static boolean isNotEmpty(String s) {
+        return !isEmpty(s);
+    }
 	
-	public static boolean isBlank(String str) {
+	public static boolean isBlank(String s) {
         int strLen;
-        if (str == null || (strLen = str.length()) == 0) {
+        if (s == null || (strLen = s.length()) == 0) {
             return true;
         }
         for (int i = 0; i < strLen; i++) {
-            if ((Character.isWhitespace(str.charAt(i)) == false)) {
+            if ((Character.isWhitespace(s.charAt(i)) == false)) {
                 return false;
             }
         }
         return true;
+    }
+
+    public static boolean isNotBlank(String s) {
+        return !isBlank(s);
     }
 	
 	public static String trimToEmpty(String input) {

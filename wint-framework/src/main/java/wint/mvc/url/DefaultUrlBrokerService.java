@@ -1,11 +1,13 @@
 package wint.mvc.url;
 
+import java.util.Date;
 import java.util.Map;
 
 import wint.core.config.Constants;
 import wint.core.service.AbstractService;
 import wint.lang.magic.MagicMap;
 import wint.lang.magic.Transformer;
+import wint.lang.utils.DateUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.UrlUtil;
@@ -50,7 +52,11 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
 					String stringValue = (String)object;
 					stringValue = UrlUtil.encode(stringValue, charset);
 					return stringValue;
-				} else {
+				} if (object instanceof Date) {
+                    String stringValue = DateUtil.formatDateYMD(object);
+                    stringValue = UrlUtil.encode(stringValue, charset);
+                    return stringValue;
+                }else {
 					return object.toString();
 				}
 			}

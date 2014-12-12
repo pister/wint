@@ -13,6 +13,7 @@ import wint.sessionx.servlet.WintSessionHttpServletResponse;
 import wint.sessionx.store.AbstractSessionStore;
 import wint.sessionx.store.SessionData;
 
+import java.util.List;
 import java.util.Set;
 
 /**
