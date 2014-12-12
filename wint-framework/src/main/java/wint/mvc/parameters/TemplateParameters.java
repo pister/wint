@@ -21,8 +21,8 @@ public class TemplateParameters {
 		return parameters.getBoolean(name);
 	}
 
-	public Date getDate(String name, String format) {
-		return parameters.getDate(name, format);
+	public Date getDate(String name) {
+		return parameters.getDate(name);
 	}
 
 	public double getDouble(String name) {

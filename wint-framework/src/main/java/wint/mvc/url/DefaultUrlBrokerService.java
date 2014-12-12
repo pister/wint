@@ -53,7 +53,7 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
 					stringValue = UrlUtil.encode(stringValue, charset);
 					return stringValue;
 				} if (object instanceof Date) {
-                    String stringValue = DateUtil.formatDateYMD(object);
+                    String stringValue = DateUtil.formatFullDate(object);
                     stringValue = UrlUtil.encode(stringValue, charset);
                     return stringValue;
                 }else {
