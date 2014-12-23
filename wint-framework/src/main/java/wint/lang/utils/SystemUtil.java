@@ -10,8 +10,7 @@ public class SystemUtil {
     public static int getPid() {  
         RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();  
         String name = runtime.getName(); // format: "pid@hostname"  
-        System.out.println(name);
-        try {  
+        try {
             return Integer.parseInt(name.substring(0, name.indexOf('@')));  
         } catch (Exception e) {  
             return -1;  
