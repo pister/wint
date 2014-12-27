@@ -13,8 +13,15 @@
         #foreach($field in $fields)
 <field name="$field.name">
             <validator type="required" message="${field.name} can not be empty!"></validator>
+#if("${field.type}" == "string")
+            <validator type="${field.type}" message="${field.name}'s length must be between ${min} and ${max}">
+                <param name="min" value="0" />
+                <param name="max" value="100" />
+            </validator>
+#else
             <validator type="${field.type}" message="${field.name} must be a ${field.type}">
             </validator>
+#end
         </field>
         #end
 
