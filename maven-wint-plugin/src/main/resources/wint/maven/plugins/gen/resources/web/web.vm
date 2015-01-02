@@ -49,11 +49,21 @@
 		<filter-name>ProfilerFilter</filter-name>
 		<url-pattern>*.htm</url-pattern>
 	</filter-mapping>
-	
+
+    <filter-mapping>
+        <filter-name>ProfilerFilter</filter-name>
+        <url-pattern>*.json</url-pattern>
+    </filter-mapping>
+
 	<servlet-mapping>
 	  	<servlet-name>WintDispatcherServlet</servlet-name>
 	  	<url-pattern>*.htm</url-pattern>
 	 </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>WintDispatcherServlet</servlet-name>
+        <url-pattern>*.json</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>WintDispatcherServlet</servlet-name>

@@ -110,6 +110,9 @@ public class UrlBrokerUtil {
             String argumentsString = arguments.join("", argumentSeparater);
             sb.append(argumentsString);
         }
+        if (!StringUtil.isEmpty(urlBroker.getSuffix())) {
+            urlSuffix = urlBroker.getSuffix();
+        }
         if (!StringUtil.isEmpty(urlSuffix) && !StringUtil.isEmpty(target)) {
             sb.append(urlSuffix);
         }

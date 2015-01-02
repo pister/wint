@@ -303,10 +303,15 @@ public class SourceGenerator {
         Map<String, Object> context = MapUtil.newHashMap();
 
         String alias = DaoGenUtil.getDoAlias(domainClass);
+
         String formCreateDefine = "#set($form=$formFactory.getForm(\"" + alias + ".create\"))\n";
         context.put("formCreateDefine", formCreateDefine);
         context.put("alias", alias);
         context.put("doCreateAction", "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/doCreate" + "')");
+
+        String listPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/list')";
+        context.put("listPageAction", listPageAction);
+
 
         MagicClass magicClass = MagicClass.wrap(domainClass);
         Map<String, Property> propertyMap = magicClass.getProperties();
@@ -444,6 +449,8 @@ public class SourceGenerator {
 
         String listPageAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/list')";
         String doUpdateAction = "$baseModule.setTarget('" + actionContext + "/" + alias + "/doUpdate')";
+
+        context.put("listPageAction", listPageAction);
 
         MagicClass magicClass = MagicClass.wrap(domainClass);
         Map<String, Property> propertyMap = magicClass.getProperties();

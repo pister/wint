@@ -21,6 +21,7 @@ import wint.lang.magic.MagicMap;
 import wint.lang.magic.config.MagicConfig;
 import wint.lang.magic.config.MagicType;
 import wint.lang.misc.profiler.Profiler;
+import wint.lang.utils.StringUtil;
 import wint.mvc.flow.FlowDataService;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.flow.StatusCodes;
@@ -122,9 +123,9 @@ public class Dispatcher {
 			String path = ServletUtil.getServletPathWithRequestContext(request, requestContextPath);
 
 			Profiler.enter("process action: " + path);
-			Pipeline pipeline = pipelineService.getPipeline(getPipelineName(request));
 			InnerFlowData flowData = flowDataService.createFlowData(request, response);
-			
+            Pipeline pipeline = pipelineService.getPipeline(getPipelineName(request, flowData));
+
 			WintContext.setVariable(WinContextNames.FLOW_DATA, flowData);
 			WintContext.setVariable(WinContextNames.LOCALE, flowData.getLocale());
 			WintContext.setVariable(WinContextNames.REQUEST, request);
@@ -161,7 +162,11 @@ public class Dispatcher {
 		}
 	}
 	
-	protected String getPipelineName(HttpServletRequest request) {
+	protected String getPipelineName(HttpServletRequest request, InnerFlowData flowData) {
+        String suffix = flowData.getSuffix();
+        if (!StringUtil.isEmpty(suffix)) {
+             return suffix.toLowerCase();
+        }
 		return Constants.Defaults.PIPELINE_NAME;
 	}
 

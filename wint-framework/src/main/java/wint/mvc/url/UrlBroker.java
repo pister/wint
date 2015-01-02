@@ -27,6 +27,7 @@ public class UrlBroker implements Render {
     private String tokenName;
     private String pathAsTargetName;
     private boolean pathHasNumber;
+    private String suffix;
 
     public UrlBroker(UrlBrokerService urlBrokerService, String path, String target, String tokenName, String pathAsTargetName, boolean pathHasNumber) {
         super();
@@ -116,6 +117,14 @@ public class UrlBroker implements Render {
         return this;
     }
 
+    public UrlBroker suffix(String suffix) {
+        if (suffix != null && !suffix.startsWith(".")) {
+            suffix = "." + suffix;
+        }
+        this.suffix = suffix;
+        return this;
+    }
+
     /**
      * 一次设置多个arg参数，参数索引从0开始
      *
@@ -189,4 +198,7 @@ public class UrlBroker implements Render {
         return this;
     }
 
+    public String getSuffix() {
+        return suffix;
+    }
 }

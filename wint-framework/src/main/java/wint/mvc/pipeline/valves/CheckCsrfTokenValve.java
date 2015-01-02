@@ -44,16 +44,16 @@ public class CheckCsrfTokenValve extends AbstractValve {
         // 针对do-action做检查
         if (!CsrfTokenUtil.checkCsrfByParameter(innerFlowData, tokenName)) {
             if (environment.isSupportDev()) {
-                handleMessage(innerFlowData);
+                handleDevSupport(innerFlowData);
             } else {
-                handleCsrf(innerFlowData);
+                handleProduct(innerFlowData);
             }
         } else {
             pipelineContext.invokeNext(innerFlowData);
         }
     }
 
-    private void handleCsrf(InnerFlowData innerFlowData) {
+    protected void handleProduct(InnerFlowData innerFlowData) {
         if (!StringUtil.isEmpty(redirectModule) && !StringUtil.isEmpty(redirectTarget)) {
             innerFlowData.redirectTo(redirectModule, redirectTarget);
         } else {
@@ -62,7 +62,7 @@ public class CheckCsrfTokenValve extends AbstractValve {
 
     }
 
-    private void handleMessage(InnerFlowData innerFlowData) {
+    protected void handleDevSupport(InnerFlowData innerFlowData) {
         try {
             innerFlowData.setViewType(ViewTypes.NOP_VIEW_TYPE);
             Writer out = innerFlowData.getWriter();

@@ -23,6 +23,19 @@
                     <object class="wint.mvc.pipeline.valves.PerformActionValve"></object>
                 </list>
             </object>
+            <object name="json" class="wint.mvc.pipeline.Pipeline">
+                <list name="valves">
+                    <object class="wint.mvc.pipeline.valves.InitJsonValve"></object>
+                    <object class="wint.mvc.pipeline.valves.SetLoggingValve"></object>
+                    <object class="wint.mvc.pipeline.valves.AnalyzeUrlValve"></object>
+                    <object class="wint.mvc.pipeline.valves.CreateContextValve"></object>
+                    <object class="wint.mvc.pipeline.valves.LoadModuleValve">
+                        <value name="label">loadModule</value>
+                    </object>
+                    <object class="wint.mvc.pipeline.valves.JsonCheckCsrfTokenValve"></object>
+                    <object class="wint.mvc.pipeline.valves.PerformActionValve"></object>
+                </list>
+            </object>
         </object>
     </object>
 

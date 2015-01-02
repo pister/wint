@@ -52,6 +52,8 @@ public class ServletFlowData implements InnerFlowData {
 
     private String target;
 
+    private String suffix;
+
     private int statusCode = HttpServletResponse.SC_OK;
 
     private boolean redirected = false;
@@ -90,6 +92,7 @@ public class ServletFlowData implements InnerFlowData {
 
         servletParameters = new ServletParameters(httpServletRequest);
         target = ServletUtil.getServletPathWithRequestContext(httpServletRequest, requestContextPath);
+        suffix = StringUtil.getLastAfter(target, ".");
         locale = httpServletRequest.getLocale();
 
         viewType = ViewTypes.TEMPLATE_VIEW_TYPE;
@@ -357,5 +360,14 @@ public class ServletFlowData implements InnerFlowData {
             ip = httpServletRequest.getRemoteAddr();
         }
         return ip;
+    }
+
+    @Override
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 }

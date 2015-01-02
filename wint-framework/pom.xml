@@ -4,7 +4,7 @@
     <groupId>wint</groupId>
     <artifactId>wint-framework</artifactId>
     <packaging>jar</packaging>
-    <version>1.3.9.2-SNAPSHOT</version>
+    <version>1.3.9.3-SNAPSHOT</version>
     <name>wint-framework</name>
     <url>http://maven.apache.org</url>
 
@@ -194,5 +194,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://192.168.1.230:9999/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>http://192.168.1.230:9999/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
 </project>

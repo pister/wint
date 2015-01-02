@@ -1,6 +1,12 @@
 ${formCreateDefine}
 <h3>create ${alias}</h3>
 
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="$listPageAction">List</a></li>
+    <li class="active">create $alias</li>
+</ol>
+
 <form action="$doCreateAction" method="post" role="form">
     $securityUtil.tokenHtml
     #foreach($field in $fields)

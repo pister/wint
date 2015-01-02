@@ -2,6 +2,11 @@ $formEditDefine
 
 <h3>$alias edit</h3>
 
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="$listPageAction">List</a></li>
+    <li class="active">edit $alias</li>
+</ol>
 
 <form action="$doUpdateAction" method="post" role="form">
     $securityUtil.tokenHtml

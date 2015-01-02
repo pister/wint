@@ -183,4 +183,9 @@ public class WidgetInnerFlowData implements InnerFlowData {
     public String getRemoteAddr() {
         return innerFlowData.getRemoteAddr();
     }
+
+    @Override
+    public String getSuffix() {
+        return innerFlowData.getSuffix();
+    }
 }

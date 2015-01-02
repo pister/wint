@@ -41,4 +41,5 @@ public interface InnerFlowData extends FlowData {
 	Module getModule();
 
 	void setModule(Module module);
+
 }

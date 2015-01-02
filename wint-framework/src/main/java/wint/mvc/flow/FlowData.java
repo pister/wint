@@ -190,4 +190,9 @@ public interface FlowData {
      */
     String getRemoteAddr();
 
+    /**
+     * 获取url后缀
+     * @return
+     */
+    String getSuffix();
 }
