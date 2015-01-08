@@ -63,7 +63,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine implements Te
 	    	}
 	    	
 	    	if (!StringUtil.isEmpty(templatePath)) {
-	    		String baseTemplatePath = getAbsoluteTemplatePath(templatePath);
+	    		String baseTemplatePath = getAbsoluteTemplatePath();
 	    		velocityConfiguration.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, baseTemplatePath);
 	    	}
 	    	

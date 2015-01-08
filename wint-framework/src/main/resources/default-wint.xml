@@ -59,6 +59,9 @@
 	
 	<object class="wint.mvc.template.widget.DefaultWidgetContainerService">
 	</object>
+
+    <object class="wint.mvc.template.widget.outer.DefaultOuterWidgetContainerService">
+	</object>
 	
 	<object class="wint.help.autoreload.form.AutoReloadFormServiceSupport">
 	</object>

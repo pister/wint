@@ -28,6 +28,7 @@ public class DispatcherTests extends TestCase {
         initParameters.put(Constants.PropertyKeys.TEMPLATE_PATH, "test_template");
         initParameters.put(Constants.PropertyKeys.WINT_SESSION_USE, "true");
         initParameters.put(Constants.PropertyKeys.APP_ENV, "product");
+        initParameters.put(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_PATH, "/Users/huangsongli/temp/templates");
         servletConfigMock = new ServletConfigMock(initParameters, initParameters);
         dispatcherServlet.init(servletConfigMock);
     }
@@ -118,6 +119,13 @@ public class DispatcherTests extends TestCase {
     public void testUser() throws ServletException, IOException {
         MagicMap parameters = MagicMap.newMagicMap();
         HttpServletRequest request = new HttpServletRequestMock("user", parameters, servletConfigMock.getServletContext());
+        HttpServletResponse response = new HttpServletResponseMock();
+        dispatcherServlet.service(request, response);
+    }
+
+    public void testOuterWidget() throws ServletException, IOException {
+        MagicMap parameters = MagicMap.newMagicMap();
+        HttpServletRequest request = new HttpServletRequestMock("hello/outerTest", parameters, servletConfigMock.getServletContext());
         HttpServletResponse response = new HttpServletResponseMock();
         dispatcherServlet.service(request, response);
     }

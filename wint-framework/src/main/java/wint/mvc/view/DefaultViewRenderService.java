@@ -1,5 +1,6 @@
 package wint.mvc.view;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,8 @@ public class DefaultViewRenderService extends AbstractService implements ViewRen
 
     private Environment environment;
 
+    private String basePath;
+
 	@Override
 	public void init() {
 		super.init();
@@ -47,18 +50,21 @@ public class DefaultViewRenderService extends AbstractService implements ViewRen
 		if (LibUtil.isFreeMarkerExist()) {
 			MagicClass templateEngineClass = MagicClass.forName("wint.mvc.template.engine.freemark.FreeMarkerTemplateEngine");
 			TemplateEngine templateEngine = (TemplateEngine)templateEngineClass.newInstance().getObject();
-			templateEngine.init(serviceContext);
+            templateEngine.setBasePath(basePath);
+            templateEngine.init(serviceContext);
 			namedViewRenderEngines.put(templateEngine.getName(), templateEngine);
 		}
 		if (LibUtil.isVelocityExist()) {
 			MagicClass templateEngineClass = MagicClass.forName("wint.mvc.template.engine.velocity.VelocityTemplateEngine");
 			TemplateEngine templateEngine = (TemplateEngine)templateEngineClass.newInstance().getObject();
-			templateEngine.init(serviceContext);
+            templateEngine.setBasePath(basePath);
+            templateEngine.init(serviceContext);
 			namedViewRenderEngines.put(templateEngine.getName(), templateEngine);
 		}
         if (LibUtil.isHttlExist()) {
             MagicClass templateEngineClass = MagicClass.forName("wint.mvc.template.engine.httl.HttlTemplateEngine");
             TemplateEngine templateEngine = (TemplateEngine)templateEngineClass.newInstance().getObject();
+            templateEngine.setBasePath(basePath);
             templateEngine.init(serviceContext);
             namedViewRenderEngines.put(templateEngine.getName(), templateEngine);
         }
@@ -96,5 +102,7 @@ public class DefaultViewRenderService extends AbstractService implements ViewRen
 		}
 	}
 
-
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
+    }
 }

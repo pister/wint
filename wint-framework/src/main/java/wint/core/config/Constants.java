@@ -1,5 +1,6 @@
 package wint.core.config;
 
+import wint.lang.utils.SystemUtil;
 import wint.sessionx.constants.DefaultSupportTypes;
 
 public interface Constants {
@@ -43,7 +44,9 @@ public interface Constants {
 		String PAGE_CONTENT_NAME = "wint.app.template.page.content";
 		
 		String WIDGET_CONTAINER_NAME = "wint.app.template.widget.container";
-		
+
+		String WIDGET_OUTER_CONTAINER_NAME = "wint.app.template.outer.widget.container";
+
 		String ERROR_PAGE_DEFAULT = "wint.app.error.page.default";
 		
 		String CHARSET_ENCODING = "wint.app.charset.encoding";
@@ -98,6 +101,8 @@ public interface Constants {
 
         String WINT_REQUEST_CONTEXT_PATH = "wint.request.context.path";
 
+        String WINT_OUTER_TEMPLATE_PATH = "wint.outer.template.path";
+
 
     }
 	
@@ -128,6 +133,8 @@ public interface Constants {
 		String NO_FILTER_NAMES_FILE = "no-filter-names";
 		
 		String WIDGET_CONTAINER_NAME = "widget";
+
+        String WIDGET_OUTER_CONTAINER_NAME = "outerWidget";
 		
 		String PAGE_CONTENT_NAME = "page_content";
 		
@@ -204,6 +211,9 @@ public interface Constants {
         String WINT_REQUEST_CONTEXT_PATH = "";
 
         String WINT_SESSION_TYPE = DefaultSupportTypes.COOKIE;
+
+        String WINT_OUTER_TEMPLATE_PATH = SystemUtil.getUserHome() + "/templates";
+
 
     }
 	

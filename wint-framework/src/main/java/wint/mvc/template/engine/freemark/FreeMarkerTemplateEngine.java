@@ -1,5 +1,6 @@
 package wint.mvc.template.engine.freemark;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -32,7 +33,7 @@ public class FreeMarkerTemplateEngine extends AbstractTemplateEngine implements 
 	public void init(ServiceContext serviceContext) {
 		super.init(serviceContext);
 		try {
-			this.freemarkerConfiguration.setDirectoryForTemplateLoading(baseFile);
+			this.freemarkerConfiguration.setDirectoryForTemplateLoading(new File(getAbsoluteTemplatePath()));
 			freemarkerConfiguration.setOutputEncoding(encoding);
 			freemarkerConfiguration.setDefaultEncoding(encoding);
 			
@@ -92,7 +93,7 @@ public class FreeMarkerTemplateEngine extends AbstractTemplateEngine implements 
 			});
 			
 		} catch (IOException e) {
-			log.error("initialize freemark failed", e);
+			log.error("initialize freemarker failed", e);
 		}
 	}
 	

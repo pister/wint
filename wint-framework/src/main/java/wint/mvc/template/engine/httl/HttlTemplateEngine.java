@@ -53,20 +53,9 @@ public class HttlTemplateEngine extends AbstractTemplateEngine implements Templa
         }
 
         properties.setProperty("loaders", httl.spi.loaders.FileLoader.class.getName());
-        properties.setProperty("template.directory", getAbsoluteTemplatePath(templatePath));
+        properties.setProperty("template.directory", getAbsoluteTemplatePath());
 
         engine = Engine.getEngine(properties);
-
-        /*
-        import.packages+=com.your.domain
-template.directory=/WEB-INF/templates
-message.basename=/WEB-INF/messages
-input.encoding=UTF-8
-output.encoding=UTF-8
-reloadable=false
-precompiled=false
-localized=false
-         */
     }
 
     @Override
@@ -81,6 +70,11 @@ localized=false
         } catch (ParseException e) {
             throw new ViewException(e);
         }
+    }
+
+    @Override
+    public void setBasePath(String baseFile) {
+        // httl 由于是单例，不支持outerWidget
     }
 
     public String getName() {

@@ -18,6 +18,7 @@ public class DefaultViewRenderEngine extends AbstractTemplateEngine implements T
 	@Override
 	public void init(ServiceContext serviceContext) {
 		super.init(serviceContext);
+
 	}
 
 	public String getName() {
@@ -25,7 +26,7 @@ public class DefaultViewRenderEngine extends AbstractTemplateEngine implements T
 	}
 
 	protected String renderTemplate(TemplateRender templateRender, Context context) {
-		File targetFile = new File(baseFile, templateRender.getPath());
+		File targetFile = new File(getAbsoluteTemplatePath(), templateRender.getPath());
 		if (!targetFile.exists()) {
 			return StringUtil.EMPTY;
 		}

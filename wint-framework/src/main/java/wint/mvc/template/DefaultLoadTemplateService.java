@@ -71,31 +71,26 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
         if (log.isInfoEnabled()) {
             log.info("template path: " + templatePath);
         }
-        getBaseFile();
+        templateBaseFile = getBaseFile();
     }
 
-    private void getBaseFile() {
+    protected File getBaseFile() {
         Resource resource = resourceLoader.getResource(templatePath);
         if (resource == null) {
             if (log.isWarnEnabled()) {
                 log.warn("template path not exist: " + templatePath);
             }
-            return;
+            return null;
         }
 
-        templateBaseFile = resource.getFile();
-        if (templateBaseFile == null) {
-            if (log.isWarnEnabled()) {
-                log.warn("template path not exist: " + templatePath);
-            }
-            return;
+        File templateBaseFile = resource.getFile();
+        if (templateBaseFile != null && templateBaseFile.exists()) {
+            return templateBaseFile;
         }
-        if (!templateBaseFile.exists()) {
-            if (log.isWarnEnabled()) {
-                log.warn("template path not exist: " + templatePath);
-            }
-            return;
+        if (log.isWarnEnabled()) {
+            log.warn("template path not exist: " + templatePath);
         }
+        return null;
     }
 
     public TemplateRender loadTemplate(String templateName, Context context, String type) {

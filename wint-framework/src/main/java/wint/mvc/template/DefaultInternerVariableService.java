@@ -14,6 +14,8 @@ import wint.mvc.parameters.TemplateArguments;
 import wint.mvc.parameters.TemplateParameters;
 import wint.mvc.template.widget.WidgetContainer;
 import wint.mvc.template.widget.WidgetContainerService;
+import wint.mvc.template.widget.outer.OuterWidgetContainer;
+import wint.mvc.template.widget.outer.OuterWidgetContainerService;
 import wint.mvc.tools.service.PullToolsService;
 import wint.mvc.url.UrlBrokerService;
 import wint.mvc.url.UrlModule;
@@ -21,6 +23,8 @@ import wint.mvc.url.UrlModule;
 public class DefaultInternerVariableService extends AbstractService implements InternerVariableService {
 
 	private WidgetContainerService widgetContainerService;
+
+    private OuterWidgetContainerService outerWidgetContainerService;
 	
 	private UrlBrokerService urlBrokerService;
 	
@@ -29,7 +33,9 @@ public class DefaultInternerVariableService extends AbstractService implements I
     private ResourceBundleService resourceBundleService;
 	
 	private String containerName;
-	
+
+	private String outerContainerName;
+
 	private String paramsName;
 	
 	private String argsName;
@@ -45,8 +51,10 @@ public class DefaultInternerVariableService extends AbstractService implements I
 		urlBrokerService = serviceContext.getService(UrlBrokerService.class);
 		pullService = serviceContext.getService(PullToolsService.class);
 		resourceBundleService = serviceContext.getService(ResourceBundleService.class);
+        outerWidgetContainerService = serviceContext.getService(OuterWidgetContainerService.class);
 
         containerName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WIDGET_CONTAINER_NAME, Constants.Defaults.WIDGET_CONTAINER_NAME);
+        outerContainerName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WIDGET_OUTER_CONTAINER_NAME, Constants.Defaults.WIDGET_OUTER_CONTAINER_NAME);
 		paramsName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.PARAMS_NAME, Constants.Defaults.PARAMS_NAME);
 		argsName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.ARGS_NAME, Constants.Defaults.ARGS_NAME);
 		targetName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.TARGET_NAME, Constants.Defaults.TARGET_NAME);
@@ -61,7 +69,12 @@ public class DefaultInternerVariableService extends AbstractService implements I
 			WidgetContainer widgetContainer = widgetContainerService.createContainer(flowData, innerContext, indexedParamters);
 			ret.put(containerName, widgetContainer);
 		}
-		
+
+        if (outerWidgetContainerService != null) {
+            OuterWidgetContainer outerWidgetContainer = outerWidgetContainerService.createContainer(flowData, innerContext);
+            ret.put(outerContainerName, outerWidgetContainer);
+        }
+
 		TemplateParameters params = new TemplateParameters(flowData.getParameters());
 		TemplateArguments arguments = new TemplateArguments(flowData.getArguments());
 		

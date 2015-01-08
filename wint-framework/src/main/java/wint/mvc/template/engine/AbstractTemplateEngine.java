@@ -34,8 +34,6 @@ public abstract class AbstractTemplateEngine implements TemplateEngine {
 	
 	protected String templatePath;
 	
-	protected File baseFile;
-	
 	protected ServiceContext serviceContext;
 	
 	protected String noFilterNamesFile;
@@ -43,6 +41,8 @@ public abstract class AbstractTemplateEngine implements TemplateEngine {
 	protected Set<String> noFilterNames = CollectionUtil.newHashSet();
 
 	protected Set<String> innerVariables = CollectionUtil.newHashSet();
+
+    private String baseFile;
 	
 	public void init(ServiceContext serviceContext) {
 		this.serviceContext = serviceContext;
@@ -53,8 +53,6 @@ public abstract class AbstractTemplateEngine implements TemplateEngine {
 		if (StringUtil.isEmpty(encoding)) {
 			encoding = configuration.getProperties().getString(Constants.PropertyKeys.CHARSET_ENCODING, Constants.Defaults.CHARSET_ENCODING);
 		}
-		baseFile = new File(this.getAbsoluteTemplatePath(templatePath));
-		
 		String pageName = configuration.getProperties().getString(Constants.PropertyKeys.PAGE_CONTENT_NAME, Constants.Defaults.PAGE_CONTENT_NAME);
 		String widgetName = configuration.getProperties().getString(Constants.PropertyKeys.WIDGET_CONTAINER_NAME, Constants.Defaults.WIDGET_CONTAINER_NAME);
 		innerVariables.add(pageName);
@@ -91,7 +89,10 @@ public abstract class AbstractTemplateEngine implements TemplateEngine {
 		}
 	}
 	
-	protected String getAbsoluteTemplatePath(String templatePath) {
+	protected String getAbsoluteTemplatePath() {
+        if (baseFile != null) {
+            return baseFile;
+        }
 		ResourceLoader resourceLoader = serviceContext.getResourceLoader();
 		Resource resource = resourceLoader.getResource(templatePath);
 		if (resource == null || !resource.exist()) {
@@ -139,5 +140,8 @@ public abstract class AbstractTemplateEngine implements TemplateEngine {
 		this.noFilterNamesFile = noFilterNamesFile;
 	}
 
-	
+    @Override
+    public void setBasePath(String baseFile) {
+        this.baseFile = baseFile;
+    }
 }

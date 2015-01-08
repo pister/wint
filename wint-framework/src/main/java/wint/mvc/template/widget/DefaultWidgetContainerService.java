@@ -21,8 +21,8 @@ public class DefaultWidgetContainerService extends AbstractService implements Wi
 	@Override
 	public void init() {
 		super.init();
-		loadTemplateService = (LoadTemplateService)this.serviceContext.getService(LoadTemplateService.class);
-		loadModuleService = (LoadModuleService)this.serviceContext.getService(LoadModuleService.class);
+		loadTemplateService = this.serviceContext.getService(LoadTemplateService.class);
+		loadModuleService = this.serviceContext.getService(LoadModuleService.class);
 		widgetName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.APP_PACKAGE_WEB_WIDGET, Constants.Defaults.APP_PACKAGE_WEB_WIDGET);
 		widgetTemplateName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.TEMPLATE_WIDGET, Constants.Defaults.TEMPLATE_WIDGET);
 	}
