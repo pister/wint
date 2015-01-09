@@ -29,7 +29,9 @@ import wint.mvc.template.TemplateRender;
 public abstract class AbstractTemplateEngine implements TemplateEngine {
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
-	
+
+    protected String macroLibrary;
+
 	protected String encoding;
 	
 	protected String templatePath;
@@ -143,5 +145,14 @@ public abstract class AbstractTemplateEngine implements TemplateEngine {
     @Override
     public void setBasePath(String baseFile) {
         this.baseFile = baseFile;
+    }
+
+    public String getMacroLibrary() {
+        return macroLibrary;
+    }
+
+    @Override
+    public void setMacroLibrary(String macroLibrary) {
+        this.macroLibrary = macroLibrary;
     }
 }

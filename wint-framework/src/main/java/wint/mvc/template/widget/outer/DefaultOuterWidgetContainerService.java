@@ -24,10 +24,11 @@ public class DefaultOuterWidgetContainerService extends AbstractService implemen
         super.init();
         basePath = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_PATH, Constants.Defaults.WINT_OUTER_TEMPLATE_PATH);
         if (new File(basePath).exists()) {
-            log.warn("outer template directory:" + basePath + " exist.");
+            log.warn("outer template directory:" + basePath + " is exists.");
             DefaultViewRenderService defaultViewRenderService = new DefaultViewRenderService();
             defaultViewRenderService.setServiceContext(serviceContext);
             defaultViewRenderService.setBasePath(basePath);
+            defaultViewRenderService.setUseMacroLibrary(false);
             defaultViewRenderService.init();
             viewRenderService = defaultViewRenderService;
         }

@@ -34,13 +34,15 @@ import wint.mvc.template.engine.TemplateEngine;
 public class VelocityTemplateEngine extends AbstractTemplateEngine implements TemplateEngine {
 
 	private static final String MODIFICATION_CHECK_INTERVAL = "file.resource.loader.modificationCheckInterval";
-	
-	private String macroLibrary = "macro.vm";
-	
-	private VelocityEngine velocityEngine;
+
+    public VelocityTemplateEngine() {
+        macroLibrary = "macro.vm";
+    }
+
+    private VelocityEngine velocityEngine;
 	
 	private EventCartridge eventCartridge = new EventCartridge();
-	
+
 	public void init(ServiceContext serviceContext) {
 		super.init(serviceContext);
 		try {
@@ -61,9 +63,9 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine implements Te
                 int checkInterval = wintConfiguration.getProperties().getInt(Constants.PropertyKeys.TEMPLATE_MODIFICATION_CHECK_INTERVAL, Constants.Defaults.TEMPLATE_MODIFICATION_CHECK_INTERVAL);
 	    		velocityConfiguration.setProperty(MODIFICATION_CHECK_INTERVAL,  String.valueOf(checkInterval));
 	    	}
-	    	
-	    	if (!StringUtil.isEmpty(templatePath)) {
-	    		String baseTemplatePath = getAbsoluteTemplatePath();
+
+            String baseTemplatePath = getAbsoluteTemplatePath();
+            if (!StringUtil.isEmpty(templatePath)) {
 	    		velocityConfiguration.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, baseTemplatePath);
 	    	}
 	    	
@@ -154,14 +156,6 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine implements Te
 	
 	public String getName() {
 		return "vm";
-	}
-
-	public String getMacroLibrary() {
-		return macroLibrary;
-	}
-
-	public void setMacroLibrary(String macroLibrary) {
-		this.macroLibrary = macroLibrary;
 	}
 
 }

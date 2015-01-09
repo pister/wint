@@ -16,4 +16,5 @@ public interface TemplateEngine {
 
     void setBasePath(String baseFile);
 
+    void setMacroLibrary(String macroLibrary);
 }
