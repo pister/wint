@@ -13,6 +13,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.servlet.ServletRequestContext;
 
 import wint.lang.exceptions.FlowDataException;
+import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.LibUtil;
 import wint.lang.utils.MapUtil;
 import wint.mvc.form.fileupload.FileUploadParameters;
@@ -59,24 +60,33 @@ public class JakartaUploadFileFactory implements UploadFileFactory {
 			fileUpload.setProgressListener(new JakartaUploadFileProgressListener(uploadFileProgressListener));
 		}
 		Map<String, UploadFile> uploadFiles = MapUtil.newHashMap();
-		Map<String, String[]> parametersMap = MapUtil.newHashMap();
 		try {
-			List<FileItem> fileItems = (List<FileItem>)fileUpload.parseRequest(new ServletRequestContext(request));
+			List<FileItem> fileItems = fileUpload.parseRequest(new ServletRequestContext(request));
+            Map<String, List<String>> parameters = MapUtil.newHashMap();
 			for (FileItem fileItem : fileItems) {
 				if (fileItem.isFormField()) {
 					String name = fileItem.getFieldName();
 					String value = fileItem.getString(charset);
-					parametersMap.put(name, new String[] { value });
+
+                    List<String> values = parameters.get(name);
+                    if (values == null) {
+                        values = CollectionUtil.newArrayList(1);
+                        parameters.put(name, values);
+                    }
+                    values.add(value);
 				} else {
 					String name = fileItem.getFieldName();
 					uploadFiles.put(name, new JakartaUploadFile(fileItem));
 				}
 			}
+            Map<String, String[]> parametersMap = MapUtil.newHashMap();
+            for (Map.Entry<String, List<String>> entry : parameters.entrySet()) {
+                parametersMap.put(entry.getKey(), entry.getValue().toArray(new String[0]));
+            }
+            return new UploadFileInfo(uploadFiles, new FileUploadParameters(parametersMap, uploadFiles));
 		} catch (Exception e) {
 			throw new FlowDataException(e);
 		}
-        FileUploadParameters parameters = new FileUploadParameters(parametersMap, uploadFiles);
-		return new UploadFileInfo(uploadFiles, parameters);
 	}
 
 	public boolean isUploadFile(HttpServletRequest request) {
