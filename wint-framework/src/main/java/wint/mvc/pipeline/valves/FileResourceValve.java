@@ -3,13 +3,17 @@ package wint.mvc.pipeline.valves;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.ref.SoftReference;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import wint.core.io.resource.Resource;
 import wint.core.io.resource.loader.ResourceLoader;
+import wint.core.service.env.Environment;
 import wint.lang.exceptions.WebResourceException;
+import wint.lang.io.FastByteArrayInputStream;
+import wint.lang.io.FastByteArrayOutputStream;
 import wint.lang.io.FileNameUtil;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.IoUtil;
@@ -25,7 +29,11 @@ public class FileResourceValve extends AbstractValve {
 	private static final String[] TYPES = {"css", "js", "jpg", "jpeg", "png", "gif", "bmp", "swf", "mp3", "ico", "icon"};
 	
 	private static final Map<String, String> mappedContentTypes = MapUtil.newHashMap();
-	
+
+    private Map<String, SoftReference<byte[]>> resourceCache;
+
+    private Environment environment;
+
 	static {
 		mappedContentTypes.put("txt", "text/plain");
 		mappedContentTypes.put("css", "text/css");
@@ -56,6 +64,10 @@ public class FileResourceValve extends AbstractValve {
 			}
 			resourceTypes.addAll(mappedContentTypes.keySet());
 		}
+        environment = serviceContext.getConfiguration().getEnvironment();
+        if (environment == Environment.TEST) {
+            resourceCache = MapUtil.newConcurrentHashMap();
+        }
 	}
 
 	public void invoke(PipelineContext pipelineContext, InnerFlowData flowData) {
@@ -80,13 +92,37 @@ public class FileResourceValve extends AbstractValve {
 			flowData.setStatusCode(StatusCodes.SC_NOT_FOUND);
 			return;
 		}
-		InputStream is = targetResource.getInputStream();
+
+		InputStream is = getInputStream(targetResource);
 		flowData.setViewType(ViewTypes.NOP_VIEW_TYPE);
 		OutputStream os = flowData.getOutputStream();
 		IoUtil.copyAndClose(is, os);
 		pipelineContext.breakPipeline();
 	}
-	
+
+    protected InputStream getInputStream(Resource targetResource) throws IOException {
+        if (environment != Environment.TEST) {
+            return targetResource.getInputStream();
+        }
+        String key = targetResource.getURL().toExternalForm();
+        SoftReference<byte[]> dataRef = resourceCache.get(key);
+        if (dataRef != null) {
+            byte[] data = dataRef.get();
+            if (data != null) {
+                return new FastByteArrayInputStream(data);
+            }
+        }
+        InputStream is = targetResource.getInputStream();
+        if (is == null) {
+            return null;
+        }
+        FastByteArrayOutputStream os = new FastByteArrayOutputStream();
+        IoUtil.copyAndClose(is, os);
+        byte[] data = os.toByteArray();
+        resourceCache.put(key, new SoftReference<byte[]>(data));
+        return new FastByteArrayInputStream(data);
+    }
+
 	protected String getTargetSuffix(InnerFlowData flowData) {
 		String target = flowData.getTarget();
 		if (StringUtil.isEmpty(target)) {

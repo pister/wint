@@ -18,11 +18,11 @@ public class MapUtil {
 		return new HashMap<K, V>(m);
 	}
 	
-	public static <K, V> ConcurrentMap<K, V> newConcurrentHashMap() {
+	public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
 		return new ConcurrentHashMap<K, V>();
 	}
 	
-	public static <K, V> ConcurrentMap<K, V> newConcurrentHashMap(Map<? extends K, ? extends V> m) {
+	public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap(Map<? extends K, ? extends V> m) {
 		return new ConcurrentHashMap<K, V>(m);
 	}
 	
