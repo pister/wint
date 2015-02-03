@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import wint.core.config.Configuration;
 import wint.core.config.Constants;
 import wint.core.service.AbstractService;
+import wint.help.biz.result.ResourceBundleUtil;
 import wint.lang.magic.MagicPackage;
 import wint.lang.utils.ClassUtil;
 import wint.mvc.holder.WintContext;
@@ -28,7 +29,7 @@ public class DefaultResourceBundleService extends AbstractService implements Res
 
 	public ResourceBundle getResourceBundle(String baseName, Locale locale) {
 		if (locale == null) {
-			locale = Locale.getDefault();
+			locale = ResourceBundleUtil.DEFAULT_LOCALE;
 		}
 		MagicPackage targetName = new MagicPackage(i18nBasePackage, baseName);
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(targetName.getName(), locale, ClassUtil.getClassLoader());

@@ -3,10 +3,16 @@ package wint.help.biz.result;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wint.mvc.holder.WintContext;
 import wint.mvc.i18n.ResourceBundleService;
 
 public class ResourceBundleUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(ResourceBundleUtil.class);
+
+    public static final Locale DEFAULT_LOCALE = Locale.CHINESE;
 
 	public static String getMessage(Locale locale, ResultCode resultCode) {
 		return getProperty(locale, resultCode);
@@ -25,6 +31,7 @@ public class ResourceBundleUtil {
 			}
 			return name;
 		} catch (Exception e) {
+            log.error("get message error: locale:" + locale + " result:" + resultCode.getName(), e);
 			return resultCode.getName();
 		}
 	}
@@ -34,7 +41,7 @@ public class ResourceBundleUtil {
 	}
 
 	private static ResourceBundle getResourceBundle(Locale locale, ResultCode resultCode) {
-		locale = (locale == null ? Locale.getDefault() : locale);
+		locale = (locale == null ? DEFAULT_LOCALE : locale);
 		String baseName = resultCode.getClass().getName();
 		ResourceBundleService resourceBundleService = WintContext.getServiceContext().getService(ResourceBundleService.class);
 		return resourceBundleService.getResourceBundle(baseName, locale);
