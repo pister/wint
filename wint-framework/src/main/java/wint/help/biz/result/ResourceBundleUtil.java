@@ -31,7 +31,7 @@ public class ResourceBundleUtil {
 			}
 			return name;
 		} catch (Exception e) {
-            log.error("get message error: locale:" + locale + " result:" + resultCode.getName(), e);
+            log.debug("get message error: locale:" + locale + " result:" + resultCode.getName(), e);
 			return resultCode.getName();
 		}
 	}
