@@ -31,8 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author pister
@@ -348,18 +347,20 @@ public class ServletFlowData implements InnerFlowData {
         this.module = module;
     }
 
+    private static final Set<String> PROXY_REMOTE_NAMES = new HashSet<String>(Arrays.asList("x-forwarded-for", "proxy-client-ip", "wl-proxy-client-ip"));
+
     public String getRemoteAddr() {
-        String ip = httpServletRequest.getHeader("x-forwarded-for");
-        if (StringUtil.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = httpServletRequest.getHeader("Proxy-Client-IP");
+        Enumeration<String> names = httpServletRequest.getHeaderNames();
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
+            if (PROXY_REMOTE_NAMES.contains(name.toLowerCase())) {
+                String ip = httpServletRequest.getHeader(name);
+                if (!StringUtil.isEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
+                    return ip;
+                }
+            }
         }
-        if (StringUtil.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = httpServletRequest.getHeader("WL-Proxy-Client-IP");
-        }
-        if (StringUtil.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = httpServletRequest.getRemoteAddr();
-        }
-        return ip;
+        return httpServletRequest.getRemoteAddr();
     }
 
     @Override
