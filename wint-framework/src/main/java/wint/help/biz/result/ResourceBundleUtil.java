@@ -12,7 +12,7 @@ public class ResourceBundleUtil {
 
     private static final Logger log = LoggerFactory.getLogger(ResourceBundleUtil.class);
 
-    public static final Locale DEFAULT_LOCALE = Locale.CHINESE;
+    public static final Locale DEFAULT_LOCALE = Locale.SIMPLIFIED_CHINESE;
 
 	public static String getMessage(Locale locale, ResultCode resultCode) {
 		return getProperty(locale, resultCode);
