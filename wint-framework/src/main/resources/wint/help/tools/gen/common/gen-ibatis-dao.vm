@@ -2,10 +2,13 @@ package ${thisPackage};
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import ${daoFullClassName};
 import ${doFullClassName};
 import wint.dal.ibatis.ReadWriteSqlMapClientDaoSupport;
 import wint.help.biz.query.BaseQuery;
+import wint.lang.utils.CollectionUtil;
+import wint.lang.utils.MapUtil;
 
 /**
 * this file is auto generate.
@@ -30,8 +33,21 @@ public class ${className} extends ReadWriteSqlMapClientDaoSupport implements ${d
 
     @Override
 	public ${domainName} queryById(${idType} id) {
-		return (${domainName})this.getSqlMapClientTemplate().queryForObject("${namespace}.queryById", id);
+	    return (${domainName})this.getSqlMapClientTemplate().queryForObject("${namespace}.queryById", id);
 	}
+
+    @Override
+    public Map<${idTypeWrapper}, ${domainName}> queryByIds(List<${idTypeWrapper}> ids) {
+        if (CollectionUtil.isEmpty(ids)) {
+            return MapUtil.newHashMap();
+        }
+        List<${domainName}> resultList = (List<${domainName}>) this.getSqlMapClientTemplate().queryForList("${namespace}.queryByIds", ids);
+        Map<${idTypeWrapper}, ${domainName}> ret = MapUtil.newHashMap();
+        for (${domainName} ${paramName} : resultList) {
+            ret.put(${paramName}.getId(), ${paramName});
+        }
+        return ret;
+    }
 
     @Override
     public List<${domainName}> queryForPage(BaseQuery query) {

@@ -1,12 +1,9 @@
 package wint.lang.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import wint.lang.magic.Transformer;
+import wint.lang.utils.merger.Mapper;
 
 public class CollectionUtil {
 	
@@ -82,7 +79,15 @@ public class CollectionUtil {
 	public static <T> String join(Collection<T> c, String token) {
 		return join(c, token, null);
 	}
-	
+
+    /**
+     * 把一个list转成另外类型的list
+     * @param input
+     * @param transformer
+     * @param <S>
+     * @param <T>
+     * @return
+     */
 	public static <S, T> List<T> transformList(Collection<S> input, Transformer<S, T> transformer) {
 		List<T> ret = CollectionUtil.newArrayList();
 		if (CollectionUtil.isEmpty(input)) {
@@ -93,5 +98,30 @@ public class CollectionUtil {
 		}
 		return ret;
 	}
-	
+
+    /**
+     * 通过
+     * @param input
+     * @param mapper
+     * @param <S>
+     * @param <K>
+     * @param <D>
+     */
+    public static <S, K, D> void merge(Collection<S> input, Mapper<S, K, D> mapper) {
+        if (CollectionUtil.isEmpty(input)) {
+            return;
+        }
+        List<K> keys = CollectionUtil.newArrayList(input.size());
+        for (S s : input) {
+            K key = mapper.toKey(s);
+            keys.add(key);
+        }
+        Map<K, D> destPool = mapper.toDestPool(keys).toMap();
+        for (S s : input) {
+            K key = mapper.toKey(s);
+            D dest = destPool.get(key);
+            mapper.setDest(s, dest);
+        }
+    }
+
 }

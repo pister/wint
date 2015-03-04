@@ -1,6 +1,7 @@
 package ${thisPackage};
 
 import java.util.List;
+import java.util.Map;
 import ${doFullClassName};
 import wint.help.biz.query.BaseQuery;
 
@@ -16,6 +17,8 @@ public interface ${className} {
     int update(${domainName} ${paramName});
 
 	${domainName} queryById(${idType} id);
+
+    Map<${idTypeWrapper}, ${domainName}> queryByIds(List<${idTypeWrapper}> ids);
 
     List<${domainName}> queryForPage(BaseQuery query);
 }

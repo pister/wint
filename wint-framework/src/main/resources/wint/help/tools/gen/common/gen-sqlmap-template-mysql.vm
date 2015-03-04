@@ -30,7 +30,7 @@
 		from ${tableName} t where t.${idNameColumn} = #value# #if($logicDeleted) and t.deleted = 0 #end
 
 	</select>
-	
+
 	<update id="delete" parameterClass="${idType}">
 	#if($logicDeleted)
 		update ${tableName} t set t.deleted = 1 #if("$!{gmtModifiedName}" != "") , t.${gmtModifiedName} = now() #end where t.${idNameColumn} = #value#
@@ -57,6 +57,17 @@
         from ${tableName} t #if($logicDeleted) where t.deleted = 0 #end
 
         limit #startRow#, #pageSize#
+    </select>
+
+    <select id="queryByIds" resultMap="${mappingName}">
+        select
+        <include refid="${aliasDomainName}-full-columns" />
+        from ${tableName} t where t.${idNameColumn} in
+        <iterate prepend="(" conjunction="," close=")" >
+            #[]#
+        </iterate>
+        #if($logicDeleted) and t.deleted = 0 #end
+
     </select>
 
 </sqlMap>
