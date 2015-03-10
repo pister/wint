@@ -116,6 +116,30 @@ public class ReadWriteSqlMapClientSource implements InitializingBean {
         }
     }
 
+    public SqlMapClientTemplate getSqlMapClientImpl(SqlMapClientTarget target) {
+        if (!hasSlave) {
+            return masterSqlMapClientDaoSupport.getSqlMapClientTemplate();
+        }
+        switch (target) {
+            case MASTER:
+                if (log.isDebugEnabled()) {
+                    log.debug("use master");
+                }
+                return masterSqlMapClientDaoSupport.getSqlMapClientTemplate();
+            case SLAVE:
+                if (log.isDebugEnabled()) {
+                    log.debug("use slave");
+                }
+                int slaveIndex = slaveLoadBalancePolicy.getNext();
+                if (log.isDebugEnabled()) {
+                    log.debug("slave index: " + slaveIndex);
+                }
+                return slaveSqlMapClientDaoSupports.get(slaveIndex).getSqlMapClientTemplate();
+            default:
+                return null;
+        }
+    }
+
     public void setMasterDataSource(DataSource masterDataSource) {
         this.masterDataSource = masterDataSource;
     }
