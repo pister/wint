@@ -6,6 +6,7 @@ import java.util.*;
 import wint.lang.convert.converts.*;
 import wint.lang.convert.converts.array.*;
 import wint.lang.exceptions.CanNotFindObjectException;
+import wint.lang.magic.DefaultValues;
 import wint.lang.magic.compatible.AutoConvertManager;
 import wint.lang.utils.MapUtil;
 
@@ -58,15 +59,15 @@ public class DefaultAutoConvertManager extends AutoConvertManager {
     }
 	
 	@Override
-	public Object convert(Object input, Class<?> targetType) {
+	public Object convert(Object input, Class targetType) {
 		if (input != null && targetType.isInstance(input)) {
 			return input;
 		}
-		Convert<?> convert = converts.get(targetType);
+		Convert<Object> convert = (Convert<Object>)converts.get(targetType);
 		if (convert == null) {
 			throw new CanNotFindObjectException("can not find " + targetType + "\'s convert! input: " + input);
 		}
-		return convert.convertTo(input);
+		return convert.convertTo(input, DefaultValues.getDefaultValue(targetType));
 	}
 	
 

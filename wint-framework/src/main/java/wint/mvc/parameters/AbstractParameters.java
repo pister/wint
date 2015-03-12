@@ -1,11 +1,18 @@
 package wint.mvc.parameters;
 
 import wint.lang.convert.ConvertUtil;
+import wint.lang.magic.DefaultValues;
+import wint.lang.magic.MagicClass;
+import wint.lang.magic.MagicObject;
+import wint.lang.magic.Property;
 import wint.lang.utils.StringUtil;
+import wint.mvc.form.Field;
+import wint.mvc.form.config.FieldConfig;
 import wint.mvc.form.fileupload.UploadFile;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class AbstractParameters implements Parameters {
@@ -214,4 +221,33 @@ public abstract class AbstractParameters implements Parameters {
     public Set<String> getUploadFileNames() {
         return new HashSet<String>(0);
     }
+
+    @Override
+    public void apply(Object target) {
+        if (target == null) {
+            return;
+        }
+        MagicObject magicObject = MagicObject.wrap(target);
+        Map<String, Property> properties = magicObject.getMagicClass().getProperties();
+
+        for (Map.Entry<String, Property> entry: properties.entrySet()) {
+            if (!entry.getValue().isWritable()) {
+                 continue;
+            }
+            String name = entry.getKey();
+            Property property = entry.getValue();
+
+            if (property.getPropertyClass().isArray()) {
+                String[] values = getStringArray(name);
+                property.setValueExt(target, values);
+            } else if (property.getPropertyClass().isCollectionLike()) {
+                // TODO 由于泛型擦除，功能待实现
+            } else {
+                String value = getString(name);
+                property.setValueExt(target, value);
+            }
+
+        }
+    }
+
 }

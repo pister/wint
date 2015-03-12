@@ -8,6 +8,9 @@ public class LongConvert extends NumberConvert<Long> {
 
 	public Long convertTo(Object input, Long defaultValue) {
 		Number num = (Number)super.convertToNumber(input, defaultValue);
+        if (num == null) {
+            return defaultValue;
+        }
 		return Long.valueOf(num.longValue());
 	}
 

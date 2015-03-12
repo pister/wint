@@ -93,4 +93,5 @@ public interface Parameters {
 
     Set<String> getUploadFileNames();
 
+    void apply(Object target);
 }

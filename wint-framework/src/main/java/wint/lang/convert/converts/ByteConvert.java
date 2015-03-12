@@ -11,6 +11,9 @@ public class ByteConvert extends NumberConvert<Byte> {
 
     public Byte convertTo(Object input, Byte defaultValue) {
         Number num = (Number)super.convertToNumber(input, defaultValue);
+        if (num == null) {
+            return defaultValue;
+        }
         return Byte.valueOf(num.byteValue());
     }
 

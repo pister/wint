@@ -15,7 +15,7 @@ import wint.lang.utils.ClassUtil;
 public class ConvertUtil {
 	
 	private static Map<String, Convert<?>> types2Convert = new HashMap<String, Convert<?>>();
-	
+
 	private static final SmartDateConvert smartDateConvert = new SmartDateConvert();
 	
 	static {

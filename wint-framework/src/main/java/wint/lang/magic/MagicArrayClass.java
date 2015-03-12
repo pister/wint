@@ -11,7 +11,7 @@ public class MagicArrayClass extends MagicClass {
 
 	protected Class<?> componentType;
 	
-	protected MagicArrayClass(Class<?> targetClass) {
+	public MagicArrayClass(Class<?> targetClass) {
 		super(targetClass);
 		this.componentType = targetClass.getComponentType();
 	}

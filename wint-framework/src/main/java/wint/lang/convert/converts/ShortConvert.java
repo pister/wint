@@ -10,6 +10,9 @@ public class ShortConvert extends NumberConvert<Short> {
 	
 	public Short convertTo(Object input, Short defaultValue) {
 		Number num = (Number)super.convertToNumber(input, defaultValue);
+        if (num == null) {
+            return defaultValue;
+        }
 		return Short.valueOf(num.shortValue());
 	}
 

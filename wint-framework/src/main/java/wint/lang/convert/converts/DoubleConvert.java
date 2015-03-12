@@ -8,6 +8,9 @@ public class DoubleConvert extends NumberConvert<Double>  {
 	
 	public Double convertTo(Object input, Double defaultValue) {
 		Number num = (Number)super.convertToNumber(input, defaultValue);
+        if (num == null) {
+            return defaultValue;
+        }
 		return Double.valueOf(num.doubleValue());
 	}
 

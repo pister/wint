@@ -8,6 +8,9 @@ public class IntConvert extends NumberConvert<Integer> {
 
 	public Integer convertTo(Object input, Integer defaultValue) {
 		Number num = (Number)super.convertToNumber(input, defaultValue);
+        if (num == null) {
+            return defaultValue;
+        }
 		return Integer.valueOf(num.intValue());
 	}
 

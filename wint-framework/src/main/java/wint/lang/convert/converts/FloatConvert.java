@@ -8,6 +8,9 @@ public class FloatConvert extends NumberConvert<Float> {
 	
 	public Float convertTo(Object input, Float defaultValue) {
 		Number num = (Number)super.convertToNumber(input, defaultValue);
+        if (num == null) {
+            return defaultValue;
+        }
 		return Float.valueOf(num.floatValue());
 	}
 

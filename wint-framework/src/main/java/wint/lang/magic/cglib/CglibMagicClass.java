@@ -8,11 +8,7 @@ import net.sf.cglib.reflect.FastClass;
 import net.sf.cglib.reflect.FastConstructor;
 import wint.lang.WintException;
 import wint.lang.exceptions.CanNotFindMethodException;
-import wint.lang.magic.MagicClass;
-import wint.lang.magic.MagicMethod;
-import wint.lang.magic.MagicObject;
-import wint.lang.magic.Property;
-import wint.lang.magic.PropertyUtil;
+import wint.lang.magic.*;
 import wint.lang.magic.compatible.AutoAdaptMagicMethod;
 import wint.lang.magic.reflect.ReflectMagicClass;
 import wint.lang.magic.reflect.ReflectMagicMethod;
@@ -37,6 +33,9 @@ public class CglibMagicClass extends MagicClass {
 		if (inputClass.isPrimitive()) {
 			return new ReflectMagicClass(inputClass);
 		}
+        if (inputClass.isArray()) {
+            return new MagicArrayClass(inputClass);
+        }
 		return new CglibMagicClass(inputClass);
 	}
 	
@@ -108,9 +107,11 @@ public class CglibMagicClass extends MagicClass {
 			Method readMethod = entry.getValue();
 			Method writeMethod = writableMethods.remove(name);
 			Class<?> type = readMethod.getReturnType();
+            /*
 			if (type.isArray()) {
 			    continue;
 			}
+			*/
             MagicClass propertyClass = CglibMagicClass.fromClass(type);
 			Property property = new Property(name, propertyClass, new CglibMagicMethod(readMethod, fastClass), (writeMethod != null ? new CglibMagicMethod(writeMethod, fastClass) : null));
 			ret.put(name, property);
@@ -119,9 +120,11 @@ public class CglibMagicClass extends MagicClass {
 			String name = entry.getKey();
 			Method writeMethod = entry.getValue();
 			Class<?> type = writeMethod.getParameterTypes()[0];
+            /*
 			if (type.isArray()) {
 			    continue;
 			}
+			*/
             MagicClass propertyClass = CglibMagicClass.fromClass(type);
 			Property property = new Property(name, propertyClass, null, new CglibMagicMethod(writeMethod, fastClass));
 			ret.put(name, property);
