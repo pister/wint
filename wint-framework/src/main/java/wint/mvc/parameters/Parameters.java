@@ -3,11 +3,14 @@ package wint.mvc.parameters;
 import wint.mvc.form.fileupload.UploadFile;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 public interface Parameters {
 	
 	Set<String> getNames();
+
+    Map<String, String[]> getParameterMap();
 	
 	String getString(String name, String defaultValue);
 	

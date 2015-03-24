@@ -11,6 +11,9 @@ import wint.lang.utils.StringUtil;
 import wint.lang.utils.Tuple;
 import wint.mvc.view.Render;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * 一个urlBroker类，用于生成URL
  *
@@ -21,7 +24,7 @@ public class UrlBroker implements Render {
     private UrlBrokerService urlBrokerService;
     private String path;
     private String target;
-    private MagicMap queryData = MagicMap.newMagicMap();
+    private LinkedHashMap<String, Object> queryData = new LinkedHashMap<String, Object>();
     private AutoFillArray<Object> arguments = new AutoFillArray<Object>();
     private String anchor;
     private String tokenName;
@@ -161,7 +164,7 @@ public class UrlBroker implements Render {
         return urlBrokerService.render(this);
     }
 
-    public MagicMap getQueryData() {
+    public Map<String, Object> getQueryData() {
         return queryData;
     }
 

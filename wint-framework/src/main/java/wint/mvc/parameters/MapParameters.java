@@ -1,29 +1,44 @@
 package wint.mvc.parameters;
 
+import wint.lang.magic.Transformer;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MapParameters extends AbstractParameters {
 
 	private Map<String, String[]> mapParameters;
-	
+
 	public MapParameters(Map<String, String[]> mapParameters) {
 		super();
-        Map<String, String[]> newMapParameters = MapUtil.newHashMap();
+        this.mapParameters = MapUtil.newHashMap();
+        addParameters(mapParameters);
+	}
+
+    public MapParameters(Parameters baseParameters) {
+        super();
+        this.mapParameters = MapUtil.newHashMap(baseParameters.getParameterMap());
+    }
+
+    public void addParameters(Parameters parameters) {
+        addParameters(parameters.getParameterMap());
+    }
+
+    public void addParameters(Map<String, String[]> mapParameters) {
         for (Map.Entry<String, String[]> entry : mapParameters.entrySet()) {
             String paramName = normalizeName(entry.getKey());
             String[] values = mapParameters.get(entry.getKey());
-            newMapParameters.put(paramName, values);
+            this.mapParameters.put(paramName, values);
         }
-        this.mapParameters = newMapParameters;
-	}
+    }
 
-	public Set<String> getNames() {
+    @Override
+    public Map<String, String[]> getParameterMap() {
+        return Collections.unmodifiableMap(mapParameters);
+    }
+
+    public Set<String> getNames() {
 		return mapParameters.keySet();
 	}
 
@@ -47,4 +62,14 @@ public class MapParameters extends AbstractParameters {
 		}
 	}
 
+    @Override
+    public String toString() {
+        return "MapParameters{" +
+                "mapParameters=" + MapUtil.join(mapParameters, "=", ",", new Transformer<String[], String>() {
+            @Override
+            public String transform(String[] object) {
+                return Arrays.toString(object);
+            }
+        }) + '}';
+    }
 }

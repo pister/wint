@@ -47,7 +47,7 @@ public class ServletFlowData implements InnerFlowData {
 
     private ServiceContext serviceContext;
 
-    private ServletParameters servletParameters;
+    private Parameters parameters;
 
     private String target;
 
@@ -89,7 +89,7 @@ public class ServletFlowData implements InnerFlowData {
         this.httpServletResponse = httpServletResponse;
         this.serviceContext = serviceContext;
 
-        servletParameters = new ServletParameters(httpServletRequest);
+        parameters = new ServletParameters(httpServletRequest);
         target = ServletUtil.getServletPathWithRequestContext(httpServletRequest, requestContextPath);
         suffix = StringUtil.getLastAfter(target, ".");
         locale = httpServletRequest.getLocale();
@@ -134,7 +134,7 @@ public class ServletFlowData implements InnerFlowData {
     }
 
     public Parameters getParameters() {
-        return servletParameters;
+        return parameters;
     }
 
     public String getTarget() {
@@ -363,9 +363,14 @@ public class ServletFlowData implements InnerFlowData {
         return httpServletRequest.getRemoteAddr();
     }
 
+    public void setParameters(Parameters parameters) {
+        this.parameters = parameters;
+    }
+
     @Override
     public String getSuffix() {
         return suffix;
+
     }
 
     public void setSuffix(String suffix) {

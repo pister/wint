@@ -1,11 +1,15 @@
 package wint.mvc.url;
 
+import wint.core.config.Constants;
 import wint.lang.convert.ConvertUtil;
 import wint.lang.magic.MagicMap;
 import wint.lang.magic.Transformer;
-import wint.lang.utils.AutoFillArray;
-import wint.lang.utils.StringUtil;
-import wint.lang.utils.Tuple;
+import wint.lang.utils.*;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author pister 2012-3-2 09:23:27
@@ -16,6 +20,41 @@ public class UrlBrokerUtil {
     private static final String HTTPS = "https://";
 
     private static final String HTTP = "http://";
+
+    private static final String  CHARSET = Constants.Defaults.CHARSET_ENCODING;
+
+    private static Transformer<Object, String> transformer;
+
+    static {
+        transformer = new Transformer<Object, String>() {
+            public String transform(Object object) {
+                if (object == null) {
+                    return StringUtil.EMPTY;
+                }
+                if (object instanceof String) {
+                    String stringValue = (String)object;
+                    stringValue = UrlUtil.encode(stringValue, CHARSET);
+                    return stringValue;
+                } if (object instanceof Date) {
+                    String stringValue = DateUtil.formatFullDate(object);
+                    stringValue = UrlUtil.encode(stringValue, CHARSET);
+                    return stringValue;
+                } else if (object.getClass().isArray()) {
+                    Object[] array = (Object[])object;
+                    return ArrayUtil.join(array, ",");
+                } else if (object instanceof Collection) {
+                    Collection<?> c = (Collection<?>)object;
+                    return CollectionUtil.join(c, ",");
+                } else {
+                    return object.toString();
+                }
+            }
+        };
+    }
+
+    public static Transformer<Object, String> getTransformer() {
+        return transformer;
+    }
 
     public static Tuple<String /*path*/, String /*target*/> parseTarget(String path, String target, String pathAsTargetName) {
         if (pathAsTargetName.equals(target)) {
@@ -116,9 +155,9 @@ public class UrlBrokerUtil {
         if (!StringUtil.isEmpty(urlSuffix) && !StringUtil.isEmpty(target)) {
             sb.append(urlSuffix);
         }
-        MagicMap queryData = urlBroker.getQueryData();
+        Map<String, Object> queryData = urlBroker.getQueryData();
         if (!queryData.isEmpty()) {
-            String queryString = queryData.join("=", "&", transformer);
+            String queryString = MapUtil.join(queryData, "=", "&", transformer);
             sb.append("?");
             sb.append(queryString);
         }

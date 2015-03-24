@@ -188,4 +188,9 @@ public class WidgetInnerFlowData implements InnerFlowData {
     public String getSuffix() {
         return innerFlowData.getSuffix();
     }
+
+    @Override
+    public void setParameters(Parameters parameters) {
+        innerFlowData.setParameters(parameters);
+    }
 }

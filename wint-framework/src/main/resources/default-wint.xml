@@ -8,7 +8,8 @@
 				<list name="valves">
 					<object class="wint.mvc.pipeline.valves.SetLoggingValve"></object>
 					<object class="wint.mvc.pipeline.valves.FileResourceValve"></object>
-					<object class="wint.mvc.pipeline.valves.AnalyzeUrlValve"></object>
+                    <object class="wint.mvc.pipeline.valves.UrlRewriteParseValve"></object>
+                    <object class="wint.mvc.pipeline.valves.AnalyzeUrlValve"></object>
 					<object class="wint.mvc.pipeline.valves.SetIndexValve">
 						<value name="indexTarget">index</value>
 					</object>
@@ -35,7 +36,10 @@
             </object>
 		</object>
 	</object>
-	
+
+    <object class="wint.mvc.url.rewrite.DefaultUrlRewriteService">
+    </object>
+
 	<object class="wint.mvc.flow.ServletFlowDataService">
 	</object>
 	

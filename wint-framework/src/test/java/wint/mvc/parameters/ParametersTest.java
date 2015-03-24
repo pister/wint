@@ -3,6 +3,8 @@ package wint.mvc.parameters;
 import junit.framework.TestCase;
 import wint.lang.utils.MapUtil;
 
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -83,7 +85,7 @@ public class ParametersTest extends TestCase {
         }
     }
 
-    public void testApply() {
+    public void testApply() throws InterruptedException {
         Map<String, String[]> data = MapUtil.newHashMap();
         data.put("age", new String[] {"10"});
         data.put("level", new String[] {"12"});
@@ -91,6 +93,7 @@ public class ParametersTest extends TestCase {
         data.put("name", new String[] {"Pister"});
         MapParameters mapParameters = new MapParameters(data);
         Foo foo = new Foo();
+        Thread.sleep(1000000000);
         mapParameters.apply(foo);
         System.out.println(foo);
     }

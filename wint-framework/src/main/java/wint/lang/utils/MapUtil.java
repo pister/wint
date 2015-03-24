@@ -41,7 +41,7 @@ public class MapUtil {
 		return join(map, kvCat, entryCat, null);
 	}
 	
-	public static <K, V> String join(Map<K, V> map, String kvCat, String entryCat, Transformer<Object, String> valueTransformer) {
+	public static <K, V> String join(Map<K, V> map, String kvCat, String entryCat, Transformer<V, String> valueTransformer) {
 		if (isEmpty(map)) {
 			return StringUtil.EMPTY;
 		}

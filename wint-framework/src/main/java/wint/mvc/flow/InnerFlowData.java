@@ -2,6 +2,7 @@ package wint.mvc.flow;
 
 import wint.mvc.module.Module;
 import wint.mvc.parameters.Arguments;
+import wint.mvc.parameters.Parameters;
 import wint.mvc.template.Context;
 
 /**
@@ -33,6 +34,8 @@ public interface InnerFlowData extends FlowData {
 	boolean isSendRedirected();
 	
 	void setArguments(Arguments arguments);
+
+    void setParameters(Parameters parameters);
 	
 	void setInnerContext(Context innerContext);
 	

@@ -25,6 +25,11 @@ public class ServletParameters extends AbstractParameters {
         }
     }
 
+    @Override
+    public Map<String, String[]> getParameterMap() {
+        return Collections.unmodifiableMap(parameters);
+    }
+
     public String getStringImpl(String name, String defaultValue) {
         name = normalizeName(name);
         String[] values = getStringArray(name, null);
