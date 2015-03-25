@@ -1,14 +1,13 @@
 package wint.mvc.url.rewrite.mapping;
 
 import wint.lang.magic.Transformer;
-import wint.lang.utils.CollectionUtil;
-import wint.lang.utils.MapUtil;
-import wint.lang.utils.StringUtil;
+import wint.lang.utils.*;
 import wint.mvc.parameters.MapParameters;
 import wint.mvc.url.UrlBroker;
 import wint.mvc.url.UrlBrokerUtil;
 import wint.mvc.url.config.UrlContext;
 import wint.mvc.url.rewrite.RequestData;
+import wint.mvc.url.rewrite.UrlBase64;
 
 import java.util.*;
 
@@ -19,8 +18,43 @@ import java.util.*;
  */
 public class UrlRewriteMapping {
 
+    private static final String ESCAPE_FLAG = "!";
+
+    private static final String CHARSET = "utf-8";
+
+    private static Transformer<Object, String> transformer;
+
+    static {
+        transformer = new Transformer<Object, String>() {
+            public String transform(Object object) {
+                if (object == null) {
+                    return StringUtil.EMPTY;
+                }
+                if (object instanceof String) {
+                    String stringValue = (String)object;
+                    stringValue = UrlUtil.encode(stringValue, CHARSET);
+                    return stringValue;
+                } if (object instanceof Date) {
+                    String stringValue = DateUtil.formatDate(object, "yyyyMMddHHmmss");
+                    return stringValue;
+                } else if (object.getClass().isArray()) {
+                    Object[] array = (Object[])object;
+                    return ArrayUtil.join(array, ",");
+                } else if (object instanceof Collection) {
+                    Collection<?> c = (Collection<?>)object;
+                    return CollectionUtil.join(c, ",");
+                } else {
+                    return object.toString();
+                }
+            }
+        };
+    }
+
+
     private String baseTarget;
     private List<Item> patternItems;
+
+
 
     public UrlRewriteMapping(String baseTarget) {
         this.baseTarget = UrlBrokerUtil.normalizePath(baseTarget);
@@ -45,7 +79,12 @@ public class UrlRewriteMapping {
         String[] names = itemName.split(separater);
         List<Item> patternItems = CollectionUtil.newArrayList();
         for (String name : names) {
-            patternItems.add(new Item(name, false));
+            if (name.startsWith(ESCAPE_FLAG)) {
+                name = StringUtil.getFirstAfter(name, ESCAPE_FLAG);
+                patternItems.add(new Item(name, true));
+            } else {
+                patternItems.add(new Item(name, false));
+            }
         }
         return new UrlRewriteMapping(target, patternItems);
     }
@@ -97,6 +136,13 @@ public class UrlRewriteMapping {
                 break;
             }
             String part = parts[i];
+            if (item.isBase64()) {
+                try {
+                    part = UrlBase64.decodeBase64(part);
+                } catch (Exception e) {
+                    part = null;
+                }
+            }
             mapParameters.put(item.getName(), new String[]{part});
             i++;
         }
@@ -107,7 +153,6 @@ public class UrlRewriteMapping {
     }
 
     public String rewrite(UrlBroker urlBroker, UrlContext urlContext) {
-        final Transformer<Object, String> valueTransformer = UrlBrokerUtil.getTransformer();
         final Map<String, Object> queryData = new LinkedHashMap<String, Object>(urlBroker.getQueryData());
         StringBuilder sb = new StringBuilder();
         sb.append(urlBroker.getPath());
@@ -123,8 +168,12 @@ public class UrlRewriteMapping {
                 if (value == null) {
                     return StringUtil.EMPTY;
                 }
-                String stringValue = valueTransformer.transform(value);
-                // TODO for base64?
+                String stringValue;
+                if (item.isBase64()) {
+                    stringValue = UrlBase64.encodeBase64(value.toString());
+                } else {
+                    stringValue = transformer.transform(value);
+                }
                 return stringValue;
             }
         });

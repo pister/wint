@@ -36,7 +36,7 @@ public class UrlBrokerUtil {
                     stringValue = UrlUtil.encode(stringValue, CHARSET);
                     return stringValue;
                 } if (object instanceof Date) {
-                    String stringValue = DateUtil.formatFullDate(object);
+                    String stringValue = DateUtil.formatDate(object,  "yyyyMMddHHmmss");
                     stringValue = UrlUtil.encode(stringValue, CHARSET);
                     return stringValue;
                 } else if (object.getClass().isArray()) {
