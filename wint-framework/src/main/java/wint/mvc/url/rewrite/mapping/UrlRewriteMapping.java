@@ -152,13 +152,23 @@ public class UrlRewriteMapping {
         return requestData;
     }
 
+    private static String trimSeparaters(String rewritePath, String separater) {
+        if (StringUtil.isEmpty(separater)) {
+            return rewritePath;
+        }
+        final int separaterLen = separater.length();
+        while (rewritePath.endsWith(separater)) {
+            rewritePath = rewritePath.substring(0, rewritePath.length() - separaterLen);
+        }
+        return rewritePath;
+    }
+
     public String rewrite(UrlBroker urlBroker, UrlContext urlContext) {
         final Map<String, Object> queryData = new LinkedHashMap<String, Object>(urlBroker.getQueryData());
         StringBuilder sb = new StringBuilder();
         sb.append(urlBroker.getPath());
         String target = UrlBrokerUtil.trimLastSlash(UrlBrokerUtil.normalizePath(urlBroker.getTarget()));
         sb.append(target);
-        sb.append("/");
         final Set<String> rewritedNames = new HashSet<String>();
         String rewritePath = CollectionUtil.join(patternItems, urlContext.getArgumentSeparater(), new Transformer<Item, String>() {
             @Override
@@ -178,7 +188,11 @@ public class UrlRewriteMapping {
             }
         });
 
-        sb.append(rewritePath);
+        rewritePath = trimSeparaters(rewritePath, urlContext.getArgumentSeparater());
+        if (!StringUtil.isEmpty(rewritePath)) {
+            sb.append("/");
+            sb.append(rewritePath);
+        }
 
         String urlSuffix = urlContext.getUrlSuffix();
         if (!StringUtil.isEmpty(urlBroker.getSuffix())) {
