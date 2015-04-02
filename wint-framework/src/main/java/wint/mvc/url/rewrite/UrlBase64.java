@@ -62,7 +62,7 @@ public class UrlBase64 {
     /**
      * Byte used to pad output.
      */
-    static final byte PAD = (byte) '=';
+    static final byte PAD = (byte) '!';
 
     // Create arrays to hold the base64 characters and a 
     // lookup for base64 chars
@@ -85,7 +85,7 @@ public class UrlBase64 {
         }
 
         base64Alphabet['_'] = 62;
-        base64Alphabet['|'] = 63;
+        base64Alphabet['~'] = 63;
 
         for (int i = 0; i <= 25; i++) {
             lookUpBase64Alphabet[i] = (byte) ('A' + i);
@@ -100,7 +100,7 @@ public class UrlBase64 {
         }
 
         lookUpBase64Alphabet[62] = (byte) '_';
-        lookUpBase64Alphabet[63] = (byte) '|';
+        lookUpBase64Alphabet[63] = (byte) '~';
     }
 
     private static boolean isBase64(byte octect) {
