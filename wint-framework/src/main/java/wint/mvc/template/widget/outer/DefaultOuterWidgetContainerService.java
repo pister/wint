@@ -17,17 +17,19 @@ import java.io.File;
 public class DefaultOuterWidgetContainerService extends AbstractService implements OuterWidgetContainerService {
 
     private ViewRenderService viewRenderService;
-    private String basePath;
+    private String path;
 
     @Override
     public void init() {
         super.init();
-        basePath = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_PATH, Constants.Defaults.WINT_OUTER_TEMPLATE_PATH);
-        if (new File(basePath).exists()) {
-            log.warn("outer template directory:" + basePath + " is exists.");
+        if (path == null) {
+            path = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_PATH, Constants.Defaults.WINT_OUTER_TEMPLATE_PATH);
+        }
+        if (new File(path).exists()) {
+            log.warn("outer template directory:" + path + " is exists.");
             DefaultViewRenderService defaultViewRenderService = new DefaultViewRenderService();
             defaultViewRenderService.setServiceContext(serviceContext);
-            defaultViewRenderService.setBasePath(basePath);
+            defaultViewRenderService.setBasePath(path);
             defaultViewRenderService.setUseMacroLibrary(false);
             defaultViewRenderService.init();
             viewRenderService = defaultViewRenderService;
@@ -42,4 +44,7 @@ public class DefaultOuterWidgetContainerService extends AbstractService implemen
         return new OuterWidgetContainer(viewRenderService, context);
     }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
 }

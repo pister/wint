@@ -1,5 +1,7 @@
 package wint.mvc.template.widget.outer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wint.lang.utils.FileUtil;
 import wint.lang.utils.MapUtil;
 import wint.mvc.template.*;
@@ -16,6 +18,8 @@ import java.util.Map;
  * Time: 上午10:17
  */
 public class OuterWidgetRender implements Render {
+
+    private static final Logger log = LoggerFactory.getLogger(OuterWidgetRender.class);
 
     private Map<String, Object> contextValues = MapUtil.newHashMap();
     private Context context;
@@ -35,7 +39,12 @@ public class OuterWidgetRender implements Render {
         String extName = FileUtil.getFileExtension(path);
         TemplateEngine templateEngine = viewRenderService.getTemplateEngine(extName);
         DefaultTemplateRender templateRender = new DefaultTemplateRender(path, templateEngine, context);
-        return templateRender.render();
+        try {
+            return templateRender.render();
+        } catch (Exception e) {
+            log.error("render out widget error", e);
+            return "$outerWidgetRenderError$";
+        }
     }
 
     public OuterWidgetRender addToContext(String name, Object o) {
