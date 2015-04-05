@@ -31,6 +31,8 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
     private UrlRewriteService urlRewriteService;
     private UrlContext urlContext;
 
+    private List<UrlRewriteHandle> handles;
+
     @Override
     public void init() {
         super.init();
@@ -52,6 +54,8 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
         urlContext = new UrlContext();
         urlContext.setUrlSuffix(urlSuffix);
         urlContext.setArgumentSeparater(argumentSeparater);
+
+        handles = urlRewriteService.getHandles();
     }
 
     public UrlBroker makeUrlBroker(String urlModuleName, String target) {
@@ -71,7 +75,6 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
     }
 
     public String render(UrlBroker urlBroker) {
-        List<UrlRewriteHandle> handles = urlRewriteService.getHandles();
         if (CollectionUtil.isEmpty(handles)) {
             return renderForDefault(urlBroker);
         }

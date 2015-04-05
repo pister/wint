@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class DefaultUrlRewriteService extends AbstractService implements UrlRewriteService {
 
-    private List<UrlRewriteHandle> handles;
-    private List<UrlRewriteParser> parsers;
+    private List<UrlRewriteHandle> handles = CollectionUtil.newArrayList();
+    private List<UrlRewriteParser> parsers = CollectionUtil.newArrayList();
 
     private List<String> rewriteMappingList;
 
@@ -44,16 +44,12 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
     }
 
     public void setHandles(List<UrlRewriteHandle> handles) {
-        this.handles = handles;
+        for (UrlRewriteHandle handle : handles) {
+            this.handles.add(handle);
+        }
     }
 
     public void setRewriteMappings(List<UrlRewriteMappingItem> urlRewriteMappingItems) {
-        if (handles == null) {
-            handles = CollectionUtil.newArrayList();
-        }
-        if (parsers == null) {
-            parsers = CollectionUtil.newArrayList();
-        }
         for (UrlRewriteMappingItem urlRewriteMappingItem : urlRewriteMappingItems) {
             handles.add(urlRewriteMappingItem);
             parsers.add(urlRewriteMappingItem);
@@ -71,7 +67,9 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
     }
 
     public void setParsers(List<UrlRewriteParser> parsers) {
-        this.parsers = parsers;
+        for (UrlRewriteParser urlRewriteParser : parsers) {
+            this.parsers.add(urlRewriteParser);
+        }
     }
 
 }
