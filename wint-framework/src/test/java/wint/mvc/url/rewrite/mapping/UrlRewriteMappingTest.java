@@ -12,14 +12,14 @@ import wint.mvc.url.rewrite.RequestData;
  */
 public class UrlRewriteMappingTest extends TestCase {
 
-    UrlRewriteMapping urlRewriteMapping = UrlRewriteMapping.parseFromString("hello/abc/name-age-page-address", "-");
+    UrlRewriteMapping urlRewriteMapping = UrlRewriteMapping.parseFromString("hello/abc/name-age-page-siteAddress", "-");
 
     public void testRender() throws Exception {
         UrlBroker urlBroker = new UrlBroker(null, "http://127.0.0.1", "hello/abc", null, null, false);
       //  urlBroker.param("name", "hsl");
       //  urlBroker.param("age", 21);
       //  urlBroker.param("page", 2);
-       // urlBroker.param("address", "hangzhou");
+        urlBroker.param("siteAddress", "hangzhou");
         UrlContext urlContext = new UrlContext();
         urlContext.setArgumentSeparater("-");
         urlContext.setUrlSuffix(".htm");
@@ -36,7 +36,7 @@ public class UrlRewriteMappingTest extends TestCase {
         System.out.println(urlRewriteMapping.matches("/hello/abc/"));
         System.out.println(urlRewriteMapping.matches("hello/abc/"));
         System.out.println(urlRewriteMapping.matches("hello/abc"));
-        RequestData requestData = urlRewriteMapping.parse("hello/abc/hsl-21--.htm", urlContext);
+        RequestData requestData = urlRewriteMapping.parse("hello/abc/hsl-21--xxx.htm", urlContext);
         System.out.println(requestData);
     }
 

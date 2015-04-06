@@ -173,8 +173,10 @@ public class UrlRewriteMapping {
         String rewritePath = CollectionUtil.join(patternItems, urlContext.getArgumentSeparater(), new Transformer<Item, String>() {
             @Override
             public String transform(Item item) {
-                Object value = queryData.get(item.getName());
-                rewritedNames.add(item.getName());
+                String name = item.getName();
+                name = StringUtil.camelToFixedString(name, "-");
+                Object value = queryData.get(name);
+                rewritedNames.add(name);
                 if (value == null) {
                     return StringUtil.EMPTY;
                 }
