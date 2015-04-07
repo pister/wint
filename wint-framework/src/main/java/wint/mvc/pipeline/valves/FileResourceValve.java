@@ -26,7 +26,7 @@ import wint.mvc.view.types.ViewTypes;
 
 public class FileResourceValve extends AbstractValve {
 
-	private static final String[] TYPES = {"css", "js", "jpg", "jpeg", "png", "gif", "bmp", "swf", "mp3", "ico", "icon"};
+	private static final String[] TYPES = {"css", "js", "xml", "jpg", "jpeg", "png", "gif", "bmp", "swf", "mp3", "ico", "icon"};
 	
 	private static final Map<String, String> mappedContentTypes = MapUtil.newHashMap();
 
@@ -36,6 +36,7 @@ public class FileResourceValve extends AbstractValve {
 
 	static {
 		mappedContentTypes.put("txt", "text/plain");
+		mappedContentTypes.put("xml", "text/xml");
 		mappedContentTypes.put("css", "text/css");
 		mappedContentTypes.put("js", "application/x-javascript");
 		mappedContentTypes.put("jpg", "image/jpeg");
