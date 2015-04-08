@@ -45,4 +45,9 @@ public class ArrayUtil {
 		return MagicList.wrap(array).join(token);
 	}
 
+    public static String join(Object array, String token) {
+        return MagicList.wrapArray(array).join(token);
+
+    }
+
 }
