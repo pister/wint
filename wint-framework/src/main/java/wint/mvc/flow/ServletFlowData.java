@@ -356,7 +356,7 @@ public class ServletFlowData implements InnerFlowData {
             if (PROXY_REMOTE_NAMES.contains(name.toLowerCase())) {
                 String ip = httpServletRequest.getHeader(name);
                 if (!StringUtil.isEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
-                    return ip;
+                    return StringUtil.splitTrim(ip, ",").get(0);
                 }
             }
         }

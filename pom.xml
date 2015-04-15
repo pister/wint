@@ -12,4 +12,5 @@
 		<module>wint-framework</module>
 		<module>maven-wint-plugin</module>
   </modules>
+
 </project>
