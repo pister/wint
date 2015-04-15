@@ -73,13 +73,11 @@ public class AuthLoginValve extends AbstractValve {
         if (environment == Environment.MOCK) {
             return true;
         }
-        if (environment.isSupportDev()) {
-            // 如果是开发环境，仅仅是template，可以不用登录，但是在生产环境必须登录，除非配置到unprotectedUrls中
-            Module module = flowData.getModule();
-            if (module == null || module.getModuleInfo() == null) {
-                // 如果仅仅是template，则不判断登录
-                return true;
-            }
+        // 如果仅仅是template，可以不用登录
+        Module module = flowData.getModule();
+        if (module == null || module.getModuleInfo() == null) {
+            // 如果仅仅是template，则不判断登录
+            return true;
         }
 		String target = flowData.getTarget();
 

@@ -36,8 +36,8 @@ public class PerformActionValve extends AbstractValve {
 		ExecutionModule module = (ExecutionModule)flowData.getModule();
 		Context context = flowData.getContext();
 		
-		MagicList<Object> indexedParamters = (MagicList<Object>)flowData.getAttribute(Constants.FlowDataAttributeKeys.INDEXED_PARAMETERS);
-		String target = module.execute(flowData, context, indexedParamters);
+		MagicList<Object> indexedParameters = (MagicList<Object>)flowData.getAttribute(Constants.FlowDataAttributeKeys.INDEXED_PARAMETERS);
+		String target = module.execute(flowData, context, indexedParameters);
 		
 		if (flowData.isSendRedirected()) {
 			if (log.isDebugEnabled()) {
