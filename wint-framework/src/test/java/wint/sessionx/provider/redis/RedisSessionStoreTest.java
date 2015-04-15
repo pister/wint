@@ -2,6 +2,7 @@ package wint.sessionx.provider.redis;
 
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import wint.help.redis.PoolRedisClient;
 import wint.lang.magic.MagicMap;
 import wint.sessionx.provider.sessionid.SessionIdGenerator;
 import wint.sessionx.provider.sessionid.SessionIdGenerators;
@@ -31,7 +32,7 @@ public class RedisSessionStoreTest {
 
         long start = System.currentTimeMillis();
         for (int ct = 0; ct < benchTimes; ++ct) {
-            RedisSessionStore redisSessionStore = new RedisSessionStore(jedisPool, serializeService, config, sessionIdGenerator, sessionId);
+            RedisSessionStore redisSessionStore = new RedisSessionStore(new PoolRedisClient(jedisPool), serializeService, config, sessionIdGenerator, sessionId);
             setAttribute(redisSessionStore, "name1", "the first string object");
             setAttribute(redisSessionStore, "name2", 123);
             setAttribute(redisSessionStore, "name3", new Date());

@@ -1,19 +1,17 @@
 package wint.sessionx.provider.redis;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisCommands;
+import wint.help.redis.RedisClient;
+import wint.help.redis.RedisCommand;
+import wint.help.redis.RedisCommandNoResult;
 import wint.lang.utils.StringUtil;
-import wint.sessionx.constants.AttrKeys;
 import wint.sessionx.cookie.WintCookie;
-import wint.sessionx.filter.FilterContext;
 import wint.sessionx.provider.BaseConfig;
 import wint.sessionx.provider.sessionid.SessionIdGenerator;
 import wint.sessionx.serialize.SerializeService;
-import wint.sessionx.servlet.WintSessionHttpServletResponse;
 import wint.sessionx.store.AbstractSessionStore;
 import wint.sessionx.store.SessionData;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,30 +21,18 @@ import java.util.Set;
  */
 public class RedisSessionStore extends AbstractSessionStore {
 
-    private JedisPool jedisPool;
+    private RedisClient redisClient;
     private SerializeService serializeService;
     private String sessionId;
     private RedisSessionConfig config;
     private SessionIdGenerator sessionIdGenerator;
 
-    public RedisSessionStore(JedisPool jedisPool, SerializeService serializeService, RedisSessionConfig config, SessionIdGenerator sessionIdGenerator, String sessionId) {
-        this.jedisPool = jedisPool;
+    public RedisSessionStore(RedisClient redisClient, SerializeService serializeService, RedisSessionConfig config, SessionIdGenerator sessionIdGenerator, String sessionId) {
+        this.redisClient = redisClient;
         this.serializeService = serializeService;
         this.config = config;
         this.sessionIdGenerator = sessionIdGenerator;
         this.sessionId = sessionId;
-    }
-
-    protected <T> T exec(Command<T> command) {
-        Jedis jedis = this.jedisPool.getResource();
-        try {
-            return command.doInExec(jedis);
-        } catch (Exception e) {
-            jedisPool.returnBrokenResource(jedis);
-            throw new RuntimeException(e);
-        } finally {
-            jedisPool.returnResource(jedis);
-        }
     }
 
     protected String getRedisKey() {
@@ -58,10 +44,10 @@ public class RedisSessionStore extends AbstractSessionStore {
 
     @Override
     public SessionData get(final String name) {
-        return exec(new Command<SessionData>() {
+        return redisClient.getRedisTemplate().execute(new RedisCommand<SessionData>() {
             @Override
-            public SessionData doInExec(Jedis jedis) {
-                String data = jedis.hget(getRedisKey(), name);
+            public SessionData doInExec(JedisCommands commands) {
+                String data = commands.hget(getRedisKey(), name);
                 return (SessionData) serializeService.unserialize(data);
             }
         });
@@ -69,50 +55,47 @@ public class RedisSessionStore extends AbstractSessionStore {
 
     @Override
     public void set(final String name, final SessionData sessionData) {
-        exec(new Command<Object>() {
+        redisClient.getRedisTemplate().executeNoResult(new RedisCommandNoResult() {
             @Override
-            public Object doInExec(Jedis jedis) {
+            public void doInExec(JedisCommands commands) {
                 String data = (String) serializeService.serialize(sessionData);
-                jedis.hset(getRedisKey(), name, data);
-                return null;
+                commands.hset(getRedisKey(), name, data);
             }
         });
     }
 
     @Override
     public void remove(final String name) {
-        exec(new Command<Object>() {
+        redisClient.getRedisTemplate().executeNoResult(new RedisCommandNoResult() {
             @Override
-            public Object doInExec(Jedis jedis) {
-                jedis.hdel(getRedisKey(), name);
-                return null;
+            public void doInExec(JedisCommands commands) {
+                commands.hdel(getRedisKey(), name);
             }
         });
     }
 
     @Override
     public void clearAll() {
-        exec(new Command<Object>() {
+        redisClient.getRedisTemplate().executeNoResult(new RedisCommandNoResult() {
             @Override
-            public Object doInExec(Jedis jedis) {
-                jedis.del(getRedisKey());
-                return null;
+            public void doInExec(JedisCommands commands) {
+                commands.del(getRedisKey());
             }
         });
     }
 
     @Override
     public WintCookie commitForCookie() {
-        exec(new Command<Object>() {
+        redisClient.getRedisTemplate().executeNoResult(new RedisCommandNoResult() {
             @Override
-            public Object doInExec(Jedis jedis) {
+            public void doInExec(JedisCommands commands) {
                 String key = getRedisKey();
-                if (jedis.exists(key)) {
-                    jedis.expire(key, config.getExpire());
+                if (commands.exists(key)) {
+                    commands.expire(key, config.getExpire());
                 }
-                return null;
             }
         });
+
         WintCookie cookie = new WintCookie(config.getSessionIdName(), sessionId);
         String domain = config.getDomain();
         if (!StringUtil.isEmpty(domain)) {
@@ -120,17 +103,17 @@ public class RedisSessionStore extends AbstractSessionStore {
         }
         cookie.setHttpOnly(true);
         // 设置为非持久化cookie
-      //  cookie.setMaxAge(config.getExpire());
+        //  cookie.setMaxAge(config.getExpire());
         cookie.setPath(config.getPath());
         return cookie;
     }
 
     @Override
     public Set<String> getNames() {
-        return exec(new Command<Set<String>>() {
+        return redisClient.getRedisTemplate().execute(new RedisCommand<Set<String>>() {
             @Override
-            public Set<String> doInExec(Jedis jedis) {
-                return jedis.hkeys(getRedisKey());
+            public Set<String> doInExec(JedisCommands commands) {
+                return commands.hkeys(getRedisKey());
             }
         });
     }
@@ -147,9 +130,5 @@ public class RedisSessionStore extends AbstractSessionStore {
 
     protected SessionIdGenerator getSessionIdGenerator() {
         return sessionIdGenerator;
-    }
-
-    protected static interface Command<T> {
-        T doInExec(Jedis jedis);
     }
 }
