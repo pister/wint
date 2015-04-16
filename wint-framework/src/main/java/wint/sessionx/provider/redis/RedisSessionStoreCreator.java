@@ -1,5 +1,7 @@
 package wint.sessionx.provider.redis;
 
+import redis.clients.jedis.JedisPool;
+import wint.help.redis.PoolRedisClient;
 import wint.help.redis.RedisClient;
 import wint.lang.utils.StringUtil;
 import wint.sessionx.provider.SessionStoreCreator;
@@ -24,6 +26,15 @@ public class RedisSessionStoreCreator implements SessionStoreCreator {
     public RedisSessionStoreCreator(RedisSessionConfig config, RedisClient redisClient) {
         this.config = config;
         this.redisClient = redisClient;
+    }
+
+    /**
+     * @deprecated use RedisSessionStoreCreator(RedisSessionConfig config, RedisClient redisClient) instead
+     * @param config
+     * @param jedisPool
+     */
+    public RedisSessionStoreCreator(RedisSessionConfig config, JedisPool jedisPool) {
+        this(config, new PoolRedisClient(jedisPool));
     }
 
     @Override
