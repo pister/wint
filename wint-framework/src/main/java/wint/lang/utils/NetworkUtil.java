@@ -11,6 +11,24 @@ import java.util.List;
 public class NetworkUtil {
 	
 	private static final String DEFAULT_LOCALHOST = "127.0.0.1";
+
+    public static boolean isLocalhost(String ip) {
+        return ip.startsWith("127.0.0.");
+    }
+
+    public static boolean isLanAddress(String ip) {
+        if (ip.startsWith("10.") || ip.startsWith("192.168.")) {
+            return true;
+        }
+        if (ip.startsWith("172.")) {
+            String[] parts = ip.split("\\.");
+            int n = Integer.parseInt(parts[1]);
+            if (n >= 16 && n <= 31) {
+                return true;
+            }
+        }
+        return false;
+    }
 	
 	public static String getLocationAddress() {
 		String[] addresses = getAllLocalHostIP();

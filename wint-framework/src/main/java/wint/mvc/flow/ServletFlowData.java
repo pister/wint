@@ -9,6 +9,7 @@ import wint.lang.io.FastStringWriter;
 import wint.lang.misc.profiler.Profiler;
 import wint.lang.utils.IoUtil;
 import wint.lang.utils.MapUtil;
+import wint.lang.utils.NetworkUtil;
 import wint.lang.utils.StringUtil;
 import wint.mvc.form.Form;
 import wint.mvc.form.FormService;
@@ -350,17 +351,35 @@ public class ServletFlowData implements InnerFlowData {
     private static final Set<String> PROXY_REMOTE_NAMES = new HashSet<String>(Arrays.asList("x-forwarded-for", "proxy-client-ip", "wl-proxy-client-ip"));
 
     public String getRemoteAddr() {
+        List<String> addressList = getRemoteAddrList();
+        return getAddress(addressList);
+    }
+
+    public List<String> getRemoteAddrList() {
         Enumeration<String> names = httpServletRequest.getHeaderNames();
         while (names.hasMoreElements()) {
             String name = names.nextElement();
             if (PROXY_REMOTE_NAMES.contains(name.toLowerCase())) {
                 String ip = httpServletRequest.getHeader(name);
                 if (!StringUtil.isEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
-                    return StringUtil.splitTrim(ip, ",").get(0);
+                    return StringUtil.splitTrim(ip, ",");
                 }
             }
         }
-        return httpServletRequest.getRemoteAddr();
+        return Arrays.asList(httpServletRequest.getRemoteAddr());
+    }
+
+    private static String getAddress(List<String> ipList) {
+        if (ipList.size() < 2) {
+            return ipList.get(0);
+        }
+        for (String ip : ipList) {
+            if (NetworkUtil.isLanAddress(ip) || NetworkUtil.isLocalhost(ip)) {
+                continue;
+            }
+            return ip;
+        }
+        return ipList.get(0);
     }
 
     public void setParameters(Parameters parameters) {
