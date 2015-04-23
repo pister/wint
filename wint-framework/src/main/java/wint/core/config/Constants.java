@@ -103,6 +103,8 @@ public interface Constants {
 
         String WINT_OUTER_TEMPLATE_PATH = "wint.outer.template.path";
 
+        String WINT_ENVIRONMENT_VAR_NAME = "wint.environment.var.name";
+
 
     }
 	
@@ -213,6 +215,8 @@ public interface Constants {
         String WINT_SESSION_TYPE = DefaultSupportTypes.COOKIE;
 
         String WINT_OUTER_TEMPLATE_PATH = SystemUtil.getUserHome() + "/templates";
+
+        String WINT_ENVIRONMENT_VAR_NAME = "env";
 
 
     }

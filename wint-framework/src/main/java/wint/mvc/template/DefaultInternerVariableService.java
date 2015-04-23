@@ -4,6 +4,7 @@ import java.util.Map;
 
 import wint.core.config.Constants;
 import wint.core.service.AbstractService;
+import wint.core.service.env.Environment;
 import wint.lang.magic.MagicList;
 import wint.lang.utils.MapUtil;
 import wint.mvc.flow.InnerFlowData;
@@ -43,6 +44,10 @@ public class DefaultInternerVariableService extends AbstractService implements I
     private String targetName;
 
     private String i18n;
+
+    private Environment environment;
+
+    private String environmentName;
 	
 	@Override
 	public void init() {
@@ -53,20 +58,25 @@ public class DefaultInternerVariableService extends AbstractService implements I
 		resourceBundleService = serviceContext.getService(ResourceBundleService.class);
         outerWidgetContainerService = serviceContext.getService(OuterWidgetContainerService.class);
 
+        environment = serviceContext.getConfiguration().getEnvironment();
+
         containerName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WIDGET_CONTAINER_NAME, Constants.Defaults.WIDGET_CONTAINER_NAME);
         outerContainerName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WIDGET_OUTER_CONTAINER_NAME, Constants.Defaults.WIDGET_OUTER_CONTAINER_NAME);
 		paramsName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.PARAMS_NAME, Constants.Defaults.PARAMS_NAME);
 		argsName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.ARGS_NAME, Constants.Defaults.ARGS_NAME);
 		targetName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.TARGET_NAME, Constants.Defaults.TARGET_NAME);
         i18n = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_I18N_VAR_NAME, Constants.Defaults.WINT_I18N_VAR_NAME);
+        environmentName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_ENVIRONMENT_VAR_NAME, Constants.Defaults.WINT_ENVIRONMENT_VAR_NAME);
+        // TODO environment
+
 
     }
 
-	public Map<String, Object> createInternerVariables(InnerFlowData flowData, Context innerContext, MagicList<Object> indexedParamters) {
+	public Map<String, Object> createInternerVariables(InnerFlowData flowData, Context innerContext, MagicList<Object> indexedParameters) {
 		Map<String, Object> ret = MapUtil.newHashMap();
 		
 		if (widgetContainerService != null) {
-			WidgetContainer widgetContainer = widgetContainerService.createContainer(flowData, innerContext, indexedParamters);
+			WidgetContainer widgetContainer = widgetContainerService.createContainer(flowData, innerContext, indexedParameters);
 			ret.put(containerName, widgetContainer);
 		}
 
@@ -80,6 +90,7 @@ public class DefaultInternerVariableService extends AbstractService implements I
 		
 		ret.put(paramsName, params);
 		ret.put(argsName, arguments);
+		ret.put(environmentName, environment);
 		ret.put(Constants.Form.TEMPLATE_FORM_FACTORY_NAME, new InputFormFactory(flowData));
 		
 		Map<String, UrlModule> urlModules = urlBrokerService.getUrlModules();
