@@ -70,7 +70,7 @@ public class NullMagicClass extends MagicClass {
 	}
 
 	@Override
-	public boolean isInstanceof(Object object) {
+	public boolean isInstanceOf(Object object) {
 		if (object == null) {
 			return true;
 		}

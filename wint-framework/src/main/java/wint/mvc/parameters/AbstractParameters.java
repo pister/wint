@@ -1,19 +1,14 @@
 package wint.mvc.parameters;
 
 import wint.lang.convert.ConvertUtil;
-import wint.lang.magic.DefaultValues;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicObject;
 import wint.lang.magic.Property;
 import wint.lang.utils.StringUtil;
-import wint.mvc.form.Field;
-import wint.mvc.form.config.FieldConfig;
 import wint.mvc.form.fileupload.UploadFile;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public abstract class AbstractParameters implements Parameters {
     @Override
@@ -77,7 +72,7 @@ public abstract class AbstractParameters implements Parameters {
     }
 
     public Date getDate(String name, String format) {
-        return getDate(name, format, (Date) null);
+        return getDate(name, format, null);
     }
 
     public double getDouble(String name) {
@@ -137,15 +132,7 @@ public abstract class AbstractParameters implements Parameters {
     }
 
     public double[] getDoubleArray(String name, double[] defaultArray) {
-        String[] stringArray = getStringArray(name);
-        if (stringArray == null) {
-            return defaultArray;
-        }
-        double[] ret = new double[stringArray.length];
-        for (int i = 0, len = stringArray.length; i < len; ++i) {
-            ret[i] = ConvertUtil.toDouble(stringArray[i], 0.0);
-        }
-        return ret;
+        return (double[])separateToArray(Double.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
     }
 
     public float getFloat(String name, float defaultValue) {
@@ -153,15 +140,7 @@ public abstract class AbstractParameters implements Parameters {
     }
 
     public float[] getFloatArray(String name, float[] defaultArray) {
-        String[] stringArray = getStringArray(name);
-        if (stringArray == null) {
-            return defaultArray;
-        }
-        float[] ret = new float[stringArray.length];
-        for (int i = 0, len = stringArray.length; i < len; ++i) {
-            ret[i] = ConvertUtil.toFloat(stringArray[i], 0.0f);
-        }
-        return ret;
+        return (float[])separateToArray(Float.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
     }
 
     public int getInt(String name, int defaultValue) {
@@ -169,15 +148,7 @@ public abstract class AbstractParameters implements Parameters {
     }
 
     public int[] getIntArray(String name, int[] defaultArray) {
-        String[] stringArray = getStringArray(name);
-        if (stringArray == null) {
-            return defaultArray;
-        }
-        int[] ret = new int[stringArray.length];
-        for (int i = 0, len = stringArray.length; i < len; ++i) {
-            ret[i] = ConvertUtil.toInt(stringArray[i], 0);
-        }
-        return ret;
+        return (int[])separateToArray(Integer.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
     }
 
     public long getLong(String name, long defaultValue) {
@@ -185,15 +156,7 @@ public abstract class AbstractParameters implements Parameters {
     }
 
     public long[] getLongArray(String name, long[] defaultArray) {
-        String[] stringArray = getStringArray(name);
-        if (stringArray == null) {
-            return defaultArray;
-        }
-        long[] ret = new long[stringArray.length];
-        for (int i = 0, len = stringArray.length; i < len; ++i) {
-            ret[i] = ConvertUtil.toLong(stringArray[i], 0L);
-        }
-        return ret;
+        return (long[])separateToArray(Long.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
     }
 
     protected String normalizeName(String name) {
@@ -238,8 +201,8 @@ public abstract class AbstractParameters implements Parameters {
             Property property = entry.getValue();
 
             if (property.getPropertyClass().isArray()) {
-                String[] values = getStringArray(name);
-                property.setValueExt(target, values);
+                Object valueArray = separateToArray(property.getPropertyClass().getTargetClass().getComponentType(), name, DEFAULT_SEPARATOR, null);
+                property.setValueExt(target, valueArray);
             } else if (property.getPropertyClass().isCollectionLike()) {
                 // TODO 由于泛型擦除，功能待实现
             } else {
@@ -249,5 +212,36 @@ public abstract class AbstractParameters implements Parameters {
 
         }
     }
+
+    protected Object separateToArray(Class<?> componentType, String name, String separator, Object defaultValue) {
+        String[] values = getStringArray(name);
+        if (values == null) {
+            return defaultValue;
+        }
+        int len = values.length;
+        if (len > 1) {
+            return convertStringsToArray(componentType, len, Arrays.asList(values));
+        }
+
+        String rawValue = values[0];
+        if (rawValue == null) {
+            return defaultValue;
+        }
+        List<String> newValues = StringUtil.splitTrim(rawValue, separator);
+        return convertStringsToArray(componentType, newValues.size(), newValues);
+    }
+
+    private static Object convertStringsToArray(Class<?> componentType, int len, Iterable<String> values) {
+        Object ret = Array.newInstance(componentType, len);
+        int i = 0;
+        for (String value : values) {
+            Object v = ConvertUtil.convertTo(value, componentType, null);
+            Array.set(ret, i, v);
+            i++;
+        }
+        return ret;
+    }
+
+    private static final String DEFAULT_SEPARATOR = ",";
 
 }

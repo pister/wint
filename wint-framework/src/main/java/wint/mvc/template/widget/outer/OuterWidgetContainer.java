@@ -21,7 +21,7 @@ public class OuterWidgetContainer implements Render {
 
     @Override
     public String render() {
-        return "$OutterWidget$";
+        return "$OuterWidget$";
     }
 
     public OuterWidgetRender setTemplate(String templateName) {

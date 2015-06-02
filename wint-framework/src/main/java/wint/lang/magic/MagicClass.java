@@ -189,9 +189,18 @@ public abstract class MagicClass implements Serializable {
      * @param object
      * @return
      */
-	public boolean isInstanceof(Object object) {
+	public boolean isInstanceOf(Object object) {
 		return targetClass.isInstance(object);
 	}
+
+    /**
+     * @deprecated instead of isInstanceOf
+     * @param object
+     * @return
+     */
+    public boolean isInstanceof(Object object) {
+        return targetClass.isInstance(object);
+    }
 
     /**
      * 参数中的类型是否能赋值给该类
@@ -211,6 +220,18 @@ public abstract class MagicClass implements Serializable {
 	}
 
     /**
+     * 是否为数字类型
+     * @return
+     */
+    public boolean isNumeric() {
+        if (isAssignableTo(Number.class)) {
+            return true;
+        }
+        return ClassUtil.isPrimaryNumericClass(targetClass);
+    }
+
+
+    /**
      * 根据类名包装
      * @param className
      * @return
@@ -218,6 +239,7 @@ public abstract class MagicClass implements Serializable {
 	public static MagicClass forName(String className) {
 		return wrap(ClassUtil.forName(className));
 	}
+
 
     /**
      * 根据类包装

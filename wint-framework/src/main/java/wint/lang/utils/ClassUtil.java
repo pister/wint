@@ -28,7 +28,9 @@ public class ClassUtil {
 	private static final Map<Class<?>, Class<?>> wrapper2primary = MapUtil.newHashMap();
 
 	private static final Set<Class<?>> simpleTypes = CollectionUtil.newHashSet();
-	
+
+    private static final Set<Class<?>> primaryNumericTypes = CollectionUtil.newHashSet();
+
 	static {
 		primary2wrapper.put(Byte.TYPE, Byte.class);
 		primary2wrapper.put(Boolean.TYPE, Boolean.class);
@@ -68,7 +70,14 @@ public class ClassUtil {
 		simpleTypes.add(Float.class);
 		simpleTypes.add(Double.TYPE);
 		simpleTypes.add(Double.class);
-		
+
+        primaryNumericTypes.add(Byte.TYPE);
+        primaryNumericTypes.add(Short.TYPE);
+        primaryNumericTypes.add(Integer.TYPE);
+        primaryNumericTypes.add(Long.TYPE);
+        primaryNumericTypes.add(Float.TYPE);
+        primaryNumericTypes.add(Double.TYPE);
+
 	}
 	
 	public static boolean isSimpleType(Class<?> clazz) {
@@ -290,5 +299,9 @@ public class ClassUtil {
 	public static String getClassName(String className) {
 		return getClassName(className, true);
 	}
+
+    public static boolean isPrimaryNumericClass(Class<?> clazz) {
+        return primaryNumericTypes.contains(clazz);
+    }
 	
 }

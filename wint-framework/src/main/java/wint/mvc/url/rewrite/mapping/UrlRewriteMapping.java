@@ -38,8 +38,7 @@ public class UrlRewriteMapping {
                     String stringValue = DateUtil.formatDate(object, "yyyyMMddHHmmss");
                     return stringValue;
                 } else if (object.getClass().isArray()) {
-                    Object[] array = (Object[])object;
-                    return ArrayUtil.join(array, ",");
+                    return ArrayUtil.join(object, ",");
                 } else if (object instanceof Collection) {
                     Collection<?> c = (Collection<?>)object;
                     return CollectionUtil.join(c, ",");

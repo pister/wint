@@ -63,11 +63,11 @@ public class DefaultModule implements ExecutionModule {
 		FastStack<Object> indexedArgumentsStack = new FastStack<Object>(indexedParameters);
 		for (int i = 0; i < argumentLength; ++i) {
 			MagicClass targetMagicClass = parameterTypes.get(i);
-			if (targetMagicClass.isInstanceof(flowData)) {
+			if (targetMagicClass.isInstanceOf(flowData)) {
 				arguments[i] = flowData;
 				continue;
 			}
-			if (targetMagicClass.isInstanceof(context)) {
+			if (targetMagicClass.isInstanceOf(context)) {
 				arguments[i] = context;
 				continue;
 			}

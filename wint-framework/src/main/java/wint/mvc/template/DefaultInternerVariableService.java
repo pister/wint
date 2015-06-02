@@ -1,11 +1,14 @@
 package wint.mvc.template;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import wint.core.config.Constants;
 import wint.core.service.AbstractService;
+import wint.core.service.aop.ProfilerInterceptor;
 import wint.core.service.env.Environment;
 import wint.lang.magic.MagicList;
+import wint.lang.magic.MagicObject;
 import wint.lang.utils.MapUtil;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.form.runtime.InputFormFactory;
@@ -48,6 +51,8 @@ public class DefaultInternerVariableService extends AbstractService implements I
     private Environment environment;
 
     private String environmentName;
+
+    private Map<String, Object> pullTools;
 	
 	@Override
 	public void init() {
@@ -68,6 +73,19 @@ public class DefaultInternerVariableService extends AbstractService implements I
         i18n = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_I18N_VAR_NAME, Constants.Defaults.WINT_I18N_VAR_NAME);
         environmentName = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_ENVIRONMENT_VAR_NAME, Constants.Defaults.WINT_ENVIRONMENT_VAR_NAME);
         // TODO environment
+
+        Map<String, Object> rawPullTools = pullService.getPullTools();
+        Map<String, Object> proxyPullTolls = MapUtil.newHashMap();
+
+        ProfilerInterceptor profilerInterceptor = new ProfilerInterceptor();
+        for (Map.Entry<String, Object> entry : rawPullTools.entrySet()) {
+            String name = entry.getKey();
+            Object o = entry.getValue();
+            MagicObject mo = MagicObject.wrap(o);
+            proxyPullTolls.put(name, mo.asProxyObject(Arrays.asList(profilerInterceptor)).getObject());
+        }
+
+        pullTools = proxyPullTolls;
 
 
     }
@@ -101,8 +119,6 @@ public class DefaultInternerVariableService extends AbstractService implements I
         ret.put(i18n, resourceBundleServiceWrapper);
         ret.put(targetName, flowData.getTarget());
 
-		Map<String, Object> pullTools = pullService.getPullTools();
-		
 		ret.putAll(pullTools);
 		
 		return ret;

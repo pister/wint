@@ -5,6 +5,8 @@ import wint.help.mvc.security.csrf.CsrfTokenUtil;
 import wint.lang.convert.ConvertUtil;
 import wint.lang.exceptions.UrlException;
 import wint.lang.magic.MagicMap;
+import wint.lang.magic.MagicObject;
+import wint.lang.magic.Property;
 import wint.lang.utils.AutoFillArray;
 import wint.lang.utils.NumberUtil;
 import wint.lang.utils.StringUtil;
@@ -74,6 +76,44 @@ public class UrlBroker implements Render {
     public UrlBroker parameter(String name, Object value) {
         name = StringUtil.camelToFixedString(name, "-");
         queryData.put(name, value);
+        return this;
+    }
+
+    /**
+     * 把对象的属性作为参数传入
+     * @param object
+     * @since 1.3.9.8
+     * @return
+     */
+    public UrlBroker params(Object object) {
+        return parameters(object);
+    }
+
+    /**
+     * 把对象的属性作为参数传入
+     * @param object
+     * @since 1.3.9.8
+     * @return
+     */
+    public UrlBroker parameters(Object object) {
+        if (object == null) {
+            return this;
+        }
+        if (object instanceof Map) {
+            Map<String, Object> mapItems = (Map<String, Object>)object;
+            for (Map.Entry<String, Object> entry : mapItems.entrySet()) {
+                parameter(String.valueOf(entry.getKey()), entry.getValue());
+            }
+        } else {
+            MagicObject mo = MagicObject.wrap(object);
+            Map<String, Property> propertyMap = mo.getMagicClass().getReadAndWritableProperties();
+            for (Map.Entry<String, Property> propertyEntry : propertyMap.entrySet()) {
+                String name = propertyEntry.getKey();
+                Property property = propertyEntry.getValue();
+                Object value = property.getValue(object);
+                parameter(name, value);
+            }
+        }
         return this;
     }
 

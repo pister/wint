@@ -46,7 +46,7 @@ public class ArrayUtil {
 	}
 
     public static String join(Object array, String token) {
-        return MagicList.wrapArray(array).join(token);
+        return MagicList.wrap(array).join(token);
 
     }
 
