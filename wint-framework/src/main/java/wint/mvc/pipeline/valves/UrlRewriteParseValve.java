@@ -67,8 +67,9 @@ public class UrlRewriteParseValve extends AbstractValve {
         }
         Parameters parsedParameters = requestData.getParameters();
         if (parsedParameters != null) {
-            MapParameters newParameters = new MapParameters(innerFlowData.getParameters());
-            newParameters.addParameters(parsedParameters);
+            // 显式的queryString优先
+            MapParameters newParameters = new MapParameters(parsedParameters);
+            newParameters.addParameters(innerFlowData.getParameters());
             innerFlowData.setParameters(newParameters);
         }
         return true;

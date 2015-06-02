@@ -38,7 +38,7 @@ public class OuterWidgetRender implements Render {
         widgetContext.putAll(contextValues);
         String extName = FileUtil.getFileExtension(path);
         TemplateEngine templateEngine = viewRenderService.getTemplateEngine(extName);
-        DefaultTemplateRender templateRender = new DefaultTemplateRender(path, templateEngine, context);
+        DefaultTemplateRender templateRender = new DefaultTemplateRender(path, templateEngine, widgetContext);
         try {
             return templateRender.render();
         } catch (Exception e) {
