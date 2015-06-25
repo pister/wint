@@ -1,5 +1,6 @@
 package wint.dal.ibatis;
 
+import org.springframework.orm.ibatis.SqlMapClientCallback;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 import wint.dal.MasterForcer;
 
@@ -32,6 +33,10 @@ public class SqlExecutor {
             return sqlMapClientTemplate;
         }
         return readWriteSqlMapClientSource.getSqlMapClient(SqlMapClientTarget.SLAVE);
+    }
+
+    public Object execute(SqlMapClientCallback action) {
+        return getWriteSqlMapClientTemplate().execute(action);
     }
 
     public Object queryForObject(String statementName) {
