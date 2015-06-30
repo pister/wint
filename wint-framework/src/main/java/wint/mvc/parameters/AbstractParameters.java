@@ -236,7 +236,9 @@ public abstract class AbstractParameters implements Parameters {
         int i = 0;
         for (String value : values) {
             Object v = ConvertUtil.convertTo(value, componentType, null);
-            Array.set(ret, i, v);
+            if (v != null) {
+                Array.set(ret, i, v);
+            }
             i++;
         }
         return ret;
