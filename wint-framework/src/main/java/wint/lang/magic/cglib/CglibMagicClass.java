@@ -2,6 +2,8 @@ package wint.lang.magic.cglib;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Map;
 
 import net.sf.cglib.reflect.FastClass;
@@ -50,18 +52,21 @@ public class CglibMagicClass extends MagicClass {
 	}
 
 	@Override
-	public MagicMethod getMethod(String methodName, Class<?>[] argumentTypes) {
-		try {
-			Method method = targetClass.getMethod(methodName, argumentTypes);
-			return new CglibMagicMethod(method, fastClass);
-		} catch (SecurityException e) {
-			throw new WintException(e);
-		} catch (NoSuchMethodException e) {
-			throw new CanNotFindMethodException(e);
-		}
-	}
+    public MagicMethod getMethod(final String methodName, final Class<?>[] argumentTypes) {
+        return AccessController.doPrivileged(new PrivilegedAction<MagicMethod>() {
+            @Override
+            public MagicMethod run() {
+                try {
+                    Method method = targetClass.getMethod(methodName, argumentTypes);
+                    return new CglibMagicMethod(method, fastClass);
+                } catch (NoSuchMethodException e) {
+                    throw new CanNotFindMethodException(e);
+                }
+            }
+        });
+    }
 
-	@Override
+    @Override
 	public Map<String, Property> getProperties() {
 		return findPropertiesFromClass();
 	}
