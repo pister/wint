@@ -46,4 +46,6 @@ public interface SessionStore {
     boolean isNew();
 
     void reset();
+
+    WintCookie commitForCookie(int expire);
 }

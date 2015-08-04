@@ -86,12 +86,17 @@ public class RedisSessionStore extends AbstractSessionStore {
 
     @Override
     public WintCookie commitForCookie() {
+        return commitForCookie(config.getExpire());
+    }
+
+    @Override
+    public WintCookie commitForCookie(final int expire) {
         redisClient.getRedisTemplate().executeNoResult(new RedisCommandNoResult() {
             @Override
             public void doInExec(JedisCommands commands) {
                 String key = getRedisKey();
                 if (commands.exists(key)) {
-                    commands.expire(key, config.getExpire());
+                    commands.expire(key, expire);
                 }
             }
         });
@@ -107,6 +112,7 @@ public class RedisSessionStore extends AbstractSessionStore {
         cookie.setPath(config.getPath());
         return cookie;
     }
+
 
     @Override
     public Set<String> getNames() {

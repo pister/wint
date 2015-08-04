@@ -80,6 +80,11 @@ public class CookieSessionStore extends AbstractSessionStore {
     }
 
     public WintCookie commitForCookie() {
+        return commitForCookie(0);
+    }
+
+    @Override
+    public WintCookie commitForCookie(int expire) {
         return cookieCodec.buildCookie(this);
     }
 
