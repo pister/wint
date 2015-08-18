@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import wint.core.io.resource.loader.ResourceLoader;
 import wint.core.io.resource.loader.WebAppResourceLoader;
+import wint.core.service.ServiceContext;
 import wint.mvc.init.DispatcherInitializor;
 import wint.mvc.init.ServletContextLogger;
 import wint.mvc.servlet.ServletUtil;
@@ -44,4 +45,7 @@ public class DispatcherServlet extends HttpServlet {
 		dispatcher.execute(request, response);
 	}
 
+    public ServiceContext getServiceContext() {
+        return dispatcher.getServiceContext();
+    }
 }
