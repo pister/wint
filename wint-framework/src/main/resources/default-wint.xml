@@ -6,6 +6,7 @@
 		<object name="pipelines">
 			<object name="default" class="wint.mvc.pipeline.Pipeline">
 				<list name="valves">
+					<object class="wint.mvc.pipeline.valves.RequestProxyValve"></object>
 					<object class="wint.mvc.pipeline.valves.SetLoggingValve"></object>
 					<object class="wint.mvc.pipeline.valves.FileResourceValve"></object>
                     <object class="wint.mvc.pipeline.valves.UrlRewriteParseValve"></object>
