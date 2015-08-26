@@ -1,5 +1,7 @@
 package wint.sessionx.servlet;
 
+import wint.lang.utils.StringUtil;
+import wint.lang.utils.UrlUtil;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.store.SessionStore;
 
@@ -15,6 +17,12 @@ public class WintSessionHttpServletRequest extends HttpServletRequestWrapper imp
 	private ServletContext servletContext;
 
     private SessionStore sessionStore;
+
+    private String scheme;
+
+    private Integer serverPort;
+
+    private Boolean secure;
 
 	public WintSessionHttpServletRequest(HttpServletRequest request, ServletContext servletContext, SessionStore sessionStore) {
 		super(request);
@@ -71,4 +79,56 @@ public class WintSessionHttpServletRequest extends HttpServletRequestWrapper imp
 		return false;
 	}
 
+    public String getScheme() {
+        if (StringUtil.isEmpty(scheme)) {
+            return super.getScheme();
+        }
+        return scheme;
+    }
+
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
+    }
+
+    public int getServerPort() {
+        if (serverPort == null) {
+            return super.getServerPort();
+        }
+        return serverPort;
+    }
+
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
+    }
+
+    public boolean isSecure() {
+        if (secure == null) {
+            return super.isSecure();
+        }
+        return secure;
+    }
+
+    public void setSecure(boolean secure) {
+        this.secure = secure;
+    }
+
+    @Override
+    public StringBuffer getRequestURL() {
+        final StringBuffer url = new StringBuffer(48);
+        String scheme = getScheme();
+        int port = getServerPort();
+
+        url.append(scheme);
+        url.append("://");
+        url.append(getServerName());
+        if (port > 0 && ((scheme.equalsIgnoreCase(UrlUtil.HTTP) && port != UrlUtil.DEFAULT_HTTP_PORT)
+                || (scheme.equalsIgnoreCase(UrlUtil.HTTPS) && port != UrlUtil.DEFAULT_HTTPS_PORT)))
+        {
+            url.append(':');
+            url.append(port);
+        }
+        url.append(getRequestURI());
+        return url;
+      //  return super.getRequestURL();
+    }
 }

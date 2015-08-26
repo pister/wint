@@ -105,6 +105,10 @@ public interface Constants {
 
         String WINT_ENVIRONMENT_VAR_NAME = "wint.environment.var.name";
 
+        String WINT_JSON_VIEW_FORM_VALIDATE_SUCCESS_FIELD = "wint.json.view.form.validate.success.field";
+
+        String WINT_JSON_VIEW_FORM_VALIDATE_MESSAGES_FIELD = "wint.json.view.form.validate.messages.field";
+
 
     }
 	
@@ -217,6 +221,10 @@ public interface Constants {
         String WINT_OUTER_TEMPLATE_PATH = SystemUtil.getUserHome() + "/templates";
 
         String WINT_ENVIRONMENT_VAR_NAME = "env";
+
+        String WINT_JSON_VIEW_FORM_VALIDATE_SUCCESS_FIELD = "success";
+
+        String WINT_JSON_VIEW_FORM_VALIDATE_MESSAGES_FIELD = "messages";
 
 
     }

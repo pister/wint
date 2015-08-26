@@ -9,8 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import wint.lang.WintException;
 
 public class UrlUtil {
-	
-	public static String encode(String name, String charset) {
+
+    public static final String HTTPS = "https";
+
+    public static final String HTTP = "http";
+
+    public static final int DEFAULT_HTTPS_PORT = 443;
+
+    public static final int DEFAULT_HTTP_PORT = 80;
+
+
+    public static String encode(String name, String charset) {
 		try {
 			if (StringUtil.isEmpty(name)) {
 				return name;

@@ -20,10 +20,16 @@ public class JsonViewRender extends AbstractViewRender {
 
 	private JsonRender jsonRender;
 
+    private String successField;
+
+    private String messagesField;
+
     @Override
     public void init() {
         super.init();
         String jsonRoot = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_JSON_ROOT, Constants.Defaults.WINT_JSON_ROOT);
+        successField = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_JSON_VIEW_FORM_VALIDATE_SUCCESS_FIELD, Constants.Defaults.WINT_JSON_VIEW_FORM_VALIDATE_SUCCESS_FIELD);
+        messagesField = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_JSON_VIEW_FORM_VALIDATE_MESSAGES_FIELD, Constants.Defaults.WINT_JSON_VIEW_FORM_VALIDATE_MESSAGES_FIELD);
         jsonRender = new FastJsonRender(jsonRoot);
     }
 
@@ -49,11 +55,22 @@ public class JsonViewRender extends AbstractViewRender {
     private void handleFormResult(Context context, InnerFlowData flowData) {
         FormFactory formFactory = (FormFactory)flowData.getInnerContext().get(Constants.Form.TEMPLATE_FORM_FACTORY_NAME);
         Map<String, RunTimeForm> forms = formFactory.getForms();
-        if (!MapUtil.isEmpty(forms)) {
-             for (Map.Entry<String, RunTimeForm> entry : forms.entrySet()) {
-                 context.put(entry.getKey(), forResultMessage(entry.getValue()));
-             }
+        if (MapUtil.isEmpty(forms)) {
+            return;
         }
+
+         for (Map.Entry<String, RunTimeForm> entry : forms.entrySet()) {
+             Map<String, String> messages = forResultMessage(entry.getValue());
+           //  messages.put(entry.getKey(), forResultMessage(entry.getValue()));
+             if (MapUtil.isEmpty(messages)) {
+                 continue;
+             }
+
+             context.put(messagesField, messages);
+             context.put(successField, false);
+             // 只处理第一个
+             break;
+         }
     }
 
 

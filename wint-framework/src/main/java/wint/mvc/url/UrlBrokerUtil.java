@@ -16,10 +16,9 @@ import java.util.Map;
  */
 public class UrlBrokerUtil {
 
+    private static final String HTTPS = UrlUtil.HTTPS + "://";
 
-    private static final String HTTPS = "https://";
-
-    private static final String HTTP = "http://";
+    private static final String HTTP = UrlUtil.HTTP + "://";
 
     private static final String  CHARSET = Constants.Defaults.CHARSET_ENCODING;
 
