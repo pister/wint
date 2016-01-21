@@ -89,10 +89,10 @@ public class CollectionUtil {
      * @return
      */
 	public static <S, T> List<T> transformList(Collection<S> input, Transformer<S, T> transformer) {
-		List<T> ret = CollectionUtil.newArrayList();
-		if (CollectionUtil.isEmpty(input)) {
-			return ret;
-		}
+        if (CollectionUtil.isEmpty(input)) {
+            return CollectionUtil.newArrayList(0);
+        }
+		List<T> ret = CollectionUtil.newArrayList(input.size());
 		for (S o : input) {
 			ret.add(transformer.transform(o));
 		}
