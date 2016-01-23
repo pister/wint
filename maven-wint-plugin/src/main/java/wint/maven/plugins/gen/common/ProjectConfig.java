@@ -58,7 +58,7 @@ public class ProjectConfig {
 
     private String fastjsonVersion ="1.1.36";
 
-    private String wintPluginVersion = "1.1";
+    private String wintPluginVersion = "1.1.1";
 
     public String getFastjsonVersion() {
         return fastjsonVersion;
