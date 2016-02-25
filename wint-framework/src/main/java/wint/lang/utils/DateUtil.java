@@ -132,6 +132,24 @@ public class DateUtil {
 		cal.set(Calendar.MILLISECOND, 0);
 		return cal.getTime();
 	}
+
+    public static int getYear(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.YEAR);
+    }
+
+    public static int getMonth(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.MONTH);
+    }
+
+    public static int getDayOfMonth(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.DAY_OF_MONTH);
+    }
 	
 	public static int getHour(Date date) {
 		Calendar cal = Calendar.getInstance();
