@@ -9,5 +9,5 @@
 	<import resource="beans/biz-dao.xml" />
 	<import resource="beans/persistence.xml" />
 	<import resource="beans/jdbc-datasource.xml" />
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"></bean>
+
 </beans>

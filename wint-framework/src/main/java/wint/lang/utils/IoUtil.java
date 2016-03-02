@@ -11,8 +11,22 @@ public class IoUtil {
 	
 	private static final int BUF_LEN = 1024 * 8;
 
+    private static ThreadLocal<byte[]> byteArrayBufTl = new ThreadLocal<byte[]>() {
+        @Override
+        protected byte[] initialValue() {
+            return new byte[BUF_LEN];
+        }
+    };
+
+    private static ThreadLocal<char[]> charArrayBufTl = new ThreadLocal<char[]>() {
+        @Override
+        protected char[] initialValue() {
+            return new char[BUF_LEN];
+        }
+    };
+
 	public static void copy(InputStream is, OutputStream os) throws IOException {
-		byte[] buf = new byte[BUF_LEN];
+		byte[] buf = byteArrayBufTl.get();
 		while (true) {
 			int len = is.read(buf, 0, BUF_LEN);
 			if (len < 0) {
@@ -29,7 +43,7 @@ public class IoUtil {
 	}
 	
 	public static void copy(Reader reader, Writer writer) throws IOException {
-		char[] buf = new char[BUF_LEN];
+		char[] buf = charArrayBufTl.get();
 		while (true) {
 			int len = reader.read(buf, 0, BUF_LEN);
 			if (len < 0) {

@@ -10,5 +10,7 @@
 		<property name="username" value="${${config.artifactId}.jdbc.username}" />
 		<property name="password" value="${${config.artifactId}.jdbc.password}" />
 	</bean>
-	
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"></bean>
+
 </beans>
