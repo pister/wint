@@ -23,6 +23,7 @@ public class SmartDateConvert extends AbstractConvert<Date> {
 		datePatternConverts.add(new DatePatternConverter("\\d{4}\\-\\d{1,2}", "yyyy-MM"));
         datePatternConverts.add(new DatePatternConverter("\\d{4}\\d{1,2}\\d{1,2}\\d{2}\\d{2}\\d{2}", "yyyyMMddHHmmss"));
         datePatternConverts.add(new DatePatternConverter("\\d{4}\\d{1,2}\\d{1,2}", "yyyyMMdd"));
+        datePatternConverts.add(new DatePatternConverter("\\d{4}\\d{1,2}", "yyyyMM"));
         datePatternConverts.add(new DatePatternConverter("\\d{4}\\-\\d{1,2}\\-\\d{1,2} \\d{2}:\\d{2}", "yyyy-MM-dd HH:mm"));
         datePatternConverts.add(new DatePatternConverter("\\d{1,2}\\-\\d{1,2} \\d{2}:\\d{2}", "MM-dd HH:mm"));
         datePatternConverts.add(new DatePatternConverter("\\d{1,2}:\\d{1,2}:\\d{1,2}", "HH:mm:ss"));
