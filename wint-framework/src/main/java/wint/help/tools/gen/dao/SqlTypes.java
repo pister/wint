@@ -1,13 +1,16 @@
 package wint.help.tools.gen.dao;
 
+import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 
 import java.util.Map;
+import java.util.Set;
 
 public class SqlTypes {
 
     static Map<Class<?>, String> types = MapUtil.newHashMap();
+    static Set<Class<?>> defaultNullableTypes = CollectionUtil.newHashSet();
 
     static {
         types.put(Boolean.TYPE, "tinyint");
@@ -40,6 +43,19 @@ public class SqlTypes {
         types.put(java.sql.Timestamp.class, "datetime");
         types.put(java.util.Date.class, "datetime");
 
+        defaultNullableTypes.add(Boolean.class);
+        defaultNullableTypes.add(Byte.class);
+        defaultNullableTypes.add(Short.class);
+        defaultNullableTypes.add(Character.class);
+        defaultNullableTypes.add(Integer.class);
+        defaultNullableTypes.add(Long.class);
+        defaultNullableTypes.add(Float.class);
+        defaultNullableTypes.add(Double.class);
+
+    }
+
+    public static boolean isDefaultNullable(Class<?> clazz) {
+        return defaultNullableTypes.contains(clazz);
     }
 
     public static String getByClass(Class<?> clazz) {

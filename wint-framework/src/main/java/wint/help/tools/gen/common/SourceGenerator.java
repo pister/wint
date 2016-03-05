@@ -665,7 +665,7 @@ public class SourceGenerator {
         templateSourceGenator.genSource(context, templateName, targetFile, fileWriter);
     }
 
-    public void genCreateTableSql(Class<?> clazz, Writer out, boolean notNull) {
+    public void genCreateTableSql(Class<?> clazz, Writer out, boolean defaultNotNull) {
         Map<String, Object> context = MapUtil.newHashMap();
         String alias = DaoGenUtil.getDoAlias(clazz);
         String tableName = mappingPolicy.getTablePrefix() + StringUtil.camelToUnderLineString(alias);
@@ -708,9 +708,13 @@ public class SourceGenerator {
             sb.append(" ");
             sb.append(getSqlType(result.getType()));
             sb.append(" ");
-            if (notNull) {
-                sb.append(" not null? ");
+
+            if (!SqlTypes.isDefaultNullable(result.getType())) {
+                if (defaultNotNull) {
+                    sb.append(" not null? ");
+                }
             }
+
             String extend = result.getExtend();
             if (!StringUtil.isEmpty(extend)) {
                 sb.append(" ");
