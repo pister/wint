@@ -64,29 +64,18 @@ public class Dispatcher {
 
             MagicType magicType = MagicType.fromName(objectMagicType);
             MagicConfig.getMagicConfig().setMagicType(magicType);
-            String magicName = MagicConfig.getMagicConfig().getMagicFactory().getName();
-
-            ServiceContextSupport serviceContextSupport = new ServiceContextSupport();
-            serviceContextSupport.setResourceLoader(dispatcherInitializor.getResourceLoader());
-            serviceContextSupport.init(configuration);
-
-            pipelineService = (PipelineService) serviceContextSupport.getService(PipelineService.class);
-            flowDataService = (FlowDataService) serviceContextSupport.getService(FlowDataService.class);
-
-            MagicMap properties = serviceContextSupport.getConfiguration().getProperties();
-            Environment env = serviceContextSupport.getConfiguration().getEnvironment();
-            this.serviceContext = serviceContextSupport;
-            this.wintSessionUse = properties.getBoolean(Constants.PropertyKeys.WINT_SESSION_USE, Constants.Defaults.WINT_SESSION_USE);
-
-            // wintSessionProcessor = new WintSessionProcessor(serviceContext);
+            final String magicName = MagicConfig.getMagicConfig().getMagicFactory().getName();
+            final Environment env = configuration.getEnvironment();
 
             dispatcherInitializor.getLogger().log("==================================================");
             dispatcherInitializor.getLogger().log("Wint framework initializing info:");
             dispatcherInitializor.getLogger().log("Magic Type: " + magicName);
             dispatcherInitializor.getLogger().log("Environment: " + env.getName());
-            for (Map.Entry<String, Object> entry : properties.entrySet()) {
-                dispatcherInitializor.getLogger().log(entry.getKey() + " = " + entry.getValue());
-            }
+
+            final MagicMap properties = configuration.getProperties();
+            ServiceContextSupport serviceContextSupport = new ServiceContextSupport();
+
+            this.wintSessionUse = properties.getBoolean(Constants.PropertyKeys.WINT_SESSION_USE, Constants.Defaults.WINT_SESSION_USE);
             if (wintSessionUse) {
                 dispatcherInitializor.getLogger().log("Wint Session Use: " + wintSessionUse);
 
@@ -96,9 +85,23 @@ public class Dispatcher {
                     }
                 };
 
-                wintSessionProcessor = new WintSessionProcessor(serviceContext);
+                wintSessionProcessor = new WintSessionProcessor(serviceContextSupport);
                 wintSessionProcessor.init(properties, dispatcherInitializor.getServletContext());
             }
+
+            serviceContextSupport.setResourceLoader(dispatcherInitializor.getResourceLoader());
+            serviceContextSupport.init(configuration);
+
+            pipelineService = (PipelineService) serviceContextSupport.getService(PipelineService.class);
+            flowDataService = (FlowDataService) serviceContextSupport.getService(FlowDataService.class);
+
+            this.serviceContext = serviceContextSupport;
+
+
+            for (Map.Entry<String, Object> entry : properties.entrySet()) {
+                dispatcherInitializor.getLogger().log(entry.getKey() + " = " + entry.getValue());
+            }
+
             dispatcherInitializor.getLogger().log("Wint framework has been initialized.");
             dispatcherInitializor.getLogger().log("==================================================");
         } catch (Exception e) {
