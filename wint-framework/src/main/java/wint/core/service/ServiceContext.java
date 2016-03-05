@@ -28,5 +28,6 @@ public interface ServiceContext extends BeanFactory {
 	ResourceLoader getResourceLoader();
 	
 	BeanFactory getObjectFactory();
-	
+
+    void registerService(Service service);
 }

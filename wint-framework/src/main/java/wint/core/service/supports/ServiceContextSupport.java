@@ -5,6 +5,7 @@ import java.util.Map;
 
 import wint.core.config.Configuration;
 import wint.core.io.resource.loader.ResourceLoader;
+import wint.core.service.Service;
 import wint.core.service.ServiceContext;
 import wint.core.service.definition.DefinitionNode;
 import wint.core.service.definition.ObjectCreateObsever;
@@ -22,7 +23,7 @@ import wint.mvc.holder.WintContext;
 
 public class ServiceContextSupport extends AbstractServiceContext {
 
-	private Map<String, Object> namedObjects = MapUtil.newHashMap();
+	private Map<String, Object> namedObjects = MapUtil.newConcurrentHashMap();
 	
 	private ResourceLoader resourceLoader;
 	
@@ -86,6 +87,14 @@ public class ServiceContextSupport extends AbstractServiceContext {
 		ServiceUtil.ensureServiceName(name);
 		return namedObjects.get(name);
 	}
+
+    @Override
+    public void registerService(Service service) {
+        if (service == null) {
+            return;
+        }
+        namedObjects.put(service.getName(), service);
+    }
 	
 	public ResourceLoader getResourceLoader() {
 		return resourceLoader;

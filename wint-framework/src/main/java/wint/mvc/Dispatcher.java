@@ -78,7 +78,7 @@ public class Dispatcher {
             this.serviceContext = serviceContextSupport;
             this.wintSessionUse = properties.getBoolean(Constants.PropertyKeys.WINT_SESSION_USE, Constants.Defaults.WINT_SESSION_USE);
 
-            wintSessionProcessor = new WintSessionProcessor();
+            // wintSessionProcessor = new WintSessionProcessor(serviceContext);
 
             dispatcherInitializor.getLogger().log("==================================================");
             dispatcherInitializor.getLogger().log("Wint framework initializing info:");
@@ -96,7 +96,7 @@ public class Dispatcher {
                     }
                 };
 
-                wintSessionProcessor = new WintSessionProcessor();
+                wintSessionProcessor = new WintSessionProcessor(serviceContext);
                 wintSessionProcessor.init(properties, dispatcherInitializor.getServletContext());
             }
             dispatcherInitializor.getLogger().log("Wint framework has been initialized.");

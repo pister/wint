@@ -1,9 +1,11 @@
 package wint.sessionx;
 
 import wint.core.config.Constants;
+import wint.core.service.ServiceContext;
 import wint.lang.magic.MagicMap;
 import wint.sessionx.provider.SessionProvider;
 import wint.sessionx.provider.SessionProviderFactory;
+import wint.sessionx.service.DefaultSessionStoreService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -12,6 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class WintSessionProcessor {
+
+    private ServiceContext serviceContext;
+
+    public WintSessionProcessor(ServiceContext serviceContext) {
+        this.serviceContext = serviceContext;
+    }
 
     private SessionContainer sessionContainer;
 
@@ -22,6 +30,10 @@ public class WintSessionProcessor {
         SessionProvider sessionProvider = SessionProviderFactory.getSessionProvider(sessionType);
         sessionProvider.init(initParameters, servletContext);
         sessionContainer.init(sessionProvider, initParameters, servletContext);
+
+        DefaultSessionStoreService defaultSessionStoreService = new DefaultSessionStoreService(sessionProvider.getSessionStoreCreator());
+        serviceContext.registerService(defaultSessionStoreService);
+
         servletContext.log("Wint SessionX has been initialized.");
     }
 
