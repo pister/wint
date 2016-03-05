@@ -67,10 +67,6 @@ public class Dispatcher {
             final String magicName = MagicConfig.getMagicConfig().getMagicFactory().getName();
             final Environment env = configuration.getEnvironment();
 
-            dispatcherInitializor.getLogger().log("==================================================");
-            dispatcherInitializor.getLogger().log("Wint framework initializing info:");
-            dispatcherInitializor.getLogger().log("Magic Type: " + magicName);
-            dispatcherInitializor.getLogger().log("Environment: " + env.getName());
 
             final MagicMap properties = configuration.getProperties();
             ServiceContextSupport serviceContextSupport = new ServiceContextSupport();
@@ -97,6 +93,10 @@ public class Dispatcher {
 
             this.serviceContext = serviceContextSupport;
 
+            dispatcherInitializor.getLogger().log("==================================================");
+            dispatcherInitializor.getLogger().log("Wint framework initializing info:");
+            dispatcherInitializor.getLogger().log("Magic Type: " + magicName);
+            dispatcherInitializor.getLogger().log("Environment: " + env.getName());
 
             for (Map.Entry<String, Object> entry : properties.entrySet()) {
                 dispatcherInitializor.getLogger().log(entry.getKey() + " = " + entry.getValue());
