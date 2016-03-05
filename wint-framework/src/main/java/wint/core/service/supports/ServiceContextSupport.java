@@ -73,7 +73,7 @@ public class ServiceContextSupport extends AbstractServiceContext {
 		for (DefinitionNode serviceNode : definitionNode.getProperties()) {
 			loadObject(serviceNode, services, recordWhenCreateObsever);
 		}
-		namedObjects = services;
+		namedObjects.putAll(services);
 		return recordWhenCreateObsever.getCreatedObjects();
 	}
 	
