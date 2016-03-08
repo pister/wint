@@ -42,7 +42,7 @@ ${domainInDb}.${field.setter}(${domainParam}.${field.getter}());
             ${daoBeanName}.update(${domainInDb});
             result.setSuccess(true);
         } catch (Exception e) {
-            log.error("create${domainUpper} error", e);
+            log.error("update${domainUpper} error", e);
         }
         return result;
     }
