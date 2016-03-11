@@ -12,7 +12,11 @@ public interface ${className} {
 
 	${idType} create(${domainName} ${paramName});
 
+    List<${idTypeWrapper}> batchCreate(List<${domainName}> ${paramName}List);
+
 	int delete(${idType} id);
+
+    int deleteByIds(List<${idTypeWrapper}> ids);
 
     int update(${domainName} ${paramName});
 

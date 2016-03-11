@@ -7,6 +7,7 @@ import java.util.Set;
 
 import wint.lang.convert.ConvertUtil;
 import wint.lang.utils.MapUtil;
+import wint.lang.utils.StringUtil;
 
 /**
  * map的方便包装类
@@ -29,7 +30,16 @@ public class MagicMap implements Map<String, Object> {
 		return getString(name, null);
 	}
 
-	public String join(String kvCat, String entryCat) {
+    public String getStringTrim(String name) {
+        String s = getString(name, null);
+        if (s == null) {
+            return null;
+        }
+        return StringUtil.trimToEmpty(s);
+    }
+
+
+    public String join(String kvCat, String entryCat) {
 		return join(kvCat, entryCat, null);
 	}
 	

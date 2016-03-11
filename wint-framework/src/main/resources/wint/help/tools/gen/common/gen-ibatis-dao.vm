@@ -1,8 +1,12 @@
 package ${thisPackage};
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+
+import org.springframework.orm.ibatis.SqlMapClientCallback;
+import com.ibatis.sqlmap.client.SqlMapExecutor;
 import ${daoFullClassName};
 import ${doFullClassName};
 import wint.dal.ibatis.ReadWriteSqlMapClientDaoSupport;
@@ -22,9 +26,34 @@ public class ${className} extends ReadWriteSqlMapClientDaoSupport implements ${d
 	}
 
     @Override
+    public List<${idTypeWrapper}> batchCreate(final List<${domainName}> ${paramName}List) {
+        if (CollectionUtil.isEmpty(${paramName}List)) {
+            return CollectionUtil.newArrayList(0);
+        }
+        return (List<${idTypeWrapper}>)this.getSqlMapClientTemplate().execute(new SqlMapClientCallback(){
+            @Override
+            public Object doInSqlMapClient(SqlMapExecutor executor) throws SQLException {
+                List<${idTypeWrapper}> ret = CollectionUtil.newArrayList(${paramName}List.size());
+                for (${domainName} ${paramName} : ${paramName}List) {
+                    ret.add((${idTypeWrapper})executor.insert("${namespace}.create", ${paramName}));
+                }
+                return ret;
+            }
+        });
+    }
+
+    @Override
 	public int delete(${idType} id) {
 		return this.getSqlMapClientTemplate().update("${namespace}.delete", id);
 	}
+
+    @Override
+    public int deleteByIds(List<${idTypeWrapper}> ids) {
+        if (CollectionUtil.isEmpty(ids)) {
+            return 0;
+        }
+        return this.getSqlMapClientTemplate().update("${namespace}.deleteByIds", ids);
+    }
 
     @Override
 	public int update(${domainName} ${paramName}) {

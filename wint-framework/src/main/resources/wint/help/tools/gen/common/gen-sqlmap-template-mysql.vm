@@ -37,7 +37,20 @@
 	#else
 		delete from ${tableName} t where t.${idNameColumn} = #value#
     #end
+	</update>
 
+    <update id="deleteByIds" >
+	#if($logicDeleted)
+		update ${tableName} t set t.deleted = 1 #if("$!{gmtModifiedName}" != "") , t.${gmtModifiedName} = now() #end where t.${idNameColumn} in
+        <iterate prepend="(" conjunction="," close=")" >
+            #[]#
+        </iterate>
+	#else
+		delete from ${tableName} t where t.${idNameColumn} in
+        <iterate prepend="(" conjunction="," close=")" >
+            #[]#
+        </iterate>
+    #end
 	</update>
 	
 	<update id="update" parameterClass="${aliasDomainName}">

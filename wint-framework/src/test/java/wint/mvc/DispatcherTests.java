@@ -31,6 +31,7 @@ public class DispatcherTests extends TestCase {
         initParameters.put(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_PATH, "/Users/huangsongli/temp/templates");
         servletConfigMock = new ServletConfigMock(initParameters, initParameters);
         dispatcherServlet.init(servletConfigMock);
+
     }
 
     public void testForm() throws ServletException, IOException {
