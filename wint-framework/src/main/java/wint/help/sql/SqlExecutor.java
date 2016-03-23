@@ -35,6 +35,7 @@ public class SqlExecutor {
     	int count = 0;
     	try {
     		pstmt = conn.prepareStatement(sql);
+            pstmt.setFetchSize(1);
     		Binder.bindParameters(pstmt, args);
     		rs = pstmt.executeQuery();
     		while (rs.next()) {
