@@ -59,6 +59,9 @@ public class CollectionUtil {
 	}
 	
 	public static <T> String join(Collection<T> c, String token, Transformer<T, String> valueTransformer) {
+        if (c == null) {
+            return StringUtil.EMPTY;
+        }
 		boolean first = true;
 		StringBuilder sb = new StringBuilder();
 		for (T object : c) {

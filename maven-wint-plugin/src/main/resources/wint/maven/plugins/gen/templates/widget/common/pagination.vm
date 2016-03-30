@@ -38,7 +38,7 @@
     #end
 
     #foreach($page in $page_iter)
-        #if ($page == $query.PageNo)
+        #if ($page == $query.pageNo)
             <li class="active"><a href="#">$page</a></li>
         #else
             <li><a href="$query.appendTo($pageModule.param('page', $page))">$page</a></li>

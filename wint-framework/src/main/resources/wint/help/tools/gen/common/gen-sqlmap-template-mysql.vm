@@ -59,7 +59,7 @@
 		]]>
 	</update>
 
-    <select id="queryForPageCount" resultClass="int">
+    <select id="queryForPageCount" resultClass="long">
         select count(0) from ${tableName} t #if($logicDeleted) where t.deleted = 0 #end
 
     </select>

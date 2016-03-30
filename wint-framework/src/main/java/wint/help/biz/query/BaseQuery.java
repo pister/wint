@@ -16,9 +16,7 @@ public class BaseQuery implements Serializable {
 
     private int startRow = 0;
 
-    private int pageNo = 1;
-
-    private int totalResultCount;
+    private long totalResultCount;
 
     public int getPageSize() {
         return pageSize;
@@ -28,16 +26,13 @@ public class BaseQuery implements Serializable {
         if (pageSize <= 1) {
             pageSize = 1;
         }
-        startRow = (pageNo - 1) * pageSize;
+        int pageNo = getPageNo();
         this.pageSize = pageSize;
+        setPageNo(pageNo);
     }
 
     public int getStartRow() {
         return startRow;
-    }
-
-    public int getPageNo() {
-        return pageNo;
     }
 
     public void setPageNo(int pageNo) {
@@ -45,26 +40,16 @@ public class BaseQuery implements Serializable {
             pageNo = 1;
         }
         startRow = (pageNo - 1) * pageSize;
-        this.pageNo = pageNo;
     }
-
 
     public int getMaxPage() {
         if (totalResultCount <= 1) {
             return 1;
         }
         if (pageSize <= 1) {
-            return totalResultCount;
+            return (int)totalResultCount;
         }
-        return (totalResultCount + pageSize - 1) / pageSize;
-    }
-
-    /**
-     * @return
-     * @deprecated use getPageCount instead !
-     */
-    public int getPagesCount() {
-        return getPageCount();
+        return (int)(totalResultCount + pageSize - 1) / pageSize;
     }
 
     public int getPageCount() {
@@ -97,57 +82,31 @@ public class BaseQuery implements Serializable {
         return currentPage;
     }
 
-    public boolean turnNext() {
-        if (hasNextPage()) {
-            pageNo = getNextPage();
-            return true;
-        }
-        return false;
+    public void turnNext() {
+        this.startRow += pageSize;
     }
 
-    public boolean turnPrev() {
-        if (hasPrevPage()) {
-            pageNo = getPrevPage();
-            return true;
+    public void turnPrev() {
+        this.startRow -= pageSize;
+        if (this.startRow < 0) {
+            this.startRow = 0;
         }
-        return false;
-    }
-
-    public boolean turn(int page) {
-        int maxPage = getMaxPage();
-        if (page > maxPage) {
-            pageNo = maxPage;
-            return false;
-        }
-        if (page < 1) {
-            pageNo = 1;
-            return false;
-        }
-        pageNo = page;
-        return true;
     }
 
     public int getCurrentPage() {
-        int maxPage = getMaxPage();
-        if (pageNo > maxPage) {
-            return maxPage;
-        }
-        if (maxPage < 1) {
-            return 1;
-        }
-        return pageNo;
+       return startRow / pageSize + 1;
     }
 
-    public int getTotalResultCount() {
+    public int getPageNo() {
+        return getCurrentPage();
+    }
+
+    public long getTotalResultCount() {
         return totalResultCount;
     }
 
-    public void setTotalResultCount(int totalResultCount) {
+    public void setTotalResultCount(long totalResultCount) {
         this.totalResultCount = totalResultCount;
-        int page = (totalResultCount + pageSize - 1) / pageSize + 1;
-        if (pageNo > page) {
-            pageNo = page;
-        }
     }
 
     public UrlBroker appendTo(UrlBroker urlBroker) {
@@ -182,5 +141,7 @@ public class BaseQuery implements Serializable {
         return urlBroker;
     }
 
-
+    public void setStartRow(int startRow) {
+        this.startRow = startRow;
+    }
 }
