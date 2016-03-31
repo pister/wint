@@ -38,13 +38,13 @@ public class ${thisClassName} extends BaseAction {
         query.setPageNo(page);
         query.setPageSize(10);
         Result result = ${aoBeanName}.viewList(query);
-        this.proccessResult(result, flowData, context);
+        this.processResult(result, flowData, context);
     }
 
     public void detail(FlowData flowData, Context context) {
         ${idType} id = flowData.getParameters().get${idTypeUpper}("id");
         Result result = ${aoBeanName}.view${domainUpper}(id);
-        this.proccessResult(result, flowData, context);
+        this.processResult(result, flowData, context);
     }
 
     public void edit(FlowData flowData, Context context) {
