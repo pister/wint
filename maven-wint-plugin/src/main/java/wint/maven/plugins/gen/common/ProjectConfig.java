@@ -54,7 +54,7 @@ public class ProjectConfig {
 	
 	private String logbackVersion = "1.0.1";
 
-    private String driudVersion = "0.2.25";
+    private String driudVersion = "1.0.18";
 
     private String fastjsonVersion ="1.1.36";
 

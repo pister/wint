@@ -63,6 +63,19 @@ public abstract class AbstractParameters implements Parameters {
         }
     }
 
+    @Override
+    public Boolean getBooleanX(String name) {
+        String stringValue = getString(name, null);
+        if (StringUtil.isEmpty(stringValue)) {
+            return null;
+        }
+        try {
+            return Boolean.valueOf(stringValue);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public boolean getBoolean(String name) {
         return getBoolean(name, false);
     }

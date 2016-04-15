@@ -30,7 +30,9 @@ public interface Parameters {
 	boolean getBoolean(String name, boolean defaultValue);
 	
 	boolean getBoolean(String name);
-	
+
+	Boolean getBooleanX(String name);
+
 	long getLong(String name, long defaultValue);
 	
 	long getLong(String name);

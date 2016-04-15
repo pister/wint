@@ -11,6 +11,10 @@ import wint.lang.utils.AutoFillArray;
 import wint.lang.utils.NumberUtil;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.Tuple;
+import wint.mvc.flow.FlowData;
+import wint.mvc.holder.WintContext;
+import wint.mvc.parameters.Parameters;
+import wint.mvc.template.Context;
 import wint.mvc.view.Render;
 
 import java.util.LinkedHashMap;
@@ -87,6 +91,29 @@ public class UrlBroker implements Render {
      */
     public UrlBroker params(Object object) {
         return parameters(object);
+    }
+
+    /**
+     * 从url的params中复制
+     * @param names
+     * @return
+     */
+    public UrlBroker fromParams(String ...names) {
+        if (names == null || names.length == 0) {
+            return this;
+        }
+        FlowData flowData = WintContext.getFlowData();
+        if (flowData == null) {
+            return this;
+        }
+        Parameters parameters = flowData.getParameters();
+        for (String name : names) {
+            String[] values = parameters.getStringArray(name);
+            for (String value : values) {
+                parameter(name, value);
+            }
+        }
+        return this;
     }
 
     /**
