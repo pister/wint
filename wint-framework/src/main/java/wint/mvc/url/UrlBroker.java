@@ -109,6 +109,9 @@ public class UrlBroker implements Render {
         Parameters parameters = flowData.getParameters();
         for (String name : names) {
             String[] values = parameters.getStringArray(name);
+            if (values == null) {
+                continue;
+            }
             for (String value : values) {
                 parameter(name, value);
             }
