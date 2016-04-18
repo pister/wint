@@ -40,8 +40,12 @@ public class MapUtil {
 	public static <K, V> String join(Map<K, V> map, String kvCat, String entryCat) {
 		return join(map, kvCat, entryCat, null);
 	}
+
+    public static <K, V> String join(Map<K, V> map, String kvCat, String entryCat, Transformer<V, String> valueTransformer) {
+        return join(map, kvCat, entryCat, valueTransformer, null);
+    }
 	
-	public static <K, V> String join(Map<K, V> map, String kvCat, String entryCat, Transformer<V, String> valueTransformer) {
+	public static <K, V> String join(Map<K, V> map, String kvCat, String entryCat, Transformer<V, String> valueTransformer, Transformer<K, String> keyTransformer) {
 		if (isEmpty(map)) {
 			return StringUtil.EMPTY;
 		}
@@ -53,7 +57,12 @@ public class MapUtil {
 			} else {
 				sb.append(entryCat);
 			}
-			sb.append(entry.getKey());
+            if (keyTransformer != null) {
+                String key = keyTransformer.transform(entry.getKey());
+                sb.append(key);
+            } else {
+                sb.append(entry.getKey());
+            }
 			sb.append(kvCat);
 			if (valueTransformer != null) {
 				Object o = valueTransformer.transform(entry.getValue());
