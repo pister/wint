@@ -3,6 +3,7 @@ package wint.lang.utils;
 import java.util.*;
 
 import wint.lang.magic.Transformer;
+import wint.lang.utils.filter.Filter;
 import wint.lang.utils.merger.Mapper;
 
 public class CollectionUtil {
@@ -83,24 +84,42 @@ public class CollectionUtil {
 		return join(c, token, null);
 	}
 
+    public static <S, T> List<T> transformList(Collection<S> input, Transformer<S, T> transformer) {
+        return transformList(input, transformer, null);
+    }
+
+    public static <S, T> List<T> transformListFilterNull(Collection<S> input, Transformer<S, T> transformer) {
+        return transformList(input, transformer, new Filter<S>() {
+            @Override
+            public boolean accept(S s) {
+                return s != null;
+            }
+        });
+    }
+
     /**
      * 把一个list转成另外类型的list
      * @param input
      * @param transformer
+     * @param filter
      * @param <S>
      * @param <T>
      * @return
      */
-	public static <S, T> List<T> transformList(Collection<S> input, Transformer<S, T> transformer) {
+	public static <S, T> List<T> transformList(Collection<S> input, Transformer<S, T> transformer, Filter<S> filter) {
         if (CollectionUtil.isEmpty(input)) {
             return CollectionUtil.newArrayList(0);
         }
 		List<T> ret = CollectionUtil.newArrayList(input.size());
 		for (S o : input) {
+            if (filter != null && !filter.accept(o)) {
+                continue;
+            }
 			ret.add(transformer.transform(o));
 		}
 		return ret;
 	}
+
 
     /**
      * 通过
