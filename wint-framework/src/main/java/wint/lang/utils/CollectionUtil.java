@@ -58,14 +58,21 @@ public class CollectionUtil {
 	public static <T> HashSet<T> newHashSet(Collection<T> initData) {
 		return new HashSet<T>(initData);
 	}
+
+    public static <T> String join(Collection<T> c, String token, Transformer<T, String> valueTransformer) {
+        return join(c, token, valueTransformer, null);
+    }
 	
-	public static <T> String join(Collection<T> c, String token, Transformer<T, String> valueTransformer) {
+	public static <T> String join(Collection<T> c, String token, Transformer<T, String> valueTransformer, Filter<T> filter) {
         if (c == null) {
             return StringUtil.EMPTY;
         }
 		boolean first = true;
 		StringBuilder sb = new StringBuilder();
 		for (T object : c) {
+            if (filter != null && !filter.accept(object)) {
+                continue;
+            }
 			if (first) {
 				first = false;
 			} else {
@@ -81,8 +88,12 @@ public class CollectionUtil {
 	}
 	
 	public static <T> String join(Collection<T> c, String token) {
-		return join(c, token, null);
+		return join(c, token, null, null);
 	}
+
+    public static <T> String join(Collection<T> c, String token, Filter<T> filter) {
+        return join(c, token, null, filter);
+    }
 
     public static <S, T> List<T> transformList(Collection<S> input, Transformer<S, T> transformer) {
         return transformList(input, transformer, null);

@@ -25,7 +25,7 @@ public class MagicList<T> extends ArrayList<T> {
 	}
 	
 	public String join(String token, Transformer<T, String> valueTransformer) {
-		return CollectionUtil.join(this, token, valueTransformer);
+		return CollectionUtil.join(this, token, valueTransformer, null);
 	}
 	
 	public static <T> MagicList<T> newList(T ...objects) {

@@ -187,7 +187,7 @@ public class UrlRewriteMapping {
                 }
                 return stringValue;
             }
-        });
+        }, null);
 
         rewritePath = trimSeparaters(rewritePath, urlContext.getArgumentSeparater());
         if (!StringUtil.isEmpty(rewritePath)) {
