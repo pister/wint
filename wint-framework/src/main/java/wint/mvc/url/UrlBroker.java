@@ -38,6 +38,8 @@ public class UrlBroker implements Render {
     private boolean pathHasNumber;
     private String suffix;
 
+    protected UrlBroker() {}
+
     public UrlBroker(UrlBrokerService urlBrokerService, String path, String target, String tokenName, String pathAsTargetName, boolean pathHasNumber) {
         super();
         this.urlBrokerService = urlBrokerService;

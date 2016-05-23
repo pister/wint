@@ -59,6 +59,14 @@ public class CollectionUtil {
 		return new HashSet<T>(initData);
 	}
 
+    public static <T> List<T> dup(T o, int count) {
+        List<T> ret = newArrayList(count);
+        for (int i = 0; i < count; ++i) {
+            ret.add(o);
+        }
+        return ret;
+    }
+
     public static <T> String join(Collection<T> c, String token, Transformer<T, String> valueTransformer) {
         return join(c, token, valueTransformer, null);
     }
@@ -93,6 +101,20 @@ public class CollectionUtil {
 
     public static <T> String join(Collection<T> c, String token, Filter<T> filter) {
         return join(c, token, null, filter);
+    }
+
+    public static <T> List<T> filter(Collection<T> input, Filter<T> filter) {
+        if (CollectionUtil.isEmpty(input)) {
+            return CollectionUtil.newArrayList(0);
+        }
+        List<T> ret = CollectionUtil.newArrayList(input.size());
+        for (T o : input) {
+            if (filter != null && !filter.accept(o)) {
+                continue;
+            }
+            ret.add(o);
+        }
+        return ret;
     }
 
     public static <S, T> List<T> transformList(Collection<S> input, Transformer<S, T> transformer) {

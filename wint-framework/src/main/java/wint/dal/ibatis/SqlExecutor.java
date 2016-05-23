@@ -1,82 +1,34 @@
 package wint.dal.ibatis;
 
 import org.springframework.orm.ibatis.SqlMapClientCallback;
-import org.springframework.orm.ibatis.SqlMapClientTemplate;
-import wint.dal.MasterForcer;
 
 import java.util.List;
 
 /**
- * User: pister
- * Date: 13-7-7
- * Time: 上午11:16
+ * User: huangsongli
+ * Date: 16/4/28
+ * Time: 上午10:47
  */
-public class SqlExecutor {
+public interface SqlExecutor {
+    Object execute(SqlMapClientCallback action);
 
-    private ReadWriteSqlMapClientSource readWriteSqlMapClientSource;
+    Object queryForObject(String statementName);
 
-    public SqlExecutor(ReadWriteSqlMapClientSource readWriteSqlMapClientSource) {
-        this.readWriteSqlMapClientSource = readWriteSqlMapClientSource;
-    }
+    Object queryForObject(String statementName, Object parameterObject);
 
-    protected SqlMapClientTemplate getWriteSqlMapClientTemplate() {
-        SqlMapClientTemplate sqlMapClientTemplate = MasterForcer.getSqlMapClientTemplate();
-        if (sqlMapClientTemplate != null) {
-            return sqlMapClientTemplate;
-        }
-        return readWriteSqlMapClientSource.getSqlMapClient(SqlMapClientTarget.MASTER);
-    }
+    List queryForList(String statementName);
 
-    protected SqlMapClientTemplate getReadSqlMapClientTemplate() {
-        SqlMapClientTemplate sqlMapClientTemplate = MasterForcer.getSqlMapClientTemplate();
-        if (sqlMapClientTemplate != null) {
-            return sqlMapClientTemplate;
-        }
-        return readWriteSqlMapClientSource.getSqlMapClient(SqlMapClientTarget.SLAVE);
-    }
+    List queryForList(String statementName, Object parameterObject);
 
-    public Object execute(SqlMapClientCallback action) {
-        return getWriteSqlMapClientTemplate().execute(action);
-    }
+    Object insert(String statementName);
 
-    public Object queryForObject(String statementName) {
-        return getReadSqlMapClientTemplate().queryForObject(statementName);
-    }
+    Object insert(String statementName, Object parameterObject);
 
-    public Object queryForObject(String statementName, Object parameterObject) {
-        return getReadSqlMapClientTemplate().queryForObject(statementName, parameterObject);
-    }
+    int update(String statementName);
 
-    public List queryForList(String statementName) {
-        return getReadSqlMapClientTemplate().queryForList(statementName);
-    }
+    int update(String statementName, Object parameterObject);
 
-    public List queryForList(String statementName, Object parameterObject) {
-        return getReadSqlMapClientTemplate().queryForList(statementName, parameterObject);
-    }
+    int delete(String statementName);
 
-    public Object insert(String statementName) {
-        return getWriteSqlMapClientTemplate().insert(statementName);
-    }
-
-    public Object insert(String statementName, Object parameterObject) {
-        return getWriteSqlMapClientTemplate().insert(statementName, parameterObject);
-    }
-
-    public int update(String statementName) {
-        return getWriteSqlMapClientTemplate().update(statementName);
-    }
-
-    public int update(String statementName, Object parameterObject) {
-        return getWriteSqlMapClientTemplate().update(statementName, parameterObject);
-    }
-
-    public int delete(String statementName) {
-        return getWriteSqlMapClientTemplate().delete(statementName);
-    }
-
-    public int delete(String statementName, Object parameterObject) {
-        return getWriteSqlMapClientTemplate().delete(statementName, parameterObject);
-    }
-
+    int delete(String statementName, Object parameterObject);
 }

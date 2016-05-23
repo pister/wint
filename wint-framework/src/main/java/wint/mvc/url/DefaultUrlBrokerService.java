@@ -12,6 +12,8 @@ import wint.mvc.url.config.UrlConfigLoader;
 import wint.mvc.url.config.UrlContext;
 import wint.mvc.url.rewrite.UrlRewriteHandle;
 import wint.mvc.url.rewrite.UrlRewriteService;
+import wint.mvc.url.rewrite.domain.DomainRewriteHandle;
+import wint.mvc.url.rewrite.domain.PathReplaceUrlBroker;
 
 import java.util.List;
 import java.util.Map;
@@ -71,6 +73,10 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
     }
 
     protected String renderForDefault(UrlBroker urlBroker) {
+        DomainRewriteHandle domainRewriteHandle = urlRewriteService.getDomainRewriteHandle();
+        if (domainRewriteHandle != null) {
+            urlBroker = new PathReplaceUrlBroker(urlBroker, domainRewriteHandle);
+        }
         return UrlBrokerUtil.renderUrlBroker(urlBroker, urlSuffix, argumentSeparater, transformer);
     }
 
@@ -78,8 +84,12 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
         if (CollectionUtil.isEmpty(handles)) {
             return renderForDefault(urlBroker);
         }
+        DomainRewriteHandle domainRewriteHandle = urlRewriteService.getDomainRewriteHandle();
         for (UrlRewriteHandle urlRewriteHandle : handles) {
             if (urlRewriteHandle.matches(urlBroker)) {
+                if (domainRewriteHandle != null) {
+                    urlBroker = new PathReplaceUrlBroker(urlBroker, domainRewriteHandle);
+                }
                 return urlRewriteHandle.rewrite(urlBroker, urlContext);
             }
         }

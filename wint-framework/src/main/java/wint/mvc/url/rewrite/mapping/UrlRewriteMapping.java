@@ -2,12 +2,16 @@ package wint.mvc.url.rewrite.mapping;
 
 import wint.lang.magic.Transformer;
 import wint.lang.utils.*;
+import wint.mvc.holder.WintContext;
 import wint.mvc.parameters.MapParameters;
+import wint.mvc.servlet.ServletUtil;
 import wint.mvc.url.UrlBroker;
 import wint.mvc.url.UrlBrokerUtil;
 import wint.mvc.url.config.UrlContext;
 import wint.mvc.url.rewrite.RequestData;
-import wint.mvc.url.rewrite.UrlBase64;
+import wint.mvc.url.rewrite.resovler.DefaultRewriteResolver;
+import wint.mvc.url.rewrite.resovler.RewriteResolver;
+import wint.mvc.url.rewrite.domain.HostConstants;
 
 import java.util.*;
 
@@ -20,45 +24,10 @@ public class UrlRewriteMapping {
 
     private static final String ESCAPE_FLAG = "!";
 
-    private static final String CHARSET = "utf-8";
-
-    private static Transformer<Object, String> transformer;
-
-    static {
-        transformer = new Transformer<Object, String>() {
-            public String transform(Object object) {
-                if (object == null) {
-                    return StringUtil.EMPTY;
-                }
-                if (object instanceof String) {
-                    String stringValue = (String)object;
-                    stringValue = UrlUtil.encode(stringValue, CHARSET);
-                    return stringValue;
-                } if (object instanceof Date) {
-                    String stringValue = DateUtil.formatDate(object, "yyyyMMddHHmmss");
-                    return stringValue;
-                } else if (object.getClass().isArray()) {
-                    return ArrayUtil.join(object, ",");
-                } else if (object instanceof Collection) {
-                    Collection<?> c = (Collection<?>)object;
-                    return CollectionUtil.join(c, ",");
-                } else {
-                    return object.toString();
-                }
-            }
-        };
-    }
-
+    private static final RewriteResolver defaultRewriteResolver = new DefaultRewriteResolver();
 
     private String baseTarget;
     private List<Item> patternItems;
-
-
-
-    public UrlRewriteMapping(String baseTarget) {
-        this.baseTarget = UrlBrokerUtil.normalizePath(baseTarget);
-        this.patternItems =  CollectionUtil.newArrayList();
-    }
 
     public UrlRewriteMapping(String baseTarget, List<Item> patternItems) {
         this.baseTarget = UrlBrokerUtil.normalizePath(baseTarget);
@@ -134,15 +103,17 @@ public class UrlRewriteMapping {
             if (i >= partsLength) {
                 break;
             }
-            String part = parts[i];
-            if (item.isBase64()) {
-                try {
-                    part = UrlBase64.decodeBase64(part);
-                } catch (Exception e) {
-                    part = null;
-                }
+            final String name = item.getName();
+            if (HostConstants.DOMAIN_NAME_L2.equals(name)) {
+                // 二级域名
+                String value = ServletUtil.getRequestHostnameL2(WintContext.getRequest());
+                value = defaultRewriteResolver.fromQueryData(item, value);
+                mapParameters.put(name, new String[]{value});
+                continue;
             }
-            mapParameters.put(item.getName(), new String[]{part});
+            String part = parts[i];
+            part = defaultRewriteResolver.fromQueryData(item, part);
+            mapParameters.put(name, new String[]{part});
             i++;
         }
         RequestData requestData = new RequestData();
@@ -164,12 +135,24 @@ public class UrlRewriteMapping {
 
     public String rewrite(UrlBroker urlBroker, UrlContext urlContext) {
         final Map<String, Object> queryData = new LinkedHashMap<String, Object>(urlBroker.getQueryData());
+
+        Item domainL2Item = null;
+        List<Item> writeItems = CollectionUtil.newArrayList(patternItems.size());
+        for (Item item : patternItems) {
+            if (item.getName().endsWith(HostConstants.DOMAIN_NAME_L2)) {
+                domainL2Item = item;
+            } else {
+                writeItems.add(item);
+            }
+        }
+
         StringBuilder sb = new StringBuilder();
-        sb.append(urlBroker.getPath());
+        String path = urlBroker.getPath();
+        sb.append(path);
         String target = UrlBrokerUtil.trimLastSlash(UrlBrokerUtil.normalizePath(urlBroker.getTarget()));
         sb.append(target);
         final Set<String> rewritedNames = new HashSet<String>();
-        String rewritePath = CollectionUtil.join(patternItems, urlContext.getArgumentSeparater(), new Transformer<Item, String>() {
+        String rewritePath = CollectionUtil.join(writeItems, urlContext.getArgumentSeparater(), new Transformer<Item, String>() {
             @Override
             public String transform(Item item) {
                 String name = item.getName();
@@ -179,12 +162,7 @@ public class UrlRewriteMapping {
                 if (value == null) {
                     return StringUtil.EMPTY;
                 }
-                String stringValue;
-                if (item.isBase64()) {
-                    stringValue = UrlBase64.encodeBase64(value.toString());
-                } else {
-                    stringValue = transformer.transform(value);
-                }
+                String stringValue = defaultRewriteResolver.toQueryData(item, value);
                 return stringValue;
             }
         }, null);

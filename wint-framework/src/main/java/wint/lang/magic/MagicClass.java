@@ -95,7 +95,7 @@ public abstract class MagicClass implements Serializable {
     }
 
     /**
-     * 获取所有可读and可写熟悉
+     * 获取所有可读and可写属性
      *
      * @return
      */
@@ -111,7 +111,7 @@ public abstract class MagicClass implements Serializable {
     }
 
     /**
-     * 获取所有可写熟悉
+     * 获取所有可写属性
      *
      * @return
      */

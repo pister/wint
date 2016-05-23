@@ -71,23 +71,42 @@ public class ResultRunTimeForm implements RunTimeForm {
 
 		
 		private void initFields(Form form, Object object) {
-			MagicObject magicObject = MagicObject.wrap(object);
-			Map<String, Field> fields = form.getFields();
-			for (Map.Entry<String, Field> entry : fields.entrySet()) {
-				String name = entry.getKey();
-				Field field = entry.getValue();
-                FieldConfig fieldConfig = field.getFieldConfig();
-				Field runtimeField = new DefaultField(field.getFieldConfig(), form);
-				
-				Object propertyValue = magicObject.getPropertyValue(name);
-				String stringValue = valueToString(propertyValue);
-				runtimeField.setValue(stringValue);
+            Map<String, Field> fields = form.getFields();
+            if (object instanceof Map) {
+                Map<String, Object> properties = (Map<String, Object>)object;
+                for (Map.Entry<String, Field> entry : fields.entrySet()) {
+                    String name = entry.getKey();
+                    Field field = entry.getValue();
+                    FieldConfig fieldConfig = field.getFieldConfig();
+                    Field runtimeField = new DefaultField(field.getFieldConfig(), form);
 
-                String[] values = getStringValues(propertyValue, stringValue, fieldConfig);
-                runtimeField.setValues(values);
+                    Object propertyValue = properties.get(name);
+                    String stringValue = valueToString(propertyValue);
+                    runtimeField.setValue(stringValue);
 
-				runtimeFields.put(name, runtimeField);
-			}
+                    String[] values = getStringValues(propertyValue, stringValue, fieldConfig);
+                    runtimeField.setValues(values);
+
+                    runtimeFields.put(name, runtimeField);
+                }
+            } else {
+                MagicObject magicObject = MagicObject.wrap(object);
+                for (Map.Entry<String, Field> entry : fields.entrySet()) {
+                    String name = entry.getKey();
+                    Field field = entry.getValue();
+                    FieldConfig fieldConfig = field.getFieldConfig();
+                    Field runtimeField = new DefaultField(field.getFieldConfig(), form);
+
+                    Object propertyValue = magicObject.getPropertyValue(name);
+                    String stringValue = valueToString(propertyValue);
+                    runtimeField.setValue(stringValue);
+
+                    String[] values = getStringValues(propertyValue, stringValue, fieldConfig);
+                    runtimeField.setValues(values);
+
+                    runtimeFields.put(name, runtimeField);
+                }
+            }
 		}
 
         private String[] getStringValues(Object propertyValue, String stringValue, FieldConfig fieldConfig) {

@@ -12,10 +12,10 @@ public class ReadWriteSqlMapClientDaoSupport implements InitializingBean {
 
     private ReadWriteSqlMapClientSource readWriteSqlMapClientSource;
 
-    private SqlExecutor sqlMapExecutor;
+    protected SqlExecutor sqlMapExecutor;
 
     public void afterPropertiesSet() throws Exception {
-        sqlMapExecutor = new SqlExecutor(readWriteSqlMapClientSource);
+        sqlMapExecutor = new DefaultSqlExecutor(readWriteSqlMapClientSource);
     }
 
     public SqlExecutor getSqlExecutor() {

@@ -2,11 +2,13 @@ package wint.lang.magic;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 import wint.lang.WintException;
 import wint.lang.exceptions.CanNotFindMethodException;
 import wint.lang.magic.config.MagicFactory;
 import wint.lang.utils.ArrayUtil;
+import wint.lang.utils.MapUtil;
 import wint.lang.utils.ObjectUtil;
 
 /**
@@ -45,6 +47,18 @@ public abstract class MagicObject {
 		}
 		return property.getValue(targetObject);
 	}
+
+    public Map<String, Object> getPropertiesAsMap() {
+        Map<String, Property> propertyMap = magicClass.getReadableProperties();
+        Map<String, Object> ret = MapUtil.newHashMap();
+        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
+            String name = entry.getKey();
+            Property property = entry.getValue();
+            Object value = property.getValue(targetObject);
+            ret.put(name, value);
+        }
+        return ret;
+    }
 
     /**
      * 方法调用

@@ -2,11 +2,17 @@ package wint.mvc.url.rewrite;
 
 import wint.core.config.Constants;
 import wint.core.service.AbstractService;
+import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicMap;
 import wint.lang.magic.Transformer;
 import wint.lang.utils.CollectionUtil;
+import wint.lang.utils.StringUtil;
+import wint.mvc.url.rewrite.domain.DefaultDomainRewriteHandle;
+import wint.mvc.url.rewrite.domain.DomainParser;
+import wint.mvc.url.rewrite.domain.DefaultDomainParser;
+import wint.mvc.url.rewrite.domain.DomainRewriteHandle;
 import wint.mvc.url.rewrite.mapping.UrlRewriteMapping;
-import wint.mvc.url.rewrite.mapping.UrlRewriteMappingItem;
+import wint.mvc.url.rewrite.mapping.UrlRewriteMappingItem;import wint.mvc.url.rewrite.resovler.RewriteResolver;
 
 import java.util.List;
 
@@ -22,6 +28,16 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
 
     private List<String> rewriteMappingList;
 
+    private String domainL2Parameter;
+
+    private String defaultDomainL2Value;
+
+    private RewriteResolver domainL2Resolver;
+
+    private DomainParser domainParser;
+
+    private DomainRewriteHandle domainRewriteHandle;
+
     @Override
     public void init() {
         super.init();
@@ -36,6 +52,10 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
             });
             this.setRewriteMappings(urlRewriteMappingItems);
         }
+        if (StringUtil.isNotEmpty(domainL2Parameter) && domainL2Resolver != null) {
+            domainParser = new DefaultDomainParser(domainL2Parameter, domainL2Resolver);
+            domainRewriteHandle = new DefaultDomainRewriteHandle(domainL2Parameter, defaultDomainL2Value, domainL2Resolver);
+        }
     }
 
     @Override
@@ -47,6 +67,16 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
         for (UrlRewriteHandle handle : handles) {
             this.handles.add(handle);
         }
+    }
+
+    @Override
+    public DomainParser getDomainParser() {
+        return domainParser;
+    }
+
+    @Override
+    public DomainRewriteHandle getDomainRewriteHandle() {
+        return domainRewriteHandle;
     }
 
     public void setRewriteMappings(List<UrlRewriteMappingItem> urlRewriteMappingItems) {
@@ -72,4 +102,15 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
         }
     }
 
+    public void setDomainL2Parameter(String domainL2Parameter) {
+        this.domainL2Parameter = StringUtil.camelToFixedString(domainL2Parameter, "-");
+    }
+
+    public void setDomainL2Resolver(RewriteResolver domainL2Resolver) {
+        this.domainL2Resolver = domainL2Resolver;
+    }
+
+    public void setDefaultDomainL2Value(String defaultDomainL2Value) {
+        this.defaultDomainL2Value = defaultDomainL2Value;
+    }
 }
