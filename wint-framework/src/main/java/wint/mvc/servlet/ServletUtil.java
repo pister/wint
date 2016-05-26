@@ -50,7 +50,7 @@ public class ServletUtil {
             return null;
         }
         String name = hostname.substring(0, hostname.length() - suffix.length());
-        int pos = name.indexOf(".");
+        int pos = name.lastIndexOf(".");
         if (pos < 0) {
             return null;
         }

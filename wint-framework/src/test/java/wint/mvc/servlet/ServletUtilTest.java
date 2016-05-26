@@ -1,5 +1,6 @@
 package wint.mvc.servlet;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 /**
@@ -25,11 +26,14 @@ public class ServletUtilTest extends TestCase {
     }
 
     public void test2() {
-        System.out.println(ServletUtil.getHostnameL2("aaa.bb.com"));
-        System.out.println(ServletUtil.getHostnameL2("aaa.bb.com.cn"));
-        System.out.println(ServletUtil.getHostnameL2("bb.net"));
-        System.out.println(ServletUtil.getHostnameL2("bb.net.cn"));
-        System.out.println(ServletUtil.getHostnameL2("cc.bb.net.cn"));
+        Assert.assertEquals("aaa", ServletUtil.getHostnameL2("aaa.bb.com"));
+        Assert.assertEquals("aaa.cc", ServletUtil.getHostnameL2("aaa.cc.bb.com"));
+        Assert.assertEquals("aaa",ServletUtil.getHostnameL2("aaa.bb.com.cn"));
+        Assert.assertEquals("aaa.cc",ServletUtil.getHostnameL2("aaa.cc.bb.com.cn"));
+        Assert.assertEquals(null,ServletUtil.getHostnameL2("bb.net"));
+        Assert.assertEquals(null,ServletUtil.getHostnameL2("bb.net.cn"));
+        Assert.assertEquals("cc",ServletUtil.getHostnameL2("cc.bb.net.cn"));
+        Assert.assertEquals("aa.cc",ServletUtil.getHostnameL2("aa.cc.bb.net.cn"));
     }
 
 }
