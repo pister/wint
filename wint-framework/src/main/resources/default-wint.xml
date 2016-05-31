@@ -68,7 +68,7 @@
     <object class="wint.mvc.template.widget.outer.DefaultOuterWidgetContainerService">
 	</object>
 	
-	<object class="wint.help.autoreload.form.AutoReloadFormServiceSupport">
+	<object class="wint.mvc.form.DefaultFormService">
 	</object>
 	
 	<object class="wint.mvc.i18n.DefaultResourceBundleService">
@@ -84,7 +84,7 @@
 		</object>
 	</object>
 	
-	<object class="wint.help.autoreload.url.AutoReloadUrlBrokerServiceSupport">
+	<object class="wint.mvc.url.DefaultUrlBrokerService">
 	</object>
 	
 	<object class="wint.mvc.view.DefaultViewRenderService">
