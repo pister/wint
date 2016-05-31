@@ -65,7 +65,7 @@ public class AuthLoginValve extends AbstractValve {
 		}
 	}
 	
-	private String getRequestURL() {
+	protected String getRequestURL() {
 		return UrlUtil.getRequestURL(WintContext.getRequest());
 	}
 	
@@ -85,14 +85,23 @@ public class AuthLoginValve extends AbstractValve {
 		if (StringUtil.equals(target, loginTarget) || StringUtil.equals(target, doLoginTarget)) {
 			return true;
 		}
-		if (protectedUrls.contains(target)) {
+		if (protectedUrlContains(target)) {
 			return isUserLogin(flowData);
-		} else if (unprotectedUrls.contains(target)) {
+		} else if (unprotectedUrlContains(target)) {
 			return true;
 		} else {
 			return isUserLogin(flowData);
 		}
 	}
+
+    protected boolean protectedUrlContains(String target) {
+        return protectedUrls.contains(target);
+    }
+
+    protected boolean unprotectedUrlContains(String target) {
+        return unprotectedUrls.contains(target);
+    }
+
 	
 	protected boolean isUserLogin(FlowData flowData) {
 		Object userIdValue = flowData.getSession().getAttribute(userIdKey);

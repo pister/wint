@@ -13,7 +13,7 @@ import wint.mvc.url.config.UrlContext;
 import wint.mvc.url.rewrite.UrlRewriteHandle;
 import wint.mvc.url.rewrite.UrlRewriteService;
 import wint.mvc.url.rewrite.domain.DomainRewriteHandle;
-import wint.mvc.url.rewrite.domain.PathReplaceUrlBroker;
+import wint.mvc.url.rewrite.domain.DomainRewriteUrlBroker;
 
 import java.util.List;
 import java.util.Map;
@@ -50,7 +50,8 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
         Map<String, AbstractUrlConfig> urlConfigs = urlConfigLoader.loadUrlModules();
         urlModules = MapUtil.newHashMap();
         for (Map.Entry<String, AbstractUrlConfig> entry : urlConfigs.entrySet()) {
-            urlModules.put(entry.getKey(), new DefaultUrlModule(this, entry.getValue().getPath(), tokenName, pathAsTargetName));
+            String moduleName = entry.getKey();
+            urlModules.put(moduleName, new DefaultUrlModule(moduleName, this, entry.getValue().getPath(), tokenName, pathAsTargetName));
         }
 
         urlContext = new UrlContext();
@@ -73,23 +74,33 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
     }
 
     protected String renderForDefault(UrlBroker urlBroker) {
+        /*
         DomainRewriteHandle domainRewriteHandle = urlRewriteService.getDomainRewriteHandle();
         if (domainRewriteHandle != null) {
-            urlBroker = new PathReplaceUrlBroker(urlBroker, domainRewriteHandle);
+            urlBroker = new DomainRewriteUrlBroker(urlBroker, domainRewriteHandle);
         }
+        */
         return UrlBrokerUtil.renderUrlBroker(urlBroker, urlSuffix, argumentSeparater, transformer);
     }
 
+    protected UrlBroker makeUrlBrokerForRender(UrlBroker urlBroker) {
+        if (!urlRewriteService.acceptModule(urlBroker.getModuleName())) {
+            return urlBroker;
+        }
+        DomainRewriteHandle domainRewriteHandle = urlRewriteService.getDomainRewriteHandle();
+        if (domainRewriteHandle == null) {
+            return urlBroker;
+        }
+        return new DomainRewriteUrlBroker(urlBroker, domainRewriteHandle);
+    }
+
     public String render(UrlBroker urlBroker) {
+        urlBroker = makeUrlBrokerForRender(urlBroker);
         if (CollectionUtil.isEmpty(handles)) {
             return renderForDefault(urlBroker);
         }
-        DomainRewriteHandle domainRewriteHandle = urlRewriteService.getDomainRewriteHandle();
         for (UrlRewriteHandle urlRewriteHandle : handles) {
             if (urlRewriteHandle.matches(urlBroker)) {
-                if (domainRewriteHandle != null) {
-                    urlBroker = new PathReplaceUrlBroker(urlBroker, domainRewriteHandle);
-                }
                 return urlRewriteHandle.rewrite(urlBroker, urlContext);
             }
         }

@@ -11,13 +11,13 @@ import java.util.Map;
  * Date: 16/5/23
  * Time: 下午5:36
  */
-public class PathReplaceUrlBroker extends UrlBroker {
+public class DomainRewriteUrlBroker extends UrlBroker {
 
     private UrlBroker targetUrlBroker;
     private DomainRewriteHandle domainRewriteHandle;
 
 
-    public PathReplaceUrlBroker(UrlBroker targetUrlBroker, DomainRewriteHandle domainRewriteHandle) {
+    public DomainRewriteUrlBroker(UrlBroker targetUrlBroker, DomainRewriteHandle domainRewriteHandle) {
         this.targetUrlBroker = targetUrlBroker;
         this.domainRewriteHandle = domainRewriteHandle;
     }
@@ -131,6 +131,11 @@ public class PathReplaceUrlBroker extends UrlBroker {
     @Override
     public UrlBroker setAnchor(String anchor) {
         return targetUrlBroker.setAnchor(anchor);
+    }
+
+    @Override
+    public String getModuleName() {
+        return targetUrlBroker.getModuleName();
     }
 
     @Override

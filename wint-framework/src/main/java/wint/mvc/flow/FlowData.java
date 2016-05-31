@@ -195,4 +195,10 @@ public interface FlowData {
      * @return
      */
     String getSuffix();
+
+    /**
+     * 获取请求方法： post, get, etc.
+     * @return
+     */
+    String getRequestMethod();
 }

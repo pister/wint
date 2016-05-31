@@ -10,6 +10,7 @@ import wint.mvc.url.UrlModule;
  * 自动加载url配置（仅开发模式）
  * @author pister
  * 2012-5-16 下午11:18:01
+ * @deprecated
  */
 public class AutoReloadUrlBrokerServiceSupport extends DefaultUrlBrokerService {
 

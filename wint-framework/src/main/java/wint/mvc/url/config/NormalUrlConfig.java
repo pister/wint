@@ -20,7 +20,7 @@ public class NormalUrlConfig extends AbstractUrlConfig {
 	
 	public NormalUrlConfig(String name, String contextPath) {
 		super(name);
-		this.contextPath = UrlBrokerUtil.normalizePath(contextPath);;
+		this.contextPath = UrlBrokerUtil.normalizePath(contextPath);
 	}
 	
 	@Override

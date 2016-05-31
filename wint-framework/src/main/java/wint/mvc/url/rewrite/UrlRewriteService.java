@@ -22,4 +22,6 @@ public interface UrlRewriteService extends Service {
     DomainRewriteHandle getDomainRewriteHandle();
 
     void setRewritePatterns(List<String> rewriteMappingList);
+
+    boolean acceptModule(String moduleName);
 }

@@ -20,6 +20,7 @@ import wint.mvc.url.config.UrlConfigLoader;
  * 支持url配置自动加载
  * @author pister
  * 2012-5-16 下午11:24:27
+ * @deprecated
  */
 public class AutoReloadUrlBrokerService {
 	
@@ -80,7 +81,7 @@ public class AutoReloadUrlBrokerService {
 			Map<String, AbstractUrlConfig> urlConfigs = urlConfigLoader.loadUrlModules();
 			Map<String, UrlModule> newUrlModules = MapUtil.newHashMap();
 			for (Map.Entry<String, AbstractUrlConfig> entry : urlConfigs.entrySet()) {
-				newUrlModules.put(entry.getKey(), new DefaultUrlModule(urlBrokerService, entry.getValue().getPath(), tokenName, pathAsTargetName));
+				newUrlModules.put(entry.getKey(), new DefaultUrlModule(entry.getKey(), urlBrokerService, entry.getValue().getPath(), tokenName, pathAsTargetName));
 			}
 			
 			urlModules = newUrlModules;

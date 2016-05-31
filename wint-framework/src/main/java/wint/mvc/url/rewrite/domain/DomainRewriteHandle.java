@@ -14,4 +14,5 @@ public interface DomainRewriteHandle {
     RewriteResolver getRewriteResolver();
 
     String getDefaultDomainL2Value();
+
 }

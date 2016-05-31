@@ -16,7 +16,7 @@ public class UrlRewriteMappingTest extends TestCase {
     UrlRewriteMapping urlRewriteMapping = UrlRewriteMapping.parseFromString("hello/abc/!name-age-page-siteAddress", "-");
 
     public void testRender() throws Exception {
-        UrlBroker urlBroker = new UrlBroker(null, "http://111.mydomain.com", "hello/abc", null, null, false);
+        UrlBroker urlBroker = new UrlBroker(null, null, "http://111.mydomain.com", "hello/abc", null, null, false);
         urlBroker.param("name", "hsl");
         urlBroker.param("age", 21);
         urlBroker.param("page", 2);

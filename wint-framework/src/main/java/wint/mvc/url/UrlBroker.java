@@ -27,6 +27,7 @@ import java.util.Map;
  */
 public class UrlBroker implements Render {
 
+    private String moduleName;
     private UrlBrokerService urlBrokerService;
     private String path;
     private String target;
@@ -40,8 +41,10 @@ public class UrlBroker implements Render {
 
     protected UrlBroker() {}
 
-    public UrlBroker(UrlBrokerService urlBrokerService, String path, String target, String tokenName, String pathAsTargetName, boolean pathHasNumber) {
+    public UrlBroker(String moduleName, UrlBrokerService urlBrokerService, String path, String target,
+                     String tokenName, String pathAsTargetName, boolean pathHasNumber) {
         super();
+        this.moduleName = moduleName;
         this.urlBrokerService = urlBrokerService;
         this.path = UrlBrokerUtil.normalizePath(path);
         target = StringUtil.getLastBefore(target, ".");
@@ -272,6 +275,10 @@ public class UrlBroker implements Render {
     public UrlBroker setAnchor(String anchor) {
         this.anchor = anchor;
         return this;
+    }
+
+    public String getModuleName() {
+        return moduleName;
     }
 
     public String getSuffix() {

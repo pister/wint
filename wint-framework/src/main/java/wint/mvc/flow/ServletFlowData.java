@@ -395,4 +395,9 @@ public class ServletFlowData implements InnerFlowData {
     public void setSuffix(String suffix) {
         this.suffix = suffix;
     }
+
+    @Override
+    public String getRequestMethod() {
+        return httpServletRequest.getMethod();
+    }
 }

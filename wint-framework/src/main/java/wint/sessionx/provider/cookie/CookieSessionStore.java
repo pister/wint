@@ -1,15 +1,13 @@
 package wint.sessionx.provider.cookie;
 
-import wint.lang.magic.MagicMap;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
 import wint.sessionx.constants.SpecSessionKeys;
 import wint.sessionx.cookie.WintCookie;
-import wint.sessionx.constants.AttrKeys;
-import wint.sessionx.filter.FilterContext;
 import wint.sessionx.provider.BaseConfig;
+import wint.sessionx.provider.batch.BatchGetReceiver;
+import wint.sessionx.provider.batch.CookieSessionAttributeReader;
 import wint.sessionx.provider.sessionid.SessionIdGenerator;
-import wint.sessionx.servlet.WintSessionHttpServletResponse;
 import wint.sessionx.store.AbstractSessionStore;
 import wint.sessionx.store.SessionData;
 
@@ -22,15 +20,10 @@ import java.util.Set;
 public class CookieSessionStore extends AbstractSessionStore {
 
     private CookieSessionConfig config;
-
     private SessionIdGenerator sessionIdGenerator;
-
     private Map<String, SessionData> orgData = MapUtil.newHashMap();
-
     private Set<String> toBeDeleteNames = CollectionUtil.newHashSet();
-
     private Map<String, SessionData> updatedData = MapUtil.newHashMap();
-
     private CookieCodec cookieCodec;
 
     public CookieSessionStore(CookieCodec cookieCodec, CookieSessionConfig config, SessionIdGenerator sessionIdGenerator) {
@@ -58,6 +51,11 @@ public class CookieSessionStore extends AbstractSessionStore {
             return ret;
         }
         return orgData.get(name);
+    }
+
+    @Override
+    public void batchGet(BatchGetReceiver batchGetReceiver) {
+        batchGetReceiver.onReceive(new CookieSessionAttributeReader(this));
     }
 
     public void remove(String name) {
@@ -95,7 +93,6 @@ public class CookieSessionStore extends AbstractSessionStore {
     public void initData(Map<String, SessionData> data) {
         this.orgData.putAll(data);
     }
-
 
     public Set<String> getToBeDeleteNames() {
         return toBeDeleteNames;

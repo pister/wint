@@ -15,6 +15,7 @@ import wint.mvc.url.rewrite.mapping.UrlRewriteMapping;
 import wint.mvc.url.rewrite.mapping.UrlRewriteMappingItem;import wint.mvc.url.rewrite.resovler.RewriteResolver;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: huangsongli
@@ -37,6 +38,8 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
     private DomainParser domainParser;
 
     private DomainRewriteHandle domainRewriteHandle;
+
+    private Set<String> applyModules;
 
     @Override
     public void init() {
@@ -96,6 +99,14 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
         return parsers;
     }
 
+    @Override
+    public boolean acceptModule(String moduleName) {
+        if (CollectionUtil.isEmpty(applyModules)) {
+            return false;
+        }
+        return applyModules.contains(moduleName);
+    }
+
     public void setParsers(List<UrlRewriteParser> parsers) {
         for (UrlRewriteParser urlRewriteParser : parsers) {
             this.parsers.add(urlRewriteParser);
@@ -112,5 +123,9 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
 
     public void setDefaultDomainL2Value(String defaultDomainL2Value) {
         this.defaultDomainL2Value = defaultDomainL2Value;
+    }
+
+    public void setApplyModules(List<String> applyModules) {
+        this.applyModules = CollectionUtil.newHashSet(applyModules);
     }
 }

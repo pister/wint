@@ -10,9 +10,7 @@ import wint.mvc.url.rewrite.resovler.RewriteResolver;
 public class DefaultDomainRewriteHandle implements DomainRewriteHandle {
 
     private String parameterName;
-
     private String defaultDomainL2Value;
-
     private RewriteResolver rewriteResolver;
 
     public DefaultDomainRewriteHandle(String parameterName, String defaultDomainL2Value, RewriteResolver rewriteResolver) {
@@ -20,7 +18,6 @@ public class DefaultDomainRewriteHandle implements DomainRewriteHandle {
         this.defaultDomainL2Value = defaultDomainL2Value;
         this.rewriteResolver = rewriteResolver;
     }
-
 
     @Override
     public String getParameterName() {
@@ -36,4 +33,6 @@ public class DefaultDomainRewriteHandle implements DomainRewriteHandle {
     public String getDefaultDomainL2Value() {
         return defaultDomainL2Value;
     }
+
+
 }

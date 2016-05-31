@@ -193,4 +193,9 @@ public class WidgetInnerFlowData implements InnerFlowData {
     public void setParameters(Parameters parameters) {
         innerFlowData.setParameters(parameters);
     }
+
+    @Override
+    public String getRequestMethod() {
+        return innerFlowData.getRequestMethod();
+    }
 }

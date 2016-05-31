@@ -7,6 +7,8 @@ import wint.help.redis.RedisCommandNoResult;
 import wint.lang.utils.StringUtil;
 import wint.sessionx.cookie.WintCookie;
 import wint.sessionx.provider.BaseConfig;
+import wint.sessionx.provider.batch.BatchGetReceiver;
+import wint.sessionx.provider.batch.RedisSessionAttributeReader;
 import wint.sessionx.provider.sessionid.SessionIdGenerator;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.store.AbstractSessionStore;
@@ -49,6 +51,17 @@ public class RedisSessionStore extends AbstractSessionStore {
             public SessionData doInExec(JedisCommands commands) {
                 String data = commands.hget(getRedisKey(), name);
                 return (SessionData) serializeService.unserialize(data);
+            }
+        });
+    }
+
+    @Override
+    public void batchGet(final BatchGetReceiver batchGetReceiver) {
+        redisClient.getRedisTemplate().executeNoResult(new RedisCommandNoResult() {
+            @Override
+            public void doInExec(JedisCommands commands) {
+                RedisSessionAttributeReader attributeReader = new RedisSessionAttributeReader(commands, getRedisKey(), serializeService);
+                batchGetReceiver.onReceive(attributeReader);
             }
         });
     }
