@@ -14,6 +14,7 @@ import wint.mvc.flow.InnerFlowData;
 import wint.mvc.form.runtime.InputFormFactory;
 import wint.mvc.i18n.ResourceBundleService;
 import wint.mvc.i18n.ResourceBundleServiceWrapper;
+import wint.mvc.parameters.Parameters;
 import wint.mvc.parameters.TemplateArguments;
 import wint.mvc.parameters.TemplateParameters;
 import wint.mvc.template.widget.WidgetContainer;
@@ -103,7 +104,7 @@ public class DefaultInternerVariableService extends AbstractService implements I
             ret.put(outerContainerName, outerWidgetContainer);
         }
 
-		TemplateParameters params = new TemplateParameters(flowData.getParameters());
+        Parameters params = flowData.getParameters();
 		TemplateArguments arguments = new TemplateArguments(flowData.getArguments());
 		
 		ret.put(paramsName, params);

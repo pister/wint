@@ -67,4 +67,8 @@ public class DefaultRewriteResolver implements RewriteResolver {
         }
         return input;
     }
+
+    @Override
+    public void setDefaultDomainL2Value(String defaultDomainL2Value) {
+    }
 }

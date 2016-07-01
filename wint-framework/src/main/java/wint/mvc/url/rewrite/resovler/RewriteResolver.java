@@ -13,4 +13,6 @@ public interface RewriteResolver {
 
     String fromQueryData(Item item, String input);
 
+    void setDefaultDomainL2Value(String defaultDomainL2Value);
+
 }

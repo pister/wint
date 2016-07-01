@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public class SentinelRedisClient extends AbstractRedisClient<Jedis> {
 
-    // sentinel://mymaster@127.0.0.1:6379;127.0.0.1:6379
+    // sentinel://mymaster@127.0.0.1:26379;127.0.0.1:26379
     private static final String DEFAULT_MASTER_NAME = "mymaster";
 
     @Override

@@ -57,6 +57,7 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
         }
         if (StringUtil.isNotEmpty(domainL2Parameter) && domainL2Resolver != null) {
             domainParser = new DefaultDomainParser(domainL2Parameter, domainL2Resolver);
+            domainL2Resolver.setDefaultDomainL2Value(defaultDomainL2Value);
             domainRewriteHandle = new DefaultDomainRewriteHandle(domainL2Parameter, defaultDomainL2Value, domainL2Resolver);
         }
     }
