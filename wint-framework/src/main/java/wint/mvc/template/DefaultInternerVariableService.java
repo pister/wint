@@ -16,7 +16,6 @@ import wint.mvc.i18n.ResourceBundleService;
 import wint.mvc.i18n.ResourceBundleServiceWrapper;
 import wint.mvc.parameters.Parameters;
 import wint.mvc.parameters.TemplateArguments;
-import wint.mvc.parameters.TemplateParameters;
 import wint.mvc.template.widget.WidgetContainer;
 import wint.mvc.template.widget.WidgetContainerService;
 import wint.mvc.template.widget.outer.OuterWidgetContainer;
