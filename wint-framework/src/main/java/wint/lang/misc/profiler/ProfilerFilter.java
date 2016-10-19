@@ -19,7 +19,7 @@ public class ProfilerFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		try {
-			Profiler.start("start proccess...");
+			Profiler.start("start process...");
 			chain.doFilter(request, response);			
 		} finally {
 			Profiler.release();
