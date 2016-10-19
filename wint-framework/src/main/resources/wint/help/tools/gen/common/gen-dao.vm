@@ -22,7 +22,9 @@ public interface ${className} {
 
 	${domainName} queryById(${idType} id);
 
-    Map<${idTypeWrapper}, ${domainName}> queryByIds(List<${idTypeWrapper}> ids);
+    List<${domainName}> queryByIds(List<${idTypeWrapper}> ids);
+
+    Map<${idTypeWrapper}, ${domainName}> queryByIdsAsMap(List<${idTypeWrapper}> ids);
 
     List<${domainName}> queryForPage(BaseQuery query);
 }

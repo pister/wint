@@ -1,7 +1,7 @@
 package ${thisPackage};
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 import ${doFullClassName};
 import ${baseTestFullName};
 import junit.framework.Assert;
@@ -27,7 +27,7 @@ ${propertySetter}
         Assert.assertTrue(id > 0);
         ${doName} ${doObject_2} = ${daoPropertyname}.queryById(id);
         Assert.assertNotNull(${doObject_2});
-        Map<${idTypeWrapper}, ${doName}> ${doObject_3} = ${daoPropertyname}.queryByIds(Arrays.asList(id));
+        List<${doName}> ${doObject_3} = ${daoPropertyname}.queryByIds(Arrays.asList(id));
         Assert.assertNotNull(${doObject_3});
         Assert.assertTrue(!${doObject_3}.isEmpty());
     }
