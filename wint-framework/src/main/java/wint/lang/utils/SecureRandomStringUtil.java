@@ -148,8 +148,8 @@ public class SecureRandomStringUtil {
      * @param count  the length of random string to create
      * @param start  the position in set of chars to start at
      * @param end  the position in set of chars to end before
-     * @param letters  only allow letters?
-     * @param numbers  only allow numbers?
+     * @param letters  only allowSuffix letters?
+     * @param numbers  only allowSuffix numbers?
      * @param chars  the set of chars to choose randoms from.
      *  If <code>null</code>, then it will use the set of all chars.
      * @return the random string
@@ -182,8 +182,8 @@ public class SecureRandomStringUtil {
      * @param count  the length of random string to create
      * @param start  the position in set of chars to start at
      * @param end  the position in set of chars to end before
-     * @param letters  only allow letters?
-     * @param numbers  only allow numbers?
+     * @param letters  only allowSuffix letters?
+     * @param numbers  only allowSuffix numbers?
      * @param chars  the set of chars to choose randoms from.
      *  If <code>null</code>, then it will use the set of all chars.
      * @param random  a source of randomness.

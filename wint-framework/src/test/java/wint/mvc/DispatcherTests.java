@@ -131,5 +131,12 @@ public class DispatcherTests extends TestCase {
         dispatcherServlet.service(request, response);
     }
 
+    public void testLimitAction() throws ServletException, IOException {
+        MagicMap parameters = MagicMap.newMagicMap();
+        HttpServletRequest request = new HttpServletRequestMock("hello/helloLimit.htm", parameters, servletConfigMock.getServletContext());
+        HttpServletResponse response = new HttpServletResponseMock();
+        dispatcherServlet.service(request, response);
+    }
+
 
 }

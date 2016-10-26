@@ -221,7 +221,7 @@ public class UrlBase64 {
 
         // If the output is to be "chunked" into 76 character sections, 
         // for compliance with RFC 2045 MIME, then it is important to 
-        // allow for extra length to account for the separator(s)
+        // allowSuffix for extra length to account for the separator(s)
         if (isChunked) {
 
             nbrChunks =

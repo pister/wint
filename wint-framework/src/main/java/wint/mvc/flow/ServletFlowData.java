@@ -92,7 +92,9 @@ public class ServletFlowData implements InnerFlowData {
 
         parameters = new ServletParameters(httpServletRequest);
         target = ServletUtil.getServletPathWithRequestContext(httpServletRequest, requestContextPath);
-        suffix = StringUtil.getLastAfter(target, ".");
+        if (target.contains(".")) {
+            suffix = StringUtil.getLastAfter(target, ".");
+        }
         locale = httpServletRequest.getLocale();
 
         viewType = ViewTypes.TEMPLATE_VIEW_TYPE;

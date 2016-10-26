@@ -8,15 +8,10 @@ import wint.core.service.AbstractService;
 import wint.core.service.env.Environment;
 import wint.core.service.initial.ConfigurationAwire;
 import wint.core.service.thread.LocalThreadService;
-import wint.core.service.thread.ThreadPoolService;
-import wint.lang.exceptions.FlowDataException;
 import wint.lang.exceptions.ResourceException;
 import wint.lang.magic.MagicList;
 import wint.lang.magic.MagicMap;
-import wint.lang.utils.FileUtil;
-import wint.lang.utils.MapUtil;
-import wint.lang.utils.StringUtil;
-import wint.lang.utils.SystemUtil;
+import wint.lang.utils.*;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.holder.WintContext;
 import wint.mvc.module.ModuleInfo;
@@ -29,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
 
@@ -53,7 +47,7 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
     public void init() {
         super.init();
         this.resourceLoader = this.serviceContext.getResourceLoader();
-        this.viewRenderService = (ViewRenderService) serviceContext.getService(ViewRenderService.class);
+        this.viewRenderService = serviceContext.getService(ViewRenderService.class);
         MagicMap properties = configuration.getProperties();
 
         if (StringUtil.isEmpty(templatePath)) {
@@ -112,26 +106,7 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
                 }
             });
             FutureTask<TemplateEntry> existFutureTask = cachedTemplateEntries.putIfAbsent(key, newFutureTask);
-            if (existFutureTask != null) {
-                try {
-                    return existFutureTask.get();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new FlowDataException(e);
-                } catch (ExecutionException e) {
-                    throw new FlowDataException(e);
-                }
-            } else {
-                executorService.submit(newFutureTask);
-                try {
-                    return newFutureTask.get();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new FlowDataException(e);
-                } catch (ExecutionException e) {
-                    throw new FlowDataException(e);
-                }
-            }
+            return TaskUtil.executeTask(executorService, newFutureTask, existFutureTask);
         }
     }
 

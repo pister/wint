@@ -4,7 +4,7 @@
     <groupId>wint</groupId>
     <artifactId>wint-framework</artifactId>
     <packaging>jar</packaging>
-    <version>1.4.5.1</version>
+    <version>1.4.5.2-SNAPSHOT</version>
     <name>wint-framework</name>
     <url>http://maven.apache.org</url>
 
@@ -209,8 +209,5 @@
             </plugin>
         </plugins>
     </build>
-
-
-
 
 </project>

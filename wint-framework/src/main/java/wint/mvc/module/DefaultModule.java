@@ -1,6 +1,7 @@
 package wint.mvc.module;
 
 import wint.lang.collections.FastStack;
+import wint.lang.exceptions.FlowDataException;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicList;
 import wint.lang.magic.MagicObject;
@@ -37,6 +38,10 @@ public class DefaultModule implements ExecutionModule {
 	public String execute(InnerFlowData flowData, Context context, MagicList<Object> indexedParameters) {
 		try {
 			Profiler.enter("execute module: " + flowData.getTarget());
+			String suffix = flowData.getSuffix();
+			if (!moduleInfo.acceptSuffix(suffix)) {
+				 throw new FlowDataException("cat not execute by suffix: " + suffix);
+			}
 			if (moduleInfo.isDoAction()) {
 				flowData.setTarget(null);
 			}

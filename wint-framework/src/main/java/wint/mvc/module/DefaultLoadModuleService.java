@@ -5,7 +5,6 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
 
@@ -18,16 +17,12 @@ import wint.core.service.env.Environment;
 import wint.core.service.initial.ConfigurationAwire;
 import wint.core.service.initial.ServiceContextAwire;
 import wint.core.service.thread.LocalThreadService;
-import wint.lang.exceptions.FlowDataException;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicList;
 import wint.lang.magic.MagicMethod;
 import wint.lang.magic.MagicObject;
 import wint.lang.magic.MagicPackage;
-import wint.lang.utils.ClassUtil;
-import wint.lang.utils.CollectionUtil;
-import wint.lang.utils.MapUtil;
-import wint.lang.utils.TargetUtil;
+import wint.lang.utils.*;
 import wint.mvc.flow.FlowData;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.module.annotations.Action;
@@ -83,27 +78,8 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
                 }
             });
             FutureTask<ExecutionModule> existFutureTask = cachedModules.putIfAbsent(key, newFutureTask);
-            if (existFutureTask != null) {
-                try {
-                    return existFutureTask.get();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new FlowDataException(e);
-                } catch (ExecutionException e) {
-                    throw new FlowDataException(e);
-                }
-            } else {
-                executorService.submit(newFutureTask);
-                try {
-                    return newFutureTask.get();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new FlowDataException(e);
-                } catch (ExecutionException e) {
-                    throw new FlowDataException(e);
-                }
-            }
-        }
+			return TaskUtil.executeTask(executorService, newFutureTask, existFutureTask);
+		}
 	}
 
 	private ExecutionModule loadModuleImpl(String target, String moduleType, InnerFlowData innerFlowData) {
