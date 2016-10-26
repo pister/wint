@@ -10,6 +10,7 @@ import wint.lang.utils.ArrayUtil;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.StringUtil;
 import wint.mvc.flow.InnerFlowData;
+import wint.mvc.flow.StatusCodes;
 import wint.mvc.template.Context;
 
 
@@ -40,7 +41,8 @@ public class DefaultModule implements ExecutionModule {
 			Profiler.enter("execute module: " + flowData.getTarget());
 			String suffix = flowData.getSuffix();
 			if (!moduleInfo.acceptSuffix(suffix)) {
-				 throw new FlowDataException("cat not execute by suffix: " + suffix);
+				flowData.sendError(StatusCodes.SC_FORBIDDEN, "Can not execute by suffix: " + suffix);
+				return null;
 			}
 			if (moduleInfo.isDoAction()) {
 				flowData.setTarget(null);

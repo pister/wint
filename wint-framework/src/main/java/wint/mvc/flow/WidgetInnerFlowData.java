@@ -164,6 +164,11 @@ public class WidgetInnerFlowData implements InnerFlowData {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public void sendError(int code, String message) {
+		throw new UnsupportedOperationException();
+	}
+
 	public void setTarget(String target) {
 		throw new UnsupportedOperationException();
 	}

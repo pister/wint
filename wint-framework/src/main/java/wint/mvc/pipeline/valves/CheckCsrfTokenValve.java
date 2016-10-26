@@ -3,15 +3,11 @@ package wint.mvc.pipeline.valves;
 import wint.core.config.Constants;
 import wint.core.service.env.Environment;
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
-import wint.lang.WintException;
 import wint.lang.utils.StringUtil;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.flow.StatusCodes;
 import wint.mvc.module.Module;
 import wint.mvc.pipeline.PipelineContext;
-import wint.mvc.view.types.ViewTypes;
-
-import java.io.Writer;
 
 /**
  * User: longyi
@@ -63,14 +59,7 @@ public class CheckCsrfTokenValve extends AbstractValve {
     }
 
     protected void handleDevSupport(InnerFlowData innerFlowData) {
-        try {
-            innerFlowData.setViewType(ViewTypes.NOP_VIEW_TYPE);
-            Writer out = innerFlowData.getWriter();
-            out.write("miss " + tokenName + " value for doAction.");
-            out.close();
-        } catch (Exception e) {
-            throw new WintException(e);
-        }
+        innerFlowData.sendError(StatusCodes.SC_METHOD_NOT_ACCEPTABLE, "miss " + tokenName + " value for doAction.");
     }
 
     public void setRedirectModule(String redirectModule) {

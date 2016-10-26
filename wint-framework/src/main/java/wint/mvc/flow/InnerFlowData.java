@@ -32,8 +32,8 @@ public interface InnerFlowData extends FlowData {
 	 * @return
 	 */
 	boolean isSendRedirected();
-	
-	void setArguments(Arguments arguments);
+
+    void setArguments(Arguments arguments);
 
     void setParameters(Parameters parameters);
 	

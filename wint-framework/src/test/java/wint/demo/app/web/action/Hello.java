@@ -24,7 +24,7 @@ public class Hello {
         context.put("from", "hello execute!~!~");
     }
 
-    @LimitedAction(allowSuffix = {"php", ".htm"})
+    @LimitedAction(allowSuffix = {"php", ".jsp"})
     public void helloLimit(FlowData flowData, Context context) {
         System.out.println("hello in helloLimit");
     }

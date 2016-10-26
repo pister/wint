@@ -103,6 +103,13 @@ public interface FlowData {
      */
     void setStatusCode(int code);
 
+    /**
+     * 设置错误状态和错误信息
+     * @param code
+     * @param message
+     */
+    void sendError(int code, String message);
+
     String getContentType();
 
     /**

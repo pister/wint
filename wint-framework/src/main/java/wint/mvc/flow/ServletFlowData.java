@@ -54,7 +54,9 @@ public class ServletFlowData implements InnerFlowData {
 
     private String suffix;
 
-    private int statusCode = HttpServletResponse.SC_OK;
+    private Integer statusCode;
+
+    private String statusMessage;
 
     private boolean redirected = false;
 
@@ -254,15 +256,31 @@ public class ServletFlowData implements InnerFlowData {
                     IoUtil.close(os);
                 }
             }
+            if (statusCode != null) {
+                if (!StringUtil.isEmpty(statusMessage))  {
+                    httpServletResponse.sendError(statusCode, statusMessage);
+                }  else {
+                    httpServletResponse.setStatus(statusCode);
+                }
+            }
             commited = true;
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             Profiler.release();
         }
     }
 
     public void setStatusCode(int code) {
-        httpServletResponse.setStatus(code);
+        //httpServletResponse.setStatus(code);
         this.statusCode = code;
+    }
+
+    @Override
+    public void sendError(int code, String message) {
+        // httpServletResponse.sendError(code, message);
+        this.statusCode = code;
+        this.statusMessage = message;
     }
 
     public int getStatusCode() {

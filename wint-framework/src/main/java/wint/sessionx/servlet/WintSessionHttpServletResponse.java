@@ -46,7 +46,7 @@ public class WintSessionHttpServletResponse extends HttpServletResponseWrapper i
 	}
 	
 	// 2、处理http协议
-	// add cookie, write outputstream, for sendRedirect, header status(301/302)
+	// add cookie, write outputStream, for sendRedirect, header status(301/302)
 	public void commit(FilterContext filterContext) {
 		if (commit) {
 			return;
