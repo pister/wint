@@ -32,7 +32,7 @@ public class ModuleInfo {
     private void initLimit() {
         LimitAction limitAction = targetMethod.getTargetMethod().getAnnotation(LimitAction.class);
         if (limitAction == null) {
-
+            return;
         }
         String[] allowSuffix = limitAction.allowSuffix();
         if (allowSuffix == null || allowSuffix.length == 0) {
