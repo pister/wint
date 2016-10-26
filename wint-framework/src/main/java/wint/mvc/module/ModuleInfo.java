@@ -4,7 +4,7 @@ import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicMethod;
 import wint.lang.utils.StringUtil;
 import wint.mvc.module.annotations.Action;
-import wint.mvc.module.annotations.LimitAction;
+import wint.mvc.module.annotations.LimitedAction;
 
 public class ModuleInfo {
 
@@ -25,16 +25,16 @@ public class ModuleInfo {
         this.targetMethod = targetMethod;
         this.useDefaultMethod = useDefaultMethod;
 
-        initLimit();
+        initLimited();
         initDefaultTarget();
     }
 
-    private void initLimit() {
-        LimitAction limitAction = targetMethod.getTargetMethod().getAnnotation(LimitAction.class);
-        if (limitAction == null) {
+    private void initLimited() {
+        LimitedAction limitedAction = targetMethod.getTargetMethod().getAnnotation(LimitedAction.class);
+        if (limitedAction == null) {
             return;
         }
-        String[] allowSuffix = limitAction.allowSuffix();
+        String[] allowSuffix = limitedAction.allowSuffix();
         if (allowSuffix == null || allowSuffix.length == 0) {
             this.allowSuffix = allowSuffix;
             return;

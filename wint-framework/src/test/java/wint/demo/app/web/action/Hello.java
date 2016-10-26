@@ -7,7 +7,7 @@ import wint.lang.utils.MapUtil;
 import wint.mvc.flow.FlowData;
 import wint.mvc.form.Form;
 import wint.mvc.module.annotations.Action;
-import wint.mvc.module.annotations.LimitAction;
+import wint.mvc.module.annotations.LimitedAction;
 import wint.mvc.template.Context;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ public class Hello {
         context.put("from", "hello execute!~!~");
     }
 
-    @LimitAction(allowSuffix = {"php", ".htm"})
+    @LimitedAction(allowSuffix = {"php", ".htm"})
     public void helloLimit(FlowData flowData, Context context) {
         System.out.println("hello in helloLimit");
     }

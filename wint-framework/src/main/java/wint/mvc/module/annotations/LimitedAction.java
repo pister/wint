@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface LimitAction {
+public @interface LimitedAction {
 
     String[] allowSuffix();
 
