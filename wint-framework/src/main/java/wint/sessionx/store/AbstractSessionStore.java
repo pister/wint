@@ -3,6 +3,8 @@ package wint.sessionx.store;
 import wint.lang.magic.MagicMap;
 import wint.sessionx.constants.SpecSessionKeys;
 import wint.sessionx.provider.BaseConfig;
+import wint.sessionx.provider.batch.BatchSetter;
+import wint.sessionx.provider.batch.SessionAttributeWriter;
 import wint.sessionx.provider.sessionid.SessionIdGenerator;
 
 import java.util.Map;
@@ -71,11 +73,16 @@ public abstract class AbstractSessionStore implements SessionStore {
         return isNew;
     }
 
-    public void init(MagicMap initProperties) {
+    public void init(final MagicMap initProperties) {
         isNew = true;
-        for (Map.Entry<String, Object> entry : initProperties.entrySet()) {
-            setData(entry.getKey(), entry.getValue());
-        }
+        this.batchSet(new BatchSetter() {
+            @Override
+            public void onSet(SessionAttributeWriter sessionAttributeWriter) {
+                for (Map.Entry<String, Object> entry : initProperties.entrySet()) {
+                    sessionAttributeWriter.set(entry.getKey(), new SessionData(entry.getKey(), entry.getValue()));
+                }
+            }
+        });
     }
 
     protected abstract BaseConfig getConfig();

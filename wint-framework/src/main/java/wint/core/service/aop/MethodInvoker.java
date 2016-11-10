@@ -19,6 +19,9 @@ public class MethodInvoker implements Invoker {
 	}
 
 	public Object invoke(Object obj, Object[] args) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		if (obj == null) {
+			return null;
+		}
 		return method.invoke(obj, args);
 	}
 

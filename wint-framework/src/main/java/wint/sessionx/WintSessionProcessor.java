@@ -3,6 +3,7 @@ package wint.sessionx;
 import wint.core.config.Constants;
 import wint.core.service.ServiceContext;
 import wint.lang.magic.MagicMap;
+import wint.lang.misc.profiler.Profiler;
 import wint.sessionx.provider.SessionProvider;
 import wint.sessionx.provider.SessionProviderFactory;
 import wint.sessionx.service.DefaultSessionStoreService;
@@ -42,7 +43,12 @@ public class WintSessionProcessor {
     }
 
     public void process(HttpServletRequest httpRequest, HttpServletResponse httpResponse, ProcessorHandler processorHandler) throws ServletException, IOException {
-        sessionContainer.handleRequest(httpRequest, httpResponse, processorHandler);
+       try {
+           Profiler.enter("WintSessionProcessor process");
+           sessionContainer.handleRequest(httpRequest, httpResponse, processorHandler);
+       } finally {
+           Profiler.release();
+       }
     }
 
     public static interface ProcessorHandler {

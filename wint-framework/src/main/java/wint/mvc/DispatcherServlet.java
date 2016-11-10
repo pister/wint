@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import wint.core.io.resource.loader.ResourceLoader;
 import wint.core.io.resource.loader.WebAppResourceLoader;
 import wint.core.service.ServiceContext;
+import wint.lang.misc.profiler.Profiler;
 import wint.mvc.init.DispatcherInitializor;
 import wint.mvc.init.ServletContextLogger;
 import wint.mvc.servlet.ServletUtil;
@@ -42,7 +43,12 @@ public class DispatcherServlet extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		dispatcher.execute(request, response);
+		try {
+			Profiler.enter("DispatcherServlet service");
+			dispatcher.execute(request, response);
+		} finally {
+			Profiler.release();
+		}
 	}
 
     public ServiceContext getServiceContext() {

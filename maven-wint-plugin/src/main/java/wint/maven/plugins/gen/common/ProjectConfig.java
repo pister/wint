@@ -56,7 +56,7 @@ public class ProjectConfig {
 
     private String driudVersion = "1.0.26";
 
-    private String fastjsonVersion ="1.1.36";
+    private String fastjsonVersion ="1.2.20";
 
     private String wintPluginVersion = "1.1.1";
 

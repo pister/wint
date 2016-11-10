@@ -4,6 +4,7 @@ import wint.lang.magic.MagicMap;
 import wint.sessionx.cookie.WintCookie;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.provider.batch.BatchGetReceiver;
+import wint.sessionx.provider.batch.BatchSetter;
 
 import java.util.Set;
 
@@ -51,4 +52,6 @@ public interface SessionStore {
     WintCookie commitForCookie(int expire);
 
     void batchGet(BatchGetReceiver batchGetReceiver);
+
+    void batchSet(BatchSetter batchSetter);
 }

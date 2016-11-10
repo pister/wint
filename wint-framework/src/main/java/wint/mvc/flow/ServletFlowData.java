@@ -343,6 +343,7 @@ public class ServletFlowData implements InnerFlowData {
         this.context = context;
     }
 
+    @Deprecated
     public Map<String, UploadFile> getUploadFiles() {
         throw new WintException("Unsupport operation on normal flowdata: \r\n" +
                 "Please add the property  enctype=\"multipart/form-data\"  to your form, \r\n" +

@@ -21,8 +21,11 @@ import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.flow.StatusCodes;
+import wint.mvc.holder.WintContext;
 import wint.mvc.pipeline.PipelineContext;
 import wint.mvc.view.types.ViewTypes;
+
+import javax.servlet.http.HttpServletResponse;
 
 public class FileResourceValve extends AbstractValve {
 
@@ -77,6 +80,12 @@ public class FileResourceValve extends AbstractValve {
 			try {
 				String contentType = mappedContentTypes.get(targetSuffix);
 				flowData.setContentType(contentType);
+
+				HttpServletResponse response = WintContext.getResponse();
+				response.addHeader("Access-Control-Allow-Origin", "*");
+				response.addHeader("Access-Control-Allow-Headers", "*");
+				response.addHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+
 				performResource(pipelineContext, flowData);
 			} catch (IOException e) {
 				throw new WebResourceException(e);

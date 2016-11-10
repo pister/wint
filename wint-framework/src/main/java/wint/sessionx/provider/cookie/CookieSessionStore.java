@@ -6,7 +6,9 @@ import wint.sessionx.constants.SpecSessionKeys;
 import wint.sessionx.cookie.WintCookie;
 import wint.sessionx.provider.BaseConfig;
 import wint.sessionx.provider.batch.BatchGetReceiver;
+import wint.sessionx.provider.batch.BatchSetter;
 import wint.sessionx.provider.batch.CookieSessionAttributeReader;
+import wint.sessionx.provider.batch.CookieSessionAttributeWriter;
 import wint.sessionx.provider.sessionid.SessionIdGenerator;
 import wint.sessionx.store.AbstractSessionStore;
 import wint.sessionx.store.SessionData;
@@ -56,6 +58,11 @@ public class CookieSessionStore extends AbstractSessionStore {
     @Override
     public void batchGet(BatchGetReceiver batchGetReceiver) {
         batchGetReceiver.onReceive(new CookieSessionAttributeReader(this));
+    }
+
+    @Override
+    public void batchSet(BatchSetter batchSetter) {
+        batchSetter.onSet(new CookieSessionAttributeWriter(this));
     }
 
     public void remove(String name) {

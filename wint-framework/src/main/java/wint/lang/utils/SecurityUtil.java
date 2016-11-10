@@ -1,11 +1,7 @@
 package wint.lang.utils;
 
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
-import wint.mvc.template.filters.CvsFilterRender;
-import wint.mvc.template.filters.HtmlFilterRender;
-import wint.mvc.template.filters.JavaScriptFilterRender;
-import wint.mvc.template.filters.RawContentFilterRender;
-import wint.mvc.template.filters.XmlFilterRender;
+import wint.mvc.template.filters.*;
 import wint.mvc.view.Render;
 
 public class SecurityUtil {
@@ -61,5 +57,9 @@ public class SecurityUtil {
     public static Render getTokenHtml() {
         return tokenHtml();
     }
+
+    public static Render escapeUrl(Object o) {
+	   	return new UrlEncodeRender(o);
+	}
 
 }

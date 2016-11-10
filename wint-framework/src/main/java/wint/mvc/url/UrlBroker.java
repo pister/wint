@@ -98,6 +98,11 @@ public class UrlBroker implements Render {
         return parameters(object);
     }
 
+    public UrlBroker removeParam(String name) {
+        name = StringUtil.camelToFixedString(name, "-");
+        queryData.remove(name);
+        return this;
+    }
 
     /**
      * 从url的params中复制

@@ -11,7 +11,6 @@ public interface SessionAttributeReader {
 
     SessionData get(String name);
 
-
     String getString(String name);
 
     Long getLong(String name);

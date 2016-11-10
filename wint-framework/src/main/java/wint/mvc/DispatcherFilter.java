@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import wint.core.io.resource.loader.ResourceLoader;
 import wint.core.io.resource.loader.WebAppResourceLoader;
+import wint.lang.misc.profiler.Profiler;
 import wint.mvc.init.DispatcherInitializor;
 import wint.mvc.init.ServletContextLogger;
 import wint.mvc.servlet.ServletUtil;
@@ -30,7 +31,12 @@ public class DispatcherFilter implements Filter {
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		dispatcher.execute((HttpServletRequest)request, (HttpServletResponse)response);
+		try {
+			Profiler.enter("DispatcherFilter doFilter");
+			dispatcher.execute((HttpServletRequest) request, (HttpServletResponse) response);
+		} finally {
+			Profiler.release();
+		}
 	}
 
 	public void init(FilterConfig filterConfig) throws ServletException {

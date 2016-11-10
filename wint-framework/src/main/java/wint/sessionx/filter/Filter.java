@@ -9,6 +9,8 @@ import wint.lang.magic.MagicMap;
  */
 public interface Filter {
 
+    String getName();
+
     void init(MagicMap initParamters);
 
     void doFilter(FilterContext filterContext);

@@ -7,6 +7,12 @@ public class SystemUtil {
 	
 	public static final String LINE_SEPARATOR = System.getProperty("line.separater", "\n");
 
+    public static final String SYSTEM_INFO = getSystemInfo();
+
+    public static final int PID = getPid();
+
+    public static final String USER_HOME = getUserHome();
+
     public static int getPid() {  
         RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();  
         String name = runtime.getName(); // format: "pid@hostname"  

@@ -119,10 +119,16 @@ public class Dispatcher {
     protected void executeImpl(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setCharacterEncoding(charset);
-
-            String path = ServletUtil.getServletPathWithRequestContext(request, requestContextPath);
+            String path = null;
+            try {
+                Profiler.enter("get request path");
+                path = ServletUtil.getServletPathWithRequestContext(request, requestContextPath);
+            } finally {
+                Profiler.release();
+            }
 
             Profiler.enter("process action: " + path);
+
             InnerFlowData flowData = flowDataService.createFlowData(request, response);
             Pipeline pipeline = pipelineService.getPipeline(getPipelineName(request, flowData));
 
@@ -155,10 +161,15 @@ public class Dispatcher {
     }
 
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (wintSessionUse) {
-            wintSessionProcessor.process(request, response, processorHandler);
-        } else {
-            executeImpl(request, response);
+        try {
+            Profiler.enter("Dispatcher execute");
+            if (wintSessionUse) {
+                wintSessionProcessor.process(request, response, processorHandler);
+            } else {
+                executeImpl(request, response);
+            }
+        } finally {
+            Profiler.release();
         }
     }
 
