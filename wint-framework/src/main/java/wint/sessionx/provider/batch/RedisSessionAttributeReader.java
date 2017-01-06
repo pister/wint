@@ -1,5 +1,7 @@
 package wint.sessionx.provider.batch;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.JedisCommands;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.store.SessionData;
@@ -10,6 +12,8 @@ import wint.sessionx.store.SessionData;
  * Time: 下午1:10
  */
 public class RedisSessionAttributeReader extends AbstractSessionAttributeReader implements SessionAttributeReader {
+
+    private static final Logger log = LoggerFactory.getLogger(RedisSessionAttributeReader.class);
 
     private JedisCommands commands;
 
@@ -26,6 +30,10 @@ public class RedisSessionAttributeReader extends AbstractSessionAttributeReader 
     @Override
     public SessionData get(String name) {
         String data = commands.hget(redisKey, name);
-        return (SessionData) serializeService.unserialize(data);
+        Object o = serializeService.unserialize(data);
+        if (o instanceof SessionData) {
+            return (SessionData)o;
+        }
+        return null;
     }
 }

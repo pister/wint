@@ -5,14 +5,8 @@ import wint.lang.magic.MagicMap;
 import wint.mvc.servlet.ServletUtil;
 import wint.sessionx.provider.SessionProvider;
 import wint.sessionx.provider.SessionProviderFactory;
-import wint.sessionx.provider.cookie.CookieSessionProvider;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,6 +20,7 @@ public class WintSessionFilter implements Filter {
 
     private SessionContainer sessionContainer;
 
+
     public void init(FilterConfig filterConfig) throws ServletException {
         sessionContainer = new SessionContainer();
         MagicMap properties = ServletUtil.getInitParameters(filterConfig);
@@ -35,6 +30,7 @@ public class WintSessionFilter implements Filter {
         sessionProvider.init(properties, filterConfig.getServletContext());
         sessionContainer.init(sessionProvider, properties, filterConfig.getServletContext());
     }
+
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;

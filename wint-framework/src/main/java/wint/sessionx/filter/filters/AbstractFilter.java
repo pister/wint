@@ -15,6 +15,6 @@ public abstract class AbstractFilter implements Filter {
         return ClassUtil.getShortClassName(this.getClass());
     }
 
-    public void init(MagicMap initParamters) {
+    public void init(MagicMap initParameters) {
     }
 }

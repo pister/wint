@@ -1,5 +1,6 @@
 package wint.sessionx.filter.filters;
 
+import wint.lang.misc.profiler.Profiler;
 import wint.sessionx.constants.AttrKeys;
 import wint.sessionx.filter.FilterContext;
 import wint.sessionx.servlet.WintSessionHttpServletRequest;
@@ -20,8 +21,18 @@ public class CommitFilter extends AbstractFilter {
             WintSessionHttpServletResponse wintSessionHttpServletResponse = (WintSessionHttpServletResponse) filterContext.getAttribute(AttrKeys.NEW_RESPONSE);
             // 注意顺序，先提交request,然后提交response
 
-            wintSessionHttpServletRequest.commit(filterContext);
-            wintSessionHttpServletResponse.commit(filterContext);
+            try {
+                Profiler.enter("request commit");
+                wintSessionHttpServletRequest.commit(filterContext);
+            } finally {
+                Profiler.release();
+            }
+            try {
+                Profiler.enter("response commit");
+                wintSessionHttpServletResponse.commit(filterContext);
+            } finally {
+                Profiler.release();
+            }
         }
     }
 

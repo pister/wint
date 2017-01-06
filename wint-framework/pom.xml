@@ -4,7 +4,7 @@
     <groupId>wint</groupId>
     <artifactId>wint-framework</artifactId>
     <packaging>jar</packaging>
-    <version>1.4.5.2-SNAPSHOT</version>
+    <version>1.4.6.2</version>
     <name>wint-framework</name>
     <url>http://maven.apache.org</url>
 
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.1.36</version>
+            <version>1.2.20</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -101,7 +101,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.1</version>
+            <version>2.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -209,5 +209,7 @@
             </plugin>
         </plugins>
     </build>
+
+
 
 </project>

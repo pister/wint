@@ -11,7 +11,7 @@ public interface Filter {
 
     String getName();
 
-    void init(MagicMap initParamters);
+    void init(MagicMap initParameters);
 
     void doFilter(FilterContext filterContext);
 

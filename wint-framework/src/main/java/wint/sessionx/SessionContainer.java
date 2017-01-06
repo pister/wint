@@ -1,8 +1,13 @@
 package wint.sessionx;
 
+import wint.core.config.Constants;
 import wint.lang.magic.MagicMap;
 import wint.lang.misc.profiler.Profiler;
+import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
+import wint.lang.utils.StringUtil;
+import wint.lang.utils.TargetUtil;
+import wint.mvc.servlet.ServletUtil;
 import wint.sessionx.constants.AttrKeys;
 import wint.sessionx.filter.DefaultFilterManager;
 import wint.sessionx.filter.Filter;
@@ -17,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * User: longyi
@@ -29,18 +35,32 @@ public class SessionContainer {
 
     private FilterManager responseFilterManager;
 
-    public void init(SessionProvider sessionProvider, MagicMap initParamters, ServletContext servletContext) {
-        requestFilterManager = new DefaultFilterManager(initParamters);
-        responseFilterManager = new DefaultFilterManager(initParamters);
+    private Set<String> ignorePaths;
 
+    private boolean isPathIgnore(HttpServletRequest httpRequest) {
+        if (CollectionUtil.isEmpty(ignorePaths)) {
+            return false;
+        }
+        String path = ServletUtil.getServletPath(httpRequest);
+        String target = TargetUtil.normalizeTarget(path);
+        return ignorePaths.contains(target);
+    }
+
+    public void init(SessionProvider sessionProvider, MagicMap initParameters, ServletContext servletContext) {
+        requestFilterManager = new DefaultFilterManager(initParameters);
+        responseFilterManager = new DefaultFilterManager(initParameters);
 
         addRequestFilter(new InitializeFilter(servletContext));
         addRequestFilter(new ParseRequestFilter(sessionProvider.getRequestParser()));
         addRequestFilter(new CreateSessionStoreFilter(sessionProvider.getSessionStoreCreator()));
         addRequestFilter(new EnsureStatusFilter());
         addRequestFilter(new CreateNewRequestResponseFilter());
-
         addResponseFilter(new CommitFilter());
+
+        String ignorePaths = initParameters.getString(Constants.PropertyKeys.WINT_SESSION_IGNORE_PATHS);
+        if (!StringUtil.isEmpty(ignorePaths)) {
+            this.ignorePaths = CollectionUtil.newHashSet(StringUtil.splitTrim(ignorePaths, ","));
+        }
     }
 
     private void addRequestFilter(Filter filter) {
@@ -65,8 +85,8 @@ public class SessionContainer {
         }
 
         @Override
-        public void init(MagicMap initParamters) {
-            target.init(initParamters);
+        public void init(MagicMap initParameters) {
+            target.init(initParameters);
         }
 
         @Override
@@ -81,18 +101,22 @@ public class SessionContainer {
     }
 
     public void handleRequest(HttpServletRequest request, HttpServletResponse response, WintSessionProcessor.ProcessorHandler processorHandler) throws IOException, ServletException {
-        try {
-            Profiler.enter("SessionContainer handleRequest");
-            Map<String, Object> attributes = MapUtil.newHashMap();
-            attributes.put(AttrKeys.RAW_REQUEST, request);
-            attributes.put(AttrKeys.RAW_RESPONSE, response);
-            FilterContext filterContext = requestFilterManager.performFilters(attributes);
-            HttpServletRequest newRequest = (HttpServletRequest) filterContext.getAttribute(AttrKeys.NEW_REQUEST);
-            HttpServletResponse newResponse = (HttpServletResponse) filterContext.getAttribute(AttrKeys.NEW_RESPONSE);
-            processorHandler.onProcess(newRequest, newResponse);
-            responseFilterManager.performFilters(filterContext.getAttributes());
-        } finally {
-            Profiler.release();
+        if (isPathIgnore(request)) {
+            processorHandler.onProcess(request, response);
+        } else {
+            try {
+                Profiler.enter("SessionContainer handleRequest");
+                Map<String, Object> attributes = MapUtil.newHashMap();
+                attributes.put(AttrKeys.RAW_REQUEST, request);
+                attributes.put(AttrKeys.RAW_RESPONSE, response);
+                FilterContext filterContext = requestFilterManager.performFilters(attributes);
+                HttpServletRequest newRequest = (HttpServletRequest) filterContext.getAttribute(AttrKeys.NEW_REQUEST);
+                HttpServletResponse newResponse = (HttpServletResponse) filterContext.getAttribute(AttrKeys.NEW_RESPONSE);
+                processorHandler.onProcess(newRequest, newResponse);
+                responseFilterManager.performFilters(filterContext.getAttributes());
+            } finally {
+                Profiler.release();
+            }
         }
     }
 

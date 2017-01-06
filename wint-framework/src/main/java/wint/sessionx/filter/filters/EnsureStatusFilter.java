@@ -57,6 +57,7 @@ public class EnsureStatusFilter extends AbstractFilter {
         Integer maxInactiveInterval = sessionBatchGetReceiver.getMaxInactiveInterval();
         Long createTime = sessionBatchGetReceiver.getCreateTime();
 
+
         if (sessionId == null || lastAccessedTime == null || maxInactiveInterval == null || createTime == null) {
             // init new session
             sessionStore.reset();
