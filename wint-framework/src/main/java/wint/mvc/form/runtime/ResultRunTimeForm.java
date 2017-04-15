@@ -22,7 +22,6 @@ public class ResultRunTimeForm implements RunTimeForm {
 
     private final static StringArrayConvert stringArrayConvert = new StringArrayConvert();
 
-
     private RunTimeForm runTimeForm;
 	
 	public ResultRunTimeForm(Form form) {
@@ -51,15 +50,21 @@ public class ResultRunTimeForm implements RunTimeForm {
 		return runTimeForm.token();
 	}
 
+    @Override
+    public void setValue(String name, Object value) {
+        runTimeForm.setValue(name, value);
+    }
 
-
-	private class ResultRunTimeFormImpl implements RunTimeForm {
+    private class ResultRunTimeFormImpl implements RunTimeForm {
 
 		private Map<String, Field> runtimeFields = MapUtil.newHashMap();
+
+		private Form form;
 		
 		public ResultRunTimeFormImpl(Form form, Object object) {
 			super();
-			initFields(form, object);
+			this.form = form;
+			initFields(object);
 		}
 
         private String valueToString(Object propertyValue) {
@@ -70,7 +75,7 @@ public class ResultRunTimeForm implements RunTimeForm {
         }
 
 		
-		private void initFields(Form form, Object object) {
+		private void initFields(Object object) {
             Map<String, Field> fields = form.getFields();
             if (object instanceof Map) {
                 Map<String, Object> properties = (Map<String, Object>)object;
@@ -121,6 +126,24 @@ public class ResultRunTimeForm implements RunTimeForm {
             } else {
                 return new String[] {stringValue};
             }
+        }
+
+        @Override
+        public void setValue(String name, Object value) {
+            Map<String, Field> fields = form.getFields();
+            Field field = fields.get(name);
+            if (field == null) {
+                throw new RuntimeException("there was not field \"" + name + "\" in the form \""  + form.getName() + "\"");
+            }
+            FieldConfig fieldConfig = field.getFieldConfig();
+            Field runtimeField = new DefaultField(field.getFieldConfig(), form);
+            String stringValue = valueToString(value);
+            runtimeField.setValue(stringValue);
+
+            String[] values = getStringValues(value, stringValue, fieldConfig);
+            runtimeField.setValues(values);
+
+            runtimeFields.put(name, runtimeField);
         }
 
 		public Field get(String name) {

@@ -17,7 +17,9 @@ public interface Form {
 	ValidateResult getValidateResult();
 	
 	String getName();
-	
+
+	Form holdValue(String name, Object value);
+
 	boolean apply(Object target);
 	
 	void hold(Object object);

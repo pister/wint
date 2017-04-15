@@ -17,6 +17,7 @@ import wint.mvc.form.config.FormConfig;
 import wint.mvc.form.config.ValidatorConfig;
 import wint.mvc.form.runtime.FormFactory;
 import wint.mvc.form.runtime.ResultRunTimeForm;
+import wint.mvc.form.runtime.RunTimeForm;
 import wint.mvc.form.validator.ValidateResult;
 import wint.mvc.form.validator.Validator;
 import wint.mvc.parameters.MapParameters;
@@ -74,6 +75,17 @@ public class DefaultForm implements Form {
         ResultRunTimeForm resultFormFactory = new ResultRunTimeForm(this, object);
 		formFactory.addResultForm(getName(), resultFormFactory);
 		isHeld = true;
+	}
+
+	@Override
+	public Form holdValue(String name, Object value) {
+		FormFactory formFactory = (FormFactory)flowData.getInnerContext().get(Constants.Form.TEMPLATE_FORM_FACTORY_NAME);
+		RunTimeForm runTimeForm = formFactory.getResultForm(getName());
+		if (runTimeForm == null) {
+			throw new RuntimeException("you must call holdValue() after call hold()");
+		}
+		runTimeForm.setValue(name, value);
+		return this;
 	}
 	
 	public boolean apply(Object target) {
