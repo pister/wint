@@ -109,6 +109,16 @@ public class DateUtil {
 		cal.add(Calendar.MONTH, months);
 		return cal.getTime();
 	}
+
+	public static Date addYear(Date date, int years) {
+		if (date == null) {
+			return null;
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.YEAR, years);
+		return cal.getTime();
+	}
 	
 	public static Calendar toCalendar(Date date) {
 		Calendar cal = Calendar.getInstance();
