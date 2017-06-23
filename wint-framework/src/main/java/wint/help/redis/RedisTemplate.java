@@ -2,6 +2,8 @@ package wint.help.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import redis.clients.jedis.BinaryJedisCommands;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCommands;
 import redis.clients.util.Pool;
 
@@ -13,21 +15,35 @@ import redis.clients.util.Pool;
 public class RedisTemplate {
 
     private static final Logger log = LoggerFactory.getLogger(RedisTemplate.class);
-    private Pool<JedisCommands> jedisPool;
+    private Pool<Jedis> jedisPool;
 
     public RedisTemplate(Pool jedisPool) {
         this.jedisPool = jedisPool;
     }
 
-    public Pool<JedisCommands> getJedisPool() {
+    public Pool<Jedis> getJedisPool() {
         return jedisPool;
     }
 
-    public <T> T execute(RedisCommand<T> command) {
-        JedisCommands jedis = null;
+    public <T> T execute(final RedisCommand<T> command) {
+        return executeImpl(new ExecuteCallback<T>() {
+            @Override
+            public T exec(Jedis jedis) {
+                return command.doInExec(jedis);
+            }
+        });
+    }
+
+    interface ExecuteCallback<T> {
+        T exec(Jedis jedis);
+    }
+
+
+    private <T> T executeImpl(ExecuteCallback<T> callback) {
+        Jedis jedis = null;
         try {
             jedis = this.jedisPool.getResource();
-            T object = command.doInExec(jedis);
+            T object = callback.exec(jedis);
             jedisPool.returnResource(jedis);
             return object;
         } catch (Exception e) {
@@ -39,10 +55,30 @@ public class RedisTemplate {
         }
     }
 
+
+    public <T> T executeBinary(final BinaryRedisCommand<T> command) {
+       return executeImpl(new ExecuteCallback<T>() {
+           @Override
+           public T exec(Jedis jedis) {
+               return command.doInExec(jedis);
+           }
+       });
+    }
+
     public void executeNoResult(final RedisCommandNoResult command) {
         execute(new RedisCommand<Object>() {
             @Override
             public Object doInExec(JedisCommands commands) {
+                command.doInExec(commands);
+                return null;
+            }
+        });
+    }
+
+    public void executeBinaryNoResult(final BinaryRedisCommandNoResult command) {
+        executeBinary(new BinaryRedisCommand<Object>() {
+            @Override
+            public Object doInExec(BinaryJedisCommands commands) {
                 command.doInExec(commands);
                 return null;
             }

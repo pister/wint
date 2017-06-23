@@ -3,6 +3,7 @@ package wint.mvc.form.runtime;
 import java.util.Map;
 
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
+import wint.mvc.form.DefaultField;
 import wint.mvc.form.Field;
 import wint.mvc.form.Form;
 
@@ -21,6 +22,11 @@ public class DefaultRunTimeForm implements RunTimeForm {
 
 	public Form getForm() {
 		return form;
+	}
+
+	@Override
+	public void setValue(String name, Object value) {
+		// TODO nothing
 	}
 
 	public Field get(String name) {
