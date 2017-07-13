@@ -32,7 +32,7 @@ public class Binder {
 
                 if (arg.getClass().equals(Date.class)) {
                     Date d = (Date)arg;
-                    arg = new java.sql.Date(d.getTime());
+                    arg = new java.sql.Timestamp(d.getTime());
                 }
                 MethodPair methodPair = TypeUtil.getMethodPair(arg.getClass());
                 if (methodPair == null) {
