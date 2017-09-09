@@ -1,5 +1,11 @@
 package wint.lang.utils;
 
+import wint.lang.magic.MagicObject;
+import wint.lang.magic.Property;
+
+import java.lang.reflect.Array;
+import java.util.*;
+
 public class ObjectUtil {
 	
 	public static boolean equals(Object o1, Object o2) {
@@ -18,5 +24,72 @@ public class ObjectUtil {
         }
         return o.toString();
     }
+
+    public static Object walkProperties(Object input, PropertyValueWalker propertyValueWalker) {
+		if (input == null) {
+			return propertyValueWalker.filter(input);
+		}
+        if (isSimpleObject(input)) {
+		    return propertyValueWalker.filter(input);
+        }
+        if (input instanceof Map) {
+		    Map<Object, Object> params = (Map<Object, Object>)input;
+		    Map<Object, Object> newMap = MapUtil.newHashMap();
+		    for (Map.Entry<Object, Object> entry : params.entrySet()) {
+                newMap.put(entry.getKey(), walkProperties(entry.getValue(), propertyValueWalker));
+            }
+            return newMap;
+        }
+        if (input instanceof Collection) {
+            Collection newCollection;
+		    if (input instanceof List) {
+                newCollection = CollectionUtil.newArrayList();
+            } else if (input instanceof Set) {
+		        newCollection = CollectionUtil.newHashSet();
+            } else {
+                newCollection = CollectionUtil.newArrayList();
+            }
+            for (Object o : (Collection)input) {
+                newCollection.add(walkProperties(o, propertyValueWalker));
+            }
+            return newCollection;
+        }
+        if (input.getClass().isArray()) {
+            Object newArray = Array.newInstance(input.getClass().getComponentType(), Array.getLength(input));
+            for (int i = 0, len = Array.getLength(input); i < len; ++i) {
+                Object item = Array.get(input, i);
+                Array.set(newArray, i, walkProperties(item, propertyValueWalker));
+            }
+            return newArray;
+        }
+        MagicObject magicObject = MagicObject.wrap(input);
+        Map<String, Property> propertyMap = magicObject.getMagicClass().getReadAndWritableProperties();
+        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
+            Property property = entry.getValue();
+            Object value = property.getValue(input);
+            Object newValue = walkProperties(value, propertyValueWalker);
+            property.setValue(input, newValue);
+        }
+
+		return input;
+	}
+
+	private static boolean isSimpleObject(Object input) {
+        Class<?> clazz = input.getClass();
+        if (ClassUtil.isSimpleType(clazz)) {
+            return true;
+        }
+        if (input instanceof Date) {
+            return true;
+        }
+        if (input instanceof CharSequence) {
+            return true;
+        }
+        return false;
+    }
+
+	public interface PropertyValueWalker {
+		Object filter(Object value);
+	}
 
 }

@@ -1,9 +1,14 @@
 package wint.mvc.view.types.json;
 
+import wint.lang.utils.EscapeUtil;
+import wint.lang.utils.ObjectUtil;
+import wint.lang.utils.ObjectUtil.PropertyValueWalker;
+import wint.lang.utils.SecurityUtil;
 import wint.mvc.template.Context;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Map;
 
 /**
  * User: huangsongli
@@ -28,10 +33,27 @@ public abstract class AbstractJsonRender implements JsonRender {
     protected Object getObject(Context context, String jsonRoot) {
         Object object = context.get(jsonRoot);
         if (object == null) {
-            return context.getAll();
+            return filterObjectValues(context.getAll());
         } else {
-            return object;
+            return filterObjectValues(object);
         }
     }
+
+    protected Object filterObjectValues(Object object) {
+        return ObjectUtil.walkProperties(object, new PropertyValueWalker() {
+
+            @Override
+            public Object filter(Object value) {
+                if (value instanceof String) {
+                    return EscapeUtil.escapeHtmlSimple((String)value);
+                }
+                return value;
+            }
+        });
+    }
+
+
+
+
 
 }
