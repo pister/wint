@@ -167,5 +167,8 @@ public class AuthLoginValve extends AbstractValve {
 	public void setDoLoginTarget(String doLoginTarget) {
 		this.doLoginTarget =  TargetUtil.normalizeTarget(doLoginTarget);
 	}
-	
+
+	public String getDoLoginTarget() {
+		return doLoginTarget;
+	}
 }
