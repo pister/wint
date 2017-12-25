@@ -25,9 +25,9 @@ public class ShardedRedisClient extends AbstractRedisClient<ShardedJedis> {
         for (String host : hosts) {
             String[] parts = host.split(":");
             if (parts.length < 3) {
-                shards.add(new JedisShardInfo(parts[0], Integer.parseInt(parts[1]), DEFAULT_NAME));
+                shards.add(new JedisShardInfo(parts[0], Integer.parseInt(parts[1]), timeout, DEFAULT_NAME));
             } else {
-                shards.add(new JedisShardInfo(parts[0], Integer.parseInt(parts[1]), parts[2]));
+                shards.add(new JedisShardInfo(parts[0], Integer.parseInt(parts[1]), timeout, parts[2]));
             }
         }
         return new ShardedJedisPool(jedisPoolConfig, shards);

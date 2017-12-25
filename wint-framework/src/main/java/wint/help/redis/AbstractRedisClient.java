@@ -19,6 +19,8 @@ public abstract class AbstractRedisClient<T> implements RedisClient {
     private int minIdle = 1;
     private RedisTemplate redisTemplate;
 
+    protected int timeout = 2000; // default 2000 ms
+
     public void init() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(maxTotal);
@@ -53,5 +55,13 @@ public abstract class AbstractRedisClient<T> implements RedisClient {
 
     public void setMinIdle(int minIdle) {
         this.minIdle = minIdle;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }

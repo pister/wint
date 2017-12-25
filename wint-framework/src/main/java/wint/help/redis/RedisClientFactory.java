@@ -28,6 +28,8 @@ public class RedisClientFactory {
     private int maxIdle = 10;
     private int minIdle = 1;
 
+    private int timeout = 2000;
+
     public RedisClient getRedisClient() {
         int protocolPos = serverAddress.indexOf(PROTOCOL_MARK);
         String protocolName;
@@ -63,7 +65,7 @@ public class RedisClientFactory {
             redisClient.init();
             return redisClient;
         }
-        throw new RuntimeException("un support protocol:" + protocolName);
+        throw new RuntimeException("not support protocol:" + protocolName);
     }
 
     private void setProperties(AbstractRedisClient redisClient, String hosts) {
@@ -71,8 +73,8 @@ public class RedisClientFactory {
         redisClient.setMinIdle(minIdle);
         redisClient.setMaxIdle(maxIdle);
         redisClient.setMaxTotal(maxTotal);
+        redisClient.setTimeout(timeout);
     }
-
 
     public void setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
@@ -88,5 +90,9 @@ public class RedisClientFactory {
 
     public void setMinIdle(int minIdle) {
         this.minIdle = minIdle;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }

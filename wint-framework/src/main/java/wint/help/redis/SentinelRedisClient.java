@@ -33,7 +33,8 @@ public class SentinelRedisClient extends AbstractRedisClient<Jedis> {
         }
 
         Set<String> sentinels = new HashSet<String>(Arrays.asList(hosts));
-        return new JedisSentinelPool(masterName, sentinels, jedisPoolConfig);
+        JedisSentinelPool jedisSentinelPool = new JedisSentinelPool(masterName, sentinels, jedisPoolConfig, timeout);
+        return jedisSentinelPool;
     }
 
 }

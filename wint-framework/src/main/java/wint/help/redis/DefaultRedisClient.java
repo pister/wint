@@ -16,7 +16,7 @@ public class DefaultRedisClient extends AbstractRedisClient<Jedis> {
         String[] hostAndPort = serverAddress.split(";")[0].split(":");
         String host = hostAndPort[0];
         int port = Integer.parseInt(hostAndPort[1]);
-        return new JedisPool(jedisPoolConfig, host, port);
+        return new JedisPool(jedisPoolConfig, host, port, timeout);
     }
 
 }
