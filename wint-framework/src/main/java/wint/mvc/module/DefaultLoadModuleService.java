@@ -60,8 +60,8 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
         executorService = new LocalThreadService();
     }
 
-    protected String makeModuleCacheKey(String target, String moduleType) {
-        return target + "." + moduleType;
+    protected String makeModuleCacheKey(String target, String moduleType, String method) {
+        return target + "." + moduleType + "." + StringUtil.trimToEmpty(method).toUpperCase();
     }
 
     public ExecutionModule loadModule(final String target, final String moduleType, final InnerFlowData innerFlowData) {
@@ -76,7 +76,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
         } else if (environment.isSupportDev()) {
             return loadModuleImpl(target, moduleType, innerFlowData);
         } else {
-            String key = makeModuleCacheKey(target, moduleType);
+            String key = makeModuleCacheKey(target, moduleType, innerFlowData.getRequestMethod());
 
             FutureTask<ExecutionModule> newFutureTask = new FutureTask<ExecutionModule>(new Callable<ExecutionModule>() {
                 public ExecutionModule call() throws Exception {
