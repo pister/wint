@@ -335,4 +335,7 @@ public class HttpServletRequestMock implements HttpServletRequest {
         this.charsetEncoding = env;
     }
 
+    public void setMethod(String method) {
+        this.method = method;
+    }
 }

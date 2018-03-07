@@ -59,7 +59,7 @@ public class CheckCsrfTokenValve extends AbstractValve {
     }
 
     protected void handleDevSupport(InnerFlowData innerFlowData) {
-        innerFlowData.sendError(StatusCodes.SC_METHOD_NOT_ACCEPTABLE, "miss " + tokenName + " value for doAction.");
+        innerFlowData.setStatusCode(StatusCodes.SC_METHOD_NOT_ACCEPTABLE, "miss " + tokenName + " value for doAction.");
     }
 
     public void setRedirectModule(String redirectModule) {

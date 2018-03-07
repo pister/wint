@@ -1,6 +1,7 @@
 package wint.lang.magic;
 
 import java.lang.reflect.Array;
+import java.util.List;
 import java.util.Map;
 
 import wint.lang.WintException;
@@ -33,6 +34,11 @@ public class MagicArrayClass extends MagicClass {
 
 	@Override
 	public MagicMethod getMethod(String methodName) {
+		throw new WintException("there was not method in array");
+	}
+
+	@Override
+	public List<MagicMethod> getMethods(String methodName) {
 		throw new WintException("there was not method in array");
 	}
 

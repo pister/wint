@@ -2,6 +2,8 @@ package wint.mvc.flow;
 
 public interface StatusCodes {
 
+    int SC_SUCCESS = 200;
+
     int SC_NOT_FOUND = 404;
 
     int SC_FORBIDDEN = 403;

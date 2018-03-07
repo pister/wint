@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.cglib.reflect.FastClass;
@@ -15,6 +16,7 @@ import wint.lang.magic.compatible.AutoAdaptMagicMethod;
 import wint.lang.magic.reflect.ReflectMagicClass;
 import wint.lang.magic.reflect.ReflectMagicMethod;
 import wint.lang.magic.reflect.ReflectMagicObject;
+import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
 
 /**
@@ -49,6 +51,17 @@ public class CglibMagicClass extends MagicClass {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public List<MagicMethod> getMethods(String methodName) {
+		List<Method> methods = getMethodsByName(methodName);
+		return CollectionUtil.transformList(methods, new Transformer<Method, MagicMethod>() {
+			@Override
+			public MagicMethod transform(Method method) {
+				return new AutoAdaptMagicMethod(new CglibMagicMethod(method, fastClass));
+			}
+		});
 	}
 
 	@Override

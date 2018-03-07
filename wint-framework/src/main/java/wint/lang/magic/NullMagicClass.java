@@ -1,5 +1,6 @@
 package wint.lang.magic;
 
+import java.util.List;
 import java.util.Map;
 
 import wint.lang.utils.MapUtil;
@@ -42,6 +43,11 @@ public class NullMagicClass extends MagicClass {
 	@Override
 	public MagicMethod getMethod(String methodName) {
 		return new NothingMagicMethod();
+	}
+
+	@Override
+	public List<MagicMethod> getMethods(String methodName) {
+		return null;
 	}
 
 	@Override

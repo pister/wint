@@ -85,7 +85,7 @@ public class TemplateViewRender extends AbstractViewRender {
 
     protected boolean onResourceNotFound(InnerFlowData flowData, String target) {
         if (environment.isSupportDev()) {
-            flowData.sendError(StatusCodes.SC_NOT_FOUND, "can not find target:" + target);
+            flowData.setStatusCode(StatusCodes.SC_NOT_FOUND, "can not find target:" + target);
         } else {
             flowData.setStatusCode(StatusCodes.SC_NOT_FOUND);
         }

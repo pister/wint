@@ -11,10 +11,10 @@ import java.io.OutputStreamWriter;
  */
 public class IbatisGenUtil {
 
-/*	public static void genToConsole(String prefix, Class<?> clazz) {
+/*	public static void genToConsole(String prefix, Class<?> restfulMethodClass) {
         SourceGenerator ibatisGenerator = new SourceGenerator();
         ibatisGenerator.setTablePrefix(prefix);
-        ibatisGenerator.genToConsole(clazz);
+        ibatisGenerator.genToConsole(restfulMethodClass);
     }*/
 
     public static void genSqlMapToConsole(String prefix, Class<?> clazz) {

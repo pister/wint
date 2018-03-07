@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 
@@ -230,6 +231,13 @@ public abstract class MagicClass implements Serializable {
     public abstract MagicMethod getMethod(String methodName);
 
     /**
+     * 返回该方法名的方法，返回所有重载方法
+     * @param methodName
+     * @return
+     */
+    public abstract List<MagicMethod> getMethods(String methodName);
+
+    /**
      * 根据名称，方法参数获取方法，如果没有，返回null
      *
      * @param methodName
@@ -304,6 +312,16 @@ public abstract class MagicClass implements Serializable {
                     ret.join(SystemUtil.LINE_SEPARATOR));
         }
         return ret.get(0);
+    }
+
+    protected List<Method> getMethodsByName(String methodName) {
+        MagicList<Method> ret = MagicList.newList();
+        for (Method method : targetClass.getMethods()) {
+            if (method.getName().equals(methodName)) {
+                ret.add(method);
+            }
+        }
+        return ret;
     }
 
     protected Map<String, Property> findPropertiesFromClass() {

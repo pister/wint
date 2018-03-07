@@ -139,4 +139,35 @@ public class DispatcherTests extends TestCase {
     }
 
 
+    public void testRestful_get() throws ServletException, IOException {
+        MagicMap parameters = MagicMap.newMagicMap();
+        HttpServletRequestMock request = new HttpServletRequestMock("book/88", parameters, servletConfigMock.getServletContext());
+        request.setMethod("get");
+        HttpServletResponse response = new HttpServletResponseMock();
+        dispatcherServlet.service(request, response);
+    }
+
+    public void testRestful_post() throws ServletException, IOException {
+        MagicMap parameters = MagicMap.newMagicMap();
+        HttpServletRequestMock request = new HttpServletRequestMock("book/88", parameters, servletConfigMock.getServletContext());
+        request.setMethod("post");
+        HttpServletResponse response = new HttpServletResponseMock();
+        dispatcherServlet.service(request, response);
+    }
+
+    public void testRestful_put() throws ServletException, IOException {
+        MagicMap parameters = MagicMap.newMagicMap();
+        HttpServletRequestMock request = new HttpServletRequestMock("book/88", parameters, servletConfigMock.getServletContext());
+        request.setMethod("put");
+        HttpServletResponse response = new HttpServletResponseMock();
+        dispatcherServlet.service(request, response);
+    }
+
+    public void testRestful_delete() throws ServletException, IOException {
+        MagicMap parameters = MagicMap.newMagicMap();
+        HttpServletRequestMock request = new HttpServletRequestMock("book/88", parameters, servletConfigMock.getServletContext());
+        request.setMethod("delete");
+        HttpServletResponse response = new HttpServletResponseMock();
+        dispatcherServlet.service(request, response);
+    }
 }

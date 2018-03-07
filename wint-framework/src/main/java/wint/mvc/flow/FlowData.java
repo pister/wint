@@ -108,6 +108,14 @@ public interface FlowData {
      * @param code
      * @param message
      */
+    void setStatusCode(int code, String message);
+
+    /**
+     * 设置错误状态和错误信息
+     * @param code
+     * @param message
+     * @deprecated use setStatusCode instead
+     */
     void sendError(int code, String message);
 
     String getContentType();

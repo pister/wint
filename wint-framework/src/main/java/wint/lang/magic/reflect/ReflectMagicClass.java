@@ -1,20 +1,18 @@
 package wint.lang.magic.reflect;
 
-import wint.lang.WintException;
 import wint.lang.exceptions.CanNotFindMethodException;
 import wint.lang.exceptions.CanNotInstanceException;
-import wint.lang.magic.MagicClass;
-import wint.lang.magic.MagicMethod;
-import wint.lang.magic.MagicObject;
-import wint.lang.magic.Property;
+import wint.lang.magic.*;
 import wint.lang.magic.compatible.AutoAdaptMagicMethod;
 import wint.lang.utils.ArrayUtil;
+import wint.lang.utils.CollectionUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.List;
 import java.util.Map;
 
 public class ReflectMagicClass extends MagicClass {
@@ -69,6 +67,17 @@ public class ReflectMagicClass extends MagicClass {
     }
 
     @Override
+    public List<MagicMethod> getMethods(String methodName) {
+        List<Method> methods = getMethodsByName(methodName);
+        return CollectionUtil.transformList(methods, new Transformer<Method, MagicMethod>() {
+            @Override
+            public MagicMethod transform(Method method) {
+                return new AutoAdaptMagicMethod(new ReflectMagicMethod(method));
+            }
+        });
+    }
+
+    @Override
     public MagicMethod getMethod(final String methodName, final Class<?>[] argumentTypes) {
         return AccessController.doPrivileged(new PrivilegedAction<MagicMethod>() {
             @Override
@@ -83,9 +92,5 @@ public class ReflectMagicClass extends MagicClass {
         });
     }
 
-    @Override
-    public String toString() {
-        return "ReflectMagicClass [" + targetClass + "]";
-    }
 
 }
