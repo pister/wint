@@ -10,7 +10,7 @@ import wint.mvc.form.Form;
 import wint.mvc.form.fileupload.UploadFile;
 import wint.mvc.parameters.Arguments;
 import wint.mvc.parameters.Parameters;
-import wint.mvc.restful.method.ResultfulMethodFlowData;
+import wint.mvc.restful.method.ResultfulFlowData;
 import wint.mvc.template.Context;
 import wint.mvc.url.UrlBroker;
 
@@ -22,11 +22,11 @@ import java.util.*;
 /**
  * Created by songlihuang on 2018/3/7.
  */
-public class ResultfulMethodFlowDataSupport implements ResultfulMethodFlowData {
+public class ResultfulFlowDataSupport implements ResultfulFlowData {
 
     protected FlowData flowData;
 
-    public ResultfulMethodFlowDataSupport(FlowData flowData) {
+    public ResultfulFlowDataSupport(FlowData flowData) {
         this.flowData = flowData;
     }
 

@@ -11,9 +11,9 @@ import wint.lang.utils.StringUtil;
 import wint.mvc.flow.FlowData;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.flow.StatusCodes;
-import wint.mvc.restful.method.MethodCreator;
-import wint.mvc.restful.method.ResultfulMethodFlowData;
+import wint.mvc.restful.method.FlowDataCreator;
 import wint.mvc.template.Context;
+import wint.mvc.view.types.ViewTypes;
 
 
 /**
@@ -30,7 +30,7 @@ public class DefaultModule implements ExecutionModule {
 
     private String moduleType;
 
-    private MethodCreator restfulMethodCreator;
+    private FlowDataCreator restfulFlowDataCreator;
 
     public DefaultModule(MagicObject targetObject, ModuleInfo moduleInfo, String moduleType) {
         super();
@@ -52,8 +52,9 @@ public class DefaultModule implements ExecutionModule {
                 flowData.setTarget(null);
             }
             FlowData executeFlowData;
-            if (restfulMethodCreator != null) {
-                executeFlowData = restfulMethodCreator.create(flowData);
+            if (restfulFlowDataCreator != null) {
+                executeFlowData = restfulFlowDataCreator.create(flowData);
+                executeFlowData.setViewType(ViewTypes.JSON_VIEW_TYPE);
             } else {
                 executeFlowData = flowData;
             }
@@ -124,14 +125,14 @@ public class DefaultModule implements ExecutionModule {
     }
 
     public boolean isRestful() {
-        return restfulMethodCreator != null;
+        return restfulFlowDataCreator != null;
     }
 
-    public MethodCreator getRestfulMethodCreator() {
-        return restfulMethodCreator;
+    public FlowDataCreator getRestfulFlowDataCreator() {
+        return restfulFlowDataCreator;
     }
 
-    public void setRestfulMethodCreator(MethodCreator restfulMethodCreator) {
-        this.restfulMethodCreator = restfulMethodCreator;
+    public void setRestfulFlowDataCreator(FlowDataCreator restfulFlowDataCreator) {
+        this.restfulFlowDataCreator = restfulFlowDataCreator;
     }
 }

@@ -7,7 +7,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by songlihuang on 2018/3/7.
  */
-public interface BodySupportMethodFlowData extends ResultfulMethodFlowData {
+public interface BodySupportFlowData extends ResultfulFlowData {
 
     InputStream getRequestBody() throws IOException;
 

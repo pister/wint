@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by songlihuang on 2018/3/7.
  */
-public interface ResultfulMethodFlowData extends FlowData {
+public interface ResultfulFlowData extends FlowData {
 
     /**
      * 获取第一个header数据

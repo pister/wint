@@ -142,7 +142,7 @@ public class DispatcherTests extends TestCase {
     public void testRestful_get() throws ServletException, IOException {
         MagicMap parameters = MagicMap.newMagicMap();
         HttpServletRequestMock request = new HttpServletRequestMock("book/88", parameters, servletConfigMock.getServletContext());
-        request.setMethod("get");
+      //  request.setMethod("get");
         HttpServletResponse response = new HttpServletResponseMock();
         dispatcherServlet.service(request, response);
     }

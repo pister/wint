@@ -4,7 +4,7 @@ import wint.lang.io.FastByteArrayOutputStream;
 import wint.lang.utils.IoUtil;
 import wint.lang.utils.StringUtil;
 import wint.mvc.flow.FlowData;
-import wint.mvc.restful.method.BodySupportMethodFlowData;
+import wint.mvc.restful.method.BodySupportFlowData;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -15,9 +15,9 @@ import java.util.List;
 /**
  * Created by songlihuang on 2018/3/7.
  */
-public class BodySupportMethodFlowDataSupport extends ResultfulMethodFlowDataSupport implements BodySupportMethodFlowData {
+public class BodySupportFlowDataSupport extends ResultfulFlowDataSupport implements BodySupportFlowData {
 
-    public BodySupportMethodFlowDataSupport(FlowData flowData) {
+    public BodySupportFlowDataSupport(FlowData flowData) {
         super(flowData);
     }
 

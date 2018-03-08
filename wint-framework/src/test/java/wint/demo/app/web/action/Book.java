@@ -1,8 +1,9 @@
 package wint.demo.app.web.action;
 
-import wint.mvc.restful.method.GetMethod;
-import wint.mvc.restful.method.PostMethod;
-import wint.mvc.restful.method.PutMethod;
+import wint.mvc.flow.FlowData;
+import wint.mvc.restful.method.GetFlowData;
+import wint.mvc.restful.method.PostFlowData;
+import wint.mvc.restful.method.PutFlowData;
 import wint.mvc.template.Context;
 
 /**
@@ -10,25 +11,29 @@ import wint.mvc.template.Context;
  */
 public class Book {
 
-    public void list(GetMethod method, Context context) {
+    public void list(GetFlowData flowData, Context context) {
         System.out.println("Book list");
     }
 
-    public void execute(PostMethod method, Context context) {
+    public void execute(PostFlowData flowData, Context context) {
         // for create
         System.out.println("Book execute post");
 
     }
 
-    public void execute(PutMethod method, Context context) {
+    public void execute(PutFlowData flowData, Context context) {
         // for update
         System.out.println("Book execute put");
-
     }
 
-    public void execute(GetMethod method, Context context) {
+    public void execute(FlowData flowData, Context context) {
         // for update
-        System.out.println("Book execute get");
+        System.out.println("Book execute default");
+    }
+
+    public void execute(GetFlowData flowData, Context context, int arg) {
+        // for update
+        System.out.println("Book execute get:" + arg);
 
     }
 

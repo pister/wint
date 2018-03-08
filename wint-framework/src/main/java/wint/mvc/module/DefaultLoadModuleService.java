@@ -28,8 +28,8 @@ import wint.mvc.flow.FlowData;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.module.annotations.Action;
 import wint.mvc.restful.method.NamedMethods;
-import wint.mvc.restful.method.MethodCreator;
-import wint.mvc.restful.method.ResultfulMethodFlowData;
+import wint.mvc.restful.method.FlowDataCreator;
+import wint.mvc.restful.method.ResultfulFlowData;
 
 import static wint.mvc.module.DefaultLoadModuleService.MatchResultType.*;
 
@@ -92,12 +92,12 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
     protected static class MatchResult {
         MatchResultType matchResultType;
         MagicClass requestMethodClass;
-        MethodCreator restfulMethodCreator;
+        FlowDataCreator restfulFlowDataCreator;
 
-        public MatchResult(MatchResultType matchResultType, MagicClass requestMethodClass, MethodCreator restfulMethodCreator) {
+        public MatchResult(MatchResultType matchResultType, MagicClass requestMethodClass, FlowDataCreator restfulFlowDataCreator) {
             this.matchResultType = matchResultType;
             this.requestMethodClass = requestMethodClass;
-            this.restfulMethodCreator = restfulMethodCreator;
+            this.restfulFlowDataCreator = restfulFlowDataCreator;
         }
     }
 
@@ -118,12 +118,14 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
             throw new WintException("unknown request method:" + method);
         }
         for (MagicClass parameterType : parameterTypes) {
-            if (parameterType.isAssignableTo(ResultfulMethodFlowData.class)) {
+            if (parameterType.isAssignableTo(ResultfulFlowData.class)) {
                 if (namedMethod.restfulMethodClass.equals(parameterType.getTargetClass())) {
                     // yes
                     return new MatchResult(RestfulMethod, parameterType, namedMethod.creator);
                 } else {
-                    log.warn("request http method is: " + method + ", but module method is:" + parameterType);
+                    if (log.isDebugEnabled()) {
+                        log.debug("request http method is: " + method + ", module method is:" + parameterType.getTargetClass());
+                    }
                     // conflict
                     return new MatchResult(ConflictedMethod, null, null);
                 }
@@ -145,7 +147,7 @@ public class DefaultLoadModuleService extends AbstractService implements LoadMod
                 case RestfulMethod: {
                     MagicObject magicObject = createTargetObject(moduleInfo.getTargetClass());
                     DefaultModule module = new DefaultModule(magicObject, moduleInfo, moduleType);
-                    module.setRestfulMethodCreator(matchResult.restfulMethodCreator);
+                    module.setRestfulFlowDataCreator(matchResult.restfulFlowDataCreator);
                     return module;
                 }
                 case ConflictedMethod:

@@ -14,62 +14,62 @@ public class NamedMethods {
     private static Map<String, NamedMethod> namedMethods = MapUtil.newHashMap();
 
     static {
-        namedMethods.put("GET", new NamedMethod(GetMethod.class, new MethodCreator() {
+        namedMethods.put("GET", new NamedMethod(GetFlowData.class, new FlowDataCreator() {
             @Override
-            public ResultfulMethodFlowData create(FlowData flowData) {
-                return new GetMethodSupport(flowData);
+            public ResultfulFlowData create(FlowData flowData) {
+                return new GetFlowDataSupport(flowData);
             }
         }));
-        namedMethods.put("DELETE", new NamedMethod(DeleteMethod.class, new MethodCreator() {
+        namedMethods.put("DELETE", new NamedMethod(DeleteFlowData.class, new FlowDataCreator() {
             @Override
-            public ResultfulMethodFlowData create(FlowData flowData) {
-                return new DeleteMethodSupport(flowData);
+            public ResultfulFlowData create(FlowData flowData) {
+                return new DeleteFlowDataSupport(flowData);
             }
         }));
-        namedMethods.put("HEAD", new NamedMethod(HeadMethod.class, new MethodCreator() {
+        namedMethods.put("HEAD", new NamedMethod(HeadFlowData.class, new FlowDataCreator() {
 
             @Override
-            public ResultfulMethodFlowData create(FlowData flowData) {
-                return new HeadMethodSupport(flowData);
+            public ResultfulFlowData create(FlowData flowData) {
+                return new HeadFlowDataSupport(flowData);
             }
         }));
-        namedMethods.put("OPTIONS", new NamedMethod(OptionsMethod.class, new MethodCreator() {
+        namedMethods.put("OPTIONS", new NamedMethod(OptionsFlowData.class, new FlowDataCreator() {
             @Override
-            public ResultfulMethodFlowData create(FlowData flowData) {
-                return new OptionsMethodSupport(flowData);
+            public ResultfulFlowData create(FlowData flowData) {
+                return new OptionsFlowDataSupport(flowData);
             }
         }));
-        namedMethods.put("PATCH", new NamedMethod(PatchMethod.class, new MethodCreator() {
+        namedMethods.put("PATCH", new NamedMethod(PatchFlowData.class, new FlowDataCreator() {
             @Override
-            public ResultfulMethodFlowData create(FlowData flowData) {
-                return new PatchMethodSupport(flowData);
+            public ResultfulFlowData create(FlowData flowData) {
+                return new PatchFlowDataSupport(flowData);
             }
         }));
-        namedMethods.put("POST", new NamedMethod(PostMethod.class, new MethodCreator() {
+        namedMethods.put("POST", new NamedMethod(PostFlowData.class, new FlowDataCreator() {
             @Override
-            public ResultfulMethodFlowData create(FlowData flowData) {
-                return new PostMethodSupport(flowData);
+            public ResultfulFlowData create(FlowData flowData) {
+                return new PostFlowDataSupport(flowData);
             }
         }));
-        namedMethods.put("PUT", new NamedMethod(PutMethod.class, new MethodCreator() {
+        namedMethods.put("PUT", new NamedMethod(PutFlowData.class, new FlowDataCreator() {
             @Override
-            public ResultfulMethodFlowData create(FlowData flowData) {
-                return new PutMethodSupport(flowData);
+            public ResultfulFlowData create(FlowData flowData) {
+                return new PutFlowDataSupport(flowData);
             }
         }));
-        namedMethods.put("Trace", new NamedMethod(TraceMethod.class, new MethodCreator() {
+        namedMethods.put("Trace", new NamedMethod(TraceFlowData.class, new FlowDataCreator() {
             @Override
-            public ResultfulMethodFlowData create(FlowData flowData) {
-                return new TraceMethodSupport(flowData);
+            public ResultfulFlowData create(FlowData flowData) {
+                return new TraceFlowDataSupport(flowData);
             }
         }));
     }
 
     public static class NamedMethod {
-        public Class<? extends ResultfulMethodFlowData> restfulMethodClass;
-        public MethodCreator creator;
+        public Class<? extends ResultfulFlowData> restfulMethodClass;
+        public FlowDataCreator creator;
 
-        public NamedMethod(Class<? extends ResultfulMethodFlowData> restfulMethodClass, MethodCreator creator) {
+        public NamedMethod(Class<? extends ResultfulFlowData> restfulMethodClass, FlowDataCreator creator) {
             this.restfulMethodClass = restfulMethodClass;
             this.creator = creator;
         }

@@ -32,7 +32,7 @@ public class ProjectConfig {
 	
 	private String javaVersion ="1.6";
 	
-	private String wintVersion = "1.5.1";
+	private String wintVersion = "1.5.2";
 	
 	private String servletVersion = "2.4";
 	
