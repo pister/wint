@@ -23,7 +23,7 @@ import java.util.Map;
  * class魔术包装类，提供了简单方便的class操作，
  * 实现上根据环境分为反射实现和cglib实现。 <br />
  * <p/>
- * 使用可以用 MagicClass.wrap(Class) 或是 Magic.forName(ClasName)来包括
+ * 使用可以用 MagicClass.wrap(Class) 或是 Magic.forName(ClassName)来包括
  * <p/>
  * 获取原始的可以通过 MagicClass.getTargetClass()方法获取
  *

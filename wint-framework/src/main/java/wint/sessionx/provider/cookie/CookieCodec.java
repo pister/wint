@@ -124,7 +124,7 @@ public class CookieCodec {
             ret.setDomain(domain);
         }
         ret.setHttpOnly(true);
-        // ret.setMaxAge(config.getExpire());
+        ret.setMaxAge(config.getExpire());
         ret.setPath(config.getPath());
 
         return ret;
