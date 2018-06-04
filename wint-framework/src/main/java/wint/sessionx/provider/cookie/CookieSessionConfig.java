@@ -36,19 +36,19 @@ public class CookieSessionConfig extends BaseConfig {
 
     public CookieSessionConfig(MagicMap properties) {
         super(properties);
-        encrypt = properties.getBoolean(CookieContants.PropertyKeys.ENCRYPT, CookieContants.DefaultValues.ENCRYPT);
-        encryptKey = properties.getString(CookieContants.PropertyKeys.ENCRYPT_KEY, CookieContants.DefaultValues.ENCRYPT_KEY);
+        encrypt = properties.getBoolean(CookieConstants.PropertyKeys.ENCRYPT, CookieConstants.DefaultValues.ENCRYPT);
+        encryptKey = properties.getString(CookieConstants.PropertyKeys.ENCRYPT_KEY, CookieConstants.DefaultValues.ENCRYPT_KEY);
 
-        if (!properties.containsKey(CookieContants.PropertyKeys.ENCRYPT_KEY) && properties.containsKey(CookieContants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH)) {
-            String sessionCookieKeyPath = properties.getString(CookieContants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH, CookieContants.DefaultValues.COOKIE_ENCRYPTKEY_PATH);
+        if (!properties.containsKey(CookieConstants.PropertyKeys.ENCRYPT_KEY) && properties.containsKey(CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH)) {
+            String sessionCookieKeyPath = properties.getString(CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH, CookieConstants.DefaultValues.COOKIE_ENCRYPTKEY_PATH);
             encryptKey = loadCookieSessionKey(sessionCookieKeyPath);
         }
         encryptKey = StringUtil.trimToEmpty(encryptKey);
 
-        dataSeparate = properties.getString(CookieContants.PropertyKeys.DATA_SEPARATE, CookieContants.DefaultValues.DATA_SEPARATE);
-        cookieDataMaxSize = properties.getInt(CookieContants.PropertyKeys.DATA_MAX_SIZE, CookieContants.DefaultValues.DATA_MAX_SIZE);
-        prefixName = properties.getString(CookieContants.PropertyKeys.COOKIE_DATA_PREFIX, CookieContants.DefaultValues.COOKIE_DATA_PREFIX);
-        cookieDataIndex = properties.getInt(CookieContants.PropertyKeys.COOKIE_DATA_INDEX, CookieContants.DefaultValues.COOKIE_DATA_INDEX);
+        dataSeparate = properties.getString(CookieConstants.PropertyKeys.DATA_SEPARATE, CookieConstants.DefaultValues.DATA_SEPARATE);
+        cookieDataMaxSize = properties.getInt(CookieConstants.PropertyKeys.DATA_MAX_SIZE, CookieConstants.DefaultValues.DATA_MAX_SIZE);
+        prefixName = properties.getString(CookieConstants.PropertyKeys.COOKIE_DATA_PREFIX, CookieConstants.DefaultValues.COOKIE_DATA_PREFIX);
+        cookieDataIndex = properties.getInt(CookieConstants.PropertyKeys.COOKIE_DATA_INDEX, CookieConstants.DefaultValues.COOKIE_DATA_INDEX);
     }
 
 
@@ -57,7 +57,7 @@ public class CookieSessionConfig extends BaseConfig {
             InputStream is = getSessionCookieKeyInputStream(sessionCookieKeyPath);
             if (is == null) {
                 log.warn("no wint-session-key file found, use default cookie session key!!!");
-                return CookieContants.DefaultValues.ENCRYPT_KEY;
+                return CookieConstants.DefaultValues.ENCRYPT_KEY;
             } else {
                 return StreamUtil.readAsString(is);
             }
@@ -76,14 +76,14 @@ public class CookieSessionConfig extends BaseConfig {
             log.warn("session key load from: " + new File(new File(System.getProperty("user.home")), sessionCookieKeyPath));
             return is;
         }
-        is = StreamUtil.getUserHomeResourceAsStream(CookieContants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
+        is = StreamUtil.getUserHomeResourceAsStream(CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
         if (is != null) {
-            log.warn("session key load from resource: " + new File(new File(System.getProperty("user.home")), CookieContants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH));
+            log.warn("session key load from resource: " + new File(new File(System.getProperty("user.home")), CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH));
             return is;
         }
-        is = WebResourceUtil.getWebResouceAsStream(CookieContants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
+        is = WebResourceUtil.getWebResouceAsStream(CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
         if (is != null) {
-            log.warn("session key load from resource: " + CookieContants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
+            log.warn("session key load from resource: " + CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
             return is;
         }
         return is;

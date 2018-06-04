@@ -7,7 +7,6 @@ import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.UrlUtil;
-import wint.sessionx.constants.SpecSessionKeys;
 import wint.sessionx.cookie.WintCookie;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.store.SessionData;
@@ -50,11 +49,11 @@ public class CookieCodec {
     }
 
     private String encodeName(String name) {
-        return UrlUtil.encode(name, CookieContants.URL_ENCODE_CHARSET);
+        return UrlUtil.encode(name, CookieConstants.URL_ENCODE_CHARSET);
     }
 
     private String decodeName(String name) {
-        return UrlUtil.decode(name, CookieContants.URL_ENCODE_CHARSET);
+        return UrlUtil.decode(name, CookieConstants.URL_ENCODE_CHARSET);
     }
 
     public Map<String, SessionData> parseData(String value) {
@@ -63,11 +62,11 @@ public class CookieCodec {
             log.warn("cookie decrypt failed.");
             return null;
         }
-        if (!rawData.startsWith(CookieContants.WINT_COOKIE_MAGIC_TOKEN)) {
+        if (!rawData.startsWith(CookieConstants.WINT_COOKIE_MAGIC_TOKEN)) {
             return null;
         }
         Map<String, SessionData> targetData = MapUtil.newHashMap();
-        rawData = StringUtil.getFirstAfter(rawData, CookieContants.WINT_COOKIE_MAGIC_TOKEN);
+        rawData = StringUtil.getFirstAfter(rawData, CookieConstants.WINT_COOKIE_MAGIC_TOKEN);
         List<String> datas = StringUtil.splitTrim(rawData, config.getDataSeparate());
         for (String data : datas) {
             if (StringUtil.isEmpty(data)) {
@@ -108,7 +107,7 @@ public class CookieCodec {
         }
 
         String cookieValue = CollectionUtil.join(cookieStrings, config.getDataSeparate());
-        String encodeCookieValue = encodeCookie(CookieContants.WINT_COOKIE_MAGIC_TOKEN + cookieValue);
+        String encodeCookieValue = encodeCookie(CookieConstants.WINT_COOKIE_MAGIC_TOKEN + cookieValue);
         if (encodeCookieValue == null) {
             return null;
         }
@@ -124,7 +123,6 @@ public class CookieCodec {
             ret.setDomain(domain);
         }
         ret.setHttpOnly(true);
-        ret.setMaxAge(config.getExpire());
         ret.setPath(config.getPath());
 
         return ret;

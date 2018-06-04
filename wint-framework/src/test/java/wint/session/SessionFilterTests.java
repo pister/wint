@@ -19,8 +19,6 @@ import wint.mvc.servlet.mock.ServletConfigMock;
 import wint.mvc.servlet.mock.SimpleServletFilterChainMock;
 import wint.sessionx.WintSessionFilter;
 import wint.sessionx.cookie.CookieUtil;
-import wint.sessionx.provider.cookie.CookieContants;
-import wint.sessionx.provider.cookie.CookieSessionConfig;
 
 public class SessionFilterTests extends TestCase {
 
