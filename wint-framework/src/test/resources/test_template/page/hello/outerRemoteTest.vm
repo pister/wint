@@ -1,3 +1,3 @@
 hello world remote!
 
-$outerWidget.setTemplate('b.vm')
+$outerWidget.setTemplate('b.vm').addToContext('name1', 'value1')

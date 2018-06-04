@@ -11,6 +11,8 @@ public class OutWidgetParams {
 
     private String templateBasePath;
 
+    private boolean remoteFailUseCache;
+
     public String getLocalTempBasePath() {
         return localTempBasePath;
     }
@@ -33,5 +35,13 @@ public class OutWidgetParams {
 
     public void setTemplateBasePath(String templateBasePath) {
         this.templateBasePath = templateBasePath;
+    }
+
+    public boolean isRemoteFailUseCache() {
+        return remoteFailUseCache;
+    }
+
+    public void setRemoteFailUseCache(boolean remoteFailUseCache) {
+        this.remoteFailUseCache = remoteFailUseCache;
     }
 }

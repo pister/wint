@@ -47,6 +47,7 @@ public class OuterWidgetRender implements Render {
             HttpResourceTemplateRender httpResourceTemplateRender = new HttpResourceTemplateRender(path, templateEngine, widgetContext, params.getTemplateBasePath());
             httpResourceTemplateRender.setExpireInSeconds(params.getExpireInSeconds());
             httpResourceTemplateRender.setTempDir(params.getLocalTempBasePath());
+            httpResourceTemplateRender.setRemoteFailUseCache(params.isRemoteFailUseCache());
             templateRender = httpResourceTemplateRender;
         } else {
             templateRender = new DefaultTemplateRender(path, templateEngine, widgetContext);

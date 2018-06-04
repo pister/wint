@@ -31,11 +31,13 @@ public class DefaultOuterWidgetContainerService extends AbstractService implemen
         }
         String localTempBasePath = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_TEMP_PATH, Constants.Defaults.WINT_OUTER_TEMPLATE_TEMP_PATH);
         int expireInSeconds = serviceContext.getConfiguration().getProperties().getInt(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_EXPIRE_SECONDS, Constants.Defaults.WINT_OUTER_TEMPLATE_EXPIRE_SECONDS);
+        boolean remoteFailUseCache = serviceContext.getConfiguration().getProperties().getBoolean(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_REMOTE_FAIL_USER_CACHE, Constants.Defaults.WINT_OUTER_TEMPLATE_REMOTE_FAIL_USER_CACHE);
 
         params = new OutWidgetParams();
         params.setTemplateBasePath(templateBasePath);
         params.setLocalTempBasePath(localTempBasePath);
         params.setExpireInSeconds(expireInSeconds);
+        params.setRemoteFailUseCache(remoteFailUseCache);
 
         if (StringUtil.isEmpty(templateBasePath)) {
             log.warn("outer template basePath is not set.");

@@ -109,6 +109,8 @@ public interface Constants {
 
         String WINT_OUTER_TEMPLATE_EXPIRE_SECONDS = "wint.outer.template.expire.seconds";
 
+        String WINT_OUTER_TEMPLATE_REMOTE_FAIL_USER_CACHE = "wint.outer.template.remote.fail.use.cache";
+
         String WINT_ENVIRONMENT_VAR_NAME = "wint.environment.var.name";
 
         String WINT_JSON_VIEW_FORM_VALIDATE_SUCCESS_FIELD = "wint.json.view.form.validate.success.field";
@@ -229,6 +231,8 @@ public interface Constants {
         String WINT_OUTER_TEMPLATE_TEMP_PATH = SystemUtil.getUserHome() + "/wint_temp_templates";
 
         int WINT_OUTER_TEMPLATE_EXPIRE_SECONDS = 3 * 60;
+
+        boolean WINT_OUTER_TEMPLATE_REMOTE_FAIL_USER_CACHE = true;
 
         String WINT_ENVIRONMENT_VAR_NAME = "env";
 

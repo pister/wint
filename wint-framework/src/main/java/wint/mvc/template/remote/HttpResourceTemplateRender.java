@@ -1,11 +1,12 @@
 package wint.mvc.template.remote;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wint.core.config.Constants;
 import wint.lang.io.FastByteArrayOutputStream;
 import wint.lang.utils.DateUtil;
 import wint.lang.utils.FileUtil;
 import wint.lang.utils.IoUtil;
-import wint.lang.utils.SystemUtil;
 import wint.mvc.template.Context;
 import wint.mvc.template.TemplateRender;
 import wint.mvc.template.engine.TemplateEngine;
@@ -22,6 +23,8 @@ import java.util.Date;
  */
 public class HttpResourceTemplateRender implements TemplateRender {
 
+    private static final Logger log = LoggerFactory.getLogger(HttpResourceTemplateRender.class);
+
     private String path;
 
     private TemplateEngine viewRenderEngine;
@@ -31,6 +34,8 @@ public class HttpResourceTemplateRender implements TemplateRender {
     private int expireInSeconds = 60;
 
     private String baseUrl;
+
+    private boolean remoteFailUseCache;
 
     private File baseTempDir = new File(Constants.Defaults.WINT_OUTER_TEMPLATE_TEMP_PATH);
 
@@ -60,9 +65,20 @@ public class HttpResourceTemplateRender implements TemplateRender {
                 return path;
             }
             // than try download again, and update content
-            syncTemplateFromRemote();
+            try {
+                syncTemplateFromRemote();
+            } catch (IOException e) {
+                log.error("error", e);
+                if (remoteFailUseCache) {
+                    return path;
+                } else {
+                    throw new RuntimeException(e);
+                }
+            }
             return path;
-        } catch (IOException e) {
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -70,6 +86,8 @@ public class HttpResourceTemplateRender implements TemplateRender {
     protected byte[] requestFromRemote(String templateUrl) throws IOException {
         URL url = new URL(templateUrl);
         URLConnection conn = url.openConnection();
+        conn.setReadTimeout(3000);
+        conn.setConnectTimeout(3000);
         InputStream is = conn.getInputStream();
         FastByteArrayOutputStream bos = new FastByteArrayOutputStream();
         try {
@@ -123,6 +141,10 @@ public class HttpResourceTemplateRender implements TemplateRender {
         String stringDate = FileUtil.readAsString(expireFile);
         Date expire = DateUtil.parseDate(stringDate, DATE_FORMAT);
         return new ExpiredFile(targetFile, expire);
+    }
+
+    public void setRemoteFailUseCache(boolean remoteFailUseCache) {
+        this.remoteFailUseCache = remoteFailUseCache;
     }
 
     public void setTempDir(String tempDir) {
