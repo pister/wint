@@ -13,10 +13,12 @@ public class OuterWidgetContainer implements Render {
 
     private ViewRenderService viewRenderService;
     private Context context;
+    private OutWidgetParams params;
 
-    public OuterWidgetContainer(ViewRenderService viewRenderService, Context context) {
+    public OuterWidgetContainer(ViewRenderService viewRenderService, Context context, OutWidgetParams params) {
         this.viewRenderService = viewRenderService;
         this.context = context;
+        this.params = params;
     }
 
     @Override
@@ -25,6 +27,6 @@ public class OuterWidgetContainer implements Render {
     }
 
     public OuterWidgetRender setTemplate(String templateName) {
-        return new OuterWidgetRender(context, viewRenderService, templateName);
+        return new OuterWidgetRender(context, viewRenderService, templateName, params);
     }
 }

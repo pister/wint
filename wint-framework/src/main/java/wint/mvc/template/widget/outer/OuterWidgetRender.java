@@ -6,6 +6,8 @@ import wint.lang.utils.FileUtil;
 import wint.lang.utils.MapUtil;
 import wint.mvc.template.*;
 import wint.mvc.template.engine.TemplateEngine;
+import wint.mvc.template.remote.HttpResourceTemplateRender;
+import wint.mvc.template.remote.PathUtil;
 import wint.mvc.view.Render;
 import wint.mvc.view.ViewRenderService;
 
@@ -25,11 +27,13 @@ public class OuterWidgetRender implements Render {
     private Context context;
     private ViewRenderService viewRenderService;
     private String path;
+    private OutWidgetParams params;
 
-    public OuterWidgetRender(Context context, ViewRenderService viewRenderService, String path) {
+    public OuterWidgetRender(Context context, ViewRenderService viewRenderService, String path, OutWidgetParams params) {
         this.context = context;
         this.viewRenderService = viewRenderService;
         this.path = path;
+        this.params = params;
     }
 
     @Override
@@ -38,7 +42,15 @@ public class OuterWidgetRender implements Render {
         widgetContext.putAll(contextValues);
         String extName = FileUtil.getFileExtension(path);
         TemplateEngine templateEngine = viewRenderService.getTemplateEngine(extName);
-        DefaultTemplateRender templateRender = new DefaultTemplateRender(path, templateEngine, widgetContext);
+        TemplateRender templateRender;
+        if (PathUtil.isRemotePath(params.getTemplateBasePath())) {
+            HttpResourceTemplateRender httpResourceTemplateRender = new HttpResourceTemplateRender(path, templateEngine, widgetContext, params.getTemplateBasePath());
+            httpResourceTemplateRender.setExpireInSeconds(params.getExpireInSeconds());
+            httpResourceTemplateRender.setTempDir(params.getLocalTempBasePath());
+            templateRender = httpResourceTemplateRender;
+        } else {
+            templateRender = new DefaultTemplateRender(path, templateEngine, widgetContext);
+        }
         try {
             return templateRender.render();
         } catch (Exception e) {
