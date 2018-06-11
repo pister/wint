@@ -6,6 +6,7 @@ import org.apache.velocity.app.event.ReferenceInsertionEventHandler;
 
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.EscapeUtil;
+import wint.lang.utils.SecurityUtil;
 import wint.mvc.view.Render;
 
 /**
@@ -45,6 +46,9 @@ public class WintEventHandler implements ReferenceInsertionEventHandler {
 		}
 		
 		String stringValue = (String)value;
+		if (SecurityUtil.isRawString(stringValue)) {
+			return SecurityUtil.tryExtractRawString(stringValue);
+		}
 		
 		return EscapeUtil.escapeHtmlSimple(stringValue);
 	}

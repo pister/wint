@@ -5,7 +5,33 @@ import wint.mvc.template.filters.*;
 import wint.mvc.view.Render;
 
 public class SecurityUtil {
-	
+
+    public static final char RAW_STRING_PREFIX = 0x02;
+
+	public static String rawString(String s) {
+	    return RAW_STRING_PREFIX + s;
+    }
+
+    public static String tryExtractRawString(String s) {
+	    if (StringUtil.isEmpty(s)) {
+	        return s;
+        }
+        if (s.charAt(0) == RAW_STRING_PREFIX) {
+	        return s.substring(1);
+        }
+        return s;
+    }
+
+    public static boolean isRawString(String s) {
+        if (StringUtil.isEmpty(s)) {
+            return false;
+        }
+        if (s.charAt(0) == RAW_STRING_PREFIX) {
+            return true;
+        }
+        return false;
+    }
+
 	public static Render rawContent(Object o) {
 		return new RawContentFilterRender(o);
 	}

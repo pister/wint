@@ -5,6 +5,7 @@ import wint.lang.utils.ObjectUtil;
 import wint.lang.utils.ObjectUtil.PropertyValueWalker;
 import wint.lang.utils.SecurityUtil;
 import wint.mvc.template.Context;
+import wint.mvc.view.Render;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -44,8 +45,15 @@ public abstract class AbstractJsonRender implements JsonRender {
 
             @Override
             public Object filter(Object value) {
+                if (value instanceof Render) {
+                    return ((Render)value).render();
+                }
                 if (value instanceof String) {
-                    return EscapeUtil.escapeHtmlSimple((String)value);
+                    String stringValue = (String)value;
+                    if (SecurityUtil.isRawString(stringValue)) {
+                        return SecurityUtil.tryExtractRawString(stringValue);
+                    }
+                    return EscapeUtil.escapeHtmlSimple(stringValue);
                 }
                 return value;
             }
