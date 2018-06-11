@@ -15,6 +15,9 @@ import wint.sessionx.store.SessionStore;
 public class EnsureStatusFilter extends AbstractFilter {
 
     protected boolean isSessionExpire(int maxInactiveInterval, long lastAccessedTime) {
+        if (maxInactiveInterval < 0) {
+            return false;
+        }
         return (System.currentTimeMillis() - lastAccessedTime) > (maxInactiveInterval * 1000);
     }
 
