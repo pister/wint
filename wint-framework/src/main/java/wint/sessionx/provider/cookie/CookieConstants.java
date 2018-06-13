@@ -33,7 +33,7 @@ public interface CookieConstants {
         String COOKIE_DATA_PREFIX = "w_data_";
         String DOMAIN = "";
         String PATH = "/";
-        int EXPIRE = -1;
+        int EXPIRE = Constants.Defaults.WINT_SESSION_EXPIRE;
         String COOKIE_ENCRYPTKEY_PATH = "wint-session-key";
     }
 

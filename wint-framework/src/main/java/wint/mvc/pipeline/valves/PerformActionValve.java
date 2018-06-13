@@ -1,6 +1,7 @@
 package wint.mvc.pipeline.valves;
 
 import wint.core.config.Constants;
+import wint.lang.WintException;
 import wint.lang.magic.MagicList;
 import wint.lang.utils.StringUtil;
 import wint.mvc.flow.FlowData;
@@ -11,6 +12,7 @@ import wint.mvc.pipeline.PipelineContext;
 import wint.mvc.template.Context;
 import wint.mvc.view.ViewRender;
 import wint.mvc.view.ViewRenderService;
+import wint.mvc.view.types.ViewTypes;
 
 /**
  * @author pister 2012-1-2 12:10:05
@@ -48,13 +50,16 @@ public class PerformActionValve extends AbstractValve {
 			flowData.resetRedirected();
 			pipelineContext.invokeTo(LOAD_MODULE_VALVE_LABEL, flowData);
 		} else {
+			String viewType = flowData.getViewType();
 			// 如果是doAction
 			// 根据执行的结果找到对应的screen action
 			// 然后执行screen action
 			if (module.isDoAction()) {
+				if (StringUtil.equals(viewType, ViewTypes.JSON_VIEW_TYPE) && StringUtil.isNotBlank(target)) {
+					throw new WintException("your do-action has target: " + target + ", but your view type is json!");
+				}
 				performDoAction(pipelineContext, flowData, module, target);
 			} else {
-				String viewType = flowData.getViewType();
 				if (StringUtil.isEmpty(viewType)) {
 					ViewRender viewRender = viewRenderService.getDefaultViewRender();
 					viewRender.render(context, flowData, target, module.getType());

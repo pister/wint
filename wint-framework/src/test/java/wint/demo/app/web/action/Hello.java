@@ -29,6 +29,15 @@ public class Hello {
         System.out.println("hello in helloLimit");
     }
 
+
+    @Action(defaultTarget = "hello/sayWords")
+    public void doTheJson(FlowData flowData, Context context) {
+        context.put("name", "hsl");
+        context.put("age", 31);
+
+        flowData.setViewType("json");
+    }
+
     public void theJson(FlowData flowData, Context context) {
         context.put("name", "hsl");
         context.put("age", 31);

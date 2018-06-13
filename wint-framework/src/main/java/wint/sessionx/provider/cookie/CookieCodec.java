@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static wint.sessionx.constants.SpecSessionKeys.LAST_ACCESSED_TIME;
+import static wint.sessionx.constants.SpecSessionKeys.MAX_INACTIVE_INTERVAL;
+
 /**
  * Created by pister on 14-2-26.
  */
@@ -56,6 +59,27 @@ public class CookieCodec {
         return UrlUtil.decode(name, CookieConstants.URL_ENCODE_CHARSET);
     }
 
+    private boolean isSessionExpired(Map<String, SessionData> sessionDataMap) {
+        SessionData inactiveSessionData = sessionDataMap.get(MAX_INACTIVE_INTERVAL);
+        if (inactiveSessionData == null) {
+            return true;
+        }
+        long expireInSeconds = ((Number)inactiveSessionData.getData()).longValue();
+        if (expireInSeconds <= 0) {
+            return false;
+        }
+
+        SessionData lastAccessSessionData = sessionDataMap.get(LAST_ACCESSED_TIME);
+        if (lastAccessSessionData == null) {
+            return true;
+        }
+        long lastAccessInMs = ((Number)lastAccessSessionData.getData()).longValue();
+        if (lastAccessInMs + expireInSeconds * 1000 < System.currentTimeMillis()) {
+            return true;
+        }
+        return false;
+    }
+
     public Map<String, SessionData> parseData(String value) {
         String rawData = decodeCookie(value);
         if (rawData == null) {
@@ -67,8 +91,8 @@ public class CookieCodec {
         }
         Map<String, SessionData> targetData = MapUtil.newHashMap();
         rawData = StringUtil.getFirstAfter(rawData, CookieConstants.WINT_COOKIE_MAGIC_TOKEN);
-        List<String> datas = StringUtil.splitTrim(rawData, config.getDataSeparate());
-        for (String data : datas) {
+        List<String> dataList = StringUtil.splitTrim(rawData, config.getDataSeparate());
+        for (String data : dataList) {
             if (StringUtil.isEmpty(data)) {
                 continue;
             }
@@ -81,6 +105,11 @@ public class CookieCodec {
             sessionData.setName(name);
             targetData.put(name, sessionData);
         }
+
+        if (isSessionExpired(targetData)) {
+            return null;
+        }
+
         return targetData;
     }
 

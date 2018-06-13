@@ -11,7 +11,7 @@ import wint.sessionx.provider.cookie.CookieConstants;
 public abstract class BaseConfig {
 
     private String domain;
-    private int expire = -1;
+    private int expire;
     private String path;
 
     public BaseConfig(MagicMap properties) {

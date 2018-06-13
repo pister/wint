@@ -28,8 +28,8 @@ public class DispatcherTests extends TestCase {
         initParameters.put(Constants.PropertyKeys.TEMPLATE_PATH, "test_template");
         initParameters.put(Constants.PropertyKeys.WINT_SESSION_USE, "true");
         initParameters.put(Constants.PropertyKeys.APP_ENV, "product");
-        initParameters.put(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_PATH, "http://127.0.0.1:7070");
-       // initParameters.put(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_PATH, "/Users/huangsongli/temp/templates");
+        //initParameters.put(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_PATH, "http://127.0.0.1:7070");
+        initParameters.put(Constants.PropertyKeys.WINT_OUTER_TEMPLATE_PATH, "/Users/huangsongli/temp/templates");
         servletConfigMock = new ServletConfigMock(initParameters, initParameters);
         dispatcherServlet.init(servletConfigMock);
 
@@ -83,6 +83,13 @@ public class DispatcherTests extends TestCase {
     public void testTheJson() throws ServletException, IOException {
         MagicMap parameters = MagicMap.newMagicMap();
         HttpServletRequest request = new HttpServletRequestMock("hello/theJson", parameters, servletConfigMock.getServletContext());
+        HttpServletResponse response = new HttpServletResponseMock();
+        dispatcherServlet.service(request, response);
+    }
+
+    public void testDoTheJson() throws ServletException, IOException {
+        MagicMap parameters = MagicMap.newMagicMap();
+        HttpServletRequest request = new HttpServletRequestMock("hello/doTheJson", parameters, servletConfigMock.getServletContext());
         HttpServletResponse response = new HttpServletResponseMock();
         dispatcherServlet.service(request, response);
     }
