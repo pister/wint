@@ -40,15 +40,6 @@ public class LibUtil {
 		return true;
 	}
 
-    public static boolean isHttlExist() {
-		try {
-			Class.forName("httl.Engine");
-		} catch (ClassNotFoundException e) {
-			return false;
-		}
-		return true;
-	}
-
 	public static boolean isCommonsUploadFileExist() {
 		try {
 			// commons-uploadfile

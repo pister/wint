@@ -61,16 +61,6 @@ public class DefaultViewRenderService extends AbstractService implements ViewRen
             templateEngine.init(serviceContext);
             namedViewRenderEngines.put(templateEngine.getName(), templateEngine);
         }
-        if (LibUtil.isHttlExist()) {
-            MagicClass templateEngineClass = MagicClass.forName("wint.mvc.template.engine.httl.HttlTemplateEngine");
-            TemplateEngine templateEngine = (TemplateEngine) templateEngineClass.newInstance().getObject();
-            templateEngine.setBasePath(basePath);
-            if (!useMacroLibrary) {
-                templateEngine.setMacroLibrary(null);
-            }
-            templateEngine.init(serviceContext);
-            namedViewRenderEngines.put(templateEngine.getName(), templateEngine);
-        }
         // TODO jsp template
     }
 
