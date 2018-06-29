@@ -29,7 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class FileResourceValve extends AbstractValve {
 
-	private static final String[] TYPES = {"css", "js", "xml", "jpg", "jpeg", "png", "gif", "bmp", "swf", "mp3", "ico", "icon"};
+	private static final String[] TYPES = {"css", "js", "xml", "jpg", "jpeg", "png", "gif", "bmp",
+			"swf", "mp3", "ico", "icon", "woff", "ttf"};
 	
 	private static final Map<String, String> mappedContentTypes = MapUtil.newHashMap();
 
