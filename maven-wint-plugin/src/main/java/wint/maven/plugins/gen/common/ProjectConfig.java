@@ -44,7 +44,7 @@ public class ProjectConfig {
 	
 	private String c3p0Version = "0.9.1.2";
 	
-	private String mysqlJdbcVersion = "5.1.9";
+	private String mysqlJdbcVersion = "5.1.30";
 	
 	private String fileuploadVersion = "1.3.1";
 	
@@ -58,7 +58,7 @@ public class ProjectConfig {
 
     private String fastjsonVersion ="1.2.20";
 
-    private String wintPluginVersion = "1.1.3";
+    private String wintPluginVersion = "1.1.5";
 
     public String getFastjsonVersion() {
         return fastjsonVersion;

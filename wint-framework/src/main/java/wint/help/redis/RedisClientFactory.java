@@ -12,9 +12,9 @@ public class RedisClientFactory {
     private static final String SHARD_REDIS = "shard-redis";
     private static final String REDIS = "redis";
     /**
-     * sentinel://mymaster@192.168.1.226:26379;192.168.1.226:26379          =>  sentinel
-     * shard-redis://192.168.1.226:6379:name-1;192.168.1.226:6379:name-2    => shard
-     * redis://192.168.1.226:6379                                           => redis
+     * sentinel://mymaster[/database]@192.168.1.226:26379;192.168.1.226:26379   => sentinel
+     * shard-redis://192.168.1.226:6379:name-1;192.168.1.226:6379:name-2        => shard
+     * redis://192.168.1.226:6379[/database]                                    => redis
      *
      *
      * 192.168.1.226:6379    => redis://192.168.1.226:6379

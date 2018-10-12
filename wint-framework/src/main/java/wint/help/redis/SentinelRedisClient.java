@@ -3,7 +3,9 @@ package wint.help.redis;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisSentinelPool;
+import redis.clients.jedis.Protocol;
 import redis.clients.util.Pool;
+import wint.lang.utils.Tuple;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,11 +31,14 @@ public class SentinelRedisClient extends AbstractRedisClient<Jedis> {
             masterName = DEFAULT_MASTER_NAME;
         } else {
             masterName = masterNameAndHost0[0];
+            Tuple<String, Integer> master = RedisUtil.parseForDatabase(masterName);
+            masterName = master.getT1();
+            this.database = master.getT2();
             hosts[0] = masterNameAndHost0[1];
         }
 
         Set<String> sentinels = new HashSet<String>(Arrays.asList(hosts));
-        JedisSentinelPool jedisSentinelPool = new JedisSentinelPool(masterName, sentinels, jedisPoolConfig, timeout);
+        JedisSentinelPool jedisSentinelPool = new JedisSentinelPool(masterName, sentinels, jedisPoolConfig, timeout, null, database);
         return jedisSentinelPool;
     }
 

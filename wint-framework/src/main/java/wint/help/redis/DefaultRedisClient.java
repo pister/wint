@@ -4,6 +4,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.util.Pool;
+import wint.lang.utils.Tuple;
 
 /**
  * User: huangsongli
@@ -13,10 +14,13 @@ import redis.clients.util.Pool;
 public class DefaultRedisClient extends AbstractRedisClient<Jedis> {
     @Override
     protected Pool<Jedis> getPool(JedisPoolConfig jedisPoolConfig, String serverAddress) {
+        Tuple<String, Integer> master = RedisUtil.parseForDatabase(serverAddress);
+        serverAddress = master.getT1();
+        this.database = master.getT2();
         String[] hostAndPort = serverAddress.split(";")[0].split(":");
         String host = hostAndPort[0];
         int port = Integer.parseInt(hostAndPort[1]);
-        return new JedisPool(jedisPoolConfig, host, port, timeout);
+        return new JedisPool(jedisPoolConfig, host, port, timeout, null, database);
     }
 
 }

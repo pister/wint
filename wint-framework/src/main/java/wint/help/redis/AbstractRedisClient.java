@@ -21,6 +21,8 @@ public abstract class AbstractRedisClient<T> implements RedisClient {
 
     protected int timeout = 2000; // default 2000 ms
 
+    protected int database = RedisUtil.DEFAULT_DATABASE;
+
     public void init() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(maxTotal);
@@ -63,5 +65,9 @@ public abstract class AbstractRedisClient<T> implements RedisClient {
 
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+    }
+
+    public int getDatabase() {
+        return database;
     }
 }
