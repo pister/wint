@@ -1,5 +1,7 @@
 package wint.help.redis;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.util.Pool;
 
@@ -9,6 +11,8 @@ import redis.clients.util.Pool;
  * Time: 上午11:36
  */
 public abstract class AbstractRedisClient<T> implements RedisClient {
+
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     /**
      * 主机名 host1:port1:<name1>;host2:port2:<name2>;host3:port3:<name3>

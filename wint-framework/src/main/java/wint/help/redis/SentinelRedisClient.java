@@ -21,6 +21,7 @@ public class SentinelRedisClient extends AbstractRedisClient<Jedis> {
     // sentinel://mymaster@127.0.0.1:26379;127.0.0.1:26379
     private static final String DEFAULT_MASTER_NAME = "mymaster";
 
+
     @Override
     protected Pool<Jedis> getPool(JedisPoolConfig jedisPoolConfig, String serverAddress) {
         String[] hosts = serverAddress.split(";");
@@ -36,8 +37,8 @@ public class SentinelRedisClient extends AbstractRedisClient<Jedis> {
             this.database = master.getT2();
             hosts[0] = masterNameAndHost0[1];
         }
-
         Set<String> sentinels = new HashSet<String>(Arrays.asList(hosts));
+        log.warn("redis sentinel -> master name:" + masterName + ", database: " + this.database + ", hosts:" + sentinels);
         JedisSentinelPool jedisSentinelPool = new JedisSentinelPool(masterName, sentinels, jedisPoolConfig, timeout, null, database);
         return jedisSentinelPool;
     }

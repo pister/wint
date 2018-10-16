@@ -30,6 +30,7 @@ public class ShardedRedisClient extends AbstractRedisClient<ShardedJedis> {
                 shards.add(new JedisShardInfo(parts[0], Integer.parseInt(parts[1]), timeout, parts[2]));
             }
         }
+        log.warn("redis shard -> shards: " + shards);
         return new ShardedJedisPool(jedisPoolConfig, shards);
     }
 }
