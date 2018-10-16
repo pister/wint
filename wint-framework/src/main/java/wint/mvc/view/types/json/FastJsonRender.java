@@ -1,6 +1,7 @@
 package wint.mvc.view.types.json;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 public class FastJsonRender extends AbstractJsonRender {
 
@@ -10,7 +11,7 @@ public class FastJsonRender extends AbstractJsonRender {
 
     @Override
     protected String toJsonString(Object object) {
-        return JSONObject.toJSONString(object);
+        return JSONObject.toJSONString(object, SerializerFeature.WriteMapNullValue);
     }
 
 }
