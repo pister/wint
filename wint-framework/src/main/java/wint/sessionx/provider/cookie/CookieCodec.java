@@ -10,7 +10,7 @@ import wint.lang.utils.UrlUtil;
 import wint.sessionx.cookie.WintCookie;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.store.SessionData;
-import wint.sessionx.util.BlowFishUtil;
+import wint.sessionx.util.BlowFishUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class CookieCodec {
 
     private String decodeCookie(String value) {
         if (config.isEncrypt()) {
-            return BlowFishUtil.decryptBlowfish(value, config.getEncryptKey());
+            return BlowFishUtils.decryptBlowfish(value, config.getEncryptKey());
         } else {
             return value;
         }
@@ -45,7 +45,7 @@ public class CookieCodec {
 
     private String encodeCookie(String value) {
         if (config.isEncrypt()) {
-            return BlowFishUtil.encryptBlowfish(value, config.getEncryptKey());
+            return BlowFishUtils.encryptBlowfish(value, config.getEncryptKey());
         } else {
             return value;
         }

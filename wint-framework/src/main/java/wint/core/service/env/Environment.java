@@ -5,8 +5,9 @@ public enum Environment {
 	MOCK("mock", true),
     DEV("dev", true),
 	TEST("test", false),
+	PREPUB("prepub", false),
 	PRODUCT("product", false);
-	
+
 	private Environment(String name, boolean supportDev) {
 		this.name = name;
         this.supportDev = supportDev;

@@ -11,6 +11,9 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.HashMap;
 
+/**
+ * @deprecated use BlowFishUtils instead
+ */
 public class BlowFishUtil {
 
 	private static final Logger log = LoggerFactory.getLogger(BlowFishUtil.class);
