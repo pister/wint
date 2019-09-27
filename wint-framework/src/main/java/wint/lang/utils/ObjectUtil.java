@@ -66,9 +66,16 @@ public class ObjectUtil {
         Map<String, Property> propertyMap = magicObject.getMagicClass().getReadAndWritableProperties();
         for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
             Property property = entry.getValue();
+            if (!property.isWritable()) {
+                continue;
+            }
             Object value = property.getValue(input);
             Object newValue = walkProperties(value, propertyValueWalker);
-            property.setValue(input, newValue);
+            try {
+                property.setValue(input, newValue);
+            } catch (RuntimeException e) {
+                throw e;
+            }
         }
 
 		return input;
