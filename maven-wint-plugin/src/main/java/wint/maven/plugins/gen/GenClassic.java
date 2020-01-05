@@ -44,7 +44,7 @@ public class GenClassic extends AbstractMojo {
 	 * @parameter expression="${project.build.directory}"
 	 * @required
 	 */
-	private File outputDirectory;
+	private volatile File outputDirectory;
 
 	private static void out(String msg) {
 		System.out.println(msg);
