@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import wint.core.config.Constants;
 import wint.help.biz.result.Result;
 import wint.help.biz.result.ResultSupport;
-import wint.help.json.GsonUtil;
+import wint.help.json.JsonUtil;
 import wint.lang.WintException;
 import wint.lang.utils.FileUtil;
 import wint.lang.utils.SystemUtil;
@@ -32,7 +32,7 @@ public class MockResultUtil {
         log.warn("================");
         String data = getMockDataFileData(flowData);
 
-        ResultSupport resultSupport = GsonUtil.formJsonString(data, ResultSupport.class);
+        ResultSupport resultSupport = JsonUtil.fromJsonString(data, ResultSupport.class);
         return resultSupport;
     }
 

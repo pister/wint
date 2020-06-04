@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by songlihuang on 2020/6/4.
  */
-public class GsonUtil {
+public class JsonUtil {
 
     private static Gson defaultGson;
 
@@ -36,12 +38,16 @@ public class GsonUtil {
         return withNullGson.toJson(object);
     }
 
-    public static String toJsonString(Object object, Type t) {
-        return defaultGson.toJson(object, t);
+    public static <T> T fromJsonString(String s, Class<T> classOfT) {
+        return defaultGson.fromJson(s, classOfT);
     }
 
-    public static <T> T formJsonString(String s, Class<T> classOfT) {
-        return defaultGson.fromJson(s, classOfT);
+    public static Map<String, Object> fromJsonStringAsMap(String s) {
+        return (Map<String, Object>) defaultGson.fromJson(s, Map.class);
+    }
+
+    public static List<Object> fromJsonStringAsList(String s) {
+        return (List<Object>)defaultGson.fromJson(s, List.class);
     }
 
 
