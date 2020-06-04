@@ -2,8 +2,11 @@ package wint.help.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import wint.help.json.wrapper.DefaultJsonList;
+import wint.help.json.wrapper.DefaultJsonObject;
+import wint.help.json.wrapper.JsonList;
+import wint.help.json.wrapper.JsonObject;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -42,12 +45,12 @@ public class JsonUtil {
         return defaultGson.fromJson(s, classOfT);
     }
 
-    public static Map<String, Object> fromJsonStringAsMap(String s) {
-        return (Map<String, Object>) defaultGson.fromJson(s, Map.class);
+    public static JsonObject fromJsonStringObject(String s) {
+        return new DefaultJsonObject((Map<String, Object>) defaultGson.fromJson(s, Map.class));
     }
 
-    public static List<Object> fromJsonStringAsList(String s) {
-        return (List<Object>)defaultGson.fromJson(s, List.class);
+    public static JsonList fromJsonStringList(String s) {
+        return new DefaultJsonList((List<Object>)defaultGson.fromJson(s, List.class));
     }
 
 

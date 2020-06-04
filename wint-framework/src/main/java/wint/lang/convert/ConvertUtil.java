@@ -56,8 +56,8 @@ public class ConvertUtil {
 		}
 	}
 
-    public static Object convertTo(Object input, String type) {
-        Convert<Object> convert = (Convert<Object>)types2Convert.get(type);
+    public static <T> T convertTo(Object input, String type) {
+        Convert<T> convert = (Convert<T>)types2Convert.get(type);
         if (convert == null) {
             return null;
         } else {
@@ -73,21 +73,20 @@ public class ConvertUtil {
 		return input.toString();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static Object convertTo(Object input, Class<?> targetClass, Object defaultValue) {
+	public static <T> T convertTo(Object input, Class<T> targetClass, T defaultValue) {
 		if (input == null) {
 			return defaultValue;
 		}
 		if (input.getClass().isAssignableFrom(targetClass)) {
-			return (Object)input;
+			return (T)input;
 		}
 		
-		Convert<Object> convert = (Convert<Object>)types2Convert.get(ClassUtil.getShortClassName(targetClass.getName()));
+		Convert<T> convert = (Convert<T>)types2Convert.get(ClassUtil.getShortClassName(targetClass.getName()));
 		if (convert == null) {
 			// can not convert
 			throw new ConvertException("can not convert " + input + " to " + targetClass);
 		} else {
-			return (Object)convert.convertTo(input, defaultValue);
+			return convert.convertTo(input, defaultValue);
 		}
 	}
 	

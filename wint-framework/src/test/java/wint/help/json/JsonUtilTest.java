@@ -1,6 +1,9 @@
 package wint.help.json;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
+import wint.help.json.wrapper.JsonList;
+import wint.help.json.wrapper.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +20,8 @@ public class JsonUtilTest extends TestCase {
         private String name;
 
         private List<String> addresses;
+
+        private Bar bar;
 
         public int getAge() {
             return age;
@@ -42,6 +47,14 @@ public class JsonUtilTest extends TestCase {
             this.addresses = addresses;
         }
 
+        public Bar getBar() {
+            return bar;
+        }
+
+        public void setBar(Bar bar) {
+            this.bar = bar;
+        }
+
         @Override
         public String toString() {
             return "Foo{" +
@@ -52,11 +65,36 @@ public class JsonUtilTest extends TestCase {
         }
     }
 
+    public static class Bar {
+        private String x;
+        private int y;
+
+        public String getX() {
+            return x;
+        }
+
+        public void setX(String x) {
+            this.x = x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public void setY(int y) {
+            this.y = y;
+        }
+    }
+
     public void testToJsonString() throws Exception {
         Foo foo = new Foo();
         foo.setName("Jack");
         foo.setAge(12);
         foo.setAddresses(Arrays.asList("aa", "bb"));
+        Bar bar = new Bar();
+        bar.setX("xxx");
+        bar.setY(222);
+        foo.setBar(bar);
         String s = JsonUtil.toJsonString(foo);
         System.out.println(s);
     }
@@ -73,6 +111,25 @@ public class JsonUtilTest extends TestCase {
         String s = "{\"age\":12,\"name\":\"Jack\",\"addresses\":[\"aa\",\"bb\"]}";
         Foo foo = JsonUtil.fromJsonString(s, Foo.class);
         System.out.println(foo);
+    }
+
+    public void testFromJsonStringObject() throws Exception {
+        String s = "{\"age\":12,\"name\":\"Jack\",\"addresses\":[\"aa\",\"bb\"],\"bar\":{\"x\":\"xxx\",\"y\":222}}";
+        JsonObject object = JsonUtil.fromJsonStringObject(s);
+        System.out.println(object);
+        int age = object.getIntValue("age");
+        Assert.assertEquals(12, age);
+        String name = object.getString("name");
+        Assert.assertEquals("Jack", name);
+        JsonList jsonList = object.getList("addresses");
+        Assert.assertEquals(2, jsonList.getLength());
+        Assert.assertEquals("aa", jsonList.getString(0));
+        Assert.assertEquals("bb", jsonList.getString(1));
+
+        JsonObject bar = object.getObject("bar");
+        Assert.assertNotNull(bar);
+        Assert.assertEquals("xxx", bar.getString("x"));
+        Assert.assertEquals(222, bar.getIntValue("y"));
     }
 
     public void testFromJsonStringAsMap() throws Exception {
@@ -92,7 +149,7 @@ public class JsonUtilTest extends TestCase {
             fooList.add(foo);
         }
         String s = JsonUtil.toJsonString(fooList);
-        List<Object> list = JsonUtil.fromJsonStringAsList(s);
+        JsonList list = JsonUtil.fromJsonStringList(s);
         System.out.println(list);
     }
 

@@ -133,7 +133,7 @@ public class StringSerializeService implements SerializeService {
         }
         String typeName = StringUtil.getFirstBefore(s, TYPE_DATA_SEP);
         String data = StringUtil.getFirstAfter(s, TYPE_DATA_SEP);
-        Class<?> type = name2type.get(typeName);
+        Class type = name2type.get(typeName);
         Object defaultValue = defaultValues.get(type);
         if (type != null) {
             data = UrlUtil.decode(data.toString(), URL_ENCODE_CHARSET);
