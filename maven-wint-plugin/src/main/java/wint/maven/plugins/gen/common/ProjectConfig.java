@@ -56,19 +56,29 @@ public class ProjectConfig {
 
     private String driudVersion = "1.0.26";
 
-    private String fastjsonVersion ="1.2.62";
-
     private String wintPluginVersion = "1.1.5";
 
-    public String getFastjsonVersion() {
-        return fastjsonVersion;
-    }
+    private String gsonVersion = "2.8.6";
 
-    public void setFastjsonVersion(String fastjsonVersion) {
-        this.fastjsonVersion = fastjsonVersion;
-    }
+    private String tsonVersion = "1.0";
 
-    public String getDriudVersion() {
+	public String getGsonVersion() {
+		return gsonVersion;
+	}
+
+	public void setGsonVersion(String gsonVersion) {
+		this.gsonVersion = gsonVersion;
+	}
+
+	public String getTsonVersion() {
+		return tsonVersion;
+	}
+
+	public void setTsonVersion(String tsonVersion) {
+		this.tsonVersion = tsonVersion;
+	}
+
+	public String getDriudVersion() {
         return driudVersion;
     }
 

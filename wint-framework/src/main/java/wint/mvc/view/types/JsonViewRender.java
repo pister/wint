@@ -14,6 +14,7 @@ import wint.mvc.form.runtime.FormFactory;
 import wint.mvc.form.runtime.RunTimeForm;
 import wint.mvc.template.Context;
 import wint.mvc.view.types.json.FastJsonRender;
+import wint.mvc.view.types.json.GsonJsonRender;
 import wint.mvc.view.types.json.JsonRender;
 
 public class JsonViewRender extends AbstractViewRender {
@@ -30,7 +31,7 @@ public class JsonViewRender extends AbstractViewRender {
         String jsonRoot = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_JSON_ROOT, Constants.Defaults.WINT_JSON_ROOT);
         successField = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_JSON_VIEW_FORM_VALIDATE_SUCCESS_FIELD, Constants.Defaults.WINT_JSON_VIEW_FORM_VALIDATE_SUCCESS_FIELD);
         messagesField = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.WINT_JSON_VIEW_FORM_VALIDATE_MESSAGES_FIELD, Constants.Defaults.WINT_JSON_VIEW_FORM_VALIDATE_MESSAGES_FIELD);
-        jsonRender = new FastJsonRender(jsonRoot);
+        jsonRender = new GsonJsonRender(jsonRoot);
     }
 
     @Override

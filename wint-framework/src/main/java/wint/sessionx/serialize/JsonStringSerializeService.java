@@ -1,7 +1,5 @@
 package wint.sessionx.serialize;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 
 /**
  * User: huangsongli
@@ -12,17 +10,11 @@ public class JsonStringSerializeService implements SerializeService {
 
     @Override
     public Object serialize(Object input) {
-        if (input == null) {
-            return null;
-        }
-        return JSONObject.toJSONString(input, SerializerFeature.WriteClassName);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Object unserialize(Object src) {
-        if (src == null) {
-            return null;
-        }
-        return JSONObject.parse((String)src);
+        throw new UnsupportedOperationException();
     }
 }

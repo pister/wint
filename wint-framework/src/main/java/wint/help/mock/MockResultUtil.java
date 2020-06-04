@@ -1,12 +1,11 @@
 package wint.help.mock;
 
-import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wint.core.config.Constants;
-import wint.core.io.resource.loader.ResourceLoader;
 import wint.help.biz.result.Result;
 import wint.help.biz.result.ResultSupport;
+import wint.help.json.GsonUtil;
 import wint.lang.WintException;
 import wint.lang.utils.FileUtil;
 import wint.lang.utils.SystemUtil;
@@ -32,7 +31,8 @@ public class MockResultUtil {
         log.warn(xx);
         log.warn("================");
         String data = getMockDataFileData(flowData);
-        ResultSupport resultSupport = JSONObject.parseObject(data, ResultSupport.class);
+
+        ResultSupport resultSupport = GsonUtil.formJsonString(data, ResultSupport.class);
         return resultSupport;
     }
 
