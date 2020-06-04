@@ -1,11 +1,8 @@
 package wint.help.json.wrapper;
 
 import wint.lang.convert.ConvertUtil;
-import wint.lang.convert.converts.SmartDateConvert;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by songlihuang on 2020/6/4.
@@ -119,5 +116,65 @@ public class DefaultJsonObject implements JsonObject {
         return "DefaultJsonObject{" +
                 "stringObjectMap=" + stringObjectMap +
                 '}';
+    }
+
+    @Override
+    public int size() {
+        return stringObjectMap.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return stringObjectMap.isEmpty();
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        return stringObjectMap.containsKey(key);
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        return stringObjectMap.containsKey(value);
+    }
+
+    @Override
+    public Object get(Object key) {
+        return stringObjectMap.get(key);
+    }
+
+    @Override
+    public Object put(String key, Object value) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Object remove(Object key) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void putAll(Map<? extends String, ?> m) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void clear() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Set<String> keySet() {
+        return stringObjectMap.keySet();
+    }
+
+    @Override
+    public Collection<Object> values() {
+        return stringObjectMap.values();
+    }
+
+    @Override
+    public Set<Entry<String, Object>> entrySet() {
+        return stringObjectMap.entrySet();
     }
 }

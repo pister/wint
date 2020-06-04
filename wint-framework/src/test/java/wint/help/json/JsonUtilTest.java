@@ -122,7 +122,7 @@ public class JsonUtilTest extends TestCase {
         String name = object.getString("name");
         Assert.assertEquals("Jack", name);
         JsonList jsonList = object.getList("addresses");
-        Assert.assertEquals(2, jsonList.getLength());
+        Assert.assertEquals(2, jsonList.size());
         Assert.assertEquals("aa", jsonList.getString(0));
         Assert.assertEquals("bb", jsonList.getString(1));
 

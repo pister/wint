@@ -1,11 +1,12 @@
 package wint.help.json.wrapper;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by songlihuang on 2020/6/4.
  */
-public interface JsonObject {
+public interface JsonObject extends Map<String, Object> {
 
     int getIntValue(String name);
 
