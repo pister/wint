@@ -15,6 +15,8 @@ import wint.mvc.template.Context;
 import wint.mvc.url.UrlBroker;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.*;
@@ -66,17 +68,22 @@ public class ResultfulFlowDataSupport implements ResultfulFlowData {
     }
 
     @Override
+    public InputStream getInputStream() throws IOException {
+        return flowData.getInputStream();
+    }
+
+    @Override
     public UrlBroker redirectTo(String urlModule, String target) {
         return flowData.redirectTo(urlModule, target);
     }
 
     @Override
-    public Writer getWriter() {
+    public Writer getWriter() throws IOException {
         return flowData.getWriter();
     }
 
     @Override
-    public OutputStream getOutputStream() {
+    public OutputStream getOutputStream() throws IOException {
         return flowData.getOutputStream();
     }
 

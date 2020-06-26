@@ -1,5 +1,7 @@
 package wint.mvc.flow;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Locale;
@@ -125,6 +127,11 @@ public class WidgetInnerFlowData implements InnerFlowData {
 	}
 
 	public void redirectTo(String location) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public InputStream getInputStream() throws IOException {
 		throw new UnsupportedOperationException();
 	}
 

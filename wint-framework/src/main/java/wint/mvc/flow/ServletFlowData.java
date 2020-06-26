@@ -30,6 +30,7 @@ import wint.mvc.view.types.ViewTypes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.*;
@@ -171,7 +172,7 @@ public class ServletFlowData implements InnerFlowData {
         return redirected;
     }
 
-    public Writer getWriter() {
+    public Writer getWriter() throws IOException {
         setViewType(ViewTypes.NOP_VIEW_TYPE);
         if (fastStringWriter != null) {
             return fastStringWriter;
@@ -180,13 +181,18 @@ public class ServletFlowData implements InnerFlowData {
         return fastStringWriter;
     }
 
-    public OutputStream getOutputStream() {
+    public OutputStream getOutputStream() throws IOException {
         setViewType(ViewTypes.NOP_VIEW_TYPE);
         if (fastByteArrayOutputStream != null) {
             return fastByteArrayOutputStream;
         }
         fastByteArrayOutputStream = new FastByteArrayOutputStream();
         return fastByteArrayOutputStream;
+    }
+
+    @Override
+    public InputStream getInputStream() throws IOException {
+        return this.httpServletRequest.getInputStream();
     }
 
     public UrlBroker redirectTo(String urlModuleName, String target) {

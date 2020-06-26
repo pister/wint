@@ -80,7 +80,11 @@ public class TemplateViewRender extends AbstractViewRender {
         } else {
             content = pageContent;
         }
-        writeContent(flowData.getWriter(), content);
+        try {
+            writeContent(flowData.getWriter(), content);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected boolean onResourceNotFound(InnerFlowData flowData, String target) {

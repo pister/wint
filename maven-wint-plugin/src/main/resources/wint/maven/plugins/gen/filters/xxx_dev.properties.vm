@@ -5,4 +5,4 @@ ${config.artifactId}.jdbc.password=${config.dbPwd}
 ${config.artifactId}.base.url=http://127.0.0.1:8080
 ${config.artifactId}.static.url=http://127.0.0.1:8080/statics
 ${config.artifactId}.log.root.level=info
-${config.artifactId}.log.dir=d:/logs
+${config.artifactId}.log.dir=$USER_HOME/logs

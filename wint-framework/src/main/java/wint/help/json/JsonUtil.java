@@ -23,11 +23,13 @@ public class JsonUtil {
         {
             GsonBuilder builder = new GsonBuilder();
             builder.setDateFormat("yyyy-MM-dd HH:mm:ss");
+            builder.disableHtmlEscaping();
             defaultGson = builder.create();
         }
         {
             GsonBuilder builder = new GsonBuilder();
             builder.setDateFormat("yyyy-MM-dd HH:mm:ss");
+            builder.disableHtmlEscaping();
             builder.serializeNulls();
             withNullGson = builder.create();
         }

@@ -8,6 +8,8 @@ import wint.mvc.parameters.Parameters;
 import wint.mvc.template.Context;
 import wint.mvc.url.UrlBroker;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Locale;
@@ -71,6 +73,8 @@ public interface FlowData {
      */
     void redirectTo(String location);
 
+    InputStream getInputStream() throws IOException;
+
     /**
      * 外部重定向到一个url module
      *
@@ -85,14 +89,14 @@ public interface FlowData {
      *
      * @return
      */
-    Writer getWriter();
+    Writer getWriter() throws IOException;
 
     /**
      * 一旦获取输出的OuputStream，wint会在内部调用setViewType(NopViewRender.TYPE_NAME)
      *
      * @return
      */
-    OutputStream getOutputStream();
+    OutputStream getOutputStream() throws IOException;
 
     int getStatusCode();
 
