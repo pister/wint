@@ -83,10 +83,8 @@ public class UrlRewriteParseValve extends AbstractValve {
         if (requestData == null) {
             return false;
         }
-        String target = requestData.getTarget();
-        if (!StringUtil.isEmpty(target)) {
-            innerFlowData.setTarget(target);
-        }
+        String target = StringUtil.trimToEmpty(requestData.getTarget());
+        innerFlowData.setTarget(target);
         Parameters parsedParameters = requestData.getParameters();
         if (parsedParameters != null) {
             // 显式的queryString优先

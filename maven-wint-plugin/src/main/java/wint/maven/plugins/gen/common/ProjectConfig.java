@@ -32,7 +32,7 @@ public class ProjectConfig {
 	
 	private String javaVersion ="1.6";
 	
-	private String wintVersion = "1.5.6";
+	private String wintVersion = "1.5.7";
 	
 	private String servletVersion = "2.4";
 	
@@ -56,7 +56,7 @@ public class ProjectConfig {
 
     private String driudVersion = "1.0.26";
 
-    private String wintPluginVersion = "1.2";
+    private String wintPluginVersion = "1.2.1";
 
     private String gsonVersion = "2.8.6";
 

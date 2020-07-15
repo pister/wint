@@ -169,7 +169,9 @@ public class UrlRewriteMapping {
 
         rewritePath = trimSeparaters(rewritePath, urlContext.getArgumentSeparater());
         if (!StringUtil.isEmpty(rewritePath)) {
-            sb.append("/");
+            if (sb.charAt(sb.length() - 1) != '/') {
+                sb.append("/");
+            }
             sb.append(rewritePath);
         }
 
