@@ -129,8 +129,8 @@ public class DateUtil {
 	public static boolean isSameDay(Date date1, Date date2) {
 		return isSameDay(toCalendar(date1), toCalendar(date2));
 	}
-	
-	public static Date getDayYMD(Date date) {
+
+	public static Date getDateYMD(Date date) {
 		if (date == null) {
 			return null;
 		}
@@ -141,6 +141,15 @@ public class DateUtil {
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
 		return cal.getTime();
+	}
+
+	/**
+	 * @deprecated use getDateYMD instead
+	 * @param date
+	 * @return
+	 */
+	public static Date getDayYMD(Date date) {
+		return getDateYMD(date);
 	}
 
     public static int getYear(Date date) {

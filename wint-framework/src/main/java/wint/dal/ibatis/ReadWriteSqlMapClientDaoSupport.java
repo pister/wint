@@ -28,6 +28,5 @@ public class ReadWriteSqlMapClientDaoSupport implements InitializingBean {
 
     public void setReadWriteSqlMapClientSource(ReadWriteSqlMapClientSource readWriteSqlMapClientSource) {
         this.readWriteSqlMapClientSource = readWriteSqlMapClientSource;
-        MasterForcer.setReadWriteSqlMapClientSource(readWriteSqlMapClientSource);
     }
 }

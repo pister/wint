@@ -19,7 +19,7 @@ import wint.core.service.aop.ProxyInterceptors;
 import wint.core.service.env.Environment;
 import wint.core.service.initial.EnvironmentAwire;
 import wint.core.service.initial.ServiceContextAwire;
-import wint.help.sql.dao.AutoLoadSqlMapClientFactoryBean;
+import wint.help.sql.dao.WintSqlMapClientFactoryBean;
 import wint.lang.magic.MagicMap;
 import wint.lang.magic.MagicObject;
 import wint.lang.utils.CollectionUtil;
@@ -45,7 +45,10 @@ public class WintResourceXmlApplicationContext extends AbstractXmlApplicationCon
 		final MagicMap properties = serviceContext.getConfiguration().getProperties();
 		final Environment environment = serviceContext.getConfiguration().getEnvironment();
 		final boolean sqlmapAutoload = properties.getBoolean(Constants.PropertyKeys.SQLMAP_AUTO_LOAD, Constants.Defaults.SQLMAP_AUTO_LOAD);
-		
+		final String sqlmapSqlLogName = properties.getString(Constants.PropertyKeys.SQLMAP_SHOW_LOG_NAME, Constants.Defaults.SQLMAP_SHOW_LOG_NAME);
+		final String sqlmapogString = properties.getString(Constants.PropertyKeys.SQLMAP_SHOW_SQL, null);
+		final Boolean sqlmapShowSql = sqlmapogString == null ? null : Boolean.parseBoolean(sqlmapogString);
+
 		this.addBeanFactoryPostProcessor(new BeanFactoryPostProcessor() {
 
 			public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -72,6 +75,13 @@ public class WintResourceXmlApplicationContext extends AbstractXmlApplicationCon
 						}
 						return false;
 					}
+
+					private boolean showSql() {
+						if (sqlmapShowSql == null) {
+							return environment.isSupportDev();
+						}
+						return sqlmapShowSql;
+					}
 					
 					public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 						if (needSupportProfiler(bean, beanName)) {
@@ -85,7 +95,7 @@ public class WintResourceXmlApplicationContext extends AbstractXmlApplicationCon
 						if (autoloadSqlmap(bean, beanName)) {
 							try {
 								if (bean instanceof SqlMapClientFactoryBean) {
-									AutoLoadSqlMapClientFactoryBean autoLoadConfigSqlMapClientFactoryBean = new AutoLoadSqlMapClientFactoryBean((SqlMapClientFactoryBean)bean);
+									WintSqlMapClientFactoryBean autoLoadConfigSqlMapClientFactoryBean = new WintSqlMapClientFactoryBean((SqlMapClientFactoryBean)bean, showSql(), sqlmapSqlLogName);
 									autoLoadConfigSqlMapClientFactoryBean.setApplicationContext(WintResourceXmlApplicationContext.this);
 									autoLoadConfigSqlMapClientFactoryBean.afterPropertiesSet();
 									return autoLoadConfigSqlMapClientFactoryBean;

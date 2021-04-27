@@ -75,6 +75,10 @@ public interface Constants {
 
         String SQLMAP_AUTO_LOAD = "wint.app.sqlmap.dev.autoload";
 
+        String SQLMAP_SHOW_SQL = "wint.app.sqlmap.show.sql";
+
+        String SQLMAP_SHOW_LOG_NAME = "wint.app.sqlmap.show.log.name";
+
         String WINT_SESSION_USE = "wint.session.use";
 
         String WINT_I18N_VAR_NAME = "wint.i18n.var.name";
@@ -239,6 +243,8 @@ public interface Constants {
         String WINT_JSON_VIEW_FORM_VALIDATE_SUCCESS_FIELD = "success";
 
         String WINT_JSON_VIEW_FORM_VALIDATE_MESSAGES_FIELD = "messages";
+
+        String SQLMAP_SHOW_LOG_NAME = "wint.sqlmap.sql";
 
 
     }

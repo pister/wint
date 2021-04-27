@@ -60,7 +60,7 @@ public class ProjectConfig {
 
     private String gsonVersion = "2.8.6";
 
-    private String tsonVersion = "1.2.2";
+    private String tsonVersion = "1.2.4";
 
 	public String getGsonVersion() {
 		return gsonVersion;

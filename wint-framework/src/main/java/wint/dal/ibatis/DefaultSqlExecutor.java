@@ -20,17 +20,12 @@ public class DefaultSqlExecutor implements SqlExecutor {
     }
 
     protected SqlMapClientTemplate getWriteSqlMapClientTemplate() {
-        SqlMapClientTemplate sqlMapClientTemplate = MasterForcer.getSqlMapClientTemplate();
-        if (sqlMapClientTemplate != null) {
-            return sqlMapClientTemplate;
-        }
         return readWriteSqlMapClientSource.getSqlMapClient(SqlMapClientTarget.MASTER);
     }
 
     protected SqlMapClientTemplate getReadSqlMapClientTemplate() {
-        SqlMapClientTemplate sqlMapClientTemplate = MasterForcer.getSqlMapClientTemplate();
-        if (sqlMapClientTemplate != null) {
-            return sqlMapClientTemplate;
+        if (MasterForcer.isForceMaster()) {
+            return readWriteSqlMapClientSource.getSqlMapClient(SqlMapClientTarget.MASTER);
         }
         return readWriteSqlMapClientSource.getSqlMapClient(SqlMapClientTarget.SLAVE);
     }
