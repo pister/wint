@@ -5,6 +5,12 @@ package wint.dal;
  */
 public final class MasterExecutors {
 
+    /**
+     * 强制走master数据库
+     * @param executeHandle
+     * @param <T>
+     * @return
+     */
     public static <T> T executeInMaster(ExecuteHandle<T> executeHandle) {
         try {
             MasterForcer.beginForce();

@@ -71,15 +71,11 @@ public class Profiler {
 		if (e == null) {
 			return StringUtil.EMPTY;
 		}
-		long espace = e.escape();
-		if (espace < minTimes) {
+		long escape = e.escape();
+		if (escape < minTimes) {
 			return StringUtil.EMPTY;
 		}
-		String ret = StringUtil.EMPTY;
-		if (e != null) {
-			ret = LINE_SEP + e.toString(0);
-		}
-		return ret;
+		return LINE_SEP + e.toString(0);
 	}
 	
 	private static Entity getRootEntity() {
