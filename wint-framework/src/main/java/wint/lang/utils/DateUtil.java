@@ -191,6 +191,10 @@ public class DateUtil {
 	public static boolean isDateAfter(Date d1, Date d2) {
 		return d1.getTime() > d2.getTime();
 	}
+
+	public static boolean isDateBefore(Date d1, Date d2) {
+		return d1.getTime() < d2.getTime();
+	}
 	
 	public static boolean isSameDay(Calendar cal1, Calendar cal2) {
 		int year1 = cal1.get(Calendar.YEAR);
