@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -337,7 +338,7 @@ public abstract class MagicClass implements Serializable {
                 writableMethods.put(propertyName, method);
             }
         }
-        Map<String, Property> ret = MapUtil.newHashMap();
+        Map<String, Property> ret = new LinkedHashMap<String, Property>();
         for (Map.Entry<String, Method> entry : readableMethods.entrySet()) {
             String name = entry.getKey();
             Method readMethod = entry.getValue();
