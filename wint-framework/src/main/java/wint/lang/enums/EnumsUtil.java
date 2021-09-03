@@ -167,7 +167,7 @@ public class EnumsUtil {
         return ret.toArray(new Enum[0]);
     }
 
-    static Enum[] enumsExcludes(String enumClass, final String valueName, Object... values) {
+    public static Enum[] enumsExcludes(String enumClass, final String valueName, Object... values) {
         Enum[] enums = enums(enumClass);
         if (values == null || values.length == 0) {
             return enums;
