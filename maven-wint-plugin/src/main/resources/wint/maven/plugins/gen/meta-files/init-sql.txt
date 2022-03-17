@@ -18,5 +18,5 @@ create table ${config.dbName}_test_table (
 	deleted tinyint default 0 not null,
 	gmt_create datetime not null,
 	gmt_modified datetime not null
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 create index test_index_name on ${config.dbName}_test_table(name);
