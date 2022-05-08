@@ -684,7 +684,7 @@ public class SourceGenerator {
 
 
         context.put("idType", type2sql.get(idProperty.getPropertyClass().getTargetClass()));
-        context.put("mysqlEncoding", StringUtil.replace(encoding, "-", ""));
+        context.put("mysqlEncoding", "utf8mb4");
 
         IbatisResult deletedIbatisResult = new IbatisResult();
         deletedIbatisResult.setColumn("deleted");
