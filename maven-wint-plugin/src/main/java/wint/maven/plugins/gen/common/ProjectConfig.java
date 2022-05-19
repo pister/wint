@@ -56,7 +56,7 @@ public class ProjectConfig {
 
     private String driudVersion = "1.0.26";
 
-    private String wintPluginVersion = "1.2.1";
+    private String wintPluginVersion = "1.2.3";
 
     private String gsonVersion = "2.8.6";
 

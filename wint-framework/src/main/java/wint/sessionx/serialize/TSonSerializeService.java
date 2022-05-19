@@ -1,21 +1,18 @@
 package wint.sessionx.serialize;
 
-import com.github.pister.tson.Tsons;
 
 /**
  * Created by songlihuang on 2020/6/4.
+ * @deprecated
  */
 public class TSonSerializeService implements SerializeService {
     @Override
     public Object serialize(Object input) {
-        return Tsons.encode(input);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Object unserialize(Object src) {
-        if (src == null) {
-            return null;
-        }
-        return Tsons.decode(src.toString());
+        throw new UnsupportedOperationException();
     }
 }

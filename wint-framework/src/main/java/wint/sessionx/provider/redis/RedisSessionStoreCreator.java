@@ -7,6 +7,7 @@ import wint.lang.utils.StringUtil;
 import wint.sessionx.provider.SessionStoreCreator;
 import wint.sessionx.provider.sessionid.SessionIdGenerator;
 import wint.sessionx.provider.sessionid.SessionIdGenerators;
+import wint.sessionx.serialize.JavaSerializeService;
 import wint.sessionx.serialize.SerializeService;
 import wint.sessionx.serialize.TSonSerializeService;
 import wint.sessionx.store.SessionStore;
@@ -19,7 +20,7 @@ import wint.sessionx.store.SessionStore;
 public class RedisSessionStoreCreator implements SessionStoreCreator {
 
     private SessionIdGenerator sessionIdGenerator = SessionIdGenerators.getSessionIdGenerator();
-    private SerializeService serializeService = new TSonSerializeService();
+    private SerializeService serializeService = new JavaSerializeService();
     private RedisClient redisClient;
     private RedisSessionConfig config;
 
