@@ -32,7 +32,7 @@ public class ProjectConfig {
 	
 	private String javaVersion ="1.6";
 	
-	private String wintVersion = "1.5.8";
+	private String wintVersion = "1.5.8.1";
 	
 	private String servletVersion = "2.4";
 	
@@ -60,22 +60,12 @@ public class ProjectConfig {
 
     private String gsonVersion = "2.8.6";
 
-    private String tsonVersion = "1.2.4";
-
 	public String getGsonVersion() {
 		return gsonVersion;
 	}
 
 	public void setGsonVersion(String gsonVersion) {
 		this.gsonVersion = gsonVersion;
-	}
-
-	public String getTsonVersion() {
-		return tsonVersion;
-	}
-
-	public void setTsonVersion(String tsonVersion) {
-		this.tsonVersion = tsonVersion;
 	}
 
 	public String getDriudVersion() {

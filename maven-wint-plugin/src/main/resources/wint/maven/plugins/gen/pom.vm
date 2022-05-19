@@ -92,11 +92,6 @@
             <artifactId>gson</artifactId>
             <version>${config.gsonVersion}</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.pister</groupId>
-            <artifactId>tson</artifactId>
-            <version>${config.tsonVersion}</version>
-        </dependency>
 	</dependencies>
 
 	<build>
