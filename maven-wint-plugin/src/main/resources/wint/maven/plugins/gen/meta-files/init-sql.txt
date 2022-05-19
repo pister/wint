@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS `${config.dbName}`;
-CREATE DATABASE `${config.dbName}`;
+CREATE DATABASE `${config.dbName}` default character set utf8mb4 collate utf8mb4_unicode_ci;
 use `${config.dbName}`;
 
 #set($dbUser=${config.dbUser})
