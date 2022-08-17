@@ -2,15 +2,20 @@ package wint.lang.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ConcurrentMap;
 
 public class DateUtil {
-	
+
 	public static final long MI_SEC_IN_DAY = 24L * 3600 * 1000;
 	
 	public static final String DEFAULT_DATE_FMT = "yyyy-MM-dd HH:mm:ss";
+
+	private static final ConcurrentMap<String, DateTimeFormatter> dateFormatterCache = MapUtil.newConcurrentHashMap();
 	
 	public static Date currentDate() {
 		return new Date();
@@ -26,6 +31,10 @@ public class DateUtil {
 	public static String formatDate(Object date, String fmt) {
 		if (date == null) {
 			return null;
+		}
+		if (date instanceof TemporalAccessor) {
+			DateTimeFormatter dateTimeFormatter = dateFormatterCache.computeIfAbsent(fmt, k -> DateTimeFormatter.ofPattern(fmt));
+			return dateTimeFormatter.format((TemporalAccessor)date);
 		}
 		if (!(date instanceof Date)) {
 			return date.toString();
@@ -51,7 +60,7 @@ public class DateUtil {
 	}
 	
 	public static String formatNow(String fmt) {
-		return formatDate(new Date(), fmt);
+		return formatDate(LocalDateTime.now(), fmt);
 	}
 	
 	public static String formatFullDate(Object date) {
