@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,6 +55,9 @@ public class SourceGenerator {
         typeDefaults.put(Date.class, "new java.util.Date()");
         typeDefaults.put(java.sql.Date.class, "new java.sql.Date(new java.util.Date().getTime())");
         typeDefaults.put(Timestamp.class, "new java.sql.Timestamp(new Date().getTime())");
+        typeDefaults.put(LocalDateTime.class, "java.time.LocalDateTime.now()");
+        typeDefaults.put(LocalDate.class, "java.time.LocalDate.now()");
+        typeDefaults.put(LocalTime.class, "java.time.LocalTime.now()");
 
 
         type2sql.put(Integer.TYPE, "int");

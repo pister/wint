@@ -3,8 +3,12 @@
     "-//SPRING//DTD BEAN//EN"
      "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="byName">
- 	
-    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+
+    <!--
+     instead of org.springframework.orm.ibatis.SqlMapClientFactoryBean for support java-8 Date types
+    -->
+
+    <bean id="sqlMapClient" class="wint.dal.ibatis.ext.ExtSqlMapClientFactoryBean">
         <property name="configLocation">
             <value>classpath:sql-map.xml</value>
         </property>

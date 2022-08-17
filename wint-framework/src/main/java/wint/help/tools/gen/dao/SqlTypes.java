@@ -4,6 +4,9 @@ import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,6 +45,10 @@ public class SqlTypes {
         types.put(java.sql.Date.class, "datetime");
         types.put(java.sql.Timestamp.class, "datetime");
         types.put(java.util.Date.class, "datetime");
+
+        types.put(LocalDateTime.class, "datetime");
+        types.put(LocalDate.class, "date");
+        types.put(LocalTime.class, "time");
 
         defaultNullableTypes.add(Boolean.class);
         defaultNullableTypes.add(Byte.class);

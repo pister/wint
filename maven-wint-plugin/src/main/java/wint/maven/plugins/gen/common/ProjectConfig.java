@@ -30,21 +30,21 @@ public class ProjectConfig {
 	
 	private String jrebelPath;
 	
-	private String javaVersion ="1.6";
+	private String javaVersion ="1.8";
 	
-	private String wintVersion = "1.5.8.1";
+	private String wintVersion = "1.6";
 	
 	private String servletVersion = "2.4";
 	
 	private String junitVersion = "3.8.1";
 	
-	private String springVersion = "2.5.6";
+	private String springVersion = "3.1.2.RELEASE";
 	
 	private String ibatisVersion = "2.3.4.726";
 	
 	private String c3p0Version = "0.9.1.2";
 	
-	private String mysqlJdbcVersion = "5.1.30";
+	private String mysqlJdbcVersion = "8.0.30";
 	
 	private String fileuploadVersion = "1.3.1";
 	

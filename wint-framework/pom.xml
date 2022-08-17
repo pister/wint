@@ -1,18 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+    <parent>
+        <groupId>rf</groupId>
+        <artifactId>rf-base</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>wint</groupId>
     <artifactId>wint-framework</artifactId>
-    <version>1.5.8.1</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
     <name>wint-framework</name>
     <url>http://maven.apache.org</url>
 
     <properties>
-        <java.version>1.6</java.version>
+        <java.version>1.8</java.version>
         <java.encoding>utf-8</java.encoding>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+        <spring.version>3.1.2.RELEASE</spring.version>
     </properties>
 
     <dependencies>
@@ -42,8 +49,14 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
-            <version>2.5.6</version>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -198,5 +211,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>

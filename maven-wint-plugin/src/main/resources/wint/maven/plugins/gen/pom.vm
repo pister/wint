@@ -40,9 +40,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring</artifactId>
+			<artifactId>spring-core</artifactId>
 			<version>${config.springVersion}</version>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${config.springVersion}</version>
+        </dependency>
 		<dependency>
 		    <groupId>org.apache.ibatis</groupId>
 		    <artifactId>ibatis-sqlmap</artifactId>
