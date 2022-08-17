@@ -94,12 +94,15 @@ public class WintResourceXmlApplicationContext extends AbstractXmlApplicationCon
 					public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 						if (autoloadSqlmap(bean, beanName)) {
 							try {
+								// not support now
+								/*
 								if (bean instanceof SqlMapClientFactoryBean) {
 									WintSqlMapClientFactoryBean autoLoadConfigSqlMapClientFactoryBean = new WintSqlMapClientFactoryBean((SqlMapClientFactoryBean)bean, showSql(), sqlmapSqlLogName);
 									autoLoadConfigSqlMapClientFactoryBean.setApplicationContext(WintResourceXmlApplicationContext.this);
 									autoLoadConfigSqlMapClientFactoryBean.afterPropertiesSet();
 									return autoLoadConfigSqlMapClientFactoryBean;
 								}
+								*/
 							} catch (Exception e) {
 								throw new RuntimeException(e);
 							}

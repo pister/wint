@@ -2,11 +2,12 @@ package wint.lang.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
-
+	
 	public static final long MI_SEC_IN_DAY = 24L * 3600 * 1000;
 	
 	public static final String DEFAULT_DATE_FMT = "yyyy-MM-dd HH:mm:ss";
