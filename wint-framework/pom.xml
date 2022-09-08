@@ -2,11 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 
-
     <modelVersion>4.0.0</modelVersion>
     <groupId>wint</groupId>
     <artifactId>wint-framework</artifactId>
-    <version>1.6.2</version>
+    <version>1.6.5</version>
     <packaging>jar</packaging>
     <name>wint-framework</name>
     <url>http://maven.apache.org</url>
@@ -15,7 +14,7 @@
         <java.version>1.8</java.version>
         <java.encoding>utf-8</java.encoding>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-        <spring.version>3.1.2.RELEASE</spring.version>
+        <spring.version>5.3.22</spring.version>
     </properties>
 
     <dependencies>
@@ -46,6 +45,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
             <scope>provided</scope>
         </dependency>

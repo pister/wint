@@ -9,7 +9,6 @@ import wint.sessionx.provider.sessionid.SessionIdGenerator;
 import wint.sessionx.provider.sessionid.SessionIdGenerators;
 import wint.sessionx.serialize.JavaSerializeService;
 import wint.sessionx.serialize.SerializeService;
-import wint.sessionx.serialize.TSonSerializeService;
 import wint.sessionx.store.SessionStore;
 
 /**

@@ -1,8 +1,8 @@
 package wint.dal.ibatis;
 
-import org.springframework.orm.ibatis.SqlMapClientCallback;
-import org.springframework.orm.ibatis.SqlMapClientTemplate;
 import wint.dal.MasterForcer;
+import wint.dal.ibatis.spring.SqlMapClientCallback;
+import wint.dal.ibatis.spring.SqlMapClientTemplate;
 
 import java.util.List;
 

@@ -32,13 +32,13 @@ public class ProjectConfig {
 	
 	private String javaVersion ="1.8";
 	
-	private String wintVersion = "1.6.1";
+	private String wintVersion = "1.6.5";
 	
 	private String servletVersion = "2.4";
 	
 	private String junitVersion = "3.8.1";
 	
-	private String springVersion = "3.1.2.RELEASE";
+	private String springVersion = "5.3.22";
 	
 	private String ibatisVersion = "2.3.4.726";
 	
@@ -54,9 +54,9 @@ public class ProjectConfig {
 	
 	private String logbackVersion = "1.0.1";
 
-    private String driudVersion = "1.0.26";
+    private String driudVersion = "1.1.23";
 
-    private String wintPluginVersion = "1.2.3";
+    private String wintPluginVersion = "1.2.7";
 
     private String gsonVersion = "2.8.6";
 

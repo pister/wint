@@ -1,6 +1,7 @@
 package wint.dal.ibatis;
 
-import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+
+import wint.dal.ibatis.spring.support.SqlMapClientDaoSupport;
 
 /**
  * User: huangsongli

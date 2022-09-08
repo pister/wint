@@ -27,7 +27,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.support.lob.LobHandler;
-import org.springframework.orm.ibatis.SqlMapClientFactoryBean;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -35,6 +34,7 @@ import org.w3c.dom.NodeList;
 import wint.core.io.resource.autoload.LastModifiedFile;
 import wint.core.service.parser.XMLParseUtil;
 import wint.dal.ibatis.LogSupportSqlMapExecutorDelegate;
+import wint.dal.ibatis.spring.SqlMapClientFactoryBean;
 import wint.lang.magic.MagicList;
 import wint.lang.magic.MagicObject;
 

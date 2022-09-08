@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.springframework.orm.ibatis.SqlMapClientCallback;
+import wint.dal.ibatis.spring.SqlMapClientCallback;
 import com.ibatis.sqlmap.client.SqlMapExecutor;
 import ${daoFullClassName};
 import ${doFullClassName};

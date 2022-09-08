@@ -9,11 +9,11 @@ import com.ibatis.sqlmap.engine.config.SqlMapConfiguration;
 import com.ibatis.sqlmap.engine.type.TypeHandlerFactory;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
-import org.springframework.orm.ibatis.SqlMapClientFactoryBean;
 import org.springframework.util.ObjectUtils;
 import wint.dal.ibatis.ext.handlers.LocalDateTimeTypeHandler;
 import wint.dal.ibatis.ext.handlers.LocalDateTypeHandler;
 import wint.dal.ibatis.ext.handlers.LocalTimeTypeHandler;
+import wint.dal.ibatis.spring.SqlMapClientFactoryBean;
 
 import java.io.IOException;
 import java.io.InputStream;

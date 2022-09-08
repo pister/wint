@@ -4,8 +4,8 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.orm.ibatis.SqlMapClientTemplate;
-import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import wint.dal.ibatis.spring.SqlMapClientTemplate;
+import wint.dal.ibatis.spring.support.SqlMapClientDaoSupport;
 import wint.lang.utils.CollectionUtil;
 
 import javax.sql.DataSource;

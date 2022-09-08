@@ -9,7 +9,6 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.core.io.Resource;
-import org.springframework.orm.ibatis.SqlMapClientFactoryBean;
 
 import wint.core.config.Configuration;
 import wint.core.config.Constants;
@@ -19,7 +18,7 @@ import wint.core.service.aop.ProxyInterceptors;
 import wint.core.service.env.Environment;
 import wint.core.service.initial.EnvironmentAwire;
 import wint.core.service.initial.ServiceContextAwire;
-import wint.help.sql.dao.WintSqlMapClientFactoryBean;
+import wint.dal.ibatis.spring.SqlMapClientFactoryBean;
 import wint.lang.magic.MagicMap;
 import wint.lang.magic.MagicObject;
 import wint.lang.utils.CollectionUtil;
@@ -70,7 +69,7 @@ public class WintResourceXmlApplicationContext extends AbstractXmlApplicationCon
 						if (!sqlmapAutoload) {
 							return false;
 						}
-						if (bean instanceof SqlMapClientFactoryBean) { 
+						if (bean instanceof SqlMapClientFactoryBean) {
 							return true;
 						}
 						return false;
