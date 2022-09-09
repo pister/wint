@@ -50,9 +50,9 @@ public class ProjectConfig {
 	
 	private String commonsIOVersion = "2.1";
 	
-	private String slf4jApiVersion = "1.6.4";
+	private String slf4jApiVersion = "1.7.16";
 	
-	private String logbackVersion = "1.0.1";
+	private String logbackVersion = "1.2.11";
 
     private String driudVersion = "1.1.23";
 
