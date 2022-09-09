@@ -64,8 +64,7 @@ public class DefaultUploadFileService extends AbstractService implements UploadF
 	public InnerFlowData getUploadFileFlowData(HttpServletRequest request, HttpServletResponse httpServletResponse) {
 		UploadFileInfo uploadFileInfo = uploadFileFactory.getUploadFiles(request, null);
 		Parameters parameters = uploadFileInfo.getParameters();
-		Map<String, UploadFile> uploadFiles = uploadFileInfo.getUploadFiles();
-		return new UploadFileFlowData(request, httpServletResponse, serviceContext, requestContextPath, uploadFiles, parameters);
+		return new UploadFileFlowData(request, httpServletResponse, serviceContext, requestContextPath, parameters);
 	}
 
 	public void setCharset(String charset) {

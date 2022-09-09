@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+@SuppressWarnings("deprecation")
 public abstract class AbstractJettyRunMojo extends AbstractMojo {
 
     /**
@@ -43,6 +44,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
 
     /**
      * List of other contexts to set up. Optional.
+     *
      * @parameter
      */
     protected ContextHandler[] contextHandlers;
@@ -50,27 +52,27 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
 
     /**
      * List of security realms to set up. Optional.
+     *
      * @parameter
      */
     protected LoginService[] loginServices;
 
 
-
     /**
      * A RequestLog implementation to use for the webapp at runtime.
      * Optional.
+     *
      * @parameter
      */
     protected RequestLog requestLog;
 
 
-
     /**
      * The "virtual" webapp created by the plugin
+     *
      * @parameter
      */
     protected JettyWebAppContext webAppConfig;
-
 
 
     /**
@@ -81,7 +83,6 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
      * @readonly
      */
     protected MavenProject executedProject;
-
 
 
     /**
@@ -106,7 +107,6 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     protected File tmpDirectory;
 
 
-
     /**
      * The interval in seconds to scan the webapp for changes
      * and restart the context if necessary. Ignored if reload
@@ -120,7 +120,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
 
     /**
      * reload can be set to either 'automatic' or 'manual'
-     *
+     * <p>
      * if 'manual' then the context can be reloaded by a linefeed in the console
      * if 'automatic' then traditional reloading on changed files is enabled.
      *
@@ -130,7 +130,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
 
     /**
      * File containing system properties to be set before execution
-     *
+     * <p>
      * Note that these properties will NOT override System properties
      * that have been set on the command line, by the JVM, or directly
      * in the POM via systemProperties. Optional.
@@ -145,15 +145,16 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
      * that have been set on the command line or by the JVM. They WILL
      * override System properties that have been set via systemPropertiesFile.
      * Optional.
+     *
      * @parameter
      */
     protected SystemProperties systemProperties;
 
 
-
     /**
      * Location of a jetty xml configuration file whose contents
      * will be applied before any plugin configuration. Optional.
+     *
      * @parameter
      */
     protected String jettyConfig;
@@ -161,6 +162,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     /**
      * Port to listen to stop jetty on executing -DSTOP.PORT=&lt;stopPort&gt;
      * -DSTOP.KEY=&lt;stopKey&gt; -jar start.jar --stop
+     *
      * @parameter
      */
     protected int stopPort;
@@ -168,6 +170,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     /**
      * Key to provide when stopping jetty on executing java -DSTOP.KEY=&lt;stopKey&gt;
      * -DSTOP.PORT=&lt;stopPort&gt; -jar start.jar --stop
+     *
      * @parameter
      */
     protected String stopKey;
@@ -183,6 +186,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
      * processes in an automated build environment. This can be facilitated by setting
      * daemon to true.
      * </p>
+     *
      * @parameter expression="${jetty.daemon}" default-value="false"
      */
     protected boolean daemon;
@@ -196,6 +200,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     /**
      * Location of a context xml configuration file whose contents
      * will be applied to the webapp AFTER anything in &lt;webAppConfig&gt;.Optional.
+     *
      * @parameter
      */
     protected String webAppXml;
@@ -206,7 +211,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     protected Scanner scanner;
 
     /**
-     *  List of files and directories to scan
+     * List of files and directories to scan
      */
     protected ArrayList<File> scanList;
 
@@ -225,65 +230,56 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     public String PORT_SYSPROPERTY = "jetty.port";
 
 
-
     public abstract void checkPomConfiguration() throws MojoExecutionException;
 
-    public abstract void configureScanner () throws MojoExecutionException;
+    public abstract void configureScanner() throws MojoExecutionException;
 
-    public abstract void applyJettyXml () throws Exception;
+    public abstract void applyJettyXml() throws Exception;
 
     public abstract void finishConfigurationBeforeStart() throws Exception;
 
 
-    public MavenProject getExecutedProject()
-    {
+    public MavenProject getExecutedProject() {
         return this.executedProject;
     }
 
-    public File getTmpDirectory()
-    {
+    public File getTmpDirectory() {
         return this.tmpDirectory;
     }
 
     /**
      * @return Returns the contextPath.
      */
-    public String getContextPath()
-    {
+    public String getContextPath() {
         return this.contextPath;
     }
 
     /**
      * @return Returns the scanIntervalSeconds.
      */
-    public int getScanIntervalSeconds()
-    {
+    public int getScanIntervalSeconds() {
         return this.scanIntervalSeconds;
     }
 
     /**
      * @return returns the path to the systemPropertiesFile
      */
-    public File getSystemPropertiesFile()
-    {
+    public File getSystemPropertiesFile() {
         return this.systemPropertiesFile;
     }
 
-    public void setSystemPropertiesFile(File file) throws Exception
-    {
+    public void setSystemPropertiesFile(File file) throws Exception {
         this.systemPropertiesFile = file;
         FileInputStream propFile = new FileInputStream(systemPropertiesFile);
         Properties properties = new Properties();
         properties.load(propFile);
 
-        if (this.systemProperties == null )
+        if (this.systemProperties == null)
             this.systemProperties = new SystemProperties();
 
-        for (Enumeration keys = properties.keys(); keys.hasMoreElements();  )
-        {
-            String key = (String)keys.nextElement();
-            if ( ! systemProperties.containsSystemProperty(key) )
-            {
+        for (Enumeration keys = properties.keys(); keys.hasMoreElements(); ) {
+            String key = (String) keys.nextElement();
+            if (!systemProperties.containsSystemProperty(key)) {
                 SystemProperty prop = new SystemProperty();
                 prop.setKey(key);
                 prop.setValue(properties.getProperty(key));
@@ -294,41 +290,32 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
 
     }
 
-    public void setSystemProperties(SystemProperties systemProperties)
-    {
+    public void setSystemProperties(SystemProperties systemProperties) {
         if (this.systemProperties == null)
             this.systemProperties = systemProperties;
-        else
-        {
+        else {
             Iterator itor = systemProperties.getSystemProperties().iterator();
-            while (itor.hasNext())
-            {
-                SystemProperty prop = (SystemProperty)itor.next();
+            while (itor.hasNext()) {
+                SystemProperty prop = (SystemProperty) itor.next();
                 this.systemProperties.setSystemProperty(prop);
             }
         }
     }
 
-    public List<File> getJettyXmlFiles()
-    {
-        if ( this.jettyConfig == null )
-        {
+    public List<File> getJettyXmlFiles() {
+        if (this.jettyConfig == null) {
             return null;
         }
 
         List<File> jettyXmlFiles = new ArrayList<File>();
 
-        if ( this.jettyConfig.indexOf(',') == -1 )
-        {
-            jettyXmlFiles.add( new File( this.jettyConfig ) );
-        }
-        else
-        {
+        if (this.jettyConfig.indexOf(',') == -1) {
+            jettyXmlFiles.add(new File(this.jettyConfig));
+        } else {
             String[] files = this.jettyConfig.split(",");
 
-            for ( String file : files )
-            {
-                jettyXmlFiles.add( new File(file) );
+            for (String file : files) {
+                jettyXmlFiles.add(new File(file));
             }
         }
 
@@ -336,48 +323,39 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     }
 
 
-    public JettyServer getServer ()
-    {
+    public JettyServer getServer() {
         return this.server;
     }
 
-    public void setServer (JettyServer server)
-    {
+    public void setServer(JettyServer server) {
         this.server = server;
     }
 
 
-    public void setScanList (ArrayList<File> list)
-    {
+    public void setScanList(ArrayList<File> list) {
         this.scanList = new ArrayList<File>(list);
     }
 
-    public ArrayList<File> getScanList ()
-    {
+    public ArrayList<File> getScanList() {
         return this.scanList;
     }
 
 
-    public void setScannerListeners (ArrayList<Scanner.BulkListener> listeners)
-    {
+    public void setScannerListeners(ArrayList<Scanner.BulkListener> listeners) {
         this.scannerListeners = new ArrayList<Scanner.BulkListener>(listeners);
     }
 
-    public ArrayList getScannerListeners ()
-    {
+    public ArrayList getScannerListeners() {
         return this.scannerListeners;
     }
 
-    public Scanner getScanner ()
-    {
+    public Scanner getScanner() {
         return scanner;
     }
 
-    public void execute() throws MojoExecutionException, MojoFailureException
-    {
+    public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info("Configuring Jetty for project: " + getExecutedProject().getName());
-        if (skip)
-        {
+        if (skip) {
             getLog().info("Skipping Jetty start: jetty.skip==true");
             return;
         }
@@ -387,10 +365,8 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     }
 
 
-    public void startJetty () throws MojoExecutionException
-    {
-        try
-        {
+    public void startJetty() throws MojoExecutionException {
+        try {
             getLog().debug("Starting Jetty Server ...");
 
             printSystemProperties();
@@ -399,24 +375,21 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
 
             //apply any config from a jetty.xml file first which is able to
             //be overwritten by config in the pom.xml
-            applyJettyXml ();
-
+            applyJettyXml();
 
 
             // if the user hasn't configured their project's pom to use a
             // different set of connectors,
             // use the default
             Connector[] connectors = this.server.getConnectors();
-            if (connectors == null|| connectors.length == 0)
-            {
+            if (connectors == null || connectors.length == 0) {
                 //try using ones configured in pom
                 this.server.setConnectors(this.connectors);
 
                 connectors = this.server.getConnectors();
-                if (connectors == null || connectors.length == 0)
-                {
+                if (connectors == null || connectors.length == 0) {
                     //if a SystemProperty -Djetty.port=<portnum> has been supplied, use that as the default port
-                    this.connectors = new Connector[] { this.server.createDefaultConnector(System.getProperty(PORT_SYSPROPERTY, null)) };
+                    this.connectors = new Connector[]{this.server.createDefaultConnector(System.getProperty(PORT_SYSPROPERTY, null))};
                     this.server.setConnectors(this.connectors);
                 }
             }
@@ -432,9 +405,8 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
             this.server.addWebApplication(webAppConfig);
 
             // set up security realms
-            for (int i = 0; (this.loginServices != null) && i < this.loginServices.length; i++)
-            {
-                getLog().debug(this.loginServices[i].getClass().getName() + ": "+ this.loginServices[i].toString());
+            for (int i = 0; (this.loginServices != null) && i < this.loginServices.length; i++) {
+                getLog().debug(this.loginServices[i].getClass().getName() + ": " + this.loginServices[i].toString());
                 getServer().addBean(this.loginServices[i]);
             }
 
@@ -447,33 +419,26 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
 
             getLog().info("Started Jetty Server");
 
-            if(stopPort>0 && stopKey!=null)
-            {
+            if (stopPort > 0 && stopKey != null) {
                 Monitor monitor = new Monitor(stopPort, stopKey, new Server[]{server}, !daemon);
                 monitor.start();
             }
 
             // start the scanner thread (if necessary) on the main webapp
-            configureScanner ();
+            configureScanner();
             startScanner();
 
             // start the new line scanner thread if necessary
             startConsoleScanner();
 
             // keep the thread going if not in daemon mode
-            if (!daemon )
-            {
+            if (!daemon) {
                 server.join();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new MojoExecutionException("Failure", e);
-        }
-        finally
-        {
-            if (!daemon )
-            {
+        } finally {
+            if (!daemon) {
                 getLog().info("Jetty server exiting.");
             }
         }
@@ -489,8 +454,7 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
      *
      * @throws MojoExecutionException
      */
-    public void configureWebApplication () throws Exception
-    {
+    public void configureWebApplication() throws Exception {
         //As of jetty-7, you must use a <webAppConfig> element
         if (webAppConfig == null)
             webAppConfig = new JettyWebAppContext();
@@ -498,25 +462,22 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
         //Apply any context xml file to set up the webapp
         //CAUTION: if you've defined a <webAppConfig> element then the
         //context xml file can OVERRIDE those settings
-        if (webAppXml != null)
-        {
+        if (webAppXml != null) {
             File file = FileUtils.getFile(webAppXml);
-            XmlConfiguration xmlConfiguration = new XmlConfiguration(file.toURL());
-            getLog().info("Applying context xml file "+webAppXml);
+            XmlConfiguration xmlConfiguration = new XmlConfiguration(file.toURI().toURL());
+            getLog().info("Applying context xml file " + webAppXml);
             xmlConfiguration.configure(webAppConfig);
         }
 
 
         //If no contextPath was specified, go with our default
         String cp = webAppConfig.getContextPath();
-        if (cp == null || "".equals(cp))
-        {
-            webAppConfig.setContextPath((contextPath.startsWith("/") ? contextPath : "/"+ contextPath));
+        if (cp == null || "".equals(cp)) {
+            webAppConfig.setContextPath((contextPath.startsWith("/") ? contextPath : "/" + contextPath));
         }
 
         //If no tmp directory was specified, and we have one, use it
-        if (webAppConfig.getTempDirectory() == null && tmpDirectory != null)
-        {
+        if (webAppConfig.getTempDirectory() == null && tmpDirectory != null) {
             if (!tmpDirectory.exists())
                 tmpDirectory.mkdirs();
 
@@ -524,25 +485,29 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
         }
 
         getLog().info("Context path = " + webAppConfig.getContextPath());
-        getLog().info("Tmp directory = "+ (webAppConfig.getTempDirectory()== null? " determined at runtime": webAppConfig.getTempDirectory()));
-        getLog().info("Web defaults = "+(webAppConfig.getDefaultsDescriptor()==null?" jetty default":webAppConfig.getDefaultsDescriptor()));
-        getLog().info("Web overrides = "+(webAppConfig.getOverrideDescriptor()==null?" none":webAppConfig.getOverrideDescriptor()));
+        getLog().info("Tmp directory = " + (webAppConfig.getTempDirectory() == null ? " determined at runtime" : webAppConfig.getTempDirectory()));
+        getLog().info("Web defaults = " + (webAppConfig.getDefaultsDescriptor() == null ? " jetty default" : webAppConfig.getDefaultsDescriptor()));
+        getLog().info("Web overrides = " + (getOverrideDescriptor(webAppConfig) == null ? " none" : getOverrideDescriptor(webAppConfig)));
+    }
+
+    private static String getOverrideDescriptor(JettyWebAppContext webAppConfig) {
+        List<String> descriptors = webAppConfig.getOverrideDescriptors();
+        if (descriptors.size() != 1)
+            return null;
+        return descriptors.get(0);
     }
 
     /**
      * Run a scanner thread on the given list of files and directories, calling
      * stop/start on the given list of LifeCycle objects if any of the watched
      * files change.
-     *
      */
-    private void startScanner()
-    {
+    private void startScanner() {
         // check if scanning is enabled
         if (getScanIntervalSeconds() <= 0) return;
 
         // check if reload is manual. It disables file scanning
-        if ( "manual".equalsIgnoreCase( reload ) )
-        {
+        if ("manual".equalsIgnoreCase(reload)) {
             // issue a warning if both scanIntervalSeconds and reload
             // are enabled
             getLog().warn("scanIntervalSeconds is set to " + scanIntervalSeconds + " but will be IGNORED due to manual reloading");
@@ -555,10 +520,10 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
         scanner.setScanDirs(getScanList());
         scanner.setRecursive(true);
         List listeners = getScannerListeners();
-        Iterator itor = (listeners==null?null:listeners.iterator());
-        while (itor!=null && itor.hasNext())
-            scanner.addListener((Scanner.Listener)itor.next());
-        getLog().info("Starting scanner at interval of " + getScanIntervalSeconds()+ " seconds.");
+        Iterator itor = (listeners == null ? null : listeners.iterator());
+        while (itor != null && itor.hasNext())
+            scanner.addListener((Scanner.Listener) itor.next());
+        getLog().info("Starting scanner at interval of " + getScanIntervalSeconds() + " seconds.");
         try {
             scanner.start();
         } catch (Exception e) {
@@ -569,28 +534,22 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     /**
      * Run a thread that monitors the console input to detect ENTER hits.
      */
-    protected void startConsoleScanner()
-    {
-        if ( "manual".equalsIgnoreCase( reload ) )
-        {
+    protected void startConsoleScanner() {
+        if ("manual".equalsIgnoreCase(reload)) {
             getLog().info("Console reloading is ENABLED. Hit ENTER on the console to restart the context.");
             consoleScanner = new ConsoleScanner(this);
             consoleScanner.start();
         }
     }
 
-    private void printSystemProperties ()
-    {
+    private void printSystemProperties() {
         // print out which system properties were set up
-        if (getLog().isDebugEnabled())
-        {
-            if (systemProperties != null)
-            {
+        if (getLog().isDebugEnabled()) {
+            if (systemProperties != null) {
                 Iterator itor = systemProperties.getSystemProperties().iterator();
-                while (itor.hasNext())
-                {
-                    SystemProperty prop = (SystemProperty)itor.next();
-                    getLog().debug("Property "+prop.getName()+"="+prop.getValue()+" was "+ (prop.isSet() ? "set" : "skipped"));
+                while (itor.hasNext()) {
+                    SystemProperty prop = (SystemProperty) itor.next();
+                    getLog().debug("Property " + prop.getName() + "=" + prop.getValue() + " was " + (prop.isSet() ? "set" : "skipped"));
                 }
             }
         }
@@ -599,22 +558,22 @@ public abstract class AbstractJettyRunMojo extends AbstractMojo {
     /**
      * Try and find a jetty-web.xml file, using some
      * historical naming conventions if necessary.
+     *
      * @param webInfDir
      * @return the jetty web xml file
      */
-    public File findJettyWebXmlFile (File webInfDir)
-    {
+    public File findJettyWebXmlFile(File webInfDir) {
         if (webInfDir == null)
             return null;
         if (!webInfDir.exists())
             return null;
 
-        File f = new File (webInfDir, "jetty-web.xml");
+        File f = new File(webInfDir, "jetty-web.xml");
         if (f.exists())
             return f;
 
         //try some historical alternatives
-        f = new File (webInfDir, "web-jetty.xml");
+        f = new File(webInfDir, "web-jetty.xml");
         if (f.exists())
             return f;
 

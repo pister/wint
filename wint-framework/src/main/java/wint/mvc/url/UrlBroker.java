@@ -4,7 +4,6 @@ import wint.core.config.Constants;
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
 import wint.lang.convert.ConvertUtil;
 import wint.lang.exceptions.UrlException;
-import wint.lang.magic.MagicMap;
 import wint.lang.magic.MagicObject;
 import wint.lang.magic.Property;
 import wint.lang.utils.AutoFillArray;
@@ -14,7 +13,6 @@ import wint.lang.utils.Tuple;
 import wint.mvc.flow.FlowData;
 import wint.mvc.holder.WintContext;
 import wint.mvc.parameters.Parameters;
-import wint.mvc.template.Context;
 import wint.mvc.view.Render;
 
 import java.util.LinkedHashMap;

@@ -289,12 +289,6 @@ public class ServletFlowData implements InnerFlowData {
         this.statusMessage = message;
     }
 
-    @Override
-    public void sendError(int code, String message) {
-        // httpServletResponse.sendError(code, message);
-        setStatusCode(code, message);
-    }
-
     public int getStatusCode() {
         return statusCode;
     }

@@ -1,5 +1,6 @@
 package wint.maven.plugins.jetty;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -397,11 +398,11 @@ public abstract class WintJettyRunMojoBase extends AbstractJettyRunMojo {
             }
         }
 
-        if (webAppConfig.getOverrideDescriptor() != null)
+        if (CollectionUtils.isNotEmpty(webAppConfig.getOverrideDescriptors()))
         {
             try
             {
-                Resource r = Resource.newResource(webAppConfig.getOverrideDescriptor());
+                Resource r = Resource.newResource(webAppConfig.getOverrideDescriptors().get(0));
                 scanList.add(r.getFile());
             }
             catch (IOException e)
@@ -481,7 +482,7 @@ public abstract class WintJettyRunMojoBase extends AbstractJettyRunMojo {
             {
                 try
                 {
-                    Resource r=Resource.newResource("jar:"+artifact.getFile().toURL().toString()+"!/");
+                    Resource r=Resource.newResource("jar:"+artifact.getFile().toURI().toURL().toString()+"!/");
                     overlays.add(r);
                     getExtraScanTargets().add(artifact.getFile());
                 }

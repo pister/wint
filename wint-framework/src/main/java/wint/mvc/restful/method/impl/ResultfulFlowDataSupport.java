@@ -24,6 +24,7 @@ import java.util.*;
 /**
  * Created by songlihuang on 2018/3/7.
  */
+@SuppressWarnings("ALL")
 public class ResultfulFlowDataSupport implements ResultfulFlowData {
 
     protected FlowData flowData;
@@ -103,11 +104,6 @@ public class ResultfulFlowDataSupport implements ResultfulFlowData {
     }
 
     @Override
-    public void sendError(int code, String message) {
-        flowData.sendError(code, message);
-    }
-
-    @Override
     public String getContentType() {
         return flowData.getContentType();
     }
@@ -172,10 +168,6 @@ public class ResultfulFlowDataSupport implements ResultfulFlowData {
         return flowData.forkUrl(urlModuleName, target);
     }
 
-    @Override
-    public Map<String, UploadFile> getUploadFiles() {
-        return flowData.getUploadFiles();
-    }
 
     @Override
     public String getLayout() {

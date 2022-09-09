@@ -1,7 +1,7 @@
 package wint.lang.util;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Assert;
 import wint.lang.utils.TargetUtil;
 
 public class TargetUtilTest extends TestCase {

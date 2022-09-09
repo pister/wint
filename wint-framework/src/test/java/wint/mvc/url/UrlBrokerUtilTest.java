@@ -1,7 +1,7 @@
 package wint.mvc.url;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Assert;
 import wint.lang.magic.Transformer;
 import wint.lang.utils.StringUtil;
 import wint.lang.utils.UrlUtil;

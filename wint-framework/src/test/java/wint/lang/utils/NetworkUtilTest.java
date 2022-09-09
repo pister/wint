@@ -1,7 +1,7 @@
 package wint.lang.utils;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * User: huangsongli

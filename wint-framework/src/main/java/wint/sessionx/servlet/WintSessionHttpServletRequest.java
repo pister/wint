@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 
+@SuppressWarnings("deprecation")
 public class WintSessionHttpServletRequest extends HttpServletRequestWrapper implements HttpServletRequest {
 
 	private WintHttpSession wintHttpSession;

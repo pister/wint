@@ -114,14 +114,6 @@ public interface FlowData {
      */
     void setStatusCode(int code, String message);
 
-    /**
-     * 设置错误状态和错误信息
-     * @param code
-     * @param message
-     * @deprecated use setStatusCode instead
-     */
-    void sendError(int code, String message);
-
     String getContentType();
 
     /**
@@ -183,13 +175,6 @@ public interface FlowData {
      * @return
      */
     UrlBroker forkUrl(String urlModuleName, String target);
-
-    /**
-     * 获取上传文件
-     * @return
-     * @deprecated use getParameter().getUploadFile() instead
-     */
-    Map<String, UploadFile> getUploadFiles();
 
     /**
      * 获取layout

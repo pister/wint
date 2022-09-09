@@ -1,7 +1,7 @@
 package wint.help.json;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Assert;
 import wint.help.json.wrapper.JsonList;
 import wint.help.json.wrapper.JsonObject;
 

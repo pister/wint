@@ -112,16 +112,16 @@ public class EnumsUtil {
      * 获取enum所有值列表
      *
      * @param values
-     * @param fieldname
+     * @param fieldName
      * @return
      */
-    public static List<Object> enumValues(Enum[] values, String fieldname) {
+    public static List<Object> enumValues(Enum[] values, String fieldName) {
         if (values == null || values.length == 0) {
             return CollectionUtil.newArrayList(0);
         }
         Class enumClass = values[0].getDeclaringClass();
         Map<String, Method> namedMethods = getterMethods(enumClass);
-        Method method = namedMethods.get(fieldname);
+        Method method = namedMethods.get(fieldName);
         List<Object> ret = new ArrayList<Object>(values.length);
         for (Enum value : values) {
             try {

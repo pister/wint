@@ -11,22 +11,15 @@ import wint.mvc.parameters.Parameters;
 
 public class UploadFileFlowData extends ServletFlowData {
 	
-	private Map<String, UploadFile> uploadFiles;
-	
 	private Parameters uploadFileParameters;
 
-	public UploadFileFlowData(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, ServiceContext serviceContext, String requestContextPath, Map<String, UploadFile> uploadFiles, Parameters uploadFileParameters) {
+	public UploadFileFlowData(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, ServiceContext serviceContext, String requestContextPath, Parameters uploadFileParameters) {
 		super(httpServletRequest, httpServletResponse, serviceContext, requestContextPath);
-		this.uploadFiles = uploadFiles;
 		this.uploadFileParameters = uploadFileParameters;
 	}
 
 	public Parameters getParameters() {
 		return uploadFileParameters;
-	}
-
-	public Map<String, UploadFile> getUploadFiles() {
-		return uploadFiles;
 	}
 
 

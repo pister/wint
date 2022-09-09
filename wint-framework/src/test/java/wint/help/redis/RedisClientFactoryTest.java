@@ -1,7 +1,7 @@
 package wint.help.redis;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * Created by songlihuang on 2018/10/12.

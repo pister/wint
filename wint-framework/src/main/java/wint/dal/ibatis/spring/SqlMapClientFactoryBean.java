@@ -51,6 +51,7 @@ import org.springframework.util.ObjectUtils;
  * @see SqlMapClientTemplate#setSqlMapClient
  * @see SqlMapClientTemplate#setDataSource
  */
+@SuppressWarnings("deprecation")
 public class SqlMapClientFactoryBean implements FactoryBean<SqlMapClient>, InitializingBean {
 
     private static final ThreadLocal<LobHandler> configTimeLobHandlerHolder = new ThreadLocal<LobHandler>();
@@ -62,9 +63,6 @@ public class SqlMapClientFactoryBean implements FactoryBean<SqlMapClient>, Initi
      * SqlMapClient, and reset immediately afterwards. It is thus only available
      * during configuration.
      * @see #setLobHandler
-     * @see org.springframework.orm.ibatis.support.ClobStringTypeHandler
-     * @see org.springframework.orm.ibatis.support.BlobByteArrayTypeHandler
-     * @see org.springframework.orm.ibatis.support.BlobSerializableTypeHandler
      */
     public static LobHandler getConfigTimeLobHandler() {
         return configTimeLobHandlerHolder.get();

@@ -1,7 +1,7 @@
 package wint.core.serivce.config.parser;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Assert;
 import wint.core.config.Configuration;
 import wint.core.io.resource.Resource;
 import wint.core.io.resource.loader.DefaultResourceLoader;

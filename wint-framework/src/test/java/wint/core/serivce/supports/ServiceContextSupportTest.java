@@ -2,8 +2,8 @@ package wint.core.serivce.supports;
 
 import java.util.Date;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Assert;
 import wint.core.config.Configuration;
 import wint.core.serivce.supports.demo.FirstService;
 import wint.core.serivce.supports.demo.FirstServiceImpl;

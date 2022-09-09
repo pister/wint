@@ -22,6 +22,7 @@ import wint.mvc.url.UrlBroker;
  * @author pister
  * 2012-9-9 下午04:29:31
  */
+@SuppressWarnings("deprecation")
 public class WidgetInnerFlowData implements InnerFlowData {
 	
 	private InnerFlowData innerFlowData;
@@ -98,10 +99,6 @@ public class WidgetInnerFlowData implements InnerFlowData {
 		return innerFlowData.getTarget();
 	}
 
-	public Map<String, UploadFile> getUploadFiles() {
-		return innerFlowData.getUploadFiles();
-	}
-
 	public String getViewType() {
 		return innerFlowData.getViewType();
 	}
@@ -173,11 +170,6 @@ public class WidgetInnerFlowData implements InnerFlowData {
 
 	@Override
 	public void setStatusCode(int code, String message) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void sendError(int code, String message) {
 		throw new UnsupportedOperationException();
 	}
 

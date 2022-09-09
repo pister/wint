@@ -36,7 +36,7 @@ public class ProjectConfig {
 	
 	private String servletVersion = "2.4";
 	
-	private String junitVersion = "3.8.1";
+	private String junitVersion = "4.12";
 	
 	private String springVersion = "5.3.22";
 	
