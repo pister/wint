@@ -7,7 +7,7 @@
 	<!-- druid DataSource -->
     <!--
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url" value="${${config.artifactId}.jdbc.url}" />
         <property name="username" value="${${config.artifactId}.jdbc.username}" />
         <property name="password" value="${${config.artifactId}.jdbc.password}" />
@@ -30,7 +30,7 @@
       -->
 	<!-- c3p0 DataSource -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"></property>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
         <property name="jdbcUrl" value="${${config.artifactId}.jdbc.url}"></property>
         <property name="user" value="${${config.artifactId}.jdbc.username}"></property>
         <property name="password" value="${${config.artifactId}.jdbc.password}"></property>

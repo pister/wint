@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.apache.maven.plugins</groupId>
 	<artifactId>maven-wint-plugin</artifactId>
-	<version>1.2.7</version>
+	<version>1.2.8</version>
 	<packaging>maven-plugin</packaging>
 	<name>maven-wint-plugin Maven Mojo</name>
 	<url>http://maven.apache.org</url>
