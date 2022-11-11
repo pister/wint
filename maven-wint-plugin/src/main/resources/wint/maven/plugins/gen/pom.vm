@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${config.springVersion}</version>
+			<version>2.5.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -53,19 +53,19 @@
 		    <artifactId>ibatis-sqlmap</artifactId>
 		    <version>${config.ibatisVersion}</version>
 		</dependency>
-        <!--
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>${config.driudVersion}</version>
             <scope>runtime</scope>
         </dependency>
-        -->
+        <!--
         <dependency>
             <groupId>c3p0</groupId>
             <artifactId>c3p0</artifactId>
             <version>${config.c3p0Version}</version>
         </dependency>
+        -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>

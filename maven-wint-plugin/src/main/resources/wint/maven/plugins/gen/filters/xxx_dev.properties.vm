@@ -1,5 +1,5 @@
 ${config.artifactId}.env.mode=dev
-${config.artifactId}.jdbc.url=jdbc:mysql://${config.dbUrl}:3306/${config.dbName}?useUnicode=true&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true
+${config.artifactId}.jdbc.url=jdbc:mysql://${config.dbUrl}:3306/${config.dbName}?useUnicode=true&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true&amp;useSSL=false
 ${config.artifactId}.jdbc.username=${config.dbUser}
 ${config.artifactId}.jdbc.password=${config.dbPwd}
 ${config.artifactId}.base.url=http://127.0.0.1:8080
