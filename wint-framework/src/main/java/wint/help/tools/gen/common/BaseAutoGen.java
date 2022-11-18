@@ -21,10 +21,10 @@ public class BaseAutoGen {
 
     protected static final String JAVA_TEST_SRC = "src/test/java";
 
-    private TemplateSourceGenator templateSourceGenator = new TemplateSourceGenator();
+    private TemplateSourceGenerator templateSourceGenerator = new TemplateSourceGenerator();
 
-    protected TemplateSourceGenator getTemplateSourceGenator() {
-        return templateSourceGenator;
+    protected TemplateSourceGenerator getTemplateSourceGenerator() {
+        return templateSourceGenerator;
     }
 
 

@@ -1,6 +1,9 @@
 package wint.lang.magic.compatible.supports;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 import wint.lang.convert.converts.*;
@@ -35,6 +38,9 @@ public class DefaultAutoConvertManager extends AutoConvertManager {
 		converts.put(Double.class, new DoubleConvert());
 		converts.put(String.class, new StringConvert());
 		converts.put(Date.class, new SmartDateConvert());
+		converts.put(LocalDateTime.class, new LocalDateTimeConvert());
+		converts.put(LocalDate.class, new LocalDateConvert());
+		converts.put(LocalTime.class, new LocalTimeConvert());
 
 		converts.put(Timestamp.class, new SmartTimestampConvert());
 

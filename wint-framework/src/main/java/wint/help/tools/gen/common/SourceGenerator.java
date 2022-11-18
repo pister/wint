@@ -33,7 +33,7 @@ import java.util.TreeSet;
  */
 public class SourceGenerator {
 
-    private TemplateSourceGenator templateSourceGenator = new TemplateSourceGenator();
+    private TemplateSourceGenerator templateSourceGenerator = new TemplateSourceGenerator();
 
     private static final Map<Class<?>, String> typeDefaults = new HashMap<Class<?>, String>();
     private static final Map<Class<?>, String> type2sql = new HashMap<Class<?>, String>();
@@ -213,6 +213,24 @@ public class SourceGenerator {
         return value;
     }
 
+    private List<DomainField> getDomainFields(Class<?> domainClass) {
+        Map<String, Property> propertyMap = PropertiesUtil.getProperties(domainClass);
+        List<DomainField> fields = new ArrayList<DomainField>();
+        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
+            Property property = entry.getValue();
+            String name = entry.getKey();
+            if (!property.isWritable() || !property.isReadable()) {
+                continue;
+            }
+            if (name.equals(idName) || name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
+                continue;
+            }
+
+            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
+        }
+        return fields;
+    }
+
     public String genJavaAOImpl(Class<?> domainClass, Writer out) {
         Map<String, Object> context = MapUtil.newHashMap();
         String alias = DaoGenUtil.getDoAlias(domainClass);
@@ -237,24 +255,9 @@ public class SourceGenerator {
         String domainInDb = alias + "Indb";
         String idGetter = "get" + StringUtil.uppercaseFirstLetter(idName);
 
-        MagicClass magicClass = MagicClass.wrap(domainClass);
-        Map<String, Property> propertyMap = magicClass.getProperties();
-        List<DomainField> fields = new ArrayList<DomainField>();
-        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
-            Property property = entry.getValue();
-            String name = entry.getKey();
-            if (!property.isWritable() || !property.isReadable()) {
-                continue;
-            }
-            if (name.equals(idName) || name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
-                continue;
-            }
-
-            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
-        }
 
 
-        context.put("fields", fields);
+        context.put("fields", getDomainFields(domainClass));
         context.put("daoFullClassName", genMetaInfo.getDaoFullClassName());
         context.put("domainInDb", domainInDb);
         context.put("idGetter", idGetter);
@@ -273,7 +276,7 @@ public class SourceGenerator {
         context.put("domainName", domainName);
         context.put("domainUpper", domainUpper);
 
-        templateSourceGenator.genSource(context, out, genJavaAOImplTemplateName);
+        templateSourceGenerator.genSource(context, out, genJavaAOImplTemplateName);
         return aoImplFullClassName;
     }
 
@@ -301,7 +304,7 @@ public class SourceGenerator {
         context.put("thisClassName", aoClassName);
         context.put("thisPackage", aoPackage);
 
-        templateSourceGenator.genSource(context, out, genJavaAOTemplateName);
+        templateSourceGenerator.genSource(context, out, genJavaAOTemplateName);
         return aoFullName;
     }
 
@@ -318,29 +321,12 @@ public class SourceGenerator {
         String listPageAction = "$baseModule.setTarget('" + getActionContext(actionContext) + alias + "/list')";
         context.put("listPageAction", listPageAction);
 
-
-        MagicClass magicClass = MagicClass.wrap(domainClass);
-        Map<String, Property> propertyMap = magicClass.getProperties();
-        List<DomainField> fields = new ArrayList<DomainField>();
-        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
-            Property property = entry.getValue();
-            String name = entry.getKey();
-            if (!property.isWritable() || !property.isReadable()) {
-                continue;
-            }
-            if (name.equals(idName) || name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
-                continue;
-            }
-
-            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
-        }
-
-        context.put("fields", fields);
+        context.put("fields", getDomainFields(domainClass));
 
         String targetName = getCreateName(alias) + ".vm";
 
         File createFile = new File(moduleDir, targetName);
-        templateSourceGenator.genSource(context, "gen-templates-create-vm.vm", createFile, fileWriter);
+        templateSourceGenerator.genSource(context, "gen-templates-create-vm.vm", createFile, fileWriter);
 
     }
 
@@ -391,25 +377,9 @@ public class SourceGenerator {
 
         String paginationWidget = "$widget.setTemplate('common/pagination').addToContext('pageModule', $baseModule.setTarget('" + getActionContext(actionContext) + alias + "/list')).addToContext('query', $query)";
 
-        MagicClass magicClass = MagicClass.wrap(domainClass);
-        Map<String, Property> propertyMap = magicClass.getProperties();
-        List<DomainField> fields = new ArrayList<DomainField>();
-        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
-            Property property = entry.getValue();
-            String name = entry.getKey();
-            if (!property.isWritable() || !property.isReadable()) {
-                continue;
-            }
-            if (name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
-                continue;
-            }
-
-            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
-        }
-
 
         context.put("paginationWidget", paginationWidget);
-        context.put("fields", fields);
+        context.put("fields", getDomainFields(domainClass));
         context.put("alias", alias);
         context.put("foreachStart", foreachStart);
         context.put("end", end);
@@ -421,7 +391,7 @@ public class SourceGenerator {
         String targetName = getListName(alias) + ".vm";
 
         File createFile = new File(moduleDir, targetName);
-        templateSourceGenator.genSource(context, "gen-templates-list-vm.vm", createFile, fileWriter);
+        templateSourceGenerator.genSource(context, "gen-templates-list-vm.vm", createFile, fileWriter);
     }
 
     private void renderDetail(Class<?> domainClass, File moduleDir, String actionContext, FileWriter fileWriter) {
@@ -444,7 +414,7 @@ public class SourceGenerator {
         String targetName = getDetailName(alias) + ".vm";
 
         File createFile = new File(moduleDir, targetName);
-        templateSourceGenator.genSource(context, "gen-templates-detail-vm.vm", createFile, fileWriter);
+        templateSourceGenerator.genSource(context, "gen-templates-detail-vm.vm", createFile, fileWriter);
     }
 
     private void renderEdit(Class<?> domainClass, File moduleDir, String actionContext, FileWriter fileWriter) {
@@ -458,23 +428,7 @@ public class SourceGenerator {
 
         context.put("listPageAction", listPageAction);
 
-        MagicClass magicClass = MagicClass.wrap(domainClass);
-        Map<String, Property> propertyMap = magicClass.getProperties();
-        List<DomainField> fields = new ArrayList<DomainField>();
-        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
-            Property property = entry.getValue();
-            String name = entry.getKey();
-            if (!property.isWritable() || !property.isReadable()) {
-                continue;
-            }
-            if (name.equals(idName) || name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
-                continue;
-            }
-
-            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
-        }
-
-        context.put("fields", fields);
+        context.put("fields", getDomainFields(domainClass));
 
         context.put("alias", alias);
         context.put("idName", idName);
@@ -487,7 +441,7 @@ public class SourceGenerator {
 
 
         File createFile = new File(moduleDir, targetName);
-        templateSourceGenator.genSource(context, "gen-templates-edit-vm.vm", createFile, fileWriter);
+        templateSourceGenerator.genSource(context, "gen-templates-edit-vm.vm", createFile, fileWriter);
     }
 
 
@@ -545,39 +499,22 @@ public class SourceGenerator {
         context.put("thisPackage", thisPackage);
         context.put("thisClassName", thisClassName);
 
-        templateSourceGenator.genSource(context, out, genJavaActionTemplateName);
+        templateSourceGenerator.genSource(context, out, genJavaActionTemplateName);
     }
 
     public void genForm(Class<?> clazz, File formFile, FileWriter fileWriter) {
         GenMetaInfo genMetaInfo = new GenMetaInfo(clazz, idName);
         Map<String, Object> context = MapUtil.newHashMap();
 
-        MagicClass magicClass = MagicClass.wrap(clazz);
-        Map<String, Property> propertyMap = magicClass.getProperties();
-
-        List<DomainField> fields = new ArrayList<DomainField>();
-        for (Map.Entry<String, Property> entry : propertyMap.entrySet()) {
-            Property property = entry.getValue();
-            String name = entry.getKey();
-            if (!property.isWritable() || !property.isReadable()) {
-                continue;
-            }
-            if (name.equals(idName) || name.equals(ColumnNameContants.gmtModifiedName) || name.equals(ColumnNameContants.gmtCreateName)) {
-                continue;
-            }
-
-            fields.add(new DomainField(name, property.getPropertyClass().getTargetClass()));
-        }
-
         context.put("name", genMetaInfo.getDoAlias());
-        context.put("fields", fields);
+        context.put("fields", getDomainFields(clazz));
         context.put("idName", idName);
 
         String cnName = cnName(clazz);
         if (StringUtil.isEmpty(cnName)) {
-            templateSourceGenator.genSource(context, genFormTemplateName, formFile, fileWriter);
+            templateSourceGenerator.genSource(context, genFormTemplateName, formFile, fileWriter);
         } else {
-            templateSourceGenator.genSource(context, genFormTemplateNameCn, formFile, fileWriter);
+            templateSourceGenerator.genSource(context, genFormTemplateNameCn, formFile, fileWriter);
         }
 
     }
@@ -603,7 +540,7 @@ public class SourceGenerator {
         String baseTestClassPackage = getBaseTestPackage(doPackage);
         String baseTestClassName = "BaseTest";
         String baseTestFullName = baseTestClassPackage + "." + baseTestClassName;
-        String daoPropertyname = StringUtil.lowercaseFirstLetter(daoClassName);
+        String daoPropertyName = StringUtil.lowercaseFirstLetter(daoClassName);
 
         String baseDoName = StringUtil.lowercaseFirstLetter(doClassName);
         String doObject_1 = baseDoName;
@@ -616,7 +553,7 @@ public class SourceGenerator {
         context.put("doObject_1", doObject_1);
         context.put("doObject_2", doObject_2);
         context.put("doObject_3", doObject_3);
-        context.put("daoPropertyname", daoPropertyname);
+        context.put("daoPropertyname", daoPropertyName);
         context.put("baseTestClassName", baseTestClassName);
         context.put("baseTestFullName", baseTestFullName);
         context.put("thisPackage", genMetaInfo.getTestDaoPackage());
@@ -664,11 +601,11 @@ public class SourceGenerator {
     }
 
     protected void genFromTemplate(Map<String, Object> context, Writer out, String templateName) {
-        templateSourceGenator.genSource(context, out, templateName);
+        templateSourceGenerator.genSource(context, out, templateName);
     }
 
     protected void genFromTemplate(Map<String, Object> context, String templateName, File targetFile, FileWriter fileWriter) {
-        templateSourceGenator.genSource(context, templateName, targetFile, fileWriter);
+        templateSourceGenerator.genSource(context, templateName, targetFile, fileWriter);
     }
 
     public void genCreateTableSql(Class<?> clazz, Writer out, boolean defaultNotNull) {
@@ -859,8 +796,7 @@ public class SourceGenerator {
     }
 
     private List<IbatisResult> getResult(Class<?> c, Set<String> filters, OptionEnum resultOptionEnum) {
-        MagicClass clazz = MagicClass.wrap(c);
-        Map<String, Property> properties = clazz.getProperties();
+        Map<String, Property> properties = PropertiesUtil.getProperties(c);
         List<IbatisResult> ret = new ArrayList<IbatisResult>();
         for (Map.Entry<String, Property> entry : properties.entrySet()) {
             checkPropertyName(entry.getKey());

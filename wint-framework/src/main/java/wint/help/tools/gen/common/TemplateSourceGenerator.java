@@ -18,13 +18,13 @@ import java.util.Map;
  * Date: 13-12-22
  * Time: 上午11:04
  */
-public class TemplateSourceGenator {
+public class TemplateSourceGenerator {
 
     private String encoding = "utf-8";
 
     private SimpleVelocityEngine simpleTemplateEngine = new SimpleVelocityEngine();
 
-    public TemplateSourceGenator() {
+    public TemplateSourceGenerator() {
         simpleTemplateEngine.init(encoding);
     }
 
@@ -47,7 +47,7 @@ public class TemplateSourceGenator {
     }
 
     private Reader getTemplateReader(String templateName) throws UnsupportedEncodingException {
-        InputStream is = TemplateSourceGenator.class.getResourceAsStream(templateName);
+        InputStream is = TemplateSourceGenerator.class.getResourceAsStream(templateName);
         if (is != null) {
             return new InputStreamReader(is, encoding);
         }
@@ -55,7 +55,7 @@ public class TemplateSourceGenator {
         if (is != null) {
             return new InputStreamReader(is, encoding);
         }
-        is = TemplateSourceGenator.class.getClassLoader().getResourceAsStream(templateName);
+        is = TemplateSourceGenerator.class.getClassLoader().getResourceAsStream(templateName);
         if (is != null) {
             return new InputStreamReader(is, encoding);
         }
