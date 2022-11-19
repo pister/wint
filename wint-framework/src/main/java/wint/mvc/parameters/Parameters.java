@@ -2,6 +2,10 @@ package wint.mvc.parameters;
 
 import wint.mvc.form.fileupload.UploadFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -89,10 +93,12 @@ public interface Parameters {
 	Date getDate(String name, Date defaultDate);
 	
 	Date getDate(String name);
-	
+
 	Date getDate(String name, String format, Date defaultDate);
-	
+
 	Date getDate(String name, String format);
+
+    DateTimeParameters getDateTimes();
 
     UploadFile getUploadFile(String name);
 

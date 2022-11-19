@@ -22,7 +22,7 @@ public class SmartDateConvert extends AbstractConvert<Date> {
 			return defaultValue;
 		}
 		String stringDate = input.toString();
-		for (DatePattern datePattern : DatePatterns.getDateTimePatterns()) {
+		for (DatePattern datePattern : DatePatterns.getAllPatterns()) {
 			if (datePattern.matches(stringDate)) {
 				DateFormat sdf = new SimpleDateFormat(datePattern.getFormat());
 				try {

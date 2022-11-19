@@ -4,19 +4,19 @@ import wint.lang.convert.converts.dates.DatePattern;
 import wint.lang.convert.converts.dates.DatePatterns;
 import wint.lang.exceptions.DateParseException;
 import wint.lang.utils.CollectionUtil;
+import wint.lang.utils.LocalDateTimeUtil;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class LocalTimeConvert extends AbstractConvert<LocalTime> {
+public class SmartLocalDateConvert extends AbstractConvert<LocalDate> {
 
 	private static List<DatePatternConverter> datePatternConverts = CollectionUtil.newArrayList();
 
-	public LocalTimeConvert() {
+	public SmartLocalDateConvert() {
 	}
 	
 	static {
@@ -25,9 +25,9 @@ public class LocalTimeConvert extends AbstractConvert<LocalTime> {
 		}
     }
 	
-	public LocalTime convertTo(Object input, LocalTime defaultValue) {
-		if (input instanceof LocalTime) {
-			return (LocalTime)input;
+	public LocalDate convertTo(Object input, LocalDate defaultValue) {
+		if (input instanceof LocalDate) {
+			return (LocalDate)input;
 		}
 		if (input == null) {
 			return defaultValue;
@@ -41,7 +41,7 @@ public class LocalTimeConvert extends AbstractConvert<LocalTime> {
 		return defaultValue;
 	}
 
-	public LocalTime getDefaultValue() {
+	public LocalDate getDefaultValue() {
 		return null;
 	}
 	
@@ -54,16 +54,16 @@ public class LocalTimeConvert extends AbstractConvert<LocalTime> {
 		public DatePatternConverter(Pattern pattern, String dateFormat) {
 			super();
 			this.datePattern = pattern;
-			this.dateFormat = DateTimeFormatter.ofPattern(dateFormat);
+			this.dateFormat = LocalDateTimeUtil.getDateTimeFormatter(dateFormat);
 		}
 
 		public boolean matches(String stringDate) {
 			return datePattern.matcher(stringDate).matches();
 		}
 		
-		public LocalTime convert(String stringDate) {
+		public LocalDate convert(String stringDate) {
 			try {
-				return LocalTime.parse(stringDate, dateFormat);
+				return LocalDate.parse(stringDate, dateFormat);
 			} catch (DateTimeParseException e) {
 				throw new DateParseException("parse date error, input " + stringDate + ", date format:" + dateFormat, e);
 			}

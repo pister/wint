@@ -4,29 +4,31 @@ import wint.lang.convert.converts.dates.DatePattern;
 import wint.lang.convert.converts.dates.DatePatterns;
 import wint.lang.exceptions.DateParseException;
 import wint.lang.utils.CollectionUtil;
+import wint.lang.utils.LocalDateTimeUtil;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class LocalDateConvert extends AbstractConvert<LocalDate> {
+public class SmartYearMonthConvert extends AbstractConvert<YearMonth> {
 
 	private static List<DatePatternConverter> datePatternConverts = CollectionUtil.newArrayList();
 
-	public LocalDateConvert() {
+	public SmartYearMonthConvert() {
 	}
 	
 	static {
-		for (DatePattern datePattern : DatePatterns.getDatePatterns()) {
+		for (DatePattern datePattern : DatePatterns.getYearMonthPatterns()) {
 			datePatternConverts.add(new DatePatternConverter(datePattern.getPattern(), datePattern.getFormat()));
 		}
     }
 	
-	public LocalDate convertTo(Object input, LocalDate defaultValue) {
-		if (input instanceof LocalDate) {
-			return (LocalDate)input;
+	public YearMonth convertTo(Object input, YearMonth defaultValue) {
+		if (input instanceof YearMonth) {
+			return (YearMonth)input;
 		}
 		if (input == null) {
 			return defaultValue;
@@ -40,7 +42,7 @@ public class LocalDateConvert extends AbstractConvert<LocalDate> {
 		return defaultValue;
 	}
 
-	public LocalDate getDefaultValue() {
+	public YearMonth getDefaultValue() {
 		return null;
 	}
 	
@@ -53,16 +55,16 @@ public class LocalDateConvert extends AbstractConvert<LocalDate> {
 		public DatePatternConverter(Pattern pattern, String dateFormat) {
 			super();
 			this.datePattern = pattern;
-			this.dateFormat = DateTimeFormatter.ofPattern(dateFormat);
+			this.dateFormat = LocalDateTimeUtil.getDateTimeFormatter(dateFormat);
 		}
 
 		public boolean matches(String stringDate) {
 			return datePattern.matcher(stringDate).matches();
 		}
 		
-		public LocalDate convert(String stringDate) {
+		public YearMonth convert(String stringDate) {
 			try {
-				return LocalDate.parse(stringDate, dateFormat);
+				return YearMonth.parse(stringDate, dateFormat);
 			} catch (DateTimeParseException e) {
 				throw new DateParseException("parse date error, input " + stringDate + ", date format:" + dateFormat, e);
 			}

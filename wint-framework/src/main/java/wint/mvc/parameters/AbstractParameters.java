@@ -8,9 +8,16 @@ import wint.lang.utils.StringUtil;
 import wint.mvc.form.fileupload.UploadFile;
 
 import java.lang.reflect.Array;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.*;
 
 public abstract class AbstractParameters implements Parameters {
+
+    private DateTimeParameters dateTimeParameters;
+
     @Override
     public Integer getIntX(String name) {
         String stringValue = getString(name, null);
@@ -80,13 +87,6 @@ public abstract class AbstractParameters implements Parameters {
         return getBoolean(name, false);
     }
 
-    public Date getDate(String name) {
-        return getDate(name, (Date) null);
-    }
-
-    public Date getDate(String name, String format) {
-        return getDate(name, format, null);
-    }
 
     public double getDouble(String name) {
         return getDouble(name, 0.0);
@@ -132,6 +132,15 @@ public abstract class AbstractParameters implements Parameters {
         return ConvertUtil.toBoolean(getString(name), defaultValue);
     }
 
+
+    public Date getDate(String name) {
+        return getDate(name, (Date) null);
+    }
+
+    public Date getDate(String name, String format) {
+        return getDate(name, format, null);
+    }
+
     public Date getDate(String name, Date defaultDate) {
         return ConvertUtil.toDate(getString(name), defaultDate);
     }
@@ -140,12 +149,21 @@ public abstract class AbstractParameters implements Parameters {
         return ConvertUtil.toDate(getString(name), format, defaultDate);
     }
 
+    @Override
+    public DateTimeParameters getDateTimes() {
+        if (dateTimeParameters != null) {
+            return dateTimeParameters;
+        }
+        dateTimeParameters = new DateTimeParameters(this);
+        return dateTimeParameters;
+    }
+
     public double getDouble(String name, double defaultValue) {
         return ConvertUtil.toDouble(getString(name), defaultValue);
     }
 
     public double[] getDoubleArray(String name, double[] defaultArray) {
-        return (double[])separateToArray(Double.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
+        return (double[]) separateToArray(Double.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
     }
 
     public float getFloat(String name, float defaultValue) {
@@ -153,7 +171,7 @@ public abstract class AbstractParameters implements Parameters {
     }
 
     public float[] getFloatArray(String name, float[] defaultArray) {
-        return (float[])separateToArray(Float.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
+        return (float[]) separateToArray(Float.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
     }
 
     public int getInt(String name, int defaultValue) {
@@ -161,7 +179,7 @@ public abstract class AbstractParameters implements Parameters {
     }
 
     public int[] getIntArray(String name, int[] defaultArray) {
-        return (int[])separateToArray(Integer.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
+        return (int[]) separateToArray(Integer.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
     }
 
     public long getLong(String name, long defaultValue) {
@@ -169,7 +187,7 @@ public abstract class AbstractParameters implements Parameters {
     }
 
     public long[] getLongArray(String name, long[] defaultArray) {
-        return (long[])separateToArray(Long.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
+        return (long[]) separateToArray(Long.TYPE, name, DEFAULT_SEPARATOR, defaultArray);
     }
 
     protected String normalizeName(String name) {
@@ -206,9 +224,9 @@ public abstract class AbstractParameters implements Parameters {
         MagicObject magicObject = MagicObject.wrap(target);
         Map<String, Property> properties = magicObject.getMagicClass().getProperties();
 
-        for (Map.Entry<String, Property> entry: properties.entrySet()) {
+        for (Map.Entry<String, Property> entry : properties.entrySet()) {
             if (!entry.getValue().isWritable()) {
-                 continue;
+                continue;
             }
             String name = entry.getKey();
             Property property = entry.getValue();

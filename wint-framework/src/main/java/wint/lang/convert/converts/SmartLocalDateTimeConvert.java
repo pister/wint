@@ -4,6 +4,7 @@ import wint.lang.convert.converts.dates.DatePattern;
 import wint.lang.convert.converts.dates.DatePatterns;
 import wint.lang.exceptions.DateParseException;
 import wint.lang.utils.CollectionUtil;
+import wint.lang.utils.LocalDateTimeUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,11 +12,11 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class LocalDateTimeConvert extends AbstractConvert<LocalDateTime> {
+public class SmartLocalDateTimeConvert extends AbstractConvert<LocalDateTime> {
 
 	private static List<DatePatternConverter> datePatternConverts = CollectionUtil.newArrayList();
 
-	public LocalDateTimeConvert() {
+	public SmartLocalDateTimeConvert() {
 	}
 	
 	static {
@@ -53,7 +54,7 @@ public class LocalDateTimeConvert extends AbstractConvert<LocalDateTime> {
 		public DatePatternConverter(Pattern pattern, String dateFormat) {
 			super();
 			this.datePattern = pattern;
-			this.dateFormat = DateTimeFormatter.ofPattern(dateFormat);
+			this.dateFormat = LocalDateTimeUtil.getDateTimeFormatter(dateFormat);
 		}
 
 		public boolean matches(String stringDate) {
