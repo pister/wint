@@ -84,9 +84,10 @@ public abstract class AbstractTest extends AbstractTransactionalDataSourceSpring
 				for (NameAndClass nameAndClass : nameAndClasses) {
 					String name = nameAndClass.getFieldName();
 					Class<?> clazz = nameAndClass.getResultType();
-					MethodPair methodPair = TypeUtil.getMethodPair(clazz);
+					// MethodPair methodPair = TypeUtil.getMethodPair(clazz);
 					try {
-						Object value = methodPair.getGetter().invoke(rs, name);
+						Object value = rs.getObject(name, clazz);
+					//	Object value = methodPair.getGetter().invoke(rs, name);
 						resultObjects.put(name, value);
 					} catch (Exception e) {
 						throw new WintException(e);

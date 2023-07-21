@@ -1,12 +1,12 @@
 package wint.help.sql;
 
+import wint.help.sql.TypeUtil.MethodPair;
+import wint.lang.WintException;
+
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.Types;
 import java.util.Date;
-
-import wint.help.sql.TypeUtil.MethodPair;
-import wint.lang.WintException;
 
 /**
  * @author pister
@@ -34,12 +34,16 @@ public class Binder {
                     Date d = (Date)arg;
                     arg = new java.sql.Timestamp(d.getTime());
                 }
+
+
                 MethodPair methodPair = TypeUtil.getMethodPair(arg.getClass());
                 if (methodPair == null) {
-                    throw new WintException("未找到方法:" + arg.getClass());
+                    pstmt.setObject(i++, arg);
+                } else {
+                    Method setter = methodPair.getSetter();
+                    setter.invoke(pstmt, i++, arg);
                 }
-                Method setter = methodPair.getSetter();
-                setter.invoke(pstmt, i++, arg);
+
             } catch (Exception e) {
                 throw new WintException(e);
             }

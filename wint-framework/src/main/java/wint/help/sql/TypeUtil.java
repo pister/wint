@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -24,7 +27,7 @@ public class TypeUtil {
 	
 	private static final Map<Integer, Class<?>> sqlType2JavaTypes = MapUtil.newHashMap();
 	
-	private static final Map<Class<?>, MethodEnity> javaType2MethodName = MapUtil.newHashMap();
+	private static final Map<Class<?>, MethodEntity> javaType2MethodName = MapUtil.newHashMap();
 	
 	private static final Map<Class<?>, MethodPair> javaType2Method = MapUtil.newHashMap();
 	
@@ -73,31 +76,32 @@ public class TypeUtil {
 	}
 	
 	private static void initMethodNameMapping() {
-	    javaType2MethodName.put(Byte.class, new MethodEnity("Byte", Byte.TYPE));
-	    javaType2MethodName.put(Byte.TYPE,  new MethodEnity("Byte", Byte.TYPE));
-	    javaType2MethodName.put(Short.class,  new MethodEnity("Short", Short.TYPE));
-	    javaType2MethodName.put(Short.TYPE,  new MethodEnity("Short", Short.TYPE));
-	    javaType2MethodName.put(Integer.class,  new MethodEnity("Int", Integer.TYPE));
-        javaType2MethodName.put(Integer.TYPE,  new MethodEnity("Int", Integer.TYPE));
-        javaType2MethodName.put(Boolean.class,  new MethodEnity("Boolean", Boolean.TYPE));
-		javaType2MethodName.put(Boolean.TYPE,  new MethodEnity("Boolean", Boolean.TYPE));
-		javaType2MethodName.put(Long.class,  new MethodEnity("Long", Long.TYPE));
-		javaType2MethodName.put(Long.TYPE,  new MethodEnity("Long", Long.TYPE));
-		javaType2MethodName.put(Float.class,  new MethodEnity("Float", Float.TYPE));
-		javaType2MethodName.put(Float.TYPE,  new MethodEnity("Float", Float.TYPE));
-		javaType2MethodName.put(Double.class,  new MethodEnity("Double", Double.TYPE));
-		javaType2MethodName.put(Double.TYPE,  new MethodEnity("Double", Double.TYPE));
-		javaType2MethodName.put(BYTE_ARRAY_CLASS,  new MethodEnity("Bytes", BYTE_ARRAY_CLASS));
-		javaType2MethodName.put(Time.class,  new MethodEnity("Time", Time.class));
-		javaType2MethodName.put(Date.class,  new MethodEnity("Date", Date.class));
-		javaType2MethodName.put(Timestamp.class,  new MethodEnity("Timestamp", Timestamp.class));
-		javaType2MethodName.put(String.class,  new MethodEnity("String", String.class));
-		javaType2MethodName.put(BigDecimal.class,  new MethodEnity("BigDecimal", BigDecimal.class));
-		javaType2MethodName.put(Object.class,  new MethodEnity("Object", Object.class));
+	    javaType2MethodName.put(Byte.class, new MethodEntity("Byte", Byte.TYPE));
+	    javaType2MethodName.put(Byte.TYPE,  new MethodEntity("Byte", Byte.TYPE));
+	    javaType2MethodName.put(Short.class,  new MethodEntity("Short", Short.TYPE));
+	    javaType2MethodName.put(Short.TYPE,  new MethodEntity("Short", Short.TYPE));
+	    javaType2MethodName.put(Integer.class,  new MethodEntity("Int", Integer.TYPE));
+        javaType2MethodName.put(Integer.TYPE,  new MethodEntity("Int", Integer.TYPE));
+        javaType2MethodName.put(Boolean.class,  new MethodEntity("Boolean", Boolean.TYPE));
+		javaType2MethodName.put(Boolean.TYPE,  new MethodEntity("Boolean", Boolean.TYPE));
+		javaType2MethodName.put(Long.class,  new MethodEntity("Long", Long.TYPE));
+		javaType2MethodName.put(Long.TYPE,  new MethodEntity("Long", Long.TYPE));
+		javaType2MethodName.put(Float.class,  new MethodEntity("Float", Float.TYPE));
+		javaType2MethodName.put(Float.TYPE,  new MethodEntity("Float", Float.TYPE));
+		javaType2MethodName.put(Double.class,  new MethodEntity("Double", Double.TYPE));
+		javaType2MethodName.put(Double.TYPE,  new MethodEntity("Double", Double.TYPE));
+		javaType2MethodName.put(BYTE_ARRAY_CLASS,  new MethodEntity("Bytes", BYTE_ARRAY_CLASS));
+		javaType2MethodName.put(Time.class,  new MethodEntity("Time", Time.class));
+		javaType2MethodName.put(Date.class,  new MethodEntity("Date", Date.class));
+		javaType2MethodName.put(Timestamp.class,  new MethodEntity("Timestamp", Timestamp.class));
+		javaType2MethodName.put(String.class,  new MethodEntity("String", String.class));
+		javaType2MethodName.put(BigDecimal.class,  new MethodEntity("BigDecimal", BigDecimal.class));
+		javaType2MethodName.put(Object.class,  new MethodEntity("Object", Object.class));
+
 	}
 	
-	static class MethodEnity {
-	    public MethodEnity(String name, Class<?> clazz) {
+	static class MethodEntity {
+	    public MethodEntity(String name, Class<?> clazz) {
             super();
             this.name = name;
             this.clazz = clazz;
@@ -109,11 +113,11 @@ public class TypeUtil {
 	
 	private static void initMethods() {
 		try {
-			for (Map.Entry<Class<?>, MethodEnity> entry : javaType2MethodName.entrySet()) {
+			for (Map.Entry<Class<?>, MethodEntity> entry : javaType2MethodName.entrySet()) {
 				Class<?> javaType = entry.getKey();
-				MethodEnity methodEnity = entry.getValue();
-				Method getter = resultSetClass.getMethod("get" + methodEnity.name, SINGLE_STRING_ARRAY_CLASS);
-				Method setter = preparedStatementClass.getMethod("set" + methodEnity.name, new Class<?>[] {Integer.TYPE, methodEnity.clazz});
+				MethodEntity methodEntity = entry.getValue();
+				Method getter = resultSetClass.getMethod("get" + methodEntity.name, SINGLE_STRING_ARRAY_CLASS);
+				Method setter = preparedStatementClass.getMethod("set" + methodEntity.name, new Class<?>[] {Integer.TYPE, methodEntity.clazz});
 				javaType2Method.put(javaType, new MethodPair(setter, getter));
 			}
 		} catch(Exception e) {

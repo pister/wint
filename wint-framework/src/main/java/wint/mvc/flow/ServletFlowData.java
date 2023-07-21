@@ -1,5 +1,7 @@
 package wint.mvc.flow;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wint.core.config.Constants;
 import wint.core.service.ServiceContext;
 import wint.lang.WintException;
@@ -40,6 +42,8 @@ import java.util.*;
  *         2012-1-11 02:37:51
  */
 public class ServletFlowData implements InnerFlowData {
+
+    private static final Logger log = LoggerFactory.getLogger(ServletFlowData.class);
 
     protected Map<String, Object> attributes = MapUtil.newHashMap();
 
@@ -233,12 +237,12 @@ public class ServletFlowData implements InnerFlowData {
                 return;
             }
             if (fastByteArrayOutputStream != null && fastStringWriter != null) {
-                throw new FlowDataException("please do not write on getOuputStream() and getWriter() both");
+                throw new FlowDataException("please do not write on getOutputStream() and getWriter() both");
             }
-
             if (!StringUtil.isEmpty(contentType)) {
                 httpServletResponse.setContentType(contentType);
-            } else {
+            } else  {
+               // log.warn("use default contentType: " + getDefaultContentType());
                 httpServletResponse.setContentType(getDefaultContentType());
             }
             if (fastStringWriter != null) {
@@ -263,15 +267,15 @@ public class ServletFlowData implements InnerFlowData {
                 }
             }
             if (statusCode != null) {
-                if (!StringUtil.isEmpty(statusMessage))  {
+                if (!StringUtil.isEmpty(statusMessage)) {
                     httpServletResponse.sendError(statusCode, statusMessage);
-                }  else {
+                } else {
                     httpServletResponse.setStatus(statusCode);
                 }
             }
             commited = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             Profiler.release();
         }
