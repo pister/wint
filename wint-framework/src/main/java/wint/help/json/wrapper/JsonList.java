@@ -16,6 +16,10 @@ public interface JsonList extends List<Object> {
 
     Long getLong(int index);
 
+    double getDoubleValue(int index);
+
+    Double getDouble(int index);
+
     String getString(int index);
 
     boolean getBooleanValue(int index);

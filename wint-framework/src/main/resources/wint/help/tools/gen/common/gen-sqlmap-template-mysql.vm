@@ -59,12 +59,12 @@
 		]]>
 	</update>
 
-    <select id="queryForPageCount" resultClass="long">
+    <select id="queryForCount" resultClass="long">
         select count(0) from ${tableName} t #if($logicDeleted) where t.deleted = 0 #end
 
     </select>
 
-    <select id="queryForPage" resultMap="${mappingName}">
+    <select id="queryForList" resultMap="${mappingName}">
         select
         <include refid="${aliasDomainName}-full-columns" />
         from ${tableName} t #if($logicDeleted) where t.deleted = 0 #end

@@ -6,6 +6,10 @@ import wint.lang.magic.MagicMap;
 import wint.lang.magic.Transformer;
 import wint.lang.utils.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.Temporal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -36,6 +40,10 @@ public class UrlBrokerUtil {
                     return stringValue;
                 } if (object instanceof Date) {
                     String stringValue = DateUtil.formatDate(object,  "yyyyMMddHHmmss");
+                    stringValue = UrlUtil.encode(stringValue, CHARSET);
+                    return stringValue;
+                } if (object instanceof Temporal) {
+                    String stringValue = LocalDateTimeUtil.formatDefault((Temporal)object);
                     stringValue = UrlUtil.encode(stringValue, CHARSET);
                     return stringValue;
                 } else if (object.getClass().isArray()) {

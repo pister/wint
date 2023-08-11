@@ -46,7 +46,7 @@ public class ProjectConfig {
 	
 	private String mysqlJdbcVersion = "5.1.48";
 	
-	private String fileuploadVersion = "1.3.1";
+	private String fileuploadVersion = "1.5";
 	
 	private String commonsIOVersion = "2.1";
 	

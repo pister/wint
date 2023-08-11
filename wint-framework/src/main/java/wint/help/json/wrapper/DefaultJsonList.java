@@ -52,6 +52,24 @@ public class DefaultJsonList implements JsonList {
     }
 
     @Override
+    public double getDoubleValue(int index) {
+       Double value = getDouble(index);
+       if (value == null) {
+           return 0;
+       }
+       return value;
+    }
+
+    @Override
+    public Double getDouble(int index) {
+        Object o = objectList.get(index);
+        if (o == null) {
+            return null;
+        }
+        return ConvertUtil.convertTo(o, Double.class, null);
+    }
+
+    @Override
     public String getString(int index) {
         Object o = objectList.get(index);
         if (o == null) {

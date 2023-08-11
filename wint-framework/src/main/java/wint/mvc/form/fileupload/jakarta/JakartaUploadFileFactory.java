@@ -21,8 +21,6 @@ import wint.mvc.form.fileupload.UploadFile;
 import wint.mvc.form.fileupload.UploadFileFactory;
 import wint.mvc.form.fileupload.UploadFileInfo;
 import wint.mvc.form.fileupload.UploadFileProgressListener;
-import wint.mvc.parameters.MapParameters;
-import wint.mvc.parameters.Parameters;
 
 /**
  * @author pister 2012-3-11 下午08:42:38
