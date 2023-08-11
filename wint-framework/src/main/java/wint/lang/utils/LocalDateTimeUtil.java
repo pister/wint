@@ -72,7 +72,8 @@ public class LocalDateTimeUtil {
         }
         String fmt = defaultFormats.get(input.getClass());
         if (fmt == null) {
-            throw new IllegalArgumentException("not support format for: " + input);
+            // use object's default toString()
+            return input.toString();
         }
         DateTimeFormatter dateTimeFormatter = getDateTimeFormatter(fmt);
         return dateTimeFormatter.format(input);

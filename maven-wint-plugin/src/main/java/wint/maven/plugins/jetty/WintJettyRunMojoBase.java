@@ -16,8 +16,8 @@ import org.mortbay.jetty.plugin.ScanTargetPattern;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -467,7 +467,7 @@ public abstract class WintJettyRunMojoBase extends AbstractJettyRunMojo {
 
         getLog().debug("Restarting webapp ...");
         webAppConfig.start();
-        getLog().info("Restart completed at "+new Date().toString());
+        getLog().info("Restart completed at "+ LocalDateTime.now());
     }
 
     private List<File> getDependencyFiles ()

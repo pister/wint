@@ -4,6 +4,7 @@ import wint.lang.magic.MagicObject;
 import wint.lang.magic.Property;
 
 import java.lang.reflect.Array;
+import java.time.temporal.Temporal;
 import java.util.*;
 
 public class ObjectUtil {
@@ -90,6 +91,9 @@ public class ObjectUtil {
             return true;
         }
         if (input instanceof CharSequence) {
+            return true;
+        }
+        if (input instanceof Temporal) {
             return true;
         }
         return false;

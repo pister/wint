@@ -1,5 +1,6 @@
 package wint.mvc.form.runtime;
 
+import java.time.temporal.Temporal;
 import java.util.Date;
 import java.util.Map;
 
@@ -8,8 +9,8 @@ import wint.lang.convert.ConvertUtil;
 import wint.lang.convert.converts.array.StringArrayConvert;
 import wint.lang.magic.MagicObject;
 import wint.lang.utils.DateUtil;
+import wint.lang.utils.LocalDateTimeUtil;
 import wint.lang.utils.MapUtil;
-import wint.lang.utils.StringUtil;
 import wint.mvc.form.DefaultField;
 import wint.mvc.form.Field;
 import wint.mvc.form.Form;
@@ -68,6 +69,9 @@ public class ResultRunTimeForm implements RunTimeForm {
 		}
 
         private String valueToString(Object propertyValue) {
+            if (propertyValue instanceof Temporal) {
+                return LocalDateTimeUtil.formatDefault((Temporal)propertyValue);
+            }
             if (propertyValue instanceof Date) {
                 return DateUtil.formatFullDate(propertyValue);
             }

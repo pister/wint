@@ -1,9 +1,7 @@
 package wint.mvc.template.remote;
 
-import wint.lang.utils.DateUtil;
-
 import java.io.File;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by songlihuang on 2018/6/4.
@@ -12,9 +10,9 @@ public class ExpiredFile {
 
     private File file;
 
-    private Date expire;
+    private LocalDateTime expire;
 
-    public ExpiredFile(File file, Date expire) {
+    public ExpiredFile(File file, LocalDateTime expire) {
         this.file = file;
         this.expire = expire;
     }
@@ -27,6 +25,6 @@ public class ExpiredFile {
         if (expire == null) {
             return true;
         }
-        return DateUtil.isDateAfter(new Date(), expire);
+        return LocalDateTime.now().isAfter(expire);
     }
 }

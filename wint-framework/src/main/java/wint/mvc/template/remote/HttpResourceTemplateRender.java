@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wint.core.config.Constants;
 import wint.lang.io.FastByteArrayOutputStream;
-import wint.lang.utils.DateUtil;
 import wint.lang.utils.FileUtil;
 import wint.lang.utils.IoUtil;
+import wint.lang.utils.LocalDateTimeUtil;
 import wint.mvc.template.Context;
 import wint.mvc.template.TemplateRender;
 import wint.mvc.template.engine.TemplateEngine;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by songlihuang on 2018/6/1.
@@ -110,7 +110,7 @@ public class HttpResourceTemplateRender implements TemplateRender {
 
         FileUtil.writeContent(targetFile, data);
         File expireFile = new File(baseTempDir, expireFilePath(path));
-        FileUtil.writeContent(expireFile, DateUtil.formatDate(DateUtil.addSecond(new Date(), expireInSeconds), DATE_FORMAT));
+        FileUtil.writeContent(expireFile, LocalDateTimeUtil.format(LocalDateTime.now().plusSeconds(expireInSeconds), DATE_FORMAT));
     }
 
 
@@ -139,7 +139,7 @@ public class HttpResourceTemplateRender implements TemplateRender {
             return null;
         }
         String stringDate = FileUtil.readAsString(expireFile);
-        Date expire = DateUtil.parseDate(stringDate, DATE_FORMAT);
+        LocalDateTime expire = LocalDateTimeUtil.parseDateTime(stringDate, DATE_FORMAT);
         return new ExpiredFile(targetFile, expire);
     }
 

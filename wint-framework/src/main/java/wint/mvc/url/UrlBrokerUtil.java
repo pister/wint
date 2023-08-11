@@ -39,7 +39,7 @@ public class UrlBrokerUtil {
                     stringValue = UrlUtil.encode(stringValue, CHARSET);
                     return stringValue;
                 } if (object instanceof Date) {
-                    String stringValue = DateUtil.formatDate(object,  "yyyyMMddHHmmss");
+                    String stringValue = DateUtil.formatDate(object,  "yyyy-MM-dd HH:mm:ss");
                     stringValue = UrlUtil.encode(stringValue, CHARSET);
                     return stringValue;
                 } if (object instanceof Temporal) {
