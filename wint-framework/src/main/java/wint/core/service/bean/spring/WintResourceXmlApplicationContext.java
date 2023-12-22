@@ -45,8 +45,8 @@ public class WintResourceXmlApplicationContext extends AbstractXmlApplicationCon
 		final Environment environment = serviceContext.getConfiguration().getEnvironment();
 		final boolean sqlmapAutoload = properties.getBoolean(Constants.PropertyKeys.SQLMAP_AUTO_LOAD, Constants.Defaults.SQLMAP_AUTO_LOAD);
 		final String sqlmapSqlLogName = properties.getString(Constants.PropertyKeys.SQLMAP_SHOW_LOG_NAME, Constants.Defaults.SQLMAP_SHOW_LOG_NAME);
-		final String sqlmapogString = properties.getString(Constants.PropertyKeys.SQLMAP_SHOW_SQL, null);
-		final Boolean sqlmapShowSql = sqlmapogString == null ? null : Boolean.parseBoolean(sqlmapogString);
+		final String sqlmapShowSqlString = properties.getString(Constants.PropertyKeys.SQLMAP_SHOW_SQL, null);
+		final Boolean sqlmapShowSql = sqlmapShowSqlString == null ? null : Boolean.parseBoolean(sqlmapShowSqlString);
 
 		this.addBeanFactoryPostProcessor(new BeanFactoryPostProcessor() {
 

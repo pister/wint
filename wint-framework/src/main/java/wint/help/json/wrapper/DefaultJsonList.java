@@ -1,7 +1,11 @@
 package wint.help.json.wrapper;
 
 import wint.lang.convert.ConvertUtil;
+import wint.lang.utils.LocalDateTimeUtil;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -103,6 +107,42 @@ public class DefaultJsonList implements JsonList {
             return null;
         }
         return ConvertUtil.convertTo(o, Date.class, null);
+    }
+
+    @Override
+    public LocalDateTime getLocalDateTime(int index) {
+        Object o = objectList.get(index);
+        if (o instanceof LocalDateTime) {
+            return (LocalDateTime) o;
+        }
+        if (o == null) {
+            return null;
+        }
+        return LocalDateTimeUtil.parseDateTime(o.toString());
+    }
+
+    @Override
+    public LocalDate getLocalDate(int index) {
+        Object o = objectList.get(index);
+        if (o instanceof LocalDate) {
+            return (LocalDate) o;
+        }
+        if (o == null) {
+            return null;
+        }
+        return LocalDateTimeUtil.parseDate(o.toString());
+    }
+
+    @Override
+    public LocalTime getLocalTime(int index) {
+        Object o = objectList.get(index);
+        if (o instanceof LocalTime) {
+            return (LocalTime) o;
+        }
+        if (o == null) {
+            return null;
+        }
+        return LocalDateTimeUtil.parseTime(o.toString());
     }
 
     @Override

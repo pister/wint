@@ -112,7 +112,8 @@ ${domainInDb}.${field.setter}(${domainParam}.${field.getter}());
         try {
             // TODO add your biz code here
 
-            List<${domainName}> ${alias}s = ${daoBeanName}.queryForPage(query);
+            List<${domainName}> ${alias}s = ${daoBeanName}.queryForList(query);
+            query.setTotalResultCount(${daoBeanName}.queryForCount(query));
 
             result.getModels().put("${alias}s", ${alias}s);
             result.getModels().put("query", query);

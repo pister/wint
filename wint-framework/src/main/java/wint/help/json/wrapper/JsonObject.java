@@ -1,5 +1,8 @@
 package wint.help.json.wrapper;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -23,6 +26,12 @@ public interface JsonObject extends Map<String, Object> {
     Boolean getBoolean(String name);
 
     Date getDate(String name);
+
+    LocalDateTime getLocalDateTime(String name);
+
+    LocalDate getLocalDate(String name);
+
+    LocalTime getLocalTime(String name);
 
     JsonObject getObject(String name);
 

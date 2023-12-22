@@ -1,5 +1,8 @@
 package wint.help.json.wrapper;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +30,12 @@ public interface JsonList extends List<Object> {
     Boolean getBoolean(int index);
 
     Date getDate(int index);
+
+    LocalDateTime getLocalDateTime(int index);
+
+    LocalDate getLocalDate(int index);
+
+    LocalTime getLocalTime(int index);
 
     JsonObject getObject(int index);
 

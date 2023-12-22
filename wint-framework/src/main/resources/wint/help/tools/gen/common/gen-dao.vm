@@ -26,5 +26,8 @@ public interface ${className} {
 
     Map<${idTypeWrapper}, ${domainName}> queryByIdsAsMap(List<${idTypeWrapper}> ids);
 
-    List<${domainName}> queryForPage(BaseQuery query);
+    long queryForCount(BaseQuery query);
+
+    List<${domainName}> queryForList(BaseQuery query);
+
 }

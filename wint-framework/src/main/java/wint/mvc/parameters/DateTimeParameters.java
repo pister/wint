@@ -35,7 +35,7 @@ public class DateTimeParameters {
     }
 
     public LocalDate getLocalDate(String name, String format) {
-        return getLocalDate(name, null, null);
+        return getLocalDate(name, format, null);
     }
 
 
@@ -52,7 +52,7 @@ public class DateTimeParameters {
     }
 
     public LocalDateTime getLocalDateTime(String name, String format) {
-        return getLocalDateTime(name, null, null);
+        return getLocalDateTime(name, format, null);
     }
 
 
@@ -69,7 +69,7 @@ public class DateTimeParameters {
     }
 
     public LocalTime getLocalTime(String name, String format) {
-        return getLocalTime(name, null, null);
+        return getLocalTime(name, format, null);
     }
 
     public YearMonth getYearMonth(String name, YearMonth defaultValue) {
@@ -85,7 +85,7 @@ public class DateTimeParameters {
     }
 
     public YearMonth getYearMonth(String name, String format) {
-        return getYearMonth(name, null, null);
+        return getYearMonth(name, format, null);
     }
 
 }
