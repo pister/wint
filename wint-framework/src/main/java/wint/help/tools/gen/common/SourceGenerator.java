@@ -160,6 +160,8 @@ public class SourceGenerator {
         context.put("idType", genMetaInfo.getIdType());
         context.put("domainName", genMetaInfo.getDoSimpleClassName());
         context.put("paramName", genMetaInfo.getDoAlias());
+        context.put("idTypeWrapper", genMetaInfo.getIdTypeWrapper());
+
 
         genFromTemplate(context, out, genDaoTemplateName);
         DaoGenUtil.writeLine(out);
