@@ -17,18 +17,17 @@ public class CookieUtil {
 	
 	public static final String EXPIRES = "Expires";
 	public static final String PATH = "Path";
+	public static final String SAME_SITE = "SameSite";
 	public static final String DOMAIN = "Domain";
 	public static final String HTTP_ONLY = "HttpOnly";
+	public static final String SECURE = "Secure";
 	public static final String COOKIE_SEPARATOR = ";";
 	public static final String KEY_VALUE_SEPARATOR = "=";
 	public static final String SET_COOKIE = "Set-Cookie";
 	public static final String COOKIE = "Cookie";
-	
-	public static String buildHttpOnlyCookieString(Cookie cookie) {
-		return buildCookieString(cookie, true);
-	}
-	
-	public static String buildCookieString(Cookie cookie, boolean httpOnly) {
+
+
+	public static String buildCookieString(Cookie cookie) {
 		StringBuilder cookieBuilder = new StringBuilder();
 		cookieBuilder.append(cookie.getName()).append(KEY_VALUE_SEPARATOR).append(cookie.getValue());
 		cookieBuilder.append(COOKIE_SEPARATOR);
@@ -46,9 +45,24 @@ public class CookieUtil {
 			cookieBuilder.append(EXPIRES).append(KEY_VALUE_SEPARATOR).append(getCookieExpires(cookie));
 			cookieBuilder.append(COOKIE_SEPARATOR);
 		}
-		if (httpOnly) {
-			cookieBuilder.append(HTTP_ONLY);
+
+		if (cookie.getSecure()) {
+			cookieBuilder.append(SECURE);
+			cookieBuilder.append(COOKIE_SEPARATOR);
 		}
+
+		if (cookie instanceof  WintCookie) {
+			WintCookie wintCookie = (WintCookie) cookie;
+			if (wintCookie.getSameSite() != null) {
+				cookieBuilder.append(SAME_SITE).append(KEY_VALUE_SEPARATOR).append(wintCookie.getSameSite());
+				cookieBuilder.append(COOKIE_SEPARATOR);
+			}
+			if (wintCookie.isHttpOnly()) {
+				cookieBuilder.append(HTTP_ONLY);
+			}
+		}
+
+
 		return cookieBuilder.toString();
 	}
 

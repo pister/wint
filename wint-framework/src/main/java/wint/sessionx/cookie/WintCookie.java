@@ -4,8 +4,14 @@ import javax.servlet.http.Cookie;
 
 public class WintCookie extends Cookie {
 
+    public static final String SAME_SITE_VALUE_STRICT = "Strict";
+    public static final String SAME_SITE_VALUE_LAX = "Lax";
+    public static final String SAME_SITE_VALUE_NONE = "None";
+
 	private boolean httpOnly;
-	
+
+    private String sameSite;
+
 	public WintCookie(String name, String value) {
 		super(name, value);
 	}
@@ -17,8 +23,16 @@ public class WintCookie extends Cookie {
 	public void setHttpOnly(boolean httpOnly) {
 		this.httpOnly = httpOnly;
 	}
-	
-   public int hashCode() {
+
+    public String getSameSite() {
+        return sameSite;
+    }
+
+    public void setSameSite(String sameSite) {
+        this.sameSite = sameSite;
+    }
+
+    public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getDomain() == null) ? 0 : getDomain().hashCode());
@@ -31,15 +45,15 @@ public class WintCookie extends Cookie {
     }
     
     public String toString(){
-    	StringBuffer tmep =new StringBuffer();
-    	tmep.append("cookie[domain:").append((getDomain() == null) ? "" : getDomain()).
+    	StringBuffer temp =new StringBuffer();
+    	temp.append("cookie[domain:").append((getDomain() == null) ? "" : getDomain()).
     	     append("[httpOnly:").append((isHttpOnly()) ? "true" : "false").
     	     append("[name:").append((getName()== null) ? "" : getName()).
     	     append("[path:").append((getPath()== null) ? "" : getPath()).
     	     append("[value:").append((getValue()== null) ? "" : getValue()).
     	     append("[MaxAge:").append(String.valueOf(getMaxAge()));
     	
-    	return tmep.toString();
+    	return temp.toString();
     }
 
     public boolean equals(Object obj) {

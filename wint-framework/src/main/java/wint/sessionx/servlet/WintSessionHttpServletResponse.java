@@ -89,12 +89,7 @@ public class WintSessionHttpServletResponse extends HttpServletResponseWrapper i
 	}
 
 	public void addWintCookie(Cookie cookie) {
-		String cookieString;
-		if (cookie instanceof WintCookie) {
-			cookieString = CookieUtil.buildCookieString(cookie, ((WintCookie)cookie).isHttpOnly());
-		} else {
-			cookieString = CookieUtil.buildCookieString(cookie, false);
-		}
+		String cookieString = CookieUtil.buildCookieString(cookie);
 		cookieHeaders.add(cookieString);
 	}
 	

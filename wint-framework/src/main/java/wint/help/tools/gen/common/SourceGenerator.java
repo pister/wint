@@ -158,7 +158,6 @@ public class SourceGenerator {
 
         context.put("namespace", genMetaInfo.getDaoSimpleClassName());
         context.put("idType", genMetaInfo.getIdType());
-        context.put("idTypeWrapper", genMetaInfo.getIdTypeWrapper());
         context.put("domainName", genMetaInfo.getDoSimpleClassName());
         context.put("paramName", genMetaInfo.getDoAlias());
 
