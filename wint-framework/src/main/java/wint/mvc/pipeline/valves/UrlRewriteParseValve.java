@@ -1,7 +1,7 @@
 package wint.mvc.pipeline.valves;
 
 import wint.core.config.Constants;
-import wint.lang.magic.MagicMap;
+import wint.core.config.property.PropertiesMap;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
@@ -34,7 +34,7 @@ public class UrlRewriteParseValve extends AbstractValve {
     public void init() {
         super.init();
         urlRewriteService = serviceContext.getService(UrlRewriteService.class);
-        MagicMap properties = serviceContext.getConfiguration().getProperties();
+        PropertiesMap properties = serviceContext.getConfiguration().getProperties();
         String urlSuffix = properties.getString(Constants.PropertyKeys.URL_SUFFIX, Constants.Defaults.URL_SUFFIX);
         String argumentSeparater = properties.getString(Constants.PropertyKeys.URL_ARGUMENT_SEPARATER, Constants.Defaults.URL_ARGUMENT_SEPARATER);
         urlContext = new UrlContext();

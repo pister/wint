@@ -1,6 +1,8 @@
 package wint.sessionx;
 
 import wint.core.config.Constants;
+import wint.core.config.property.MagicPropertiesMap;
+import wint.core.config.property.PropertiesMap;
 import wint.lang.magic.MagicMap;
 import wint.lang.misc.profiler.Profiler;
 import wint.lang.utils.CollectionUtil;
@@ -46,7 +48,7 @@ public class SessionContainer {
         return ignorePaths.contains(target);
     }
 
-    public void init(SessionProvider sessionProvider, MagicMap initParameters, ServletContext servletContext) {
+    public void init(SessionProvider sessionProvider, PropertiesMap initParameters, ServletContext servletContext) {
         requestFilterManager = new DefaultFilterManager(initParameters);
         responseFilterManager = new DefaultFilterManager(initParameters);
 
@@ -85,7 +87,7 @@ public class SessionContainer {
         }
 
         @Override
-        public void init(MagicMap initParameters) {
+        public void init(PropertiesMap initParameters) {
             target.init(initParameters);
         }
 

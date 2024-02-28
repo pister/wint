@@ -1,6 +1,8 @@
 package wint.sessionx;
 
 import wint.core.config.Constants;
+import wint.core.config.property.MagicPropertiesMap;
+import wint.core.config.property.PropertiesMap;
 import wint.core.service.ServiceContext;
 import wint.lang.magic.MagicMap;
 import wint.lang.misc.profiler.Profiler;
@@ -24,7 +26,7 @@ public class WintSessionProcessor {
 
     private SessionContainer sessionContainer;
 
-    public void init(MagicMap initParameters, ServletContext servletContext) {
+    public void init(PropertiesMap initParameters, ServletContext servletContext) {
         sessionContainer = new SessionContainer();
         String sessionType = initParameters.getString(Constants.PropertyKeys.WINT_SESSION_TYPE, Constants.Defaults.WINT_SESSION_TYPE);
         servletContext.log("Wint sessionType: " + sessionType);

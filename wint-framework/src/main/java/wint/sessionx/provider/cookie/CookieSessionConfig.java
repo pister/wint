@@ -2,8 +2,8 @@ package wint.sessionx.provider.cookie;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import wint.core.config.property.PropertiesMap;
 import wint.lang.WintException;
-import wint.lang.magic.MagicMap;
 import wint.lang.utils.FileUtil;
 import wint.lang.utils.StreamUtil;
 import wint.lang.utils.StringUtil;
@@ -34,13 +34,13 @@ public class CookieSessionConfig extends BaseConfig {
 
     private int cookieDataIndex;
 
-    public CookieSessionConfig(MagicMap properties) {
+    public CookieSessionConfig(PropertiesMap properties) {
         super(properties);
         encrypt = properties.getBoolean(CookieConstants.PropertyKeys.ENCRYPT, CookieConstants.DefaultValues.ENCRYPT);
         encryptKey = properties.getString(CookieConstants.PropertyKeys.ENCRYPT_KEY, CookieConstants.DefaultValues.ENCRYPT_KEY);
 
-        if (!properties.containsKey(CookieConstants.PropertyKeys.ENCRYPT_KEY) && properties.containsKey(CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH)) {
-            String sessionCookieKeyPath = properties.getString(CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH, CookieConstants.DefaultValues.COOKIE_ENCRYPTKEY_PATH);
+        if (!properties.containsKey(CookieConstants.PropertyKeys.ENCRYPT_KEY) && properties.containsKey(CookieConstants.PropertyKeys.COOKIE_ENCRYPT_KEY_PATH)) {
+            String sessionCookieKeyPath = properties.getString(CookieConstants.PropertyKeys.COOKIE_ENCRYPT_KEY_PATH, CookieConstants.DefaultValues.COOKIE_ENCRYPT_KEY_PATH);
             encryptKey = loadCookieSessionKey(sessionCookieKeyPath);
         }
         encryptKey = StringUtil.trimToEmpty(encryptKey);
@@ -76,14 +76,14 @@ public class CookieSessionConfig extends BaseConfig {
             log.warn("session key load from: " + new File(new File(System.getProperty("user.home")), sessionCookieKeyPath));
             return is;
         }
-        is = StreamUtil.getUserHomeResourceAsStream(CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
+        is = StreamUtil.getUserHomeResourceAsStream(CookieConstants.PropertyKeys.COOKIE_ENCRYPT_KEY_PATH);
         if (is != null) {
-            log.warn("session key load from resource: " + new File(new File(System.getProperty("user.home")), CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH));
+            log.warn("session key load from resource: " + new File(new File(System.getProperty("user.home")), CookieConstants.PropertyKeys.COOKIE_ENCRYPT_KEY_PATH));
             return is;
         }
-        is = WebResourceUtil.getWebResouceAsStream(CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
+        is = WebResourceUtil.getWebResouceAsStream(CookieConstants.PropertyKeys.COOKIE_ENCRYPT_KEY_PATH);
         if (is != null) {
-            log.warn("session key load from resource: " + CookieConstants.PropertyKeys.COOKIE_ENCRYPTKEY_PATH);
+            log.warn("session key load from resource: " + CookieConstants.PropertyKeys.COOKIE_ENCRYPT_KEY_PATH);
             return is;
         }
         return is;

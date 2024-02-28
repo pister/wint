@@ -1,5 +1,6 @@
 package wint.sessionx.provider.redis;
 
+import wint.core.config.property.PropertiesMap;
 import wint.help.redis.RedisClient;
 import wint.help.redis.RedisClientFactory;
 import wint.lang.magic.MagicMap;
@@ -23,7 +24,7 @@ public class RedisSessionProvider implements SessionProvider {
     private RedisSessionConfig redisSessionConfig;
 
     @Override
-    public void init(MagicMap initParameters, ServletContext servletContext) {
+    public void init(PropertiesMap initParameters, ServletContext servletContext) {
         redisSessionConfig = new RedisSessionConfig(initParameters);
         redisRequestParser = new RedisRequestParser(redisSessionConfig);
         redisSessionStoreCreator = new RedisSessionStoreCreator(redisSessionConfig, initRedisClient(redisSessionConfig));

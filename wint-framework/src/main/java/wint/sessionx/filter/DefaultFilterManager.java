@@ -1,6 +1,6 @@
 package wint.sessionx.filter;
 
-import wint.lang.magic.MagicMap;
+import wint.core.config.property.PropertiesMap;
 import wint.lang.utils.CollectionUtil;
 
 import java.util.List;
@@ -15,14 +15,14 @@ public class DefaultFilterManager implements FilterManager {
 
     private List<Filter> filters = CollectionUtil.newArrayList();
 
-    private MagicMap initParamters;
+    private PropertiesMap initParameters;
 
-    public DefaultFilterManager(MagicMap initParamters) {
-        this.initParamters = initParamters;
+    public DefaultFilterManager(PropertiesMap initParameters) {
+        this.initParameters = initParameters;
     }
 
     public void addFilter(Filter filter) {
-        filter.init(initParamters);
+        filter.init(initParameters);
         filters.add(filter);
     }
 

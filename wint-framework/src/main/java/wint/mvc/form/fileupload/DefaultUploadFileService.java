@@ -1,18 +1,16 @@
 package wint.mvc.form.fileupload;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import wint.core.config.Constants;
+import wint.core.config.property.PropertiesMap;
 import wint.core.service.AbstractService;
 import wint.lang.magic.MagicClass;
-import wint.lang.magic.MagicMap;
 import wint.lang.utils.LibUtil;
 import wint.lang.utils.StringUtil;
 import wint.mvc.flow.InnerFlowData;
 import wint.mvc.parameters.Parameters;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class DefaultUploadFileService extends AbstractService implements UploadFileService {
 
@@ -27,7 +25,7 @@ public class DefaultUploadFileService extends AbstractService implements UploadF
 	@Override
 	public void init() {
 		super.init();
-		MagicMap properties = this.getServiceContext().getConfiguration().getProperties();
+		PropertiesMap properties = this.getServiceContext().getConfiguration().getProperties();
         requestContextPath = properties.getString(Constants.PropertyKeys.WINT_REQUEST_CONTEXT_PATH, Constants.Defaults.WINT_REQUEST_CONTEXT_PATH);
 
         if (StringUtil.isEmpty(charset)) {

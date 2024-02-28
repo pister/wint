@@ -21,7 +21,7 @@ public interface CookieConstants {
         String DOMAIN = "wint.session.cookie.domain";
         String PATH = "wint.session.cookie.path";
         String EXPIRE = Constants.PropertyKeys.WINT_SESSION_EXPIRE;
-        String COOKIE_ENCRYPTKEY_PATH = "wint.session.cookie.key.file";
+        String COOKIE_ENCRYPT_KEY_PATH = "wint.session.cookie.key.file";
     }
 
     interface DefaultValues {
@@ -34,7 +34,7 @@ public interface CookieConstants {
         String DOMAIN = "";
         String PATH = "/";
         int EXPIRE = Constants.Defaults.WINT_SESSION_EXPIRE;
-        String COOKIE_ENCRYPTKEY_PATH = "wint-session-key";
+        String COOKIE_ENCRYPT_KEY_PATH = "wint-session-key";
     }
 
 }

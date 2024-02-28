@@ -1,5 +1,6 @@
 package wint.sessionx.provider.redis;
 
+import wint.core.config.property.PropertiesMap;
 import wint.lang.magic.MagicMap;
 import wint.sessionx.provider.BaseConfig;
 
@@ -16,7 +17,7 @@ public class RedisSessionConfig extends BaseConfig {
 
     private String redisKeyPrefix;
 
-    public RedisSessionConfig(MagicMap properties) {
+    public RedisSessionConfig(PropertiesMap properties) {
         super(properties);
         sessionIdName = properties.getString(RedisConstants.PropertyKeys.SESSION_ID_NAME, RedisConstants.DefaultValues.SESSION_ID_NAME);
         redisServerAddress = properties.getString(RedisConstants.PropertyKeys.REDIS_SERVER_ADDRESS, RedisConstants.DefaultValues.REDIS_SERVER_ADDRESS);

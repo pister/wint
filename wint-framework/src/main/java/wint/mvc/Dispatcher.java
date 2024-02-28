@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import wint.core.config.Configuration;
 import wint.core.config.Constants;
 import wint.core.config.Constants.PropertyKeys;
+import wint.core.config.property.MagicPropertiesMap;
+import wint.core.config.property.PropertiesMap;
 import wint.core.service.ServiceContext;
 import wint.core.service.env.Environment;
 import wint.core.service.supports.ServiceContextSupport;
@@ -29,6 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -68,7 +71,7 @@ public class Dispatcher {
             final Environment env = configuration.getEnvironment();
 
 
-            final MagicMap properties = configuration.getProperties();
+            final PropertiesMap properties = configuration.getProperties();
             ServiceContextSupport serviceContextSupport = new ServiceContextSupport();
 
             this.wintSessionUse = properties.getBoolean(Constants.PropertyKeys.WINT_SESSION_USE, Constants.Defaults.WINT_SESSION_USE);
@@ -98,7 +101,8 @@ public class Dispatcher {
             dispatcherInitializor.getLogger().log("Magic Type: " + magicName);
             dispatcherInitializor.getLogger().log("Environment: " + env.getName());
 
-            for (Map.Entry<String, Object> entry : properties.entrySet()) {
+            for (Iterator<Map.Entry<String, Object>> it = properties.iterator(); it.hasNext(); ) {
+                Map.Entry<String, Object> entry = it.next();
                 dispatcherInitializor.getLogger().log(entry.getKey() + " = " + entry.getValue());
             }
 

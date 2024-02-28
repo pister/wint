@@ -1,6 +1,7 @@
 package wint.mvc.view.types;
 
 import wint.core.config.Constants;
+import wint.core.config.property.PropertiesMap;
 import wint.core.service.env.Environment;
 import wint.lang.exceptions.FlowDataException;
 import wint.lang.exceptions.ResourceException;
@@ -38,7 +39,7 @@ public class TemplateViewRender extends AbstractViewRender {
     public void init() {
         super.init();
         loadTemplateService = serviceContext.getService(LoadTemplateService.class);
-        MagicMap properties = serviceContext.getConfiguration().getProperties();
+        PropertiesMap properties = serviceContext.getConfiguration().getProperties();
         layoutName = properties.getString(Constants.PropertyKeys.TEMPLATE_LAYOUT, Constants.Defaults.TEMPLATE_LAYOUT);
         pageContentName = properties.getString(Constants.PropertyKeys.PAGE_CONTENT_NAME, Constants.Defaults.PAGE_CONTENT_NAME);
         environment = serviceContext.getConfiguration().getEnvironment();

@@ -1,5 +1,6 @@
 package wint.sessionx.provider;
 
+import wint.core.config.property.PropertiesMap;
 import wint.lang.magic.MagicMap;
 import wint.sessionx.provider.cookie.CookieConstants;
 
@@ -14,7 +15,7 @@ public abstract class BaseConfig {
     private int expire;
     private String path;
 
-    public BaseConfig(MagicMap properties) {
+    public BaseConfig(PropertiesMap properties) {
         expire = properties.getInt(CookieConstants.PropertyKeys.EXPIRE, CookieConstants.DefaultValues.EXPIRE);
         domain = properties.getString(CookieConstants.PropertyKeys.DOMAIN, CookieConstants.DefaultValues.DOMAIN);
         path = properties.getString(CookieConstants.PropertyKeys.PATH, CookieConstants.DefaultValues.PATH);

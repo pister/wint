@@ -1,6 +1,7 @@
 package wint.mvc.url;
 
 import wint.core.config.Constants;
+import wint.core.config.property.PropertiesMap;
 import wint.core.service.AbstractService;
 import wint.lang.magic.MagicMap;
 import wint.lang.magic.Transformer;
@@ -39,7 +40,7 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
     public void init() {
         super.init();
         urlRewriteService = serviceContext.getService(UrlRewriteService.class);
-        MagicMap properties = serviceContext.getConfiguration().getProperties();
+        PropertiesMap properties = serviceContext.getConfiguration().getProperties();
         urlSuffix = properties.getString(Constants.PropertyKeys.URL_SUFFIX, Constants.Defaults.URL_SUFFIX);
         argumentSeparater = properties.getString(Constants.PropertyKeys.URL_ARGUMENT_SEPARATER, Constants.Defaults.URL_ARGUMENT_SEPARATER);
         tokenName = properties.getString(Constants.PropertyKeys.CSRF_TOKEN_NAME, Constants.Defaults.CSRF_TOKEN_NAME);

@@ -1,6 +1,7 @@
 package wint.sessionx.filter;
 
-import wint.lang.magic.MagicMap;
+import wint.core.config.property.MagicPropertiesMap;
+import wint.core.config.property.PropertiesMap;
 
 /**
  * User: longyi
@@ -11,7 +12,7 @@ public interface Filter {
 
     String getName();
 
-    void init(MagicMap initParameters);
+    void init(PropertiesMap initParameters);
 
     void doFilter(FilterContext filterContext);
 

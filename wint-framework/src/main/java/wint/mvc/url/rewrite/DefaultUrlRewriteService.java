@@ -1,6 +1,7 @@
 package wint.mvc.url.rewrite;
 
 import wint.core.config.Constants;
+import wint.core.config.property.PropertiesMap;
 import wint.core.service.AbstractService;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicMap;
@@ -44,7 +45,7 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
     @Override
     public void init() {
         super.init();
-        MagicMap properties = serviceContext.getConfiguration().getProperties();
+        PropertiesMap properties = serviceContext.getConfiguration().getProperties();
         final String argumentSeparater = properties.getString(Constants.PropertyKeys.URL_ARGUMENT_SEPARATER, Constants.Defaults.URL_ARGUMENT_SEPARATER);
         if (rewriteMappingList != null) {
             List<UrlRewriteMappingItem> urlRewriteMappingItems = CollectionUtil.transformList(rewriteMappingList, new Transformer<String, UrlRewriteMappingItem>() {

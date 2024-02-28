@@ -1,5 +1,7 @@
 package wint.sessionx.filter.filters;
 
+import wint.core.config.property.MagicPropertiesMap;
+import wint.core.config.property.PropertiesMap;
 import wint.lang.magic.MagicMap;
 import wint.lang.utils.ClassUtil;
 import wint.sessionx.filter.Filter;
@@ -15,6 +17,6 @@ public abstract class AbstractFilter implements Filter {
         return ClassUtil.getShortClassName(this.getClass());
     }
 
-    public void init(MagicMap initParameters) {
+    public void init(PropertiesMap initParameters) {
     }
 }

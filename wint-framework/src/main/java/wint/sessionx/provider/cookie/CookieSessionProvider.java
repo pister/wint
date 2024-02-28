@@ -1,5 +1,7 @@
 package wint.sessionx.provider.cookie;
 
+import wint.core.config.property.MagicPropertiesMap;
+import wint.core.config.property.PropertiesMap;
 import wint.lang.magic.MagicMap;
 import wint.sessionx.provider.RequestParser;
 import wint.sessionx.provider.SessionProvider;
@@ -24,7 +26,7 @@ public class CookieSessionProvider implements SessionProvider {
 
     private CookieCodec cookieCodec;
 
-    public void init(MagicMap initParameters, ServletContext servletContext) {
+    public void init(PropertiesMap initParameters, ServletContext servletContext) {
         config = new CookieSessionConfig(initParameters);
         serializeService = new StringSerializeService();
         cookieCodec = new CookieCodec(config, serializeService);

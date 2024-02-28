@@ -1,0 +1,5 @@
+
+1.6.7.1
+1、增加对可以通过环境变量注入配置的支持，比如下面的方式可以指定本地磁盘的其他配置文件加载spring
+mvn wint:run -Dwint.app.spring.context.file=file:///your_path/applicationContext.xml
+更多的可以配置变量可以查看 wint.core.config.Constants.PropertyKeys 常量配置类

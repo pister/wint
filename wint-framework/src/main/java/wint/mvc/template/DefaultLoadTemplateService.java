@@ -2,6 +2,7 @@ package wint.mvc.template;
 
 import wint.core.config.Configuration;
 import wint.core.config.Constants;
+import wint.core.config.property.PropertiesMap;
 import wint.core.io.resource.Resource;
 import wint.core.io.resource.loader.ResourceLoader;
 import wint.core.service.AbstractService;
@@ -48,7 +49,7 @@ public class DefaultLoadTemplateService extends AbstractService implements LoadT
         super.init();
         this.resourceLoader = this.serviceContext.getResourceLoader();
         this.viewRenderService = serviceContext.getService(ViewRenderService.class);
-        MagicMap properties = configuration.getProperties();
+        PropertiesMap properties = configuration.getProperties();
 
         if (StringUtil.isEmpty(templatePath)) {
             templatePath = properties.getString(Constants.PropertyKeys.TEMPLATE_PATH, Constants.Defaults.TEMPLATE_PATH);

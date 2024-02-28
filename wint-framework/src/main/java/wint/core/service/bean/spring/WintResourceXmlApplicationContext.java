@@ -1,17 +1,14 @@
 package wint.core.service.bean.spring;
 
-import java.util.Arrays;
-import java.util.Set;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.core.io.Resource;
-
 import wint.core.config.Configuration;
 import wint.core.config.Constants;
+import wint.core.config.property.PropertiesMap;
 import wint.core.io.resource.loader.ResourceLoader;
 import wint.core.service.ServiceContext;
 import wint.core.service.aop.ProxyInterceptors;
@@ -19,9 +16,11 @@ import wint.core.service.env.Environment;
 import wint.core.service.initial.EnvironmentAwire;
 import wint.core.service.initial.ServiceContextAwire;
 import wint.dal.ibatis.spring.SqlMapClientFactoryBean;
-import wint.lang.magic.MagicMap;
 import wint.lang.magic.MagicObject;
 import wint.lang.utils.CollectionUtil;
+
+import java.util.Arrays;
+import java.util.Set;
 
 /**
  * @author pister 2012-3-4 02:51:16
@@ -40,8 +39,8 @@ public class WintResourceXmlApplicationContext extends AbstractXmlApplicationCon
 		this.resourceLoader = serviceContext.getResourceLoader();
 		
 		this.profilerSupportBeans = CollectionUtil.newHashSet(Arrays.asList("AO", "DAO", "BO", "Service"));
-		
-		final MagicMap properties = serviceContext.getConfiguration().getProperties();
+
+		final PropertiesMap properties = serviceContext.getConfiguration().getProperties();
 		final Environment environment = serviceContext.getConfiguration().getEnvironment();
 		final boolean sqlmapAutoload = properties.getBoolean(Constants.PropertyKeys.SQLMAP_AUTO_LOAD, Constants.Defaults.SQLMAP_AUTO_LOAD);
 		final String sqlmapSqlLogName = properties.getString(Constants.PropertyKeys.SQLMAP_SHOW_LOG_NAME, Constants.Defaults.SQLMAP_SHOW_LOG_NAME);

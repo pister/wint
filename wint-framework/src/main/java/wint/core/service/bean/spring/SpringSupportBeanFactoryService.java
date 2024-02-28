@@ -67,8 +67,8 @@ public class SpringSupportBeanFactoryService extends AbstractService implements 
 		}
 		Resource springResourceFile =  resourceLoader.getResource(springContextFile);
 		if (springResourceFile == null || !springResourceFile.exist()) {
-			if (log.isDebugEnabled()) {
-				log.debug("org.springframework.context.ApplicationContext class exist, but " + springContextFile + " does not exist.");
+			if (log.isErrorEnabled()) {
+				log.error("org.springframework.context.ApplicationContext class exist, but " + springContextFile + " does not exist.");
 			}
 			return false;
 		}

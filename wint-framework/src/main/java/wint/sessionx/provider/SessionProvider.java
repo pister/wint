@@ -1,5 +1,7 @@
 package wint.sessionx.provider;
 
+import wint.core.config.property.MagicPropertiesMap;
+import wint.core.config.property.PropertiesMap;
 import wint.lang.magic.MagicMap;
 
 import javax.servlet.ServletContext;
@@ -11,7 +13,7 @@ import javax.servlet.ServletContext;
  */
 public interface SessionProvider {
 
-    void init(MagicMap initParameters, ServletContext servletContext);
+    void init(PropertiesMap initParameters, ServletContext servletContext);
 
     RequestParser getRequestParser();
 
