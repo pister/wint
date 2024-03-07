@@ -7,10 +7,10 @@ import wint.mvc.flow.FlowData;
 import wint.mvc.flow.ServletFlowData;
 import wint.mvc.flow.Session;
 import wint.mvc.form.Form;
-import wint.mvc.form.fileupload.UploadFile;
 import wint.mvc.parameters.Arguments;
 import wint.mvc.parameters.Parameters;
 import wint.mvc.restful.method.ResultfulFlowData;
+import wint.mvc.restful.request.RequestBody;
 import wint.mvc.template.Context;
 import wint.mvc.url.UrlBroker;
 
@@ -46,6 +46,11 @@ public class ResultfulFlowDataSupport implements ResultfulFlowData {
     @Override
     public Parameters getParameters() {
         return flowData.getParameters();
+    }
+
+    @Override
+    public RequestBody getRequestBody() {
+        return flowData.getRequestBody();
     }
 
     @Override
@@ -105,12 +110,22 @@ public class ResultfulFlowDataSupport implements ResultfulFlowData {
 
     @Override
     public String getContentType() {
-        return flowData.getContentType();
+        return getResponseContentType();
+    }
+
+    @Override
+    public String getResponseContentType() {
+        return flowData.getResponseContentType();
     }
 
     @Override
     public void setContentType(String contentType) {
-        flowData.setContentType(contentType);
+        setResponseContentType(contentType);
+    }
+
+    @Override
+    public void setResponseContentType(String contentType) {
+        flowData.setResponseContentType(contentType);
     }
 
     @Override

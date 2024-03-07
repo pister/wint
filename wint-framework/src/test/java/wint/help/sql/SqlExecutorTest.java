@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 /**
- CREATE DATABASE `foo1` default character set utf8mb4 collate utf8mb4_unicode_ci;
+ CREATE DATABASE `foo1` default character set utf8mb4 collate utf8_general_ci;
  use `foo1`;
 
  grant select,update,delete,insert on `foo1`.* to 'foo1name'@'%' identified by 'foo1pass';

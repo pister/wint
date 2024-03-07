@@ -19,7 +19,8 @@ import wint.mvc.form.fileupload.UploadFile;
 import wint.mvc.module.Module;
 import wint.mvc.parameters.Arguments;
 import wint.mvc.parameters.Parameters;
-import wint.mvc.parameters.ServletParameters;
+import wint.mvc.restful.request.RequestBody;
+import wint.mvc.servlet.ServletRequestUtil;
 import wint.mvc.servlet.ServletUtil;
 import wint.mvc.template.Context;
 import wint.mvc.url.UrlBroker;
@@ -55,6 +56,8 @@ public class ServletFlowData implements InnerFlowData {
 
     private Parameters parameters;
 
+    private RequestBody requestBody;
+
     private String target;
 
     private String suffix;
@@ -67,13 +70,13 @@ public class ServletFlowData implements InnerFlowData {
 
     private boolean sendRedirected = false;
 
-    private boolean commited = false;
+    private boolean committed = false;
 
     private FastStringWriter fastStringWriter;
 
     private FastByteArrayOutputStream fastByteArrayOutputStream;
 
-    private String contentType;
+    private String responseContentType;
 
     private Locale locale;
 
@@ -97,7 +100,8 @@ public class ServletFlowData implements InnerFlowData {
         this.httpServletResponse = httpServletResponse;
         this.serviceContext = serviceContext;
 
-        parameters = new ServletParameters(httpServletRequest);
+        parameters = ServletRequestUtil.createParameters(httpServletRequest);
+        requestBody = ServletRequestUtil.createRequestBody(httpServletRequest);
         target = ServletUtil.getServletPathWithRequestContext(httpServletRequest, requestContextPath);
         if (target.contains(".")) {
             suffix = StringUtil.getLastAfter(target, ".");
@@ -109,8 +113,7 @@ public class ServletFlowData implements InnerFlowData {
 
     public Form getForm(String name) {
         FormService formService = this.serviceContext.getService(FormService.class);
-        Form form = formService.getForm(name, this);
-        return form;
+        return formService.getForm(name, this);
     }
 
     protected String getDefaultContentType() {
@@ -145,6 +148,11 @@ public class ServletFlowData implements InnerFlowData {
 
     public Parameters getParameters() {
         return parameters;
+    }
+
+    @Override
+    public RequestBody getRequestBody() {
+        return requestBody;
     }
 
     public String getTarget() {
@@ -224,7 +232,7 @@ public class ServletFlowData implements InnerFlowData {
     public void commitData() {
         try {
             Profiler.enter("committing data.");
-            if (commited) {
+            if (committed) {
                 throw new FlowDataException("flowData has been commited!");
             }
             if (sendRedirected) {
@@ -239,8 +247,8 @@ public class ServletFlowData implements InnerFlowData {
             if (fastByteArrayOutputStream != null && fastStringWriter != null) {
                 throw new FlowDataException("please do not write on getOutputStream() and getWriter() both");
             }
-            if (!StringUtil.isEmpty(contentType)) {
-                httpServletResponse.setContentType(contentType);
+            if (!StringUtil.isEmpty(responseContentType)) {
+                httpServletResponse.setContentType(responseContentType);
             } else  {
                // log.warn("use default contentType: " + getDefaultContentType());
                 httpServletResponse.setContentType(getDefaultContentType());
@@ -273,7 +281,7 @@ public class ServletFlowData implements InnerFlowData {
                     httpServletResponse.setStatus(statusCode);
                 }
             }
-            commited = true;
+            committed = true;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -298,11 +306,21 @@ public class ServletFlowData implements InnerFlowData {
     }
 
     public String getContentType() {
-        return contentType;
+        return getResponseContentType();
+    }
+
+    @Override
+    public String getResponseContentType() {
+        return responseContentType;
     }
 
     public void setContentType(String contentType) {
-        this.contentType = contentType;
+        this.setResponseContentType(contentType);
+    }
+
+    @Override
+    public void setResponseContentType(String contentType) {
+        this.responseContentType = contentType;
     }
 
     public Locale getLocale() {

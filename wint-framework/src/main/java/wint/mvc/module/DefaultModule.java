@@ -36,7 +36,7 @@ public class DefaultModule implements ExecutionModule {
         super();
         this.targetObject = targetObject;
         this.moduleInfo = moduleInfo;
-        parameterTypes = moduleInfo.getTargetMethod().getParameterTypes();
+        this.parameterTypes = moduleInfo.getTargetMethod().getParameterTypes();
         this.moduleType = moduleType;
     }
 

@@ -5,6 +5,7 @@ import wint.mvc.form.Form;
 import wint.mvc.form.fileupload.UploadFile;
 import wint.mvc.parameters.Arguments;
 import wint.mvc.parameters.Parameters;
+import wint.mvc.restful.request.RequestBody;
 import wint.mvc.template.Context;
 import wint.mvc.url.UrlBroker;
 
@@ -38,11 +39,17 @@ public interface FlowData {
     void setAttribute(String name, Object value);
 
     /**
-     * 获取http的queryString的参数
+     * 获取http的queryString和表单的参数
      *
      * @return
      */
     Parameters getParameters();
+
+    /**
+     * 获取http请求的body数据，支持requestBody的http方法有POST/PUT/PATCH
+     * @return
+     */
+    RequestBody getRequestBody();
 
     /**
      * 获取action目标
@@ -114,14 +121,32 @@ public interface FlowData {
      */
     void setStatusCode(int code, String message);
 
+    /**
+     * @deprecated use getResponseContentType instead of
+     * @return response的content-type
+     */
     String getContentType();
+
+    /**
+     * @return response的content-type
+     */
+    String getResponseContentType();
+
+    /**
+     * 设置http的输出contentType，默认为text/html
+     *
+     * @param contentType
+     * @deprecated use setResponseContentType instead
+     */
+    void setContentType(String contentType);
+
 
     /**
      * 设置http的输出contentType，默认为text/html
      *
      * @param contentType
      */
-    void setContentType(String contentType);
+    void setResponseContentType(String contentType);
 
     /**
      * 获取本地对象

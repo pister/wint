@@ -3,3 +3,11 @@
 1、增加对可以通过环境变量注入配置的支持，比如下面的方式可以指定本地磁盘的其他配置文件加载spring
 mvn wint:run -Dwint.app.spring.context.file=file:///your_path/applicationContext.xml
 更多的可以配置变量可以查看 wint.core.config.Constants.PropertyKeys 常量配置类
+
+2、默认生成wint工程中的init-sql文件中的字符排序规则（collation）由utf8_unicode_ci改成utf8_general_ci
+
+
+1.6.8
+1、原生支持json作为body请求，而不是自己手动解析
+可以通过flowData.getRequestBody()获得请求的数据（仅当http的method为POST/PUT/PATCH时，其他method无效），
+可以通过返回对象的getJsonObject或是getJsonList获得json对象，也可以传入类型，支持直接注入目标类型或是其数组。

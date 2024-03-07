@@ -2,11 +2,13 @@ package wint.help.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import wint.help.json.wrapper.DefaultJsonList;
 import wint.help.json.wrapper.DefaultJsonObject;
 import wint.help.json.wrapper.JsonList;
 import wint.help.json.wrapper.JsonObject;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -52,8 +54,12 @@ public class JsonUtil {
     }
 
     public static JsonList fromJsonStringList(String s) {
-        return new DefaultJsonList((List<Object>)defaultGson.fromJson(s, List.class));
+        return new DefaultJsonList((List<Object>) defaultGson.fromJson(s, List.class));
     }
 
+    public static <T> List<T> fromJsonStringList(String s, Class<T> elementType) {
+        Type theType = TypeToken.getParameterized(List.class, elementType).getType();
+        return defaultGson.fromJson(s, theType);
+    }
 
 }

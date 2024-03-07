@@ -11,6 +11,7 @@ import java.util.Set;
 import wint.core.io.resource.Resource;
 import wint.core.io.resource.loader.ResourceLoader;
 import wint.core.service.env.Environment;
+import wint.help.http.MimeTypeEnum;
 import wint.lang.exceptions.WebResourceException;
 import wint.lang.io.FastByteArrayInputStream;
 import wint.lang.io.FastByteArrayOutputStream;
@@ -28,9 +29,6 @@ import wint.mvc.view.types.ViewTypes;
 import javax.servlet.http.HttpServletResponse;
 
 public class FileResourceValve extends AbstractValve {
-
-	private static final String[] TYPES = {"css", "js", "xml", "jpg", "jpeg", "png", "gif", "bmp",
-			"swf", "mp3", "ico", "icon", "woff", "ttf"};
 	
 	private static final Map<String, String> mappedContentTypes = MapUtil.newHashMap();
 
@@ -39,23 +37,45 @@ public class FileResourceValve extends AbstractValve {
     private Environment environment;
 
 	static {
-		mappedContentTypes.put("txt", "text/plain");
-		mappedContentTypes.put("xml", "text/xml");
-		mappedContentTypes.put("css", "text/css");
-		mappedContentTypes.put("js", "application/x-javascript");
-		mappedContentTypes.put("jpg", "image/jpeg");
-		mappedContentTypes.put("jpeg", "image/jpeg");
-		mappedContentTypes.put("png", "image/png");
-		mappedContentTypes.put("gif", "image/gif");
-		mappedContentTypes.put("bmp", "image/bmp");
-		mappedContentTypes.put("ico", "image/ico");
-		mappedContentTypes.put("swf", "application/x-shockwave-flash");
-		mappedContentTypes.put("doc", "application/msword");
-		mappedContentTypes.put("docx", "application/msword");
-		mappedContentTypes.put("xls", "application/vnd.ms-excel");
-		mappedContentTypes.put("xlsx", "application/vnd.ms-excel");
+		// css
+		registerContentType(MimeTypeEnum.CSS);
+
+		// js
+		registerContentType(MimeTypeEnum.JS);
+
+		// icon
+		registerContentType(MimeTypeEnum.ICO);
+
+		// image
+		registerContentType(MimeTypeEnum.GIF);
+		registerContentType(MimeTypeEnum.BMP);
+		registerContentType(MimeTypeEnum.PNG);
+		registerContentType(MimeTypeEnum.JPEG);
+
+		// media
+		registerContentType(MimeTypeEnum.SWF);
+		registerContentType(MimeTypeEnum.MP3);
+		registerContentType(MimeTypeEnum.MP4);
+
+		// document
+		registerContentType(MimeTypeEnum.DOC);
+		registerContentType(MimeTypeEnum.DOCX);
+		registerContentType(MimeTypeEnum.PPT);
+		registerContentType(MimeTypeEnum.PPTX);
+		registerContentType(MimeTypeEnum.XLS);
+		registerContentType(MimeTypeEnum.XLSX);
+
+		// font
+		registerContentType(MimeTypeEnum.WOFF);
+		registerContentType(MimeTypeEnum.TTF);
 	}
-	
+
+	private static void registerContentType(MimeTypeEnum mimeTypeEnum) {
+		for (String suffix  : mimeTypeEnum.getSuffixList()) {
+			mappedContentTypes.put(suffix, mimeTypeEnum.getMimeType());
+		}
+	}
+
 	private Set<String> resourceTypes = CollectionUtil.newHashSet();
 	
 	private ResourceLoader resourceLoader;
@@ -64,9 +84,6 @@ public class FileResourceValve extends AbstractValve {
 		super.init();
 		resourceLoader = serviceContext.getResourceLoader();
 		if (CollectionUtil.isEmpty(resourceTypes)) {
-			for (String type : TYPES) {
-				resourceTypes.add(type);
-			}
 			resourceTypes.addAll(mappedContentTypes.keySet());
 		}
         environment = serviceContext.getConfiguration().getEnvironment();
@@ -80,7 +97,7 @@ public class FileResourceValve extends AbstractValve {
 		if (isResourceTarget(targetSuffix)) {
 			try {
 				String contentType = mappedContentTypes.get(targetSuffix);
-				flowData.setContentType(contentType);
+				flowData.setResponseContentType(contentType);
 
 				HttpServletResponse response = WintContext.getResponse();
 				response.addHeader("Access-Control-Allow-Origin", "*");

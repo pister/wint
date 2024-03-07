@@ -15,6 +15,7 @@ import wint.mvc.form.fileupload.UploadFile;
 import wint.mvc.module.Module;
 import wint.mvc.parameters.Arguments;
 import wint.mvc.parameters.Parameters;
+import wint.mvc.restful.request.RequestBody;
 import wint.mvc.template.Context;
 import wint.mvc.url.UrlBroker;
 
@@ -56,7 +57,12 @@ public class WidgetInnerFlowData implements InnerFlowData {
 	}
 
 	public String getContentType() {
-		return innerFlowData.getContentType();
+		return getResponseContentType();
+	}
+
+	@Override
+	public String getResponseContentType() {
+		return innerFlowData.getResponseContentType();
 	}
 
 	public Form getForm(String name) {
@@ -81,6 +87,11 @@ public class WidgetInnerFlowData implements InnerFlowData {
 
 	public Parameters getParameters() {
 		return innerFlowData.getParameters();
+	}
+
+	@Override
+	public RequestBody getRequestBody() {
+		return innerFlowData.getRequestBody();
 	}
 
 	public ServiceContext getServiceContext() {
@@ -149,6 +160,11 @@ public class WidgetInnerFlowData implements InnerFlowData {
 	}
 
 	public void setContentType(String contentType) {
+		setResponseContentType(contentType);
+	}
+
+	@Override
+	public void setResponseContentType(String contentType) {
 		throw new UnsupportedOperationException();
 	}
 

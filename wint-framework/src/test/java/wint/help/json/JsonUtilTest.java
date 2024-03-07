@@ -1,10 +1,13 @@
 package wint.help.json;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import wint.help.json.wrapper.JsonList;
 import wint.help.json.wrapper.JsonObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -84,6 +87,16 @@ public class JsonUtilTest extends TestCase {
         public void setY(int y) {
             this.y = y;
         }
+
+        private List<Integer> values;
+
+        public void setValues(List<Integer> values) {
+            this.values = values;
+        }
+
+        public List<Integer> getValues() {
+            return values;
+        }
     }
 
     public void testToJsonString() throws Exception {
@@ -111,6 +124,51 @@ public class JsonUtilTest extends TestCase {
         String s = "{\"age\":12,\"name\":\"Jack\",\"addresses\":[\"aa\",\"bb\"]}";
         Foo foo = JsonUtil.fromJsonString(s, Foo.class);
         System.out.println(foo);
+    }
+
+    public void testFromJsonArray() throws Exception {
+        String s = "[\"hello\", \"world\"]";
+        List<String> arr = JsonUtil.fromJsonStringList(s, String.class);
+        Assert.assertEquals(arr.size(), 2);
+        assertEquals(arr.get(0), "hello");
+        assertEquals(arr.get(1), "world");
+    }
+
+    public void testFromJsonArray1() throws Exception {
+        String s = "[123, 456]";
+        List<Integer> arr = JsonUtil.fromJsonStringList(s, Integer.class);
+        Assert.assertEquals(arr.size(), 2);
+        assertEquals(arr.get(0), Integer.valueOf(123));
+        assertEquals(arr.get(1), Integer.valueOf(456));
+    }
+
+    public void testFromJsonArray2() throws Exception {
+        String s = "[{\"x\":\"hello\",\"y\":123, \"values\":[1,2]},{\"x\":\"world\",\"y\":666,\"values\":[2,3]}]";
+        List<Bar> arr = JsonUtil.fromJsonStringList(s, Bar.class);
+        Assert.assertEquals(arr.size(), 2);
+        {
+            Bar bar = arr.get(0);
+            Assert.assertEquals(bar.getX(), "hello");
+            Assert.assertEquals(bar.getY(), 123);
+            List<Integer> values = bar.getValues();
+            System.out.println(values);
+        }
+        {
+            Bar bar = arr.get(1);
+            Assert.assertEquals(bar.getX(), "world");
+            Assert.assertEquals(bar.getY(), 666);
+            List<Integer> values = bar.getValues();
+
+            System.out.println(values);
+
+        }
+    }
+
+    public void test33() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Integer>>() {}.getType();
+        List<Integer> numbers = gson.fromJson("[123, 456]", type);
+        System.out.println(numbers);
     }
 
     public void testFromJsonStringObject() throws Exception {
