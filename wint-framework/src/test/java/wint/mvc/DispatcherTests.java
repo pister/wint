@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class DispatcherTests extends TestCase {
 
@@ -159,6 +160,7 @@ public class DispatcherTests extends TestCase {
         MagicMap parameters = MagicMap.newMagicMap();
         HttpServletRequestMock request = new HttpServletRequestMock("book/88", parameters, servletConfigMock.getServletContext());
         request.setMethod("post");
+        request.setBody("[123,456]".getBytes(StandardCharsets.UTF_8));
         HttpServletResponse response = new HttpServletResponseMock();
         dispatcherServlet.service(request, response);
     }

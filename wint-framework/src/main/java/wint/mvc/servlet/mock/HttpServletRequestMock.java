@@ -1,5 +1,7 @@
 package wint.mvc.servlet.mock;
 
+import org.springframework.mock.web.DelegatingServletInputStream;
+import wint.lang.io.FastByteArrayInputStream;
 import wint.lang.magic.MagicMap;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.StringUtil;
@@ -13,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -38,6 +42,8 @@ public class HttpServletRequestMock implements HttpServletRequest {
     private MagicMap attributes = MagicMap.newMagicMap();
 
     private HttpSession httpSession;
+
+    private byte[] body;
 
     private static final String COOKIE_DATE_PATTERN = "EEE, dd-MMM-yyyy HH:mm:ss 'GMT'";
 
@@ -224,7 +230,10 @@ public class HttpServletRequestMock implements HttpServletRequest {
     }
 
     public ServletInputStream getInputStream() throws IOException {
-        return null;
+        if (body == null) {
+            return null;
+        }
+        return new DelegatingServletInputStream(new FastByteArrayInputStream(body));
     }
 
     public String getLocalAddr() {
@@ -284,7 +293,10 @@ public class HttpServletRequestMock implements HttpServletRequest {
     }
 
     public BufferedReader getReader() throws IOException {
-        return null;
+        if (body == null) {
+            return null;
+        }
+        return new BufferedReader(new StringReader(new String(body, StandardCharsets.UTF_8)));
     }
 
     public String getRealPath(String path) {
@@ -337,5 +349,9 @@ public class HttpServletRequestMock implements HttpServletRequest {
 
     public void setMethod(String method) {
         this.method = method;
+    }
+
+    public void setBody(byte[] body) {
+        this.body = body;
     }
 }
