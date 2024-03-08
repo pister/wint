@@ -88,7 +88,7 @@ public class PerformActionValve extends AbstractValve {
 	}
 	
 	/**
-	 * 按如下顺序找：1、rundata.Target的值, 2、返回值，注解默认值，3、和Module同名
+	 * 按如下顺序找：1、FlowData.Target的值, 2、返回值，注解默认值，3、和Module同名
 	 * @param module
 	 * @param flowData
 	 * @param returnResult

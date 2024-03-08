@@ -40,13 +40,16 @@ public interface FlowData {
 
     /**
      * 获取http的queryString和表单的参数
-     *
+     * 注意，尽量避免和 getRequestBody()同时时候
      * @return
      */
     Parameters getParameters();
 
     /**
-     * 获取http请求的body数据，支持requestBody的http方法有POST/PUT/PATCH
+     * 获取http请求的body数据，支持requestBody的http方法有POST/PUT/PATCH。
+     *
+     * 注意，尽量避免和 getParameters()同时时候
+     *
      * @return
      */
     RequestBody getRequestBody();
@@ -80,6 +83,13 @@ public interface FlowData {
      */
     void redirectTo(String location);
 
+    /**
+     * 获取请求body的数据流
+     * 1.6.8版本 开始废弃，使用getRequestBody()代替
+     * @return
+     * @throws IOException
+     * @deprecated use getRequestBody() instead
+     */
     InputStream getInputStream() throws IOException;
 
     /**
@@ -92,21 +102,19 @@ public interface FlowData {
     UrlBroker redirectTo(String urlModule, String target);
 
     /**
-     * 一旦获取输出的Writer，wint会在内部调用setViewType(NopViewRender.TYPE_NAME)
+     * 一旦获取输出的Writer，wint会在内部调用setViewType("nop")
      *
      * @return
      */
     Writer getWriter() throws IOException;
 
     /**
-     * 一旦获取输出的OuputStream，wint会在内部调用setViewType(NopViewRender.TYPE_NAME)
+     * 一旦获取输出的OutputStream，wint会在内部调用setViewType("nop")
      *
      * @return
      */
     OutputStream getOutputStream() throws IOException;
-
-    int getStatusCode();
-
+    
     /**
      * 设置http的输出状态值
      *
@@ -118,8 +126,16 @@ public interface FlowData {
      * 设置错误状态和错误信息
      * @param code
      * @param message
+     * @deprecated use setErrorCode() instead
      */
     void setStatusCode(int code, String message);
+
+    /**
+     * 设置响应错误状态码和错误信息
+     * @param code
+     * @param message
+     */
+    void setErrorCode(int code, String message);
 
     /**
      * @deprecated use getResponseContentType instead of
@@ -154,6 +170,10 @@ public interface FlowData {
      */
     Locale getLocale();
 
+    /**
+     * @deprecated 为了版本将不再提供
+     * @param locale
+     */
     void setLocale(Locale locale);
 
     /**
@@ -173,6 +193,10 @@ public interface FlowData {
     Arguments getArguments();
 
 
+    /**
+     * 获取视图类型
+     * @return
+     */
     String getViewType();
 
     /**

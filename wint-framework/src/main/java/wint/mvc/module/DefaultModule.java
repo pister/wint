@@ -1,6 +1,8 @@
 package wint.mvc.module;
 
 import wint.lang.collections.FastStack;
+import wint.lang.exceptions.MethodInvokeException;
+import wint.lang.exceptions.MethodNotAllowedException;
 import wint.lang.magic.MagicClass;
 import wint.lang.magic.MagicList;
 import wint.lang.magic.MagicObject;
@@ -18,7 +20,7 @@ import wint.mvc.view.types.ViewTypes;
 
 /**
  * @author pister
- *         2011-12-30 04:54:32
+ * 2011-12-30 04:54:32
  */
 public class DefaultModule implements ExecutionModule {
 
@@ -67,10 +69,21 @@ public class DefaultModule implements ExecutionModule {
                 return ret;
             }
             return moduleInfo.getDefaultTarget();
+        } catch (MethodNotAllowedException e) {
+            flowData.setStatusCode(StatusCodes.SC_METHOD_NOT_ALLOWED, e.getMessage());
+            return null;
+        } catch (MethodInvokeException e) {
+            Throwable targetException = e.getCause();
+            if(targetException instanceof MethodNotAllowedException) {
+                flowData.setStatusCode(StatusCodes.SC_METHOD_NOT_ALLOWED, e.getMessage());
+                return null;
+            }
+            throw e;
         } finally {
             Profiler.release();
         }
     }
+
 
     protected String executeModule(FlowData flowData, Context context, MagicList<Object> indexedParameters) {
         if (CollectionUtil.isEmpty(parameterTypes)) {

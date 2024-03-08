@@ -25,7 +25,7 @@ public class ServletRequestUtil {
 
     public static RequestBody createRequestBody(HttpServletRequest httpServletRequest) {
         if (!supportRequestBody(httpServletRequest)) {
-            return new NotSupportRequestBody("not support request body, please check your request METHOD!");
+            return new NotSupportRequestBody("Use getRequestBody() must use one of POST/PUT/PATCH method, please check your request method!");
         }
         return new ServletRequestBody(httpServletRequest);
     }

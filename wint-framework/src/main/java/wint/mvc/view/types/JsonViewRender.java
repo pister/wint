@@ -6,6 +6,7 @@ import java.util.Map;
 
 import wint.core.config.Constants;
 import wint.lang.magic.MagicMap;
+import wint.lang.utils.IoUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
 import wint.mvc.flow.InnerFlowData;
@@ -81,7 +82,7 @@ public class JsonViewRender extends AbstractViewRender {
             handleFormResult(context, flowData);
 			Writer out = flowData.getWriter();
 			jsonRender.render(context, out);
-			out.close();
+            IoUtil.close(out);
 		} catch (IOException e) {
 			log.error("json render error", e);
 		}

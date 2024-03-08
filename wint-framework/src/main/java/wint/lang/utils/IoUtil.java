@@ -1,11 +1,14 @@
 package wint.lang.utils;
 
+import wint.lang.io.FastByteArrayOutputStream;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.Charset;
 
 public class IoUtil {
 	
@@ -58,6 +61,16 @@ public class IoUtil {
 		copy(reader, writer);
 		close(reader);
 		close(writer);
+	}
+
+	public static byte[] copyAllToBytes(InputStream inputStream) throws IOException {
+		FastByteArrayOutputStream byteArrayOutputStream = new FastByteArrayOutputStream(BYTE_BUF_LEN);
+		copy(inputStream, byteArrayOutputStream);
+		return byteArrayOutputStream.toByteArray();
+	}
+
+	public static String copyAllToString(InputStream inputStream, Charset charset) throws IOException {
+		return new String(copyAllToBytes(inputStream), charset);
 	}
 	
 	public static void close(Closeable c) {

@@ -93,10 +93,6 @@ public class ResultfulFlowDataSupport implements ResultfulFlowData {
         return flowData.getOutputStream();
     }
 
-    @Override
-    public int getStatusCode() {
-        return flowData.getStatusCode();
-    }
 
     @Override
     public void setStatusCode(int code) {
@@ -106,6 +102,11 @@ public class ResultfulFlowDataSupport implements ResultfulFlowData {
     @Override
     public void setStatusCode(int code, String message) {
         flowData.setStatusCode(code, message);
+    }
+
+    @Override
+    public void setErrorCode(int code, String message) {
+        flowData.setErrorCode(code, message);
     }
 
     @Override

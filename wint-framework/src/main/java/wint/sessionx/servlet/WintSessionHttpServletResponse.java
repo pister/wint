@@ -35,6 +35,8 @@ public class WintSessionHttpServletResponse extends HttpServletResponseWrapper i
 
 	private boolean hasGetWriter = false;
 
+	private boolean hasSendError = false;
+
 	private boolean commit = false;
 
 	public WintSessionHttpServletResponse(HttpServletResponse response) {
@@ -70,7 +72,7 @@ public class WintSessionHttpServletResponse extends HttpServletResponseWrapper i
 			}
 
 			// for response data
-			if (fastByteArrayOutputStream != null) {
+			if (!hasSendError && fastByteArrayOutputStream != null) {
 				OutputStream os = super.getOutputStream();
 				os.write(fastByteArrayOutputStream.toByteArray());
 				os.flush();
@@ -108,6 +110,18 @@ public class WintSessionHttpServletResponse extends HttpServletResponseWrapper i
 	public void sendRedirect(String location) throws IOException {
 		sendRedirected = true;
 		this.redirectLocation = location;
+	}
+
+	@Override
+	public void sendError(int sc, String msg) throws IOException {
+		hasSendError = true;
+		super.sendError(sc, msg);
+	}
+
+	@Override
+	public void sendError(int sc) throws IOException {
+		hasSendError = true;
+		super.sendError(sc);
 	}
 
 	@Override

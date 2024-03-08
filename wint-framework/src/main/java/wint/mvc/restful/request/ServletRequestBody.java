@@ -23,19 +23,30 @@ public class ServletRequestBody implements RequestBody {
 
     private String charset;
 
+    private HttpServletRequest httpServletRequest;
+
+    private boolean hasInit = false;
+
     public ServletRequestBody(HttpServletRequest httpServletRequest) {
-        charset = getCharset(httpServletRequest.getContentType());
+        this.httpServletRequest = httpServletRequest;
+    }
+
+    private void ensureInit() {
+        if (hasInit) {
+            return;
+        }
+        charset = parseCharset(httpServletRequest.getContentType());
         try {
             InputStream inputStream = httpServletRequest.getInputStream();
-            FastByteArrayOutputStream bos = new FastByteArrayOutputStream(4096);
-            IoUtil.copyAndClose(inputStream, bos);
-            requestData = bos.toByteArray();
+            requestData = IoUtil.copyAllToBytes(inputStream);
+            IoUtil.close(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        hasInit = true;
     }
 
-    private static String getCharset(String contentTypeHeader) {
+    private static String parseCharset(String contentTypeHeader) {
         String defaultCharset = Constants.Defaults.CHARSET_ENCODING;
         String charsetPrefix = "charset=";
         if (contentTypeHeader == null || !contentTypeHeader.contains(charsetPrefix)) {
@@ -51,13 +62,14 @@ public class ServletRequestBody implements RequestBody {
 
     @Override
     public byte[] getData() {
+        ensureInit();
         return requestData;
     }
 
     @Override
     public String getString() {
         try {
-            return new String(requestData, charset);
+            return new String(getData(), charset);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

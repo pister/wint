@@ -102,10 +102,6 @@ public class WidgetInnerFlowData implements InnerFlowData {
 		return innerFlowData.getSession();
 	}
 
-	public int getStatusCode() {
-		return innerFlowData.getStatusCode();
-	}
-
 	public String getTarget() {
 		return innerFlowData.getTarget();
 	}
@@ -186,6 +182,11 @@ public class WidgetInnerFlowData implements InnerFlowData {
 
 	@Override
 	public void setStatusCode(int code, String message) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setErrorCode(int code, String message) {
 		throw new UnsupportedOperationException();
 	}
 
