@@ -5,17 +5,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 import wint.core.service.ServiceContext;
 import wint.mvc.form.Form;
-import wint.mvc.form.fileupload.UploadFile;
 import wint.mvc.module.Module;
 import wint.mvc.parameters.Arguments;
 import wint.mvc.parameters.Parameters;
-import wint.mvc.restful.request.RequestBody;
+import wint.mvc.request.RequestBody;
+import wint.mvc.request.RequestHeaders;
 import wint.mvc.template.Context;
 import wint.mvc.url.UrlBroker;
 
@@ -92,6 +89,11 @@ public class WidgetInnerFlowData implements InnerFlowData {
 	@Override
 	public RequestBody getRequestBody() {
 		return innerFlowData.getRequestBody();
+	}
+
+	@Override
+	public RequestHeaders getRequestHeaders() {
+		return innerFlowData.getRequestHeaders();
 	}
 
 	public ServiceContext getServiceContext() {

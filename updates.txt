@@ -9,6 +9,8 @@
 
 3、修复了原来在没有body的请求下，控制台输出异常的错误。
 
+4、flowData中增加getRequestHeaders()方法，用于获取http头，同时废除了原ResultfulFlowData中相关获取http头的方法
+
 
 
 1.6.7.1

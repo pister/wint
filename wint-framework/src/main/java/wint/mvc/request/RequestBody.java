@@ -1,4 +1,4 @@
-package wint.mvc.restful.request;
+package wint.mvc.request;
 
 import wint.help.json.wrapper.JsonList;
 import wint.help.json.wrapper.JsonObject;

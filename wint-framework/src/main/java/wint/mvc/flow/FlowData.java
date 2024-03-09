@@ -2,10 +2,10 @@ package wint.mvc.flow;
 
 import wint.core.service.ServiceContext;
 import wint.mvc.form.Form;
-import wint.mvc.form.fileupload.UploadFile;
 import wint.mvc.parameters.Arguments;
 import wint.mvc.parameters.Parameters;
-import wint.mvc.restful.request.RequestBody;
+import wint.mvc.request.RequestBody;
+import wint.mvc.request.RequestHeaders;
 import wint.mvc.template.Context;
 import wint.mvc.url.UrlBroker;
 
@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * 请求数据流对象
@@ -53,6 +52,12 @@ public interface FlowData {
      * @return
      */
     RequestBody getRequestBody();
+
+    /**
+     * 获取请求头
+     * @return
+     */
+    RequestHeaders getRequestHeaders();
 
     /**
      * 获取action目标
@@ -114,7 +119,7 @@ public interface FlowData {
      * @return
      */
     OutputStream getOutputStream() throws IOException;
-    
+
     /**
      * 设置http的输出状态值
      *

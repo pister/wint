@@ -1,16 +1,15 @@
 package wint.mvc.restful.method.impl;
 
 import wint.core.service.ServiceContext;
-import wint.lang.utils.MapUtil;
-import wint.lang.utils.NumberUtil;
 import wint.mvc.flow.FlowData;
 import wint.mvc.flow.ServletFlowData;
 import wint.mvc.flow.Session;
 import wint.mvc.form.Form;
 import wint.mvc.parameters.Arguments;
 import wint.mvc.parameters.Parameters;
+import wint.mvc.request.RequestBody;
+import wint.mvc.request.RequestHeaders;
 import wint.mvc.restful.method.ResultfulFlowData;
-import wint.mvc.restful.request.RequestBody;
 import wint.mvc.template.Context;
 import wint.mvc.url.UrlBroker;
 
@@ -19,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.*;
+import java.util.Locale;
 
 /**
  * Created by songlihuang on 2018/3/7.
@@ -51,6 +50,11 @@ public class ResultfulFlowDataSupport implements ResultfulFlowData {
     @Override
     public RequestBody getRequestBody() {
         return flowData.getRequestBody();
+    }
+
+    @Override
+    public RequestHeaders getRequestHeaders() {
+        return flowData.getRequestHeaders();
     }
 
     @Override
@@ -210,41 +214,6 @@ public class ResultfulFlowDataSupport implements ResultfulFlowData {
         return flowData.getRequestMethod();
     }
 
-    @Override
-    public String getHeader(String name) {
-        HttpServletRequest request = getServletRequest();
-        if (request == null) {
-            return null;
-        }
-        return request.getHeader(name);
-    }
-
-    @Override
-    public Date getHeaderDate(String name) {
-        HttpServletRequest request = getServletRequest();
-        if (request == null) {
-            return null;
-        }
-        long v = request.getDateHeader(name);
-        if (v < 0) {
-            return null;
-        }
-        return new Date(v);
-    }
-
-    @Override
-    public Long getHeaderLong(String name) {
-        String value = getHeader(name);
-        if (value == null) {
-            return null;
-        }
-        if (NumberUtil.isNumeric(value)) {
-            return Long.parseLong(value);
-        } else {
-            return null;
-        }
-    }
-
     protected HttpServletRequest getServletRequest() {
         if (flowData instanceof ServletFlowData) {
             ServletFlowData servletFlowData = (ServletFlowData) flowData;
@@ -254,35 +223,4 @@ public class ResultfulFlowDataSupport implements ResultfulFlowData {
         }
     }
 
-    @Override
-    public List<String> getHeaders(String name) {
-        HttpServletRequest request = getServletRequest();
-        if (request == null) {
-            return null;
-        }
-        Enumeration<String> values = request.getHeaders(name);
-        if (values == null) {
-            return null;
-        }
-        return Collections.list(values);
-    }
-
-    @Override
-    public Map<String, List<String>> getAllHeaders() {
-        HttpServletRequest request = getServletRequest();
-        if (request == null) {
-            return null;
-        }
-        Map<String, List<String>> headers = MapUtil.newHashMap();
-        Enumeration<String> enumeration = request.getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String name = enumeration.nextElement();
-            Enumeration<String> values = request.getHeaders(name);
-            if (values == null) {
-                continue;
-            }
-            headers.put(name, Collections.list(values));
-        }
-        return headers;
-    }
 }

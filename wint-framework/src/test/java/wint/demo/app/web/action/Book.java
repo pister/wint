@@ -4,7 +4,7 @@ import wint.mvc.flow.FlowData;
 import wint.mvc.restful.method.GetFlowData;
 import wint.mvc.restful.method.PostFlowData;
 import wint.mvc.restful.method.PutFlowData;
-import wint.mvc.restful.request.RequestBody;
+import wint.mvc.request.RequestBody;
 import wint.mvc.template.Context;
 
 import java.util.List;

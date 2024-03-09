@@ -1,7 +1,5 @@
 package wint.mvc.flow;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import wint.core.config.Constants;
 import wint.core.service.ServiceContext;
 import wint.lang.WintException;
@@ -19,7 +17,8 @@ import wint.mvc.form.fileupload.UploadFile;
 import wint.mvc.module.Module;
 import wint.mvc.parameters.Arguments;
 import wint.mvc.parameters.Parameters;
-import wint.mvc.restful.request.RequestBody;
+import wint.mvc.request.RequestBody;
+import wint.mvc.request.RequestHeaders;
 import wint.mvc.servlet.ServletRequestUtil;
 import wint.mvc.servlet.ServletUtil;
 import wint.mvc.template.Context;
@@ -44,8 +43,6 @@ import java.util.*;
  */
 public class ServletFlowData implements InnerFlowData {
 
-    private static final Logger log = LoggerFactory.getLogger(ServletFlowData.class);
-
     protected Map<String, Object> attributes = MapUtil.newHashMap();
 
     private HttpServletResponse httpServletResponse;
@@ -57,6 +54,8 @@ public class ServletFlowData implements InnerFlowData {
     private Parameters parameters;
 
     private RequestBody requestBody;
+
+    private RequestHeaders requestHeaders;
 
     private String target;
 
@@ -104,6 +103,7 @@ public class ServletFlowData implements InnerFlowData {
 
         parameters = ServletRequestUtil.createParameters(httpServletRequest);
         requestBody = ServletRequestUtil.createRequestBody(httpServletRequest);
+        requestHeaders = ServletRequestUtil.createRequestHeaders(httpServletRequest);
         target = ServletUtil.getServletPathWithRequestContext(httpServletRequest, requestContextPath);
         if (target.contains(".")) {
             suffix = StringUtil.getLastAfter(target, ".");
@@ -155,6 +155,11 @@ public class ServletFlowData implements InnerFlowData {
     @Override
     public RequestBody getRequestBody() {
         return requestBody;
+    }
+
+    @Override
+    public RequestHeaders getRequestHeaders() {
+        return requestHeaders;
     }
 
     public String getTarget() {

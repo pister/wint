@@ -1,10 +1,9 @@
-package wint.mvc.restful.request;
+package wint.mvc.request;
 
 import wint.core.config.Constants;
 import wint.help.json.JsonUtil;
 import wint.help.json.wrapper.JsonList;
 import wint.help.json.wrapper.JsonObject;
-import wint.lang.io.FastByteArrayOutputStream;
 import wint.lang.utils.IoUtil;
 
 import javax.servlet.http.HttpServletRequest;
