@@ -52,7 +52,7 @@ public class ProjectConfig {
 	
 	private String slf4jApiVersion = "1.7.16";
 	
-	private String logbackVersion = "1.2.11";
+	private String logbackVersion = "1.2.13";
 
     private String driudVersion = "1.1.23";
 

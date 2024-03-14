@@ -27,7 +27,7 @@
 		</layout> 
     </appender>
     
-    <appender name="PROJECT-DEBUG" class="wint.lang.logback.WintFileAppender">
+    <appender name="PROJECT-DEBUG" class="wint.lang.logback.WintRollingFileAppender">
         <File>${${config.artifactId}.log.dir}/${config.artifactId}-debug.log</File>
         <append>false</append>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
@@ -78,7 +78,7 @@
 		</layout>
     </appender>
     
-    <appender name="APACHE" class="wint.lang.logback.WintFileAppender">
+    <appender name="APACHE" class="wint.lang.logback.WintRollingFileAppender">
         <File>${${config.artifactId}.log.dir}/${config.artifactId}-apache.log</File>
         <append>true</append>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
