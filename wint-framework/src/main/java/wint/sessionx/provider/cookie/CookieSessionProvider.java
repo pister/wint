@@ -1,8 +1,6 @@
 package wint.sessionx.provider.cookie;
 
-import wint.core.config.property.MagicPropertiesMap;
 import wint.core.config.property.PropertiesMap;
-import wint.lang.magic.MagicMap;
 import wint.sessionx.provider.RequestParser;
 import wint.sessionx.provider.SessionProvider;
 import wint.sessionx.provider.SessionStoreCreator;

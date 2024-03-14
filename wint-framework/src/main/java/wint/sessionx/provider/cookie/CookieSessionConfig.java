@@ -2,7 +2,9 @@ package wint.sessionx.provider.cookie;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import wint.core.config.Constants;
 import wint.core.config.property.PropertiesMap;
+import wint.core.service.env.Environment;
 import wint.lang.WintException;
 import wint.lang.utils.FileUtil;
 import wint.lang.utils.StreamUtil;
@@ -22,6 +24,8 @@ public class CookieSessionConfig extends BaseConfig {
 
     private static final Logger log = LoggerFactory.getLogger(CookieSessionConfig.class);
 
+    private Environment env;
+
     private boolean encrypt;
 
     private String encryptKey;
@@ -36,6 +40,8 @@ public class CookieSessionConfig extends BaseConfig {
 
     public CookieSessionConfig(PropertiesMap properties) {
         super(properties);
+        env = Environment.valueFromName(properties.getString(Constants.PropertyKeys.APP_ENV));
+
         encrypt = properties.getBoolean(CookieConstants.PropertyKeys.ENCRYPT, CookieConstants.DefaultValues.ENCRYPT);
         encryptKey = properties.getString(CookieConstants.PropertyKeys.ENCRYPT_KEY, CookieConstants.DefaultValues.ENCRYPT_KEY);
 
@@ -49,6 +55,7 @@ public class CookieSessionConfig extends BaseConfig {
         cookieDataMaxSize = properties.getInt(CookieConstants.PropertyKeys.DATA_MAX_SIZE, CookieConstants.DefaultValues.DATA_MAX_SIZE);
         prefixName = properties.getString(CookieConstants.PropertyKeys.COOKIE_DATA_PREFIX, CookieConstants.DefaultValues.COOKIE_DATA_PREFIX);
         cookieDataIndex = properties.getInt(CookieConstants.PropertyKeys.COOKIE_DATA_INDEX, CookieConstants.DefaultValues.COOKIE_DATA_INDEX);
+
     }
 
 
@@ -56,8 +63,13 @@ public class CookieSessionConfig extends BaseConfig {
         try {
             InputStream is = getSessionCookieKeyInputStream(sessionCookieKeyPath);
             if (is == null) {
-                log.warn("no wint-session-key file found, use default cookie session key!!!");
-                return CookieConstants.DefaultValues.ENCRYPT_KEY;
+                if (env != Environment.PRODUCT) {
+                    log.warn("the session key file NOT found, use DEFAULT cookie session key: " + CookieConstants.DefaultValues.ENCRYPT_KEY);
+                    return CookieConstants.DefaultValues.ENCRYPT_KEY;
+                } else {
+                    throw new WintException("the session key file NOT found, please check session key file exist: " +
+                            new File(System.getProperty("user.home"), sessionCookieKeyPath));
+                }
             } else {
                 return StreamUtil.readAsString(is);
             }

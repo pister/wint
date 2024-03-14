@@ -20,7 +20,7 @@
 			
 			Wint properties:
 			<ul>
-			\#foreach($property in $properties.entrySet())
+			\#foreach($property in $properties.iterator())
 				<li>
 					$property.key = $property.value
 				</li>
