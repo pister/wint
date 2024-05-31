@@ -1,5 +1,6 @@
 package wint.mvc.form;
 
+import wint.help.biz.result.MessageRender;
 import wint.mvc.form.config.FieldConfig;
 
 /**
@@ -11,9 +12,9 @@ public class MessageHoldField implements Field {
 
     private String name;
 
-    private String message;
+    private MessageRender message;
 
-    public MessageHoldField(String name, String message) {
+    public MessageHoldField(String name, MessageRender message) {
         this.name = name;
         this.message = message;
     }
@@ -42,11 +43,11 @@ public class MessageHoldField implements Field {
         throw new UnsupportedOperationException();
     }
 
-    public String getMessage() {
+    public MessageRender getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(MessageRender message) {
         this.message = message;
     }
 

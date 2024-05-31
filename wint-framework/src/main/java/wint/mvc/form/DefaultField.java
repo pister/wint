@@ -1,5 +1,6 @@
 package wint.mvc.form;
 
+import wint.help.biz.result.MessageRender;
 import wint.lang.utils.StringUtil;
 import wint.mvc.form.config.FieldConfig;
 
@@ -13,7 +14,7 @@ public class DefaultField implements Field {
 	
 	private String[] values;
 	
-	private String message;
+	private MessageRender message;
 
 	public DefaultField(FieldConfig fieldConfig, Form form) {
 		super();
@@ -49,11 +50,11 @@ public class DefaultField implements Field {
 		this.value = value;
 	}
 
-	public String getMessage() {
+	public MessageRender getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(MessageRender message) {
 		this.message = message;
 	}
 

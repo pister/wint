@@ -35,7 +35,8 @@ public class DefaultFormService extends AbstractService implements FormService {
 			if (log.isInfoEnabled()) {
 				log.info("form config file \""+ Constants.Form.FORM_CONFIG_FILE +"\" has exist, loading it...");
 			}
-			FormConfigLoader formConfigLoader = new XmlFormConfigLoader(serviceContext.getResourceLoader(), simpleVelocityEngine);
+			FormConfigLoader formConfigLoader = new XmlFormConfigLoader(serviceContext.getResourceLoader(),
+					simpleVelocityEngine, serviceContext.getConfiguration());
 			formConfigs = formConfigLoader.parse(Constants.Form.FORM_CONFIG_FILE).getFormConfigs();
 			if (log.isInfoEnabled()) {
 				log.info("loading form config success.");

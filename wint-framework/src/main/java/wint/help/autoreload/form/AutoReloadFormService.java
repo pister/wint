@@ -81,7 +81,7 @@ public class AutoReloadFormService  {
 			ResourceLoader resourceLoader = serviceContext.getResourceLoader();
 			Resource defaultFormResource = resourceLoader.getResource(Constants.Form.FORM_CONFIG_FILE);
 			if (defaultFormResource != null && defaultFormResource.exist()) {
-				FormConfigLoader formConfigLoader = new XmlFormConfigLoader(serviceContext.getResourceLoader(), simpleTemplateEngine);
+				FormConfigLoader formConfigLoader = new XmlFormConfigLoader(serviceContext.getResourceLoader(), simpleTemplateEngine, serviceContext.getConfiguration());
 				return formConfigLoader.parse(Constants.Form.FORM_CONFIG_FILE).getResourceNames();
 			} else {
 				return CollectionUtil.newHashSet();
@@ -127,7 +127,7 @@ public class AutoReloadFormService  {
 				String encoding = serviceContext.getConfiguration().getProperties().getString(Constants.PropertyKeys.CHARSET_ENCODING, Constants.Defaults.CHARSET_ENCODING);
 				simpleVelocityEngine.init(encoding);
 				simpleTemplateEngine = simpleVelocityEngine;
-				FormConfigLoader formConfigLoader = new XmlFormConfigLoader(serviceContext.getResourceLoader(), simpleVelocityEngine);
+				FormConfigLoader formConfigLoader = new XmlFormConfigLoader(serviceContext.getResourceLoader(), simpleVelocityEngine, serviceContext.getConfiguration());
 				ParseResult parseResult = formConfigLoader.parse(Constants.Form.FORM_CONFIG_FILE);
 				formConfigs = parseResult.getFormConfigs();
 				

@@ -1,5 +1,6 @@
 package wint.mvc.form.config;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +17,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import wint.core.config.Configuration;
+import wint.core.config.Constants;
 import wint.core.io.resource.Resource;
 import wint.core.io.resource.loader.ResourceLoader;
 import wint.core.service.parser.XMLParseUtil;
@@ -25,6 +28,7 @@ import wint.lang.template.SimpleTemplateEngine;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
 import wint.lang.utils.StringUtil;
+import wint.mvc.i18n.I18nResourceFinder;
 
 /**
  * @author pister 2012-2-8 04:51:44
@@ -44,16 +48,25 @@ public class XmlFormConfigLoader implements FormConfigLoader {
 	private XPathExpression formFieldValidatorParamExpr;
 	
 	private XPathExpression resourceExpr;
+
+	private Configuration configuration;
+
+	private I18nResourceFinder i18nResourceFinder;
 	
-	public XmlFormConfigLoader(ResourceLoader resourceLoader, SimpleTemplateEngine simpleTemplateEngine) {
+	public XmlFormConfigLoader(ResourceLoader resourceLoader, SimpleTemplateEngine simpleTemplateEngine, Configuration configuration) {
 		super();
 		this.resourceLoader = resourceLoader;
 		this.simpleTemplateEngine = simpleTemplateEngine;
+		this.configuration = configuration;
 		init();
 	}
 	
 	private void init() {
 		try {
+			i18nResourceFinder = new I18nResourceFinder();
+			String i18nResource = configuration.getProperties().getString(Constants.PropertyKeys.APP_I18N, Constants.Defaults.APP_I18N);
+			i18nResourceFinder.loadResources(i18nResource);
+
 			XPathFactory factory = XPathFactory.newInstance();
 			XPath xpath = factory.newXPath();
 			formExpr = xpath.compile("/forms/form");
@@ -62,7 +75,7 @@ public class XmlFormConfigLoader implements FormConfigLoader {
 			formFieldValidatorParamExpr = xpath.compile("param");
 			resourceExpr = xpath.compile("/forms/resource");
 			resourceExpr = xpath.compile("/forms/resource");
-		} catch (XPathExpressionException e) {
+		} catch (XPathExpressionException | IOException e) {
 			throw new FormConfigException(e);
 		}
 	}
@@ -72,15 +85,15 @@ public class XmlFormConfigLoader implements FormConfigLoader {
 		Set<String> resourceNames = CollectionUtil.newHashSet();
 		resourceNames.add(name);
 		parseImpl(name, formConfigs, resourceNames);
-		proccessFormsInherit(formConfigs);
+		processFormsInherit(formConfigs);
 		return new ParseResult(formConfigs, resourceNames);
 	}
 	
-	private void proccessFormsInherit(Map<String, FormConfig> formConfigs) {
-		Set<String> hasBeenProccessFormNames = CollectionUtil.newHashSet();
+	private void processFormsInherit(Map<String, FormConfig> formConfigs) {
+		Set<String> hasBeenProcessFormNames = CollectionUtil.newHashSet();
 		for (Map.Entry<String, FormConfig> entry : formConfigs.entrySet()) {
 			FormConfig formConfig = entry.getValue();
-			processForExtends(formConfig, formConfigs, hasBeenProccessFormNames);
+			processForExtends(formConfig, formConfigs, hasBeenProcessFormNames);
 		}
 	}
 	
@@ -251,7 +264,7 @@ public class XmlFormConfigLoader implements FormConfigLoader {
 			NodeList paramNodes = (NodeList)formFieldValidatorParamExpr.evaluate(validatorNode, XPathConstants.NODESET);
 			MagicMap parameters = getValidatorParams(paramNodes, validatorConfig);
 			validatorConfig.setParameters(parameters);
-			validatorConfig.init(simpleTemplateEngine);
+			validatorConfig.init(simpleTemplateEngine, i18nResourceFinder);
 			
 			fieldConfig.getValidatorConfigs().add(validatorConfig);
 		}

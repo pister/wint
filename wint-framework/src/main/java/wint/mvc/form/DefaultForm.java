@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import wint.core.config.Constants;
+import wint.help.biz.result.MessageRender;
 import wint.lang.convert.ConvertUtil;
 import wint.lang.magic.MagicList;
 import wint.lang.magic.MagicObject;
@@ -167,7 +168,7 @@ public class DefaultForm implements Form {
 			String fieldName = entry.getKey();
 			FieldConfig fieldConfig = entry.getValue();
 			MagicList<ValidatorConfig> validatorConfigs = fieldConfig.getValidatorConfigs();
-			List<String> messages = CollectionUtil.newArrayList();
+			List<MessageRender> messages = CollectionUtil.newArrayList();
 			theResult.setFieldMessages(fieldName, messages);
 			String fieldValue = parameters.getString(fieldName);
 			Field field = fields.get(fieldName);

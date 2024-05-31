@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.Map;
 
 import wint.core.config.Constants;
+import wint.help.biz.result.MessageRender;
 import wint.lang.magic.MagicMap;
 import wint.lang.utils.IoUtil;
 import wint.lang.utils.MapUtil;
@@ -45,11 +46,11 @@ public class JsonViewRender extends AbstractViewRender {
         Map<String, String> resultMessage = MapUtil.newHashMap();
         for (Map.Entry<String, Field> entry : fieldMap.entrySet()) {
             Field field = entry.getValue();
-            String message = field.getMessage();
-            if (StringUtil.isEmpty(message)) {
+            MessageRender message = field.getMessage();
+            if (message == null) {
                 continue;
             }
-            resultMessage.put(entry.getKey(), message);
+            resultMessage.put(entry.getKey(), message.render());
         }
         return resultMessage;
     }

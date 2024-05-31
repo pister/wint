@@ -65,10 +65,10 @@ public class ResultSupport implements Result {
         RunTimeForm runTimeForm = formFactory.getForm(lastFormName);
         Field field = runTimeForm.get(fieldName);
         if (field == null) {
-           field = new MessageHoldField(fieldName, resultCode.getMessage());
+           field = new MessageHoldField(fieldName, resultCode);
            runTimeForm.getFields().put(fieldName, field);
         } else {
-            field.setMessage(resultCode.getMessage());
+            field.setMessage(resultCode);
         }
         hasFieldResultCodes = true;
     }

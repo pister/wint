@@ -1,5 +1,6 @@
 package wint.mvc.form;
 
+import wint.help.biz.result.MessageRender;
 import wint.mvc.form.config.FieldConfig;
 
 public interface Field {
@@ -15,10 +16,10 @@ public interface Field {
 	String[] getValues();
 
 	void setValues(String[] values);
-	
-	String getMessage();
 
-	void setMessage(String message);
+	MessageRender getMessage();
+
+	void setMessage(MessageRender message);
 	
 	FieldConfig getFieldConfig();
 

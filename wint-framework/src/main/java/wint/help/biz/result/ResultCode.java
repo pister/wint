@@ -3,7 +3,7 @@ package wint.help.biz.result;
 import java.io.Serializable;
 import java.util.Map;
 
-public class ResultCode implements Serializable {
+public class ResultCode extends MessageRender implements Serializable {
 	
 	private static final long serialVersionUID = -3124130374367913002L;
 	

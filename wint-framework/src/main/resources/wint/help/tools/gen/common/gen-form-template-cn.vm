@@ -81,6 +81,11 @@
                 <param name="chars" value="the chars can be not contains, such as: *%&#@" />
             </validator>
 
+            另外你可以在message中使用#!开头指定ResultCode实现国际化
+            <validator type="..." message="#!YourResultCode.YOUR_MESSAGE_FIELD">
+
+            </validator>
+
         如果上述校验器不能满足你的要求，你可以从AbstractValidator继承实现自定义的校验器。
     -->
 </forms>
