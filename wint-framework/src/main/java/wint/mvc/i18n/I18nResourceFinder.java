@@ -51,11 +51,34 @@ public class I18nResourceFinder {
         this.resultCodeClassMap = resultCodeClassMap;
     }
 
+    private static boolean isSuffixByDotArea(String fullName) {
+        String lastName = StringUtil.getLastAfter(fullName, ".");
+        if (lastName.length() != 2) {
+            return false;
+        }
+        for (int i = 0; i < lastName.length(); i++) {
+            char c = lastName.charAt(i);
+            if (!Character.isUpperCase(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private String getClassNameByResource(String base, String resourceName) {
+        // TheClassName_zh_CN.properties
         String fullName = resourceName.substring(base.length() + 1); // i18n.
         String fullNameWithoutSuffix = StringUtil.getLastBefore(fullName, ".");
+
+        if (isSuffixByDotArea(fullNameWithoutSuffix)) {
+            // 兼容 TheClassName_zh.CN.properties
+            fullNameWithoutSuffix = StringUtil.getLastBefore(fullNameWithoutSuffix, ".");
+        }
+
         String packageName = StringUtil.getLastBefore(fullNameWithoutSuffix, ".");
         String classNameWithLang = StringUtil.getLastAfter(fullNameWithoutSuffix, ".");
+
+
         String className = StringUtil.getFirstBefore(classNameWithLang, "_");
         return packageName + "." + className;
     }
