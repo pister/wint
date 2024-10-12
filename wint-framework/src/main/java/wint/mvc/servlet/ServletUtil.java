@@ -36,10 +36,6 @@ public class ServletUtil {
         return hostname;
     }
 
-    public static String getRequestHostnameL2(HttpServletRequest request) {
-        String hostname = getRequestHostname(request);
-        return getHostnameL2(hostname);
-    }
 
     public static String getHostnameL2(String hostname) {
         if (StringUtil.isEmpty(hostname)) {

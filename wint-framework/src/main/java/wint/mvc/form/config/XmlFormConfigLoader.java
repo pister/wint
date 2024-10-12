@@ -75,7 +75,7 @@ public class XmlFormConfigLoader implements FormConfigLoader {
 			formFieldValidatorParamExpr = xpath.compile("param");
 			resourceExpr = xpath.compile("/forms/resource");
 			resourceExpr = xpath.compile("/forms/resource");
-		} catch (XPathExpressionException | IOException e) {
+		} catch (Exception e) {
 			throw new FormConfigException(e);
 		}
 	}

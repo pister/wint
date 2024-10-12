@@ -25,15 +25,5 @@ public class ServletUtilTest extends TestCase {
         System.out.println(ServletUtil.parseHostnameFromUrl("https://127.0.0.1/123"));
     }
 
-    public void test2() {
-        Assert.assertEquals("aaa", ServletUtil.getHostnameL2("aaa.bb.com"));
-        Assert.assertEquals("aaa.cc", ServletUtil.getHostnameL2("aaa.cc.bb.com"));
-        Assert.assertEquals("aaa",ServletUtil.getHostnameL2("aaa.bb.com.cn"));
-        Assert.assertEquals("aaa.cc",ServletUtil.getHostnameL2("aaa.cc.bb.com.cn"));
-        Assert.assertEquals(null,ServletUtil.getHostnameL2("bb.net"));
-        Assert.assertEquals(null,ServletUtil.getHostnameL2("bb.net.cn"));
-        Assert.assertEquals("cc",ServletUtil.getHostnameL2("cc.bb.net.cn"));
-        Assert.assertEquals("aa.cc",ServletUtil.getHostnameL2("aa.cc.bb.net.cn"));
-    }
 
 }

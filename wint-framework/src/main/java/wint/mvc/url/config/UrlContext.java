@@ -9,7 +9,7 @@ public class UrlContext {
 
     private String urlSuffix;
 
-    private String argumentSeparater;
+    private String argumentSeparator;
 
     public String getUrlSuffix() {
         return urlSuffix;
@@ -19,11 +19,11 @@ public class UrlContext {
         this.urlSuffix = urlSuffix;
     }
 
-    public String getArgumentSeparater() {
-        return argumentSeparater;
+    public String getArgumentSeparator() {
+        return argumentSeparator;
     }
 
-    public void setArgumentSeparater(String argumentSeparater) {
-        this.argumentSeparater = argumentSeparater;
+    public void setArgumentSeparator(String argumentSeparator) {
+        this.argumentSeparator = argumentSeparator;
     }
 }

@@ -36,10 +36,10 @@ public class UrlRewriteParseValve extends AbstractValve {
         urlRewriteService = serviceContext.getService(UrlRewriteService.class);
         PropertiesMap properties = serviceContext.getConfiguration().getProperties();
         String urlSuffix = properties.getString(Constants.PropertyKeys.URL_SUFFIX, Constants.Defaults.URL_SUFFIX);
-        String argumentSeparater = properties.getString(Constants.PropertyKeys.URL_ARGUMENT_SEPARATER, Constants.Defaults.URL_ARGUMENT_SEPARATER);
+        String argumentSeparator = properties.getString(Constants.PropertyKeys.URL_ARGUMENT_SEPARATOR, Constants.Defaults.URL_ARGUMENT_SEPARATOR);
         urlContext = new UrlContext();
         urlContext.setUrlSuffix(urlSuffix);
-        urlContext.setArgumentSeparater(argumentSeparater);
+        urlContext.setArgumentSeparator(argumentSeparator);
     }
 
     @Override

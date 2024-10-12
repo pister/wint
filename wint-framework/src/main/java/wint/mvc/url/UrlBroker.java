@@ -2,6 +2,7 @@ package wint.mvc.url;
 
 import wint.core.config.Constants;
 import wint.help.mvc.security.csrf.CsrfTokenUtil;
+import wint.help.seo.SeoStringUtil;
 import wint.lang.convert.ConvertUtil;
 import wint.lang.exceptions.UrlException;
 import wint.lang.magic.MagicObject;
@@ -62,6 +63,17 @@ public class UrlBroker implements Render {
      */
     public UrlBroker param(String name, Object value) {
         return parameter(name, value);
+    }
+
+    /**
+     * url友好的参数
+     * @param name
+     * @param value
+     * @return
+     */
+    public UrlBroker paramSeo(String name, String value) {
+        value = SeoStringUtil.toFriendlyInUrl(value);
+        return param(name, value);
     }
 
     /**

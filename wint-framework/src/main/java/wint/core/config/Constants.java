@@ -55,7 +55,9 @@ public interface Constants {
 
         String URL_SUFFIX = "wint.app.url.suffix";
 
-        String URL_ARGUMENT_SEPARATER = "wint.app.url.argument.separater";
+        String URL_ARGUMENT_SEPARATOR = "wint.app.url.argument.separator";
+
+        String URL_REWRITE_ARGUMENT_SEPARATOR = "wint.app.url.rewrite.argument.separator";
 
         String CSRF_TOKEN_NAME = "wint.app.csrf.token.name";
 
@@ -186,7 +188,7 @@ public interface Constants {
 
         String URL_SUFFIX = ".htm";
 
-        String URL_ARGUMENT_SEPARATER = "-";
+        String URL_ARGUMENT_SEPARATOR = "-";
 
         String URL_CONFIG_FILE = "url.xml";
 

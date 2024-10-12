@@ -15,40 +15,40 @@ import java.util.Map;
 
 public class ResultSupport implements Result {
 
-	private static final long serialVersionUID = -6867564865059422611L;
+    private static final long serialVersionUID = -6867564865059422611L;
 
-	private boolean success = false;
-	
-	private ResultCode resultCode;
-	
-	private Map<String, Object> models = new HashMap<String, Object>();
+    private boolean success = false;
+
+    private ResultCode resultCode;
+
+    private Map<String, Object> models = new HashMap<String, Object>();
 
     private boolean hasFieldResultCodes = false;
 
-	public ResultSupport() {
-		this(false);
-	}
-	
-	public ResultSupport(boolean success) {
-		super();
-		this.success = success;
-	}
+    public ResultSupport() {
+        this(false);
+    }
 
-	public boolean isSuccess() {
-		return success;
-	}
+    public ResultSupport(boolean success) {
+        super();
+        this.success = success;
+    }
 
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
+    public boolean isSuccess() {
+        return success;
+    }
 
-	public ResultCode getResultCode() {
-		return resultCode;
-	}
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 
-	public void setResultCode(ResultCode resultCode) {
-		this.resultCode = resultCode;
-	}
+    public ResultCode getResultCode() {
+        return resultCode;
+    }
+
+    public void setResultCode(ResultCode resultCode) {
+        this.resultCode = resultCode;
+    }
 
     public void setFieldResultCode(String fieldName, ResultCode resultCode) {
         setResultCode(fieldName, resultCode);
@@ -56,17 +56,17 @@ public class ResultSupport implements Result {
 
     public void setResultCode(String fieldName, ResultCode resultCode) {
         FlowData flowData = WintContext.getFlowData();
-        String lastFormName = (String)flowData.getAttribute(Constants.Form.LAST_FORM_NAME);
+        String lastFormName = (String) flowData.getAttribute(Constants.Form.LAST_FORM_NAME);
         if (lastFormName == null) {
             throw new WintException("you must call FormService.getForm() method before Result.seResultCode(String, ResultCode) on this thread.");
         }
-        FormFactory formFactory = (FormFactory)flowData.getInnerContext().get(Constants.Form.TEMPLATE_FORM_FACTORY_NAME);
+        FormFactory formFactory = (FormFactory) flowData.getInnerContext().get(Constants.Form.TEMPLATE_FORM_FACTORY_NAME);
 
         RunTimeForm runTimeForm = formFactory.getForm(lastFormName);
         Field field = runTimeForm.get(fieldName);
         if (field == null) {
-           field = new MessageHoldField(fieldName, resultCode);
-           runTimeForm.getFields().put(fieldName, field);
+            field = new MessageHoldField(fieldName, resultCode);
+            runTimeForm.getFields().put(fieldName, field);
         } else {
             field.setMessage(resultCode);
         }
@@ -74,8 +74,8 @@ public class ResultSupport implements Result {
     }
 
     public Map<String, Object> getModels() {
-		return models;
-	}
+        return models;
+    }
 
     public boolean isHasFieldResultCodes() {
         return hasFieldResultCodes;

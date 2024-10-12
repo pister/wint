@@ -1,24 +1,41 @@
 package wint.mvc.url.rewrite;
 
-import wint.core.config.Constants;
-import wint.core.config.property.PropertiesMap;
 import wint.core.service.AbstractService;
-import wint.lang.magic.MagicClass;
-import wint.lang.magic.MagicMap;
 import wint.lang.magic.Transformer;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.StringUtil;
+import wint.mvc.url.rewrite.domain.DefaultDomainParser;
 import wint.mvc.url.rewrite.domain.DefaultDomainRewriteHandle;
 import wint.mvc.url.rewrite.domain.DomainParser;
-import wint.mvc.url.rewrite.domain.DefaultDomainParser;
 import wint.mvc.url.rewrite.domain.DomainRewriteHandle;
 import wint.mvc.url.rewrite.mapping.UrlRewriteMapping;
-import wint.mvc.url.rewrite.mapping.UrlRewriteMappingItem;import wint.mvc.url.rewrite.resovler.RewriteResolver;
+import wint.mvc.url.rewrite.mapping.UrlRewriteMappingItem;
+import wint.mvc.url.rewrite.resovler.RewriteResolver;
 
 import java.util.List;
 import java.util.Set;
 
 /**
+ *
+ * 使用方法，在wint.xml中加入配置
+ *
+ *  <object class="wint.mvc.url.rewrite.DefaultUrlRewriteService">
+ *         <list name="applyModules">
+ *             <value>baseModule</value>
+ *         </list>
+ *         <list name="rewritePatterns">
+ *             <!--
+ *             path/name:param1/param2/param3
+ *             冒号前面是路径，冒号后面是参数
+ *             注意：越精确匹配的放在越前面，框架是自上而下匹配的
+ *             举例如下：
+ *             -->
+ *             <value>food:id/title</value>
+ *             <value>category/food:id/name</value>
+ *             <value>category:id/name</value>
+ *         </list>
+ *     </object>
+ *
  * User: huangsongli
  * Date: 15/3/24
  * Time: 下午4:38
@@ -45,13 +62,11 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
     @Override
     public void init() {
         super.init();
-        PropertiesMap properties = serviceContext.getConfiguration().getProperties();
-        final String argumentSeparater = properties.getString(Constants.PropertyKeys.URL_ARGUMENT_SEPARATER, Constants.Defaults.URL_ARGUMENT_SEPARATER);
         if (rewriteMappingList != null) {
             List<UrlRewriteMappingItem> urlRewriteMappingItems = CollectionUtil.transformList(rewriteMappingList, new Transformer<String, UrlRewriteMappingItem>() {
                 @Override
                 public UrlRewriteMappingItem transform(String object) {
-                    return new UrlRewriteMappingItem(UrlRewriteMapping.parseFromString(object, argumentSeparater));
+                    return new UrlRewriteMappingItem(UrlRewriteMapping.parseFromString(object));
                 }
             });
             this.setRewriteMappings(urlRewriteMappingItems);
@@ -69,9 +84,7 @@ public class DefaultUrlRewriteService extends AbstractService implements UrlRewr
     }
 
     public void setHandles(List<UrlRewriteHandle> handles) {
-        for (UrlRewriteHandle handle : handles) {
-            this.handles.add(handle);
-        }
+        this.handles.addAll(handles);
     }
 
     @Override

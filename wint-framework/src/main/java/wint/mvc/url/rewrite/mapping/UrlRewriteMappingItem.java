@@ -22,7 +22,7 @@ public class UrlRewriteMappingItem implements UrlRewriteParser, UrlRewriteHandle
 
     @Override
     public String rewrite(UrlBroker urlBroker, UrlContext urlContext) {
-        return urlRewriteMapping.rewrite(urlBroker, urlContext);
+        return urlRewriteMapping.rewrite(urlBroker, urlContext.getUrlSuffix());
     }
 
     @Override

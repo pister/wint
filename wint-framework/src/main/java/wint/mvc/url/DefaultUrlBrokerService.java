@@ -3,7 +3,6 @@ package wint.mvc.url;
 import wint.core.config.Constants;
 import wint.core.config.property.PropertiesMap;
 import wint.core.service.AbstractService;
-import wint.lang.magic.MagicMap;
 import wint.lang.magic.Transformer;
 import wint.lang.utils.CollectionUtil;
 import wint.lang.utils.MapUtil;
@@ -25,7 +24,7 @@ import java.util.Map;
 public class DefaultUrlBrokerService extends AbstractService implements UrlBrokerService {
 
     private String urlSuffix;
-    private String argumentSeparater;
+    private String argumentSeparator;
     private Transformer<Object, String> transformer;
     private UrlConfigLoader urlConfigLoader;
     private Map<String, UrlModule> urlModules;
@@ -42,7 +41,7 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
         urlRewriteService = serviceContext.getService(UrlRewriteService.class);
         PropertiesMap properties = serviceContext.getConfiguration().getProperties();
         urlSuffix = properties.getString(Constants.PropertyKeys.URL_SUFFIX, Constants.Defaults.URL_SUFFIX);
-        argumentSeparater = properties.getString(Constants.PropertyKeys.URL_ARGUMENT_SEPARATER, Constants.Defaults.URL_ARGUMENT_SEPARATER);
+        argumentSeparator = properties.getString(Constants.PropertyKeys.URL_ARGUMENT_SEPARATOR, Constants.Defaults.URL_ARGUMENT_SEPARATOR);
         tokenName = properties.getString(Constants.PropertyKeys.CSRF_TOKEN_NAME, Constants.Defaults.CSRF_TOKEN_NAME);
         pathAsTargetName = properties.getString(Constants.PropertyKeys.URL_PATH_AS_TARGET_NAME, Constants.Defaults.URL_PATH_AS_TARGET_NAME);
         transformer = UrlBrokerUtil.getTransformer();
@@ -57,7 +56,7 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
 
         urlContext = new UrlContext();
         urlContext.setUrlSuffix(urlSuffix);
-        urlContext.setArgumentSeparater(argumentSeparater);
+        urlContext.setArgumentSeparator(argumentSeparator);
 
         handles = urlRewriteService.getHandles();
     }
@@ -75,13 +74,7 @@ public class DefaultUrlBrokerService extends AbstractService implements UrlBroke
     }
 
     protected String renderForDefault(UrlBroker urlBroker) {
-        /*
-        DomainRewriteHandle domainRewriteHandle = urlRewriteService.getDomainRewriteHandle();
-        if (domainRewriteHandle != null) {
-            urlBroker = new DomainRewriteUrlBroker(urlBroker, domainRewriteHandle);
-        }
-        */
-        return UrlBrokerUtil.renderUrlBroker(urlBroker, urlSuffix, argumentSeparater, transformer);
+        return UrlBrokerUtil.renderUrlBroker(urlBroker, urlSuffix, argumentSeparator, transformer);
     }
 
     protected UrlBroker makeUrlBrokerForRender(UrlBroker urlBroker) {

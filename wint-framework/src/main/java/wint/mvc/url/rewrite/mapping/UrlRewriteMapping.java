@@ -2,9 +2,7 @@ package wint.mvc.url.rewrite.mapping;
 
 import wint.lang.magic.Transformer;
 import wint.lang.utils.*;
-import wint.mvc.holder.WintContext;
 import wint.mvc.parameters.MapParameters;
-import wint.mvc.servlet.ServletUtil;
 import wint.mvc.url.UrlBroker;
 import wint.mvc.url.UrlBrokerUtil;
 import wint.mvc.url.config.UrlContext;
@@ -24,27 +22,37 @@ public class UrlRewriteMapping {
 
     private static final String ESCAPE_FLAG = "!";
 
+    private static final String PARAM_SEPARATOR = "/";
+
     private static final RewriteResolver defaultRewriteResolver = new DefaultRewriteResolver();
 
     private String baseTarget;
     private List<Item> patternItems;
+    private List<String> baseTargetParts;
 
     public UrlRewriteMapping(String baseTarget, List<Item> patternItems) {
-        this.baseTarget = UrlBrokerUtil.normalizePath(baseTarget);
+        this.baseTarget = normalizeTarget(baseTarget);
+        this.baseTargetParts = StringUtil.splitTrim(this.baseTarget, PARAM_SEPARATOR);
         this.patternItems = patternItems;
     }
 
+    private static String normalizeTarget(String target) {
+        String theTarget = UrlBrokerUtil.normalizePath(target);
+        return StringUtil.camelToFixedString(theTarget, "-");
+    }
+
     /**
-     * /aa/bb/cc-dd-ee-ff-gg.htm
+     * /aa/bb:cc-dd-ee-ff-gg.htm
      * =>
      * target: aa/bb
      * queryStringName cc,dd,ee,ff,gg
+     *
      * @param pattern
      */
-    public static UrlRewriteMapping parseFromString(String pattern, String separater) {
-        String target = StringUtil.getLastBefore(pattern, "/");
-        String itemName = StringUtil.getLastAfter(pattern, "/");
-        String[] names = itemName.split(separater);
+    public static UrlRewriteMapping parseFromString(String pattern) {
+        String target = StringUtil.getFirstBefore(pattern, ":");
+        String itemName = StringUtil.getFirstAfter(pattern, ":");
+        String[] names = itemName.split(PARAM_SEPARATOR);
         List<Item> patternItems = CollectionUtil.newArrayList();
         for (String name : names) {
             if (name.startsWith(ESCAPE_FLAG)) {
@@ -70,70 +78,77 @@ public class UrlRewriteMapping {
 
     public boolean matches(String inputTarget) {
         inputTarget = StringUtil.getLastBefore(inputTarget, ".");
-        String newTarget = StringUtil.getLastBefore(inputTarget, "/");
-        newTarget = UrlBrokerUtil.normalizePath(newTarget);
-        return StringUtil.equals(baseTarget, newTarget);
+        if (inputTarget.startsWith("/")) {
+            inputTarget = inputTarget.substring(1);
+        }
+        String newTarget = normalizeTarget(inputTarget);
+        return newTarget.startsWith(baseTarget);
     }
 
     public boolean matches(UrlBroker urlBroker) {
         StringBuilder sb = new StringBuilder();
         sb.append(urlBroker.getPath());
-        String target = UrlBrokerUtil.trimLastSlash(UrlBrokerUtil.normalizePath(urlBroker.getTarget()));
+        String target = UrlBrokerUtil.trimLastSlash(normalizeTarget(urlBroker.getTarget()));
         sb.append(target);
         String fullPath = sb.toString();
         // get after from protocol
         String urlTarget = StringUtil.getFirstAfter(fullPath, "//");
         // get after from host
         urlTarget = StringUtil.getFirstAfter(urlTarget, "/");
-        urlTarget = UrlBrokerUtil.normalizePath(urlTarget);
-        return StringUtil.equals(this.baseTarget, urlTarget);
+        urlTarget = normalizeTarget(urlTarget);
+        return urlTarget.startsWith(baseTarget);
+
+    }
+
+    private int getParamStartIndex(List<String> targetParts) {
+        int i = 0;
+        for (int len = Math.min(baseTargetParts.size(), targetParts.size()); i < len; i++) {
+            String basePart = baseTargetParts.get(i);
+            String inputPart = StringUtil.camelToFixedString(targetParts.get(i), "-");
+            if (!StringUtil.equals(basePart, inputPart)) {
+                return i;
+            }
+        }
+        return i;
     }
 
     public RequestData parse(String target, UrlContext urlContext) {
         final String suffix = urlContext.getUrlSuffix();
         target = trimFromSuffix(target, suffix);
-        String path = StringUtil.getLastAfter(target, "/");
-        String newTarget = StringUtil.getLastBefore(target, "/");
-        newTarget = UrlBrokerUtil.normalizePath(newTarget);
-        String[] parts = path.split(urlContext.getArgumentSeparater());
-        int i = 0;
-        int partsLength = parts.length;
+
+        final List<String> targetParts = StringUtil.splitTrim(target, PARAM_SEPARATOR);
+        final int partLength = targetParts.size();
+        final int paramIndexStart = getParamStartIndex(targetParts);
+        int paramIndex = paramIndexStart;
         Map<String, String[]> mapParameters = MapUtil.newHashMap();
+
         for (Item item : patternItems) {
-            if (i >= partsLength) {
+            if (paramIndex >= partLength) {
                 break;
             }
-            final String name = item.getName();
-            if (HostConstants.DOMAIN_NAME_L2.equals(name)) {
-                // 二级域名
-                String value = ServletUtil.getRequestHostnameL2(WintContext.getRequest());
-                value = defaultRewriteResolver.fromQueryData(item, value);
-                mapParameters.put(name, new String[]{value});
-                continue;
-            }
-            String part = parts[i];
-            part = defaultRewriteResolver.fromQueryData(item, part);
-            mapParameters.put(name, new String[]{part});
-            i++;
+            String value = targetParts.get(paramIndex);
+            mapParameters.put(item.getName(), new String[]{value});
+            paramIndex++;
         }
+
         RequestData requestData = new RequestData();
         requestData.setParameters(new MapParameters(mapParameters));
-        requestData.setTarget(newTarget);
+        requestData.setTarget(CollectionUtil.join(targetParts.subList(0, paramIndexStart), PARAM_SEPARATOR));
         return requestData;
     }
 
-    private static String trimSeparaters(String rewritePath, String separater) {
-        if (StringUtil.isEmpty(separater)) {
+    private static String trimSeparators(String rewritePath, String separator) {
+        if (StringUtil.isEmpty(separator)) {
             return rewritePath;
         }
-        final int separaterLen = separater.length();
-        while (rewritePath.endsWith(separater)) {
-            rewritePath = rewritePath.substring(0, rewritePath.length() - separaterLen);
+        final int separatorLen = separator.length();
+        while (rewritePath.endsWith(separator)) {
+            rewritePath = rewritePath.substring(0, rewritePath.length() - separatorLen);
         }
         return rewritePath;
     }
 
-    public String rewrite(UrlBroker urlBroker, UrlContext urlContext) {
+    public String rewrite(UrlBroker urlBroker, String urlSuffix) {
         final Map<String, Object> queryData = new LinkedHashMap<String, Object>(urlBroker.getQueryData());
 
         Item domainL2Item = null;
@@ -149,10 +164,10 @@ public class UrlRewriteMapping {
         StringBuilder sb = new StringBuilder();
         String path = urlBroker.getPath();
         sb.append(path);
-        String target = UrlBrokerUtil.trimLastSlash(UrlBrokerUtil.normalizePath(urlBroker.getTarget()));
+        String target = UrlBrokerUtil.trimLastSlash(normalizeTarget(urlBroker.getTarget()));
         sb.append(target);
         final Set<String> rewritedNames = new HashSet<String>();
-        String rewritePath = CollectionUtil.join(writeItems, urlContext.getArgumentSeparater(), new Transformer<Item, String>() {
+        String rewritePath = CollectionUtil.join(writeItems, PARAM_SEPARATOR, new Transformer<Item, String>() {
             @Override
             public String transform(Item item) {
                 String name = item.getName();
@@ -167,7 +182,7 @@ public class UrlRewriteMapping {
             }
         }, null);
 
-        rewritePath = trimSeparaters(rewritePath, urlContext.getArgumentSeparater());
+        rewritePath = trimSeparators(rewritePath, PARAM_SEPARATOR);
         if (!StringUtil.isEmpty(rewritePath)) {
             if (sb.charAt(sb.length() - 1) != '/') {
                 sb.append("/");
@@ -175,7 +190,6 @@ public class UrlRewriteMapping {
             sb.append(rewritePath);
         }
 
-        String urlSuffix = urlContext.getUrlSuffix();
         if (!StringUtil.isEmpty(urlBroker.getSuffix())) {
             urlSuffix = urlBroker.getSuffix();
         }
@@ -196,5 +210,11 @@ public class UrlRewriteMapping {
         return sb.toString();
     }
 
+    public String getBaseTarget() {
+        return baseTarget;
+    }
 
+    public List<Item> getPatternItems() {
+        return patternItems;
+    }
 }

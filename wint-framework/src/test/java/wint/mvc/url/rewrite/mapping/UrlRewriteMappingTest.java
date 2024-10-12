@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import wint.mvc.url.UrlBroker;
 import wint.mvc.url.config.UrlContext;
 import wint.mvc.url.rewrite.RequestData;
-import wint.mvc.url.rewrite.resovler.DefaultRewriteResolver;
 
 /**
  * User: huangsongli
@@ -13,31 +12,70 @@ import wint.mvc.url.rewrite.resovler.DefaultRewriteResolver;
  */
 public class UrlRewriteMappingTest extends TestCase {
 
-    UrlRewriteMapping urlRewriteMapping = UrlRewriteMapping.parseFromString("hello/abc/!name-age-page-siteAddress", "-");
 
     public void testRender() throws Exception {
-        UrlBroker urlBroker = new UrlBroker(null, null, "http://111.mydomain.com", "hello/abc", null, null, false);
+        UrlRewriteMapping urlRewriteMapping = UrlRewriteMapping.parseFromString("/hello/abc/:id/!name/age");
+        UrlBroker urlBroker = new UrlBroker(null, null, "https://mydomain.com", "hello/abc", null, null, false);
+        urlBroker.param("id", 2);
         urlBroker.param("name", "hsl");
         urlBroker.param("age", 21);
-        urlBroker.param("page", 2);
-        urlBroker.param("siteAddress", "hangzhou");
         UrlContext urlContext = new UrlContext();
-        urlContext.setArgumentSeparater("-");
+        urlContext.setArgumentSeparator("-");
+        urlContext.setUrlSuffix(".htm");
+        System.out.println(urlRewriteMapping.getBaseTarget());
+        System.out.println(urlRewriteMapping.matches(urlBroker));
+        String url = urlRewriteMapping.rewrite(urlBroker, urlContext.getUrlSuffix());
+        System.out.println(url);
+    }
+
+
+    public void testRenderSlash() {
+        UrlRewriteMapping urlRewriteMapping = UrlRewriteMapping.parseFromString("food:id/name");
+        UrlBroker urlBroker = new UrlBroker(null, null, "https://mydomain.com", "food", null, null, false);
+        urlBroker.paramSeo("name", "hsl jack");
+        urlBroker.param("id", 123);
+        UrlContext urlContext = new UrlContext();
+        urlContext.setArgumentSeparator("/");
         urlContext.setUrlSuffix(".htm");
         System.out.println(urlRewriteMapping.matches(urlBroker));
-        String url = urlRewriteMapping.rewrite(urlBroker, urlContext);
+        String url = urlRewriteMapping.rewrite(urlBroker, urlContext.getUrlSuffix());
+        System.out.println(url);
+    }
+
+    public void testRenderSlash2() {
+        UrlRewriteMapping urlRewriteMapping = UrlRewriteMapping.parseFromString("categoryFood:id/name");
+        UrlBroker urlBroker = new UrlBroker(null, null, "https://mydomain.com", "categoryFood", null, null, false);
+        urlBroker.paramSeo("name", "hsl jack");
+        urlBroker.param("id", 123);
+        UrlContext urlContext = new UrlContext();
+        urlContext.setArgumentSeparator("/");
+        urlContext.setUrlSuffix(".htm");
+        System.out.println(urlRewriteMapping.matches(urlBroker));
+        String url = urlRewriteMapping.rewrite(urlBroker,  urlContext.getUrlSuffix());
         System.out.println(url);
     }
 
     public void testParse() {
+        UrlRewriteMapping urlRewriteMapping = UrlRewriteMapping.parseFromString("helloJack/abc-name:id/!name/age");
         UrlContext urlContext = new UrlContext();
-        urlContext.setArgumentSeparater("-");
+        urlContext.setArgumentSeparator("-");
         urlContext.setUrlSuffix(".htm");
-        System.out.println(urlRewriteMapping.matches("/hello/abc"));
-        System.out.println(urlRewriteMapping.matches("/hello/abc/"));
-        System.out.println(urlRewriteMapping.matches("hello/abc/"));
-        System.out.println(urlRewriteMapping.matches("hello/abc"));
-        RequestData requestData = urlRewriteMapping.parse("hello/abc/aHNs-21--xxx.htm", urlContext);
+        System.out.println(urlRewriteMapping.getBaseTarget());
+        System.out.println(urlRewriteMapping.matches("/helloJack/abc-name"));
+        System.out.println(urlRewriteMapping.matches("/hello-jack/abcName/"));
+        System.out.println(urlRewriteMapping.matches("hello-jack/abc-name/"));
+        System.out.println(urlRewriteMapping.matches("helloJack/abcName"));
+        RequestData requestData = urlRewriteMapping.parse("hello-jack/abcName/21/aHNs/52.htm", urlContext);
+        System.out.println(requestData);
+    }
+
+    public void testParse2() {
+        UrlRewriteMapping urlRewriteMapping = UrlRewriteMapping.parseFromString("category-food:id/name");
+        UrlContext urlContext = new UrlContext();
+        urlContext.setArgumentSeparator("-");
+        urlContext.setUrlSuffix(".htm");
+        System.out.println(urlRewriteMapping.getBaseTarget());
+        RequestData requestData = urlRewriteMapping.parse("category-food/6/second-category.htm", urlContext);
         System.out.println(requestData);
     }
 
